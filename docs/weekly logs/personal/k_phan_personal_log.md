@@ -6,7 +6,8 @@
 - Work on design mocks (IN PROGRESS)
 
 ### Tasks Worked on
-- Brainstormed ideas and proposed to team
+- Brainstormed a list of ideas
+- Adjusted the project list team came up
 - Contributed to project proposal
 - Started on a little bit of design
 
