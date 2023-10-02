@@ -1,0 +1,11 @@
+services:
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql
+    environment:
+      POSTGRES_PASSWORD: password123
+
+volumes:
+  pgdata:
