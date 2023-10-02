@@ -22,3 +22,5 @@ All tasks listed above were completed this week, so none are in progress.
 My goals this week were to brainstorm all tasks and finish the project plan.
 
 ### Additional Context
+
+Since this week was a project planning week, we did not get started on features yet. We will start working on features next week.
