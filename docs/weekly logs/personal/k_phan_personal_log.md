@@ -1,5 +1,5 @@
 # K Phan
-## Term 1 Week 4 (September 25 - October 10)
+## Term 1 Week 4 (September 25 - October 01)
 
 ### Week's Goals
 - Finish project proposal (COMPLETED)
