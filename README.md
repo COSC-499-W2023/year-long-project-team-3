@@ -26,10 +26,10 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### Running the Database
 
-To run the database, run the following command
+To run the dev database, run the following command
 
 ```bash
-docker-compose up
+docker-compose -f dev-docker-compose.yml up -d
 ```
 
 ### Linting the Project
