@@ -1,6 +1,18 @@
 {
-	"extends": ["next/core-web-vitals", "prettier"],
-	"rules": {
-		"semi": [2, "never"]
-	}
+    "extends": ["next/core-web-vitals", "prettier"],
+    "rules": {
+        "semi": [2, "never"],
+        "quotes": [2, "single"],
+        "no-duplicate-imports": "error",
+        "camelcase": "error",
+        "capitalized-comments": "error",
+        "curly": "error",
+        "template-curly-spacing": [2, "always"],
+        "yoda": [2, "never"],
+        "comma-dangle": [2, "always-multiline"],
+        "indent": [2, 4],
+        "jsx-quotes": [2, "prefer-single"],
+        "key-spacing": "error",
+        "no-trailing-spaces": "error"
+    }
 }
