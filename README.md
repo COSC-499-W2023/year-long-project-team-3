@@ -2,11 +2,11 @@
 
 ## Team Members
 
--   Seth Akins
--   Teresa Saller
--   Erin Hieberts
--   K Phan
--   Justin Schoenit
+-   Seth Akins (Hedgemon4)
+-   Teresa Saller (te-sa)
+-   Erin Hiebert (SecondFeline)
+-   K Phan (ketphan02)
+-   Justin Schoenit (justino599)
 
 ## Project Setup
 
