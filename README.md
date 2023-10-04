@@ -12,6 +12,7 @@ First, run the development server:
 
 ### Requirements
 - [NodeJS 18.18](https://nodejs.org/en)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
 ### Running the Project
 
@@ -22,6 +23,14 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+### Running the Database
+
+To run the dev database, run the following command
+
+```bash
+docker-compose -f dev-docker-compose.yml up -d
+```
 
 ### Linting the Project
 
