@@ -1,8 +1,32 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "lib-client-js"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id             Int      @id @default(autoincrement())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  email          String   @unique
+  password       String
+  sentVideos     Video[]  @relation("sentVideos")
+  receivedVideos Video[]  @relation("receivedVideos")
+  localVideos    Video[]  @relation("localVideos")
+}
+
+model Video {
+  id             Int      @id @default(autoincrement())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  sentUser       User?    @relation("sentVideos", fields: [sentUserId], references: [id])
+  sentUserId     Int?
+  receivedUser   User?    @relation("receivedVideos", fields: [receivedUserId], references: [id])
+  receivedUserId Int?
+  localUser      User?    @relation("localVideos", fields: [localUserId], references: [id])
+  localUserId    Int?
+  // TODO: Add more details
 }
