@@ -60,7 +60,9 @@ npm run lint
 Use `--fix` to make eslint run any fixes available
 
 ### Development environment variable
+
 Add this following code to a `.env` file
+
 ```dotenv
 DATABASE_URL="postgresql://postgres:password123@localhost:5432/postgres?schema=dev"
 ```
