@@ -66,6 +66,12 @@ If you make changes to prisma models, you can migrate the database by
 npx prisma migrate dev --name <migration-name>
 ```
 
+### Database exploration
+You can explore the database by running
+```bash
+npx prisma studio
+```
+
 ## Chosen Project
 
 ### Option 3 - Video Streaming Using Cloud Technology
