@@ -31,6 +31,9 @@
         "typescript": "latest"
     },
     "lint-staged": {
-        "*.*": ["next lint", "prettier --write"]
+        "*.*": [
+            "next lint",
+            "prettier --write"
+        ]
     }
 }
