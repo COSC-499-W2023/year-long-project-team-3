@@ -13,8 +13,8 @@
 First, run the development server:
 
 ### Requirements
-- [NodeJS 18.18](https://nodejs.org/en)
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+-   [NodeJS 18.18](https://nodejs.org/en)
+-   [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
 ### Installing Dependencies
 
@@ -51,6 +51,12 @@ npm run lint
 ```
 
 Use `--fix` to make eslint run any fixes available
+
+### Development environment variable
+Add this following code to a `.env` file
+```dotenv
+DATABASE_URL="postgresql://postgres:password123@localhost:5432/postgres?schema=dev"
+```
 
 ## Chosen Project
 
