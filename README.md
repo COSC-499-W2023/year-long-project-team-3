@@ -56,6 +56,21 @@ Use `--fix` to make eslint run any fixes available
 Add this following code to a `.env` file
 ```dotenv
 DATABASE_URL="postgresql://postgres:password123@localhost:5432/postgres?schema=dev"
+
+GOOGLE_CLIENT_ID=<google-client-id>
+GOOGLE_CLIENT_SECRET=<google-client-secret>
+
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET=secret
+
+NEXT_PUBLIC_BASE_URL="http://localhost:3000"
+```
+
+### Database migration
+If you make changes to prisma models, you can migrate the database by
+```bash
+npx prisma migrate dev --name <migration-name>
+npx prisma db push
 ```
 
 ## Chosen Project
