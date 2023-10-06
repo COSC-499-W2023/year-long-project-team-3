@@ -13,8 +13,9 @@
 First, run the development server:
 
 ### Requirements
-- [NodeJS 18.18](https://nodejs.org/en)
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+
+-   [NodeJS 18.18](https://nodejs.org/en)
+-   [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
 ### Installing Dependencies
 
@@ -43,6 +44,12 @@ docker-compose -f dev-docker-compose.yml up -d
 ```
 
 ### Linting the Project
+
+Run the following to format the project
+
+```bash
+npm run format
+```
 
 Run the following command to lint the project
 
