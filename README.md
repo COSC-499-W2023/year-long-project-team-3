@@ -42,6 +42,11 @@ To run the dev database, run the following command
 docker-compose -f dev-docker-compose.yml up -d
 ```
 
+### Apply latest database migrations
+```bash
+npx prisma db push
+```
+
 ### Linting the Project
 
 Run the following command to lint the project
@@ -53,24 +58,12 @@ npm run lint
 Use `--fix` to make eslint run any fixes available
 
 ### Development environment variable
-Add this following code to a `.env` file
-```dotenv
-DATABASE_URL="postgresql://postgres:password123@localhost:5432/postgres?schema=dev"
-
-GOOGLE_CLIENT_ID=<google-client-id>
-GOOGLE_CLIENT_SECRET=<google-client-secret>
-
-NEXTAUTH_URL="http://localhost:3000"
-NEXTAUTH_SECRET=secret
-
-NEXT_PUBLIC_BASE_URL="http://localhost:3000"
-```
+Please view in private channel #dotenv
 
 ### Database migration
 If you make changes to prisma models, you can migrate the database by
 ```bash
 npx prisma migrate dev --name <migration-name>
-npx prisma db push
 ```
 
 ## Chosen Project
