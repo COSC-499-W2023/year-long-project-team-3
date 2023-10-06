@@ -1,5 +1,5 @@
 generator client {
-  provider = "lib-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -8,25 +8,50 @@ datasource db {
 }
 
 model User {
-  id             Int      @id @default(autoincrement())
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  email          String   @unique
-  password       String
-  sentVideos     Video[]  @relation("sentVideos")
-  receivedVideos Video[]  @relation("receivedVideos")
-  localVideos    Video[]  @relation("localVideos")
+  id             String    @id @default(cuid())
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  email          String    @unique
+  emailVerified  DateTime?
+  password       String?
+  sentVideos     Video[]   @relation("sentVideos")
+  receivedVideos Video[]   @relation("receivedVideos")
+  localVideos    Video[]   @relation("localVideos")
+  Account        Account?
+}
+
+model Account {
+  id                       String  @id @default(cuid())
+  userId                   String  @unique
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String?
+  refresh_token_expires_in Int?
+  access_token             String?
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String?
+  session_state            String?
+  oauth_token_secret       String?
+  oauth_token              String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Video {
   id             Int      @id @default(autoincrement())
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
-  sentUser       User?    @relation("sentVideos", fields: [sentUserId], references: [id])
-  sentUserId     Int?
-  receivedUser   User?    @relation("receivedVideos", fields: [receivedUserId], references: [id])
-  receivedUserId Int?
-  localUser      User?    @relation("localVideos", fields: [localUserId], references: [id])
-  localUserId    Int?
+  sentUser       User?    @relation("sentVideos", fields: [sentUserId], references: [id], onDelete: Cascade)
+  sentUserId     String?
+  receivedUser   User?    @relation("receivedVideos", fields: [receivedUserId], references: [id], onDelete: Cascade)
+  receivedUserId String?
+  localUser      User?    @relation("localVideos", fields: [localUserId], references: [id], onDelete: Cascade)
+  localUserId    String?
   // TODO: Add more details
 }
