@@ -65,6 +65,7 @@ If you make changes to prisma models, you can migrate the database by
 ```bash
 npx prisma migrate dev --name <migration-name>
 ```
+Note: `migration-name` should be a short description of the changes you made
 
 ### Database exploration
 You can explore the database by running
