@@ -33,7 +33,6 @@
         "postcss": "latest",
         "prettier": "3.0.3",
         "prisma": "^5.4.0",
-        "tailwindcss": "latest",
         "typescript": "latest"
     },
     "lint-staged": {
