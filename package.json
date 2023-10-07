@@ -7,7 +7,8 @@
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
-        "prepare": "husky install"
+        "prepare": "husky install",
+        "cypress:open": "cypress open"
     },
     "dependencies": {
         "@prisma/client": "^5.4.0",
@@ -20,6 +21,7 @@
         "@types/react": "latest",
         "@types/react-dom": "latest",
         "autoprefixer": "latest",
+        "cypress": "^13.3.0",
         "eslint": "latest",
         "eslint-config-next": "latest",
         "eslint-config-prettier": "^9.0.0",
