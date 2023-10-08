@@ -2,7 +2,7 @@
 
 ## Teresa Saller - Week 4 (2023/09/24 - 2023/10/01)
 
-![teresa_saller_peer_eval_2023:10:01.png](imgs%2Fteresa_saller_peer_eval_2023-10-01.png)
+![teresa_saller_peer_eval_2023:10:01.png](imgs/teresa_saller_peer_eval_2023-10-01.png)
 
 ### Tasks
 
