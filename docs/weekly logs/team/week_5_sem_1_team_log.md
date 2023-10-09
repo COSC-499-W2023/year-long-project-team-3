@@ -38,7 +38,7 @@
 
 ### Test Report
 
--   Testing has not yet been set up for this week so we do not have a test report for this week.
+![test-log-week-5.png](imgs/test-log-week-5.png)
 
 ### Additional Context
 
