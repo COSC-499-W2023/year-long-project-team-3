@@ -27,7 +27,6 @@ My goals this week were to brainstorm all tasks and finish the project plan.
 
 Since this week was a project planning week, we did not get started on features yet. We will start working on features next week.
 
-
 ## Teresa Saller - Week 5 (2023/10/02 - 2023/10/08)
 
 ![teresa-saller-tasks-w5](imgs/teresa-saller-tasks-w5.png)
@@ -35,11 +34,13 @@ Since this week was a project planning week, we did not get started on features 
 ### Tasks
 
 Completed:
-- [Update Project Board with Features#10](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/10)
-- [Add PR template #37](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/37)
+
+-   [Update Project Board with Features#10](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/10)
+-   [Add PR template #37](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/37)
 
 In progress:
-- [Setup Cypress #52](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/52)
+
+-   [Setup Cypress #52](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/52)
 
 This week, I updated the project board with all our features and added a PR template as part of our Initial Project Setup #24 feature.
 
