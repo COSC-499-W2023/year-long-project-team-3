@@ -19,7 +19,6 @@
 
 ![](./imgs/week-5-k-phan-tasks.png)
 
-
 ## Term 1 Week 4 (September 25, 2023 - October 01, 2023)
 
 ### Week's Goals
