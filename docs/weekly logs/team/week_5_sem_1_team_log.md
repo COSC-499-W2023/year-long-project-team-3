@@ -12,6 +12,7 @@
     -   Setup Docker Container for Database #20
     -   Added Material UI to project #26
     -   Added basic PR template #37
+-   Started working on tutorials
 -   Team discussions on tech stack
 -   Involved discussing the need for jest and SASS to be added to project (see #28 and #27)
 -   Some inital work on user creation was also started this week #33
