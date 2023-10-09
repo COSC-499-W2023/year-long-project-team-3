@@ -13,7 +13,7 @@
     -   Added Material UI to project #26
     -   Added basic PR template #37
 -   Team discussions on tech stack
-  - Involved discussing the need for jest and SASS to be added to project
+  -   Involved discussing the need for jest and SASS to be added to project
 -   Some inital work on user creation was also started this week #33
 
 ### Burn-up Chart
