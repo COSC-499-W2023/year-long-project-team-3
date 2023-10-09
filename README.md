@@ -45,19 +45,11 @@ docker-compose -f dev-docker-compose.yml up -d
 
 ### Linting the Project
 
-Run the following to format the project
-
-```bash
-npm run format
-```
-
-Run the following command to lint the project
+Run the following to lint and format the project
 
 ```bash
 npm run lint
 ```
-
-Use `--fix` to make eslint run any fixes available
 
 ### Development environment variable
 
