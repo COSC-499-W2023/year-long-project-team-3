@@ -13,7 +13,7 @@
     -   Added Material UI to project #26
     -   Added basic PR template #37
 -   Team discussions on tech stack
-  -   Involved discussing the need for jest and SASS to be added to project
+-   Involved discussing the need for jest and SASS to be added to project
 -   Some inital work on user creation was also started this week #33
 
 ### Burn-up Chart
@@ -38,7 +38,7 @@
 
 ### Test Report
 
--   Testing has not yet been set up for this week so we do not have a test report for this week.  Additionally no coding tasks were completed this week.
+-   Testing has not yet been set up for this week so we do not have a test report for this week.
 
 ### Additional Context
 
