@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "./", // fixes Cypress not finding tsconfig.json
     "target": "es5",
     "lib": [
       "dom",
