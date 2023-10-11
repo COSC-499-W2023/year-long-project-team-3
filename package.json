@@ -6,11 +6,16 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "lint": "next lint",
+        "lint": "next lint --fix && prettier . --write",
         "prepare": "husky install",
         "cypress:open": "cypress open"
     },
     "dependencies": {
+        "@emotion/react": "^11.11.1",
+        "@emotion/styled": "^11.11.0",
+        "@fontsource/roboto": "^5.0.8",
+        "@mui/icons-material": "^5.14.12",
+        "@mui/material": "^5.14.12",
         "@prisma/client": "^5.4.0",
         "next": "^13.5.4",
         "react": "latest",
@@ -30,10 +35,12 @@
         "postcss": "latest",
         "prettier": "3.0.3",
         "prisma": "^5.4.0",
-        "tailwindcss": "latest",
         "typescript": "latest"
     },
     "lint-staged": {
-        "**/*": "prettier --write --ignore-unknown"
+        "*.*": [
+            "next lint",
+            "prettier --write"
+        ]
     }
 }
