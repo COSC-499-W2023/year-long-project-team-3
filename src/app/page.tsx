@@ -8,7 +8,7 @@ export default function Home() {
         <main className={styles.main}>
             <Alert severity='success'>Installed Material UI</Alert>
             <div className={styles.description}>
-                <p>
+                <p data-test='page text'>
                     Get started by editing&nbsp;
                     <code className={styles.code}>src/app/page.tsx</code>
                 </p>
