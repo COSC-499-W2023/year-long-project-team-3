@@ -44,6 +44,7 @@ docker-compose -f dev-docker-compose.yml up -d
 ```
 
 ### Apply latest database migrations
+
 ```bash
 npx prisma db push
 ```
@@ -57,17 +58,23 @@ npm run lint
 ```
 
 ### Development environment variable
+
 Please view in private channel #dotenv
 
 ### Database migration
+
 If you make changes to prisma models, you can migrate the database by
+
 ```bash
 npx prisma migrate dev --name <migration-name>
 ```
+
 Note: `migration-name` should be a short description of the changes you made
 
 ### Database exploration
+
 You can view your tables, columns, and make changes to your local database by
+
 ```bash
 npx prisma studio
 ```
