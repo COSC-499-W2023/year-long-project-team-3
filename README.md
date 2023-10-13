@@ -13,6 +13,7 @@
 First, run the development server:
 
 ### Requirements
+
 -   [NodeJS 18.18](https://nodejs.org/en)
 -   [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
@@ -49,13 +50,11 @@ npx prisma db push
 
 ### Linting the Project
 
-Run the following command to lint the project
+Run the following to lint and format the project
 
 ```bash
 npm run lint
 ```
-
-Use `--fix` to make eslint run any fixes available
 
 ### Development environment variable
 Please view in private channel #dotenv

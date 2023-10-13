@@ -1,14 +1,14 @@
 # Run with: `docker-compose -f dev-docker-compose.yml up -d`
 services:
-  db:
-    image: postgres
-    restart: always
-    volumes:
-      - pgdata:/var/lib/postgresql
-    environment:
-      POSTGRES_PASSWORD: password123
-    ports:
-      - 5432:5432
+    db:
+        image: postgres
+        restart: always
+        volumes:
+            - pgdata:/var/lib/postgresql
+        environment:
+            POSTGRES_PASSWORD: password123
+        ports:
+            - 5432:5432
 
 volumes:
-  pgdata:
+    pgdata:
