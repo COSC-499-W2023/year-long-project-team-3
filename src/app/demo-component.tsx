@@ -1,6 +1,7 @@
 import { useState } from 'react'
+
+// TODO: delete
 export default function Demo({ greetings = 'Good Morning' }) {
-    // TODO: delete
     const [greetingMessage] = useState(greetings)
 
     return (
@@ -8,7 +9,7 @@ export default function Demo({ greetings = 'Good Morning' }) {
             <div id='message'>Hello World! {greetingMessage}</div>
 
             <div id='date'>
-                <p>Today's date is: {new Date().toLocaleDateString()}</p>
+                <p>Today&apos;s date is: {new Date().toLocaleDateString()}</p>
             </div>
         </div>
     )
