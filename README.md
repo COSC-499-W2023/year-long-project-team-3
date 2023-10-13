@@ -67,7 +67,7 @@ npx prisma migrate dev --name <migration-name>
 Note: `migration-name` should be a short description of the changes you made
 
 ### Database exploration
-You can explore the database by running
+You can view your tables, columns, and make changes to your local database by
 ```bash
 npx prisma studio
 ```

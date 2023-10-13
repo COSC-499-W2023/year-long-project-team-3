@@ -1,7 +1,6 @@
-import { type NextAuthOptions } from 'next-auth'
+import { type NextAuthOptions, type User } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { User } from '@prisma/client'
 import prisma from '@/lib/prisma'
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/lib/constants'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
@@ -24,7 +23,6 @@ export const authOptions: NextAuthOptions = {
                 return {
                     id: profile.sub,
                     email: profile.email,
-                    emailVerified: true, // Don't need to verify emails since we're using Google
                 }
             },
         }),
