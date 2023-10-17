@@ -1,6 +1,6 @@
 name: Cypress Tests
 
-on: [push, pull_request]
+on: push
 
 jobs:
     cypress-run:
@@ -14,3 +14,5 @@ jobs:
                   build: npm run build
                   start: npm run start
                   browser: chrome
+                  config: baseUrl=http://localhost:3000
+                  component: true
