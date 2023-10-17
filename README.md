@@ -68,6 +68,7 @@ docker build -t nextjs-docker .
 ```
 
 Run the following to run the container
+
 ```bash
 docker run -p 3000:3000 nextjs-docker
 ```
