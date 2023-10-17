@@ -7,7 +7,8 @@
         "build": "next build",
         "start": "next start",
         "lint": "next lint --fix && prettier . --write",
-        "prepare": "husky install"
+        "prepare": "husky install",
+        "cypress:open": "cypress open"
     },
     "dependencies": {
         "@emotion/react": "^11.11.1",
@@ -16,6 +17,7 @@
         "@mui/icons-material": "^5.14.12",
         "@mui/material": "^5.14.12",
         "@prisma/client": "^5.4.0",
+        "dotenv": "^16.3.1",
         "next": "^13.5.4",
         "react": "latest",
         "react-dom": "latest"
@@ -25,6 +27,7 @@
         "@types/react": "latest",
         "@types/react-dom": "latest",
         "autoprefixer": "latest",
+        "cypress": "^13.3.0",
         "eslint": "latest",
         "eslint-config-next": "latest",
         "eslint-config-prettier": "^9.0.0",

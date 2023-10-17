@@ -5,7 +5,7 @@
         "quotes": [2, "single"],
         "no-duplicate-imports": "error",
         "camelcase": "error",
-        "capitalized-comments": "error",
+        "capitalized-comments": "off",
         "curly": "error",
         "template-curly-spacing": [2, "always"],
         "yoda": [2, "never"],
