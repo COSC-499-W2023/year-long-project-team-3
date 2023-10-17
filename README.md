@@ -59,6 +59,19 @@ Run the following to open Cypress
 cypress open
 ```
 
+### Docker Image
+
+Run the following to build the container
+
+```bash
+docker build -t nextjs-docker .
+```
+
+Run the following to run the container
+```bash
+docker run -p 3000:3000 nextjs-docker
+```
+
 ### Development environment variable
 
 Add this following code to a `.env` file
