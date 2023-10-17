@@ -59,7 +59,7 @@ Run the following to open Cypress
 cypress open
 ```
 
-### Docker Image
+### Building a Docker Container for the Project
 
 Run the following to build the container
 
