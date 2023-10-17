@@ -6,7 +6,7 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Link from '@mui/material/Link'
 
-export default function SignIn() {
+export default function SignUp() {
     return(
         <Container component='main' maxWidth='xs'>
             <Box
@@ -18,7 +18,7 @@ export default function SignIn() {
                 }}
             >
                 <Typography component='h1' variant='h5'>
-                    Sign In
+                    Sign Up
                 </Typography>
                 <Box component='form'>
                     <TextField
@@ -32,6 +32,12 @@ export default function SignIn() {
                         fullWidth
                         label='Password'
                         name='password'
+                    />
+                    <TextField
+                        margin='normal'
+                        fullWidth
+                        label='Confirm Password'
+                        name='passwordValidation'
                     />
                     <Button
                         type='submit'
