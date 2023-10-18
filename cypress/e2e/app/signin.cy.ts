@@ -1,15 +1,16 @@
 import { TIMEOUT, DELAY } from '../../utils/constants'
 import * as process from 'process'
 import { getHeaders } from '../../utils/headers'
+require('dotenv').config()
 
 describe('Test auth', () => {
     it('should log in with google', () => {
         // TODO: Visit landing page, check if logged in, if not, redirect to /signin instead of visit /signin directly
-
         cy.visit('/signin', { headers: getHeaders() })
         cy.get('h1').should('include.text', 'Sign In Page')
         cy.get('button').should('include.text', 'Login with Google').click().wait(DELAY.MEDIUM)
 
+        cy.url({ timeout: TIMEOUT.LONG }).should('eq', '')
         cy.origin(
             'https://accounts.google.com',
             {
@@ -29,9 +30,6 @@ describe('Test auth', () => {
                         !err.message.includes('Error in protected function')
                 )
 
-                cy.clearCookies()
-                cy.setCookie(cookieName, 'true')
-
                 // Type username
                 cy.get('input[type=email]', { timeout: TIMEOUT.MEDIUM }).should('be.visible').type(username)
                 cy.get('button').contains('Next').click().wait(DELAY.MEDIUM)
@@ -49,6 +47,6 @@ describe('Test auth', () => {
             }
         )
 
-        cy.url({ timeout: TIMEOUT.LONG }).should('eq', process.env.NEXT_PUBLIC_BASE_URL)
+        cy.url({ timeout: TIMEOUT.LONG }).should('eq', Cypress.env('BASE_URL'))
     })
 })

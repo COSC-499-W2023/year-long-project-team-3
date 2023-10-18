@@ -13,7 +13,7 @@ export const authOptions: NextAuthOptions = {
     },
     adapter: PrismaAdapter(prisma),
     session: {
-        strategy: 'jwt',
+        strategy: process.env.NODE_ENV === 'production' ? 'database' : 'jwt',
     },
     providers: [
         GoogleProvider({
@@ -25,6 +25,7 @@ export const authOptions: NextAuthOptions = {
                     email: profile.email,
                 }
             },
+            checks: ['none'],
         }),
         CredentialsProvider({
             id: 'credentials',

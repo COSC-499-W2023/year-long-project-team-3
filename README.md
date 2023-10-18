@@ -59,10 +59,10 @@ npm run lint
 
 ### Testing the Project
 
-Run the following to open Cypress
+Run the following to opesn Cypress
 
 ```bash
-cypress open
+npm run cypress:open
 ```
 
 ### Development environment variable
@@ -84,7 +84,7 @@ Note: `migration-name` should be a short description of the changes you made
 You can view your tables, columns, and make changes to your local database by
 
 ```bash
-npx prisma studio
+npm run prisma:explore
 ```
 
 ## Chosen Project
