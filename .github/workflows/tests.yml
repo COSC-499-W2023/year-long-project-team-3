@@ -8,6 +8,12 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
+            - name: Write cypress.env.json
+              run: |
+                echo '${{ secrets.CYPRESS_ENV_CI }}' > cypress.env.json
+            - name: Write .env.test.local
+              run: |
+                echo '${{ secrets.ENV_TEST_LOCAL }}' > .env.test.local
             - name: Cypress Run Component Tests
               uses: cypress-io/github-action@v6
               with:
