@@ -1,21 +1,15 @@
 import { TIMEOUT, DELAY } from '../../utils/constants'
+import * as process from 'process'
+import { getHeaders } from '../../utils/headers'
 
 describe('Test auth', () => {
     it('should log in with google', () => {
         // TODO: Visit landing page, check if logged in, if not, redirect to /signin instead of visit /signin directly
 
-        cy.visit('/signin', {
-            headers: {
-                Accept: 'application/json, text/plain, */*',
-                'User-Agent':
-                    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36',
-                'LOYALTY-PARTNER-FORWARD': 'D19313AA-5BFF-4586-947A-C3AE8D78CEA4',
-            },
-        })
+        cy.visit('/signin', { headers: getHeaders() })
         cy.get('h1').should('include.text', 'Sign In Page')
-        cy.get('button').should('include.text', 'Login with Google').click()
+        cy.get('button').should('include.text', 'Login with Google').click().wait(DELAY.MEDIUM)
 
-        cy.url({ timeout: TIMEOUT.MEDIUM }).should('eq', '')
         cy.origin(
             'https://accounts.google.com',
             {
@@ -37,10 +31,13 @@ describe('Test auth', () => {
 
                 cy.clearCookies()
                 cy.setCookie(cookieName, 'true')
-                cy.get('input[type=email]').should('be.visible').type(username)
+
+                // Type username
+                cy.get('input[type=email]', { timeout: TIMEOUT.MEDIUM }).should('be.visible').type(username)
                 cy.get('button').contains('Next').click().wait(DELAY.MEDIUM)
-                cy.get('input[type=password]', { timeout: TIMEOUT.LONG })
-                    .should('be.visible')
+
+                // Type password
+                cy.get('input[type=password]', { timeout: TIMEOUT.LONG }).should('be.visible')
                     .then(($pwfInp) => {
                         // find the one that is not hidden
                         const $visiblePwfInp = $pwfInp.filter((i, el) => {
@@ -52,6 +49,6 @@ describe('Test auth', () => {
             }
         )
 
-        cy.url({ timeout: TIMEOUT.LONG }).should('eq', 'http://localhost:3000')
+        cy.url({ timeout: TIMEOUT.LONG }).should('eq', process.env.NEXT_PUBLIC_BASE_URL)
     })
 })
