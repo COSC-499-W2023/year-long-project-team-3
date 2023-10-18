@@ -59,7 +59,7 @@ npm run lint
 
 ### Testing the Project
 
-Run the following to opesn Cypress
+Run the following to open Cypress
 
 ```bash
 npm run cypress:open
