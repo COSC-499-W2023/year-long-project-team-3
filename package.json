@@ -3,12 +3,12 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "dev": "cross-env NODE_ENV=dev next dev",
+        "dev": "next dev",
         "build": "next build",
         "start": "next start",
         "lint": "next lint --fix && prettier . --write",
         "prepare": "husky install",
-        "cypress:open": "cross-env NODE_ENV=test cypress open"
+        "cypress:open": "dotenv -e .env.test.local cypress open"
     },
     "dependencies": {
         "@emotion/react": "^11.11.1",
@@ -29,8 +29,8 @@
         "@types/react": "latest",
         "@types/react-dom": "latest",
         "autoprefixer": "latest",
-        "cross-env": "^7.0.3",
         "cypress": "^13.3.0",
+        "dotenv-cli": "^7.3.0",
         "eslint": "latest",
         "eslint-config-next": "latest",
         "eslint-config-prettier": "^9.0.0",
