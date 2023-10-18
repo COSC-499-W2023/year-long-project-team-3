@@ -57,6 +57,14 @@ Run the following to lint and format the project
 npm run lint
 ```
 
+### Testing the Project
+
+Run the following to open Cypress
+
+```bash
+cypress open
+```
+
 ### Development environment variable
 
 Please view in private channel #dotenv

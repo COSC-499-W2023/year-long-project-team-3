@@ -1,0 +1,23 @@
+name: Cypress Tests
+
+on: push
+
+jobs:
+    cypress-run:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+            - name: Cypress Run Component Tests
+              uses: cypress-io/github-action@v6
+              with:
+                  build: npm run build
+                  start: npm run start
+                  browser: chrome
+                  config: baseUrl=http://localhost:3000
+                  component: true
+            - name: Cypress Run E2E Tests
+              uses: cypress-io/github-action@v6
+              with:
+                  browser: chrome
+                  config: baseUrl=http://localhost:3000
