@@ -1,11 +1,11 @@
 export const TIMEOUT = {
-    SHORT: 1000,
-    MEDIUM: 5000,
-    LONG: 10000,
+    SHORT: 5000,
+    MEDIUM: 20000,
+    LONG: 50000,
 }
 
 export const DELAY = {
-    SHORT: 1000,
-    MEDIUM: 5000,
-    LONG: 10000,
+    SHORT: 5000,
+    MEDIUM: 20000,
+    LONG: 50000,
 }
