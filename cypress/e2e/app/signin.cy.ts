@@ -1,8 +1,6 @@
 import { DELAY, TIMEOUT } from '../../utils/constants'
 import { getHeaders } from '../../utils/headers'
 
-require('dotenv').config()
-
 describe('Test auth', () => {
     before(() => {
         // TODO: Clear DB before each test
