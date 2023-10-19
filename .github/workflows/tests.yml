@@ -15,14 +15,14 @@ jobs:
             - name: Write cypress.env.json
               run: |
                   echo '${{ secrets.CYPRESS_ENV_CI }}' > cypress.env.json
-            - name: Write .env.test.local
+            - name: Write .env
               run: |
                   echo '${{ secrets.ENV_TEST_LOCAL }}' > .env
             - name: Cypress Run Component Tests
               uses: cypress-io/github-action@v6
               with:
-                  build: npm run build:test
-                  start: npm run start:test
+                  build: npm run build
+                  start: npm run start
                   browser: chrome
                   config: baseUrl=${{ secrets.BASE_URL }}
                   component: true
@@ -32,8 +32,8 @@ jobs:
                   CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
                   GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
               with:
-                  build: npm run build:test
-                  start: npm run start:test
+                  build: npm run build
+                  start: npm run start
                   config: baseUrl=${{ secrets.BASE_URL }}
                   wait-on: ${{ secrets.BASE_URL }}
                   browser: chrome
