@@ -49,6 +49,7 @@ describe('Test auth', () => {
             }
         )
 
+        cy.location('origin', { timeout: TIMEOUT.EXTRA_LONG }).should('eq', Cypress.config().baseUrl)
         cy.location('pathname', { timeout: TIMEOUT.EXTRA_LONG }).should('eq', '/')
     })
 })
