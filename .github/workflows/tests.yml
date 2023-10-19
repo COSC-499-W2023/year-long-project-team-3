@@ -18,6 +18,12 @@ jobs:
             - name: Write .env
               run: |
                   echo '${{ secrets.ENV_TEST_LOCAL }}' > .env
+            - name: Archive npm failure logs
+              uses: actions/upload-artifact@v2
+              if: failure()
+              with:
+                name: npm-logs
+                path: ~/.npm/_logs
             - name: Cypress Run Component Tests
               uses: cypress-io/github-action@v6
               with:
