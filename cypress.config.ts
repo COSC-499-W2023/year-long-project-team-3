@@ -1,5 +1,4 @@
 import { defineConfig } from 'cypress'
-import { clearDB } from './cypress/tasks/clearDB'
 
 require('dotenv').config()
 
@@ -9,9 +8,6 @@ export default defineConfig({
         baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
         setupNodeEvents(on, config) {
             // implement node event listeners here
-            on('task', {
-                clearDB,
-            })
         },
         experimentalModifyObstructiveThirdPartyCode: true,
     },

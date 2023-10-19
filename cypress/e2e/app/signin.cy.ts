@@ -5,8 +5,7 @@ require('dotenv').config()
 
 describe('Test auth', () => {
     before(() => {
-        cy.task('clearDB')
-        Cypress.Cookies.debug(true)
+        // TODO: Clear DB before each test
     })
     it('should log in with google', () => {
         // TODO: Visit landing page, check if logged in, if not, redirect to /signin instead of visit /signin directly
