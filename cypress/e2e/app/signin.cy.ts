@@ -11,7 +11,7 @@ describe('Test auth', () => {
         cy.get('h1').should('include.text', 'Sign In Page')
         cy.get('button').should('include.text', 'Login with Google').click()
 
-        cy.url({ timeout: TIMEOUT.LONG }).should('eq', '')
+        cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('eq', '')
         cy.origin(
             'https://accounts.google.com',
             {
@@ -33,7 +33,7 @@ describe('Test auth', () => {
 
                 // Type username
                 cy.get('input[type=email]', { timeout: TIMEOUT.MEDIUM }).should('be.visible').type(username)
-                cy.get('button').contains('Next').click()
+                cy.get('button').contains('Next').click().wait(DELAY.EXTRA_LONG)
 
                 // Type password
                 cy.get('input[type=password]', { timeout: TIMEOUT.LONG })
@@ -44,7 +44,7 @@ describe('Test auth', () => {
                             return !Cypress.$(el).is(':hidden')
                         })
                         cy.wrap($visiblePwfInp).type(password)
-                        cy.get('button').contains('Next').click()
+                        cy.get('button').contains('Next').click().wait(DELAY.EXTRA_LONG)
                     })
             }
         )

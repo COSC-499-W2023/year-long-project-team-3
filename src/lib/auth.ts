@@ -20,7 +20,6 @@ console.log(
 )
 
 export const authOptions: NextAuthOptions = {
-    debug: true,
     secret: process.env.NEXTAUTH_SECRET,
     pages: {
         signIn: '/signin',
@@ -28,7 +27,7 @@ export const authOptions: NextAuthOptions = {
     },
     adapter: PrismaAdapter(prisma),
     session: {
-        strategy: process.env.NODE_ENV === 'production' ? 'database' : 'jwt',
+        strategy: 'jwt',
     },
     providers: [
         GoogleProvider({
