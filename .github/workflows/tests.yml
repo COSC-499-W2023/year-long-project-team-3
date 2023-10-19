@@ -32,11 +32,12 @@ jobs:
                   CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
                   GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
               with:
-                  build: npm run build
-                  start: npm run start
                   config: baseUrl=${{ secrets.BASE_URL }}
                   wait-on: ${{ secrets.BASE_URL }}
                   browser: chrome
                   headed: true
                   record: true
                   parallel: true
+                  group: 'E2E Tests'
+                  tag: '${{ matrix.containers }}'
+                  spec: cypress/integration/e2e/*.spec.js
