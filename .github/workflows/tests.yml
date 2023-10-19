@@ -17,7 +17,7 @@ jobs:
                 echo '${{ secrets.CYPRESS_ENV_CI }}' > cypress.env.json
             - name: Write .env.test.local
               run: |
-                echo '${{ secrets.ENV_TEST_LOCAL }}' > .env.test.local
+                echo '${{ secrets.ENV_TEST_LOCAL }}' > .env
             - name: Cypress Run Component Tests
               uses: cypress-io/github-action@v6
               with:
@@ -39,5 +39,3 @@ jobs:
                   headed: true
                   record: true
                   parallel: true
-                  build: npm run build:test
-                  start: npm run start:test
