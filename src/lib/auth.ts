@@ -5,6 +5,8 @@ import prisma from '@/lib/prisma'
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/lib/constants'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 
+require('dotenv').config()
+
 console.log(
     'NEXTAUTH_SECRET',
     process.env.NEXTAUTH_SECRET,

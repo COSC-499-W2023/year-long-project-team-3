@@ -3,6 +3,8 @@
 import styles from './SignInPage.module.css'
 import { signIn } from 'next-auth/react'
 
+require('dotenv').config()
+
 const SignInPage = () => {
     return (
         <div className={styles.signInPage} id='sign-in-page'>
