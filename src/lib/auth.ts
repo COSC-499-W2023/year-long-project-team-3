@@ -5,8 +5,21 @@ import prisma from '@/lib/prisma'
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/lib/constants'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 
+console.log(
+    'NEXTAUTH_SECRET',
+    process.env.NEXTAUTH_SECRET,
+    '\n',
+    'NEXTAUTH_URL',
+    process.env.NEXTAUTH_URL,
+    '\n',
+    process.env.GOOGLE_CLIENT_ID,
+    '\n',
+    process.env.GOOGLE_CLIENT_SECRET
+)
+
 export const authOptions: NextAuthOptions = {
-    secret: process.env.NEXTAUTH_SECRET as string,
+    debug: true,
+    secret: process.env.NEXTAUTH_SECRET,
     pages: {
         signIn: '/signin',
         error: '/signin',
@@ -77,6 +90,9 @@ export const authOptions: NextAuthOptions = {
                 token.user = user
             }
             return token
+        },
+        redirect: async ({ url, baseUrl }) => {
+            return baseUrl
         },
     },
 }

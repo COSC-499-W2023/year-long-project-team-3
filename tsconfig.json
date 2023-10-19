@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
-        "baseUrl": "./", // fixes Cypress not finding tsconfig.json
+        "baseUrl": "./",
+        // fixes Cypress not finding tsconfig.json
         "target": "es5",
         "lib": ["dom", "dom.iterable", "esnext"],
         "allowJs": false,
@@ -9,7 +10,8 @@
         "noEmit": true,
         "esModuleInterop": true,
         "module": "esnext",
-        "moduleResolution": "node", // Cypress can't handle "bundle"
+        "moduleResolution": "node",
+        // Cypress can't handle "bundle"
         "resolveJsonModule": true,
         "isolatedModules": true,
         "jsx": "preserve",

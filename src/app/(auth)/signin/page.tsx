@@ -2,6 +2,7 @@
 
 import styles from './SignInPage.module.css'
 import { signIn } from 'next-auth/react'
+
 require('dotenv').config()
 
 const SignInPage = () => {
@@ -15,16 +16,9 @@ const SignInPage = () => {
     )
 
     async function signInWithGoogle(): Promise<void> {
-        let authResponse
-        try {
-            authResponse = await signIn('google', {
-                callbackUrl: process.env.NEXT_PUBLIC_BASE_URL,
-            })
-        } catch (error) {
-            console.error(error)
-        }
-
-        console.log(authResponse)
+        signIn('google').catch((error) => {
+            console.error('An unexpected error occurred while log in with Google: ' + error)
+        })
     }
 }
 
