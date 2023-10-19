@@ -1,9 +1,28 @@
 # Copied from https://github.com/vercel/next.js/blob/canary/examples/with-docker/.dockerignore
+# Added more files
 
-Dockerfile
-.dockerignore
-node_modules
-npm-debug.log
-README.md
+.github
+.husky
 .next
-.git
+cypress
+docs
+node_modules
+prisma
+public
+.dockerignore
+.env
+.eslintignore
+.eslintrc.json
+.gitignore
+.lintstagedrc.js
+.prettierignore
+.prettierrc
+cypress.config.ts
+*docker-compose*
+*Dockerfile*
+next.config.js
+postcss.config.js
+pull_request_template.md
+README.md
+tsconfig.json
+npm-debug.log
