@@ -39,3 +39,5 @@ jobs:
                   headed: true
                   record: true
                   parallel: true
+                  build: npm run build:test
+                  start: npm run start:test
