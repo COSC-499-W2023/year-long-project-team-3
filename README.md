@@ -91,6 +91,7 @@ DATABASE_URL="postgresql://postgres:password123@localhost:5432/postgres?schema=d
 
 ```
 .
+├── cypress                 # E2E tests
 ├── docs                    # Documentation files (alternatively `doc`)
 │   ├── project plan        # Project plan document
 │   ├── design              # Getting started guide
@@ -98,7 +99,7 @@ DATABASE_URL="postgresql://postgres:password123@localhost:5432/postgres?schema=d
 │   ├── logs                # Team Logs
 │   └── ...
 ├── src
-│   └── app                 # Source files
+│   └── app                 # Source files and component tests
 ├── public                  # Assets
 ├── tests                   # Automated tests
 ├── utils                   # Tools and utilities
