@@ -9,7 +9,7 @@ describe('Test auth', () => {
         // TODO: Visit landing page, check if logged in, if not, redirect to /signin instead of visit /signin directly
         cy.visit('/signin', { headers: getHeaders() })
         cy.get('h1').should('include.text', 'Sign In Page')
-        cy.get('button').should('include.text', 'Login with Google').click()
+        cy.get('button').should('include.text', 'Login with Google').click().wait(DELAY.EXTRA_LONG)
 
         cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('eq', '')
         cy.origin(
@@ -33,7 +33,7 @@ describe('Test auth', () => {
 
                 // Type username
                 cy.get('input[type=email]', { timeout: TIMEOUT.MEDIUM }).should('be.visible').type(username)
-                cy.get('button').contains('Next').click().wait(DELAY.EXTRA_LONG)
+                cy.get('button').contains('Next').click()
 
                 // Type password
                 cy.get('input[type=password]', { timeout: TIMEOUT.LONG })
@@ -50,6 +50,6 @@ describe('Test auth', () => {
         )
 
         cy.location('origin', { timeout: TIMEOUT.EXTRA_LONG }).should('eq', Cypress.config().baseUrl)
-        cy.location('pathname', { timeout: TIMEOUT.EXTRA_LONG }).should('eq', '/')
+        cy.location('pathname').should('eq', '/')
     })
 })
