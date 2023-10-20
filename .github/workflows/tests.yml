@@ -23,7 +23,7 @@ jobs:
                   npm install
                   npm run build
                   mkdir -p /home/runner/work/year-long-project-team-3/debugs
-                  npm run start >> /home/runner/work/year-long-project-team-3/debugs/output-${{ matrix.containers }}.txt 2>&1 &
+                  npm run start >> /home/runner/work/year-long-project-team-3/debugs/output.txt 2>&1 &
             - name: Cypress Run Component Tests
               uses: cypress-io/github-action@v6
               with:
@@ -62,5 +62,5 @@ jobs:
               if: failure()
               with:
                   name: output
-                  path: /home/runner/work/year-long-project-team-3/debugs/output-${ matrix.containers }.txt
+                  path: /home/runner/work/year-long-project-team-3/debugs/output.txt
                   if-no-files-found: ignore
