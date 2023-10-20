@@ -16,10 +16,14 @@ const SignInPage = () => {
         </div>
     )
 
-    async function signInWithGoogle(): Promise<void> {
-        signIn('google').catch((error) => {
+    function signInWithGoogle(): void {
+        try {
+            signIn('google').catch((error) => {
+                logger.error('An unexpected error occurred while log in with Google: ' + error)
+            })
+        } catch (error) {
             logger.error('An unexpected error occurred while log in with Google: ' + error)
-        })
+        }
     }
 }
 

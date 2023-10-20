@@ -12,7 +12,7 @@ export const authOptions: NextAuthOptions = {
     debug: true,
     logger: {
         debug: (msg) => {
-            logger.debug(msg)
+            logger.info(msg)
         },
         warn: (msg) => {
             logger.warn(msg)
