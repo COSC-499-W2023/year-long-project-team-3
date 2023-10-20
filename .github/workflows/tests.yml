@@ -41,7 +41,7 @@ jobs:
                   install: false
                   config: baseUrl=${{ secrets.BASE_URL }}
                   wait-on: ${{ secrets.BASE_URL }}
-                  browser: chrome
+                  browser: chromium
                   record: true
                   parallel: true
                   group: 'E2E Tests'
