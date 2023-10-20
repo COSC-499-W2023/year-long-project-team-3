@@ -22,7 +22,7 @@ jobs:
               uses: cypress-io/github-action@v6
               with:
                   build: npm run build
-                  start: npm run start >> output.txt 2>&1
+                  start: npm run start >> /home/runner/work/year-long-project-team-3/year-long-project-team-3/output.txt 2>&1
                   wait-on: ${{ secrets.BASE_URL }}
                   browser: chrome
                   config: baseUrl=${{ secrets.BASE_URL }}
@@ -56,5 +56,5 @@ jobs:
               uses: actions/upload-artifact@v2
               with:
                   name: output
-                  path: output.txt
+                  path: /home/runner/work/year-long-project-team-3/year-long-project-team-3/output.txt
                   if-no-files-found: ignore
