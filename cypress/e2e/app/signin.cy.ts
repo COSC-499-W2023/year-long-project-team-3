@@ -9,7 +9,7 @@ describe('Test auth', () => {
         // TODO: Visit landing page, check if logged in, if not, redirect to /signin instead of visit /signin directly
         cy.visit('/signin', { headers: getHeaders() })
         cy.get('h1').should('include.text', 'Sign In Page')
-        cy.get('button').should('include.text', 'Login with Google').click().wait(DELAY.EXTRA_LONG)
+        cy.get('button').should('include.text', 'Login with Google').click()
 
         cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('eq', '')
         cy.origin(
@@ -45,7 +45,7 @@ describe('Test auth', () => {
                             return !Cypress.$(el).is(':hidden')
                         })
                         cy.wrap($visiblePwfInp).type(password)
-                        cy.get('button').contains('Next').click().wait(DELAY.EXTRA_LONG)
+                        cy.get('button').contains('Next').click()
                     })
             }
         )
