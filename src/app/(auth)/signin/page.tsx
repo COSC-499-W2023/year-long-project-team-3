@@ -2,6 +2,7 @@
 
 import styles from './SignInPage.module.css'
 import { signIn } from 'next-auth/react'
+import logger from '@/utils/logger'
 
 require('dotenv').config()
 
@@ -17,7 +18,7 @@ const SignInPage = () => {
 
     async function signInWithGoogle(): Promise<void> {
         signIn('google').catch((error) => {
-            console.error('An unexpected error occurred while log in with Google: ' + error)
+            logger.error('An unexpected error occurred while log in with Google: ' + error)
         })
     }
 }

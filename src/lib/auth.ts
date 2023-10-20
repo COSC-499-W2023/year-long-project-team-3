@@ -4,20 +4,9 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import prisma from '@/lib/prisma'
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/lib/constants'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import logger from '@/utils/logger'
 
 require('dotenv').config()
-
-console.log(
-    'NEXTAUTH_SECRET',
-    process.env.NEXTAUTH_SECRET,
-    '\n',
-    'NEXTAUTH_URL',
-    process.env.NEXTAUTH_URL,
-    '\n',
-    process.env.GOOGLE_CLIENT_ID,
-    '\n',
-    process.env.GOOGLE_CLIENT_SECRET
-)
 
 export const authOptions: NextAuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,
@@ -87,12 +76,14 @@ export const authOptions: NextAuthOptions = {
     ],
     callbacks: {
         jwt: async ({ token, user }) => {
+            logger.info('jwt callback' + JSON.stringify(token) + JSON.stringify(user))
             if (user) {
                 token.user = user
             }
             return token
         },
         redirect: async ({ url, baseUrl }) => {
+            logger.info('redirect callback' + url + baseUrl)
             return baseUrl
         },
     },
