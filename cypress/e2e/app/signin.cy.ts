@@ -36,7 +36,8 @@ describe('Test auth', () => {
                 cy.get('button').contains('Next').click()
 
                 // Type password
-                cy.get('input[type=password]', { timeout: TIMEOUT.LONG })
+                cy.get('input[type=password]', { timeout: TIMEOUT.LONG }).as('pwfInp')
+                cy.get('@pwfInp')
                     .should('be.visible')
                     .then(($pwfInp) => {
                         // find the one that is not hidden
