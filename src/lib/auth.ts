@@ -9,6 +9,18 @@ import logger from '@/utils/logger'
 require('dotenv').config()
 
 export const authOptions: NextAuthOptions = {
+    debug: true,
+    logger: {
+        debug: (msg) => {
+            logger.debug(msg)
+        },
+        warn: (msg) => {
+            logger.warn(msg)
+        },
+        error: (msg) => {
+            logger.error(msg)
+        },
+    },
     secret: process.env.NEXTAUTH_SECRET,
     pages: {
         signIn: '/signin',
