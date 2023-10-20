@@ -58,6 +58,7 @@ jobs:
                   if-no-files-found: ignore
             - name: Save output.txt as artifact
               uses: actions/upload-artifact@v2
+              if: failure()
               with:
                   name: output
                   path: /home/runner/work/year-long-project-team-3/output.txt
