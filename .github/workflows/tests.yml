@@ -26,12 +26,17 @@ jobs:
                   npm run start >> /home/runner/work/year-long-project-team-3/debugs/output.txt 2>&1 &
             - name: Cypress Run Component Tests
               uses: cypress-io/github-action@v6
+              env:
+                CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+                GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
               with:
                   install: false
                   wait-on: ${{ secrets.BASE_URL }}
-                  browser: chrome
+                  browser: chromium
                   config: baseUrl=${{ secrets.BASE_URL }}
                   component: true
+                  record: true
+                  group: 'Component Tests'
             - name: Cypress Run E2E Tests
               uses: cypress-io/github-action@v6
               env:
@@ -41,7 +46,7 @@ jobs:
                   install: false
                   config: baseUrl=${{ secrets.BASE_URL }}
                   wait-on: ${{ secrets.BASE_URL }}
-                  browser: chrome
+                  browser: chromium
                   record: true
                   parallel: true
                   group: 'E2E Tests'
