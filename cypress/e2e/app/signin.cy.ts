@@ -1,7 +1,7 @@
 import { DELAY, TIMEOUT } from '../../utils/constants'
 import { getHeaders } from '../../utils/headers'
 
-describe.skip('Test auth', () => {
+describe('Test auth', () => {
     before(() => {
         cy.task('clearDB')
     })
