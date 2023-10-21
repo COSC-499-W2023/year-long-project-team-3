@@ -36,7 +36,6 @@ jobs:
                   config: baseUrl=${{ secrets.BASE_URL }}
                   component: true
                   record: true
-                  group: 'Component Tests'
             - name: Cypress Run E2E Tests
               uses: cypress-io/github-action@v6
               env:
