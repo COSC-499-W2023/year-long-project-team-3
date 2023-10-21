@@ -10,8 +10,8 @@ const SignInPage = () => {
     return (
         <div className={styles.signInPage} id='sign-in-page'>
             <h1>Sign In Page</h1>
-            <button className={styles.signInBtn} onClick={signInWithGoogle} id='google-log-in-btn'>
-                Login with Google
+            <button className={styles.signInBtn} onClick={signInWithGoogle} data-cy='google-sign-in-btn'>
+                Sign in with Google
             </button>
         </div>
     )

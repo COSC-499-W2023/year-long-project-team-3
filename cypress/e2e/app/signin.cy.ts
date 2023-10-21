@@ -9,7 +9,7 @@ describe('Test auth', () => {
         // TODO: Visit landing page, check if logged in, if not, redirect to /signin instead of visit /signin directly
         cy.visit('/signin', { headers: getHeaders() })
         cy.get('h1').should('include.text', 'Sign In Page')
-        cy.get('button').should('include.text', 'Login with Google').click()
+        cy.get('[data-cy="google-sign-in-btn"]').should('include.text', 'Sign in with Google').click()
 
         cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('eq', '')
         cy.origin(

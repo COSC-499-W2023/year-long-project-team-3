@@ -41,22 +41,10 @@ jobs:
                   install: false
                   config: baseUrl=${{ secrets.BASE_URL }}
                   wait-on: ${{ secrets.BASE_URL }}
-                  browser: edge
+                  browser: chrome
                   record: true
                   parallel: true
                   group: 'E2E Tests'
-            - name: Archive cypress screenshots
-              uses: actions/upload-artifact@v3
-              with:
-                name: cypress-screenshots
-                path: cypress/screenshots
-                if-no-files-found: ignore
-            - name: Archive cypress videos
-              uses: actions/upload-artifact@v3
-              with:
-                  name: cypress-videos
-                  path: cypress/videos
-                  if-no-files-found: ignore
             - name: Save output.txt as artifact
               uses: actions/upload-artifact@v2
               if: failure()
