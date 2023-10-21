@@ -3,7 +3,7 @@ import { getHeaders } from '../../utils/headers'
 
 describe('Test auth', () => {
     before(() => {
-        // TODO: Clear DB before each test
+        cy.task('clearDB')
     })
     it('should log in with google', () => {
         // TODO: Visit landing page, check if logged in, if not, redirect to /signin instead of visit /signin directly
