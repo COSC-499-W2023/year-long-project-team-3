@@ -4,7 +4,7 @@ export async function POST(req: Request) {
     try {
         const body = await req.json()
         const { email, password, passwordCheck } = body
-
+        console.log({ email, password })
         // TODO: check database for emails already in use
         // Check if email already exists
         /*
@@ -40,7 +40,7 @@ export async function POST(req: Request) {
         const { password: newUserPassword, ...rest } = newUser
         return NextResponse.json({ user: rest, message: 'User created successfully' })
         */
-
+        console.log({ email, password })
         return NextResponse.json({ body, message: 'User created successfully' })
     } catch (error) {
         return NextResponse.json({ message: 'Something went wrong!' })

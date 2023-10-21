@@ -8,8 +8,10 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { FormEvent } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function Form() {
+    const router = useRouter()
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const formData = new FormData(e.currentTarget)
@@ -21,7 +23,13 @@ export default function Form() {
                 passwordCheck: formData.get('passwordCheck'),
             }),
         })
+
+        if(!response?.error) {
+            router.push('/')
+            router.refresh()
+        }
     }
+
     return (
         <Container component='main' maxWidth='xs'>
             <Box
@@ -36,9 +44,9 @@ export default function Form() {
                     Sign Up
                 </Typography>
                 <form onSubmit={handleSubmit}>
-                    <TextField margin='normal' fullWidth label='Email Address' name='email' />
-                    <TextField margin='normal' fullWidth label='Password' name='password' />
-                    <TextField margin='normal' fullWidth label='Confirm Password' name='passwordCheck' />
+                    <TextField margin='normal' type='email' fullWidth label='Email Address' name='email' />
+                    <TextField margin='normal' type='password' fullWidth label='Password' name='password' />
+                    <TextField margin='normal' type='password' fullWidth label='Confirm Password' name='passwordCheck' />
                     <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
                             Sign In
                     </Button>
