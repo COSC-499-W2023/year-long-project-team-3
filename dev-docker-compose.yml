@@ -9,6 +9,16 @@ services:
             POSTGRES_PASSWORD: password123
         ports:
             - 5432:5432
+    nextjs-app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: docker-next
+        volumes:
+            - .:/app
+            - /app/node_modules
+        ports:
+            - '3000:3000'
 
 volumes:
     pgdata:
