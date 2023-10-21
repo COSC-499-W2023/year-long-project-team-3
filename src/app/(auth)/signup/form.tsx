@@ -23,8 +23,9 @@ export default function Form() {
                 passwordCheck: formData.get('passwordCheck'),
             }),
         })
-
-        if(!response?.error) {
+        const data = await response.json()
+        console.log(data.message)
+        if(data.error == null) {
             router.push('/')
             router.refresh()
         }

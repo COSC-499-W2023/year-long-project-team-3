@@ -18,16 +18,16 @@ export async function POST(req: Request) {
         // validate email address is valid
         let emailRegex = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/
         if (!emailRegex.test(email)) {
-            return NextResponse.json({ user: null, message: 'Email not valid' })
+            return NextResponse.json({ user: null, error: 'Valid email', message: 'Email not valid' })
         }
         // validate password is valid
         let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
         if (!passwordRegex.test(password)) {
-            return NextResponse.json({ user: null, message: 'Password not valid' })
+            return NextResponse.json({ user: null, error: 'Valid password', message: 'Password not valid' })
         }
         // validate password and confirmation password are equivalent
         if (password != passwordCheck) {
-            return NextResponse.json({ user: null, message: 'Passwords do not match' })
+            return NextResponse.json({ user: null, error: 'Password check', message: 'Passwords do not match' })
         }
         // TODO: create user object in database
         /*
@@ -40,9 +40,9 @@ export async function POST(req: Request) {
         const { password: newUserPassword, ...rest } = newUser
         return NextResponse.json({ user: rest, message: 'User created successfully' })
         */
-        console.log({ email, password })
-        return NextResponse.json({ body, message: 'User created successfully' })
+        console.log({ body })
+        return NextResponse.json({ body, error: null, message: 'User created successfully' })
     } catch (error) {
-        return NextResponse.json({ message: 'Something went wrong!' })
+        return NextResponse.json({ body: null, error: 'error', message: 'Something went wrong!' })
     }
 }
