@@ -14,10 +14,10 @@ jobs:
               uses: actions/checkout@v4
             - name: Write cypress.env.json
               run: |
-                  echo '${{ secrets.CYPRESS_ENV_CI }}' > cypress.env.json
+                  echo "${{ secrets.CYPRESS_ENV_CI }}" > cypress.env.json
             - name: Write .env
               run: |
-                  echo '${{ secrets.ENV_TEST_LOCAL }}' > .env
+                  echo "${{ secrets.ENV_TEST_LOCAL }}" > .env
             - name: Build and start the app
               run: |
                   npm install
