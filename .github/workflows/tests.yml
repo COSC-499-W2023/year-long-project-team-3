@@ -18,9 +18,6 @@ jobs:
             - name: Write .env
               run: |
                   echo '${{ secrets.ENV_TEST_LOCAL }}' > .env
-            - name: Run local db
-              run: |
-                  docker-compose -f dev-docker-compose.yml up -d db
             - name: Build and start the app
               run: |
                   npm install
