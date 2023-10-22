@@ -13,7 +13,8 @@
         "prepare": "husky install",
         "cypress:open": "dotenv -e .env.test.local cypress open",
         "prisma:explore": "prisma studio",
-        "prisma:explore-test": "dotenv -e .env.test.local prisma studio"
+        "prisma:explore-test": "dotenv -e .env.test.local prisma studio",
+        "postinstall": "prisma generate"
     },
     "dependencies": {
         "@emotion/react": "^11.11.1",
