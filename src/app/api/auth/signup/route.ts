@@ -4,6 +4,9 @@ export async function POST(req: Request) {
     try {
         const body = await req.json()
         const { email, password, passwordCheck } = body
+        let isEmailValid = true
+        let isPasswordValid = true
+        let isPasswordVerified = true
         console.log({ email, password })
         // TODO: check database for emails already in use
         // Check if email already exists
@@ -18,16 +21,16 @@ export async function POST(req: Request) {
         // validate email address is valid
         let emailRegex = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/
         if (!emailRegex.test(email)) {
-            return NextResponse.json({ user: null, error: 'Valid email', message: 'Email not valid' })
+            isEmailValid = false
         }
         // validate password is valid
         let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
         if (!passwordRegex.test(password)) {
-            return NextResponse.json({ user: null, error: 'Valid password', message: 'Password not valid' })
+            isPasswordValid = false
         }
         // validate password and confirmation password are equivalent
         if (password != passwordCheck) {
-            return NextResponse.json({ user: null, error: 'Password check', message: 'Passwords do not match' })
+            isPasswordVerified = false
         }
         // TODO: create user object in database
         /*
@@ -41,7 +44,8 @@ export async function POST(req: Request) {
         return NextResponse.json({ user: rest, message: 'User created successfully' })
         */
         console.log({ body })
-        return NextResponse.json({ body, error: null, message: 'User created successfully' })
+        const errorBody = {isEmailValid, isPasswordValid, isPasswordVerified}
+        return NextResponse.json({ body: errorBody, error: null })
     } catch (error) {
         return NextResponse.json({ body: null, error: 'error', message: 'Something went wrong!' })
     }

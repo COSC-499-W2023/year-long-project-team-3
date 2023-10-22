@@ -7,10 +7,18 @@ import Link from '@mui/material/Link'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
-import { FormEvent } from 'react'
+import {FormEvent, useState} from 'react'
 import { useRouter } from 'next/navigation'
 
 export default function Form() {
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+        passwordCheck: '',
+    })
+    const [isEmailValid, setIsEmailValid] = useState(true)
+    const [isPasswordValid, setIsPasswordValid] = useState(true)
+    const [isPasswordVerified, setIsPasswordVerified] = useState(true)
     const router = useRouter()
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -24,10 +32,14 @@ export default function Form() {
             }),
         })
         const data = await response.json()
-        console.log(data.message)
-        if(data.error == null) {
+        setIsEmailValid(data.body.isEmailValid)
+        setIsPasswordValid(data.body.isPasswordValid)
+        setIsPasswordVerified(data.body.isPasswordVerified)
+        if(data.body.isEmailValid && data.body.isPasswordValid && data.body.isPasswordVerified) {
             router.push('/')
             router.refresh()
+        } else {
+            console.log(data)
         }
     }
 
@@ -45,11 +57,11 @@ export default function Form() {
                     Sign Up
                 </Typography>
                 <form onSubmit={handleSubmit}>
-                    <TextField margin='normal' type='email' fullWidth label='Email Address' name='email' />
-                    <TextField margin='normal' type='password' fullWidth label='Password' name='password' />
-                    <TextField margin='normal' type='password' fullWidth label='Confirm Password' name='passwordCheck' />
+                    <TextField margin='normal' error={!isEmailValid} type='email' fullWidth label='Email Address' name='email' />
+                    <TextField margin='normal' error={!isPasswordValid} type='password' fullWidth label='Password' name='password' />
+                    <TextField margin='normal' error={!isPasswordVerified} type='password' fullWidth label='Confirm Password' name='passwordCheck' />
                     <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
-                            Sign In
+                            Sign Up
                     </Button>
                     <Grid container>
                         <Grid item xs>
