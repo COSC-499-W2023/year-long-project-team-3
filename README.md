@@ -3,9 +3,9 @@
 ## Team Members
 
 -   Seth Akins (Hedgemon4)
--   Teresa Saller (te-sa)
 -   Erin Hiebert (SecondFeline)
 -   K Phan (ketphan02)
+-   Teresa Saller (te-sa)
 -   Justin Schoenit (justino599)
 
 ## Project Setup
@@ -13,6 +13,7 @@
 First, run the development server:
 
 ### Requirements
+
 -   [NodeJS 18.18](https://nodejs.org/en)
 -   [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
@@ -24,53 +25,38 @@ Run the following command to install dependencies
 npm install
 ```
 
-### Running the Project
+### Running the Project and the Database
 
-Run the following command to start the project
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-### Running the Database
-
-To run the dev database, run the following command
+Run the following to start the project and run the dev database
 
 ```bash
 docker-compose -f dev-docker-compose.yml up -d
 ```
 
-### Apply latest database migrations
-```bash
-npx prisma db push
-```
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ### Linting the Project
 
-Run the following command to lint the project
+Run the following to lint and format the project
 
 ```bash
 npm run lint
 ```
 
-Use `--fix` to make eslint run any fixes available
+### Testing the Project
+
+Run the following to open Cypress
+
+```bash
+cypress open
+```
 
 ### Development environment variable
-Please view in private channel #dotenv
 
-### Database migration
-If you make changes to prisma models, you can migrate the database by
-```bash
-npx prisma migrate dev --name <migration-name>
-```
-Note: `migration-name` should be a short description of the changes you made
+Add this following code to a `.env` file
 
-### Database exploration
-You can explore the database by running
-```bash
-npx prisma studio
+```dotenv
+DATABASE_URL="postgresql://postgres:password123@localhost:5432/postgres?schema=dev"
 ```
 
 ## Chosen Project
