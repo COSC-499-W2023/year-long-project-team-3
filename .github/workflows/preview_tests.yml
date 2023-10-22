@@ -12,21 +12,14 @@ jobs:
             matrix:
                 containers: [1, 2] # Uses 2 parallel instances
         steps:
-            - name: Get the run id of vercel preview deployment
-              uses: codex-/return-dispatch@v1
-              id: return_dispatch
+            - name: Wait for preview deployment
+              uses: lewagon/wait-on-check-action@v1.3.1
               with:
-                token: ${{ github.token }}
-                repo: year-long-project-team-3
-                owner: COSC-499-W2023
-                workflow: vercel_preview_deployment.yml
-            - name: Await Run ID ${{ steps.return_dispatch.outputs.run_id }}
-              uses: Codex-/await-remote-run@v1.0.0
-              with:
-                token: ${{ github.token }}
-                repo: year-long-project-team-3
-                owner: COSC-499-W2023
-                run_id: ${{ steps.return_dispatch.outputs.run_id }}
+                ref: ${{ github.ref }}
+                check-name: 'Deploy Preview'
+                repo-token: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
+                wait-interval: 10
+
             - name: Checkout
               uses: actions/checkout@v4
             - name: Write cypress.env.json
