@@ -13,7 +13,6 @@
 First, run the development server:
 
 ### Requirements
-
 -   [NodeJS 18.18](https://nodejs.org/en)
 -   [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
@@ -43,28 +42,35 @@ To run the dev database, run the following command
 docker-compose -f dev-docker-compose.yml up -d
 ```
 
+### Apply latest database migrations
+```bash
+npx prisma db push
+```
+
 ### Linting the Project
 
-Run the following to lint and format the project
+Run the following command to lint the project
 
 ```bash
 npm run lint
 ```
 
-### Testing the Project
-
-Run the following to open Cypress
-
-```bash
-cypress open
-```
+Use `--fix` to make eslint run any fixes available
 
 ### Development environment variable
+Please view in private channel #dotenv
 
-Add this following code to a `.env` file
+### Database migration
+If you make changes to prisma models, you can migrate the database by
+```bash
+npx prisma migrate dev --name <migration-name>
+```
+Note: `migration-name` should be a short description of the changes you made
 
-```dotenv
-DATABASE_URL="postgresql://postgres:password123@localhost:5432/postgres?schema=dev"
+### Database exploration
+You can explore the database by running
+```bash
+npx prisma studio
 ```
 
 ## Chosen Project
