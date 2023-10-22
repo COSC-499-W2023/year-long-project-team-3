@@ -42,7 +42,7 @@ export async function POST(req: Request) {
         const { password: newUserPassword, ...rest } = newUser
         return NextResponse.json({ user: rest, message: 'User created successfully' })
         */
-        const errorBody = {isEmailValid, isPasswordValid, isPasswordVerified}
+        const errorBody = { isEmailValid, isPasswordValid, isPasswordVerified }
         return NextResponse.json({ body: errorBody, error: null })
     } catch (error) {
         return NextResponse.json({ body: null, error: 'error', message: 'Something went wrong!' })

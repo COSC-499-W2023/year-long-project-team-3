@@ -7,7 +7,7 @@ import Link from '@mui/material/Link'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
-import {FormEvent, useState} from 'react'
+import { FormEvent, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 export default function Form() {
@@ -30,7 +30,7 @@ export default function Form() {
         setIsEmailValid(data.body.isEmailValid)
         setIsPasswordValid(data.body.isPasswordValid)
         setIsPasswordVerified(data.body.isPasswordVerified)
-        if(data.body.isEmailValid && data.body.isPasswordValid && data.body.isPasswordVerified) {
+        if (data.body.isEmailValid && data.body.isPasswordValid && data.body.isPasswordVerified) {
             router.push('/')
             router.refresh()
         }
@@ -50,21 +50,48 @@ export default function Form() {
                     Sign Up
                 </Typography>
                 <form onSubmit={handleSubmit}>
-                    <TextField margin='normal' error={!isEmailValid} type='email' fullWidth label='Email Address' name='email' helperText={!isEmailValid && 'Invalid Email'}/>
-                    <TextField margin='normal' error={!isPasswordValid} type='password' fullWidth label='Password' name='password' helperText={!isPasswordValid && 'Password must be at least 8 characters long and have: one upper and one lowercase letter, a numeral, a symbol'}/>
-                    <TextField margin='normal' error={!isPasswordVerified} type='password' fullWidth label='Confirm Password' name='passwordCheck' helperText={!isPasswordVerified && 'Does not match password'}/>
+                    <TextField
+                        margin='normal'
+                        error={!isEmailValid}
+                        type='email'
+                        fullWidth
+                        label='Email Address'
+                        name='email'
+                        helperText={!isEmailValid && 'Invalid Email'}
+                    />
+                    <TextField
+                        margin='normal'
+                        error={!isPasswordValid}
+                        type='password'
+                        fullWidth
+                        label='Password'
+                        name='password'
+                        helperText={
+                            !isPasswordValid &&
+                            'Password must be at least 8 characters long and have: one upper and one lowercase letter, a numeral, a symbol'
+                        }
+                    />
+                    <TextField
+                        margin='normal'
+                        error={!isPasswordVerified}
+                        type='password'
+                        fullWidth
+                        label='Confirm Password'
+                        name='passwordCheck'
+                        helperText={!isPasswordVerified && 'Does not match password'}
+                    />
                     <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
-                            Sign Up
+                        Sign Up
                     </Button>
                     <Grid container>
                         <Grid item xs>
                             <Link href='#' variant='body2'>
-                                    Already have an account?
+                                Already have an account?
                             </Link>
                         </Grid>
                         <Grid item>
                             <Link href='#' variant='body2'>
-                                    Sign up with Google.
+                                Sign up with Google.
                             </Link>
                         </Grid>
                     </Grid>
@@ -73,4 +100,3 @@ export default function Form() {
         </Container>
     )
 }
-
