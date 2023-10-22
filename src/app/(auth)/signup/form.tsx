@@ -11,11 +11,6 @@ import {FormEvent, useState} from 'react'
 import { useRouter } from 'next/navigation'
 
 export default function Form() {
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-        passwordCheck: '',
-    })
     const [isEmailValid, setIsEmailValid] = useState(true)
     const [isPasswordValid, setIsPasswordValid] = useState(true)
     const [isPasswordVerified, setIsPasswordVerified] = useState(true)
@@ -57,9 +52,9 @@ export default function Form() {
                     Sign Up
                 </Typography>
                 <form onSubmit={handleSubmit}>
-                    <TextField margin='normal' error={!isEmailValid} type='email' fullWidth label='Email Address' name='email' />
-                    <TextField margin='normal' error={!isPasswordValid} type='password' fullWidth label='Password' name='password' />
-                    <TextField margin='normal' error={!isPasswordVerified} type='password' fullWidth label='Confirm Password' name='passwordCheck' />
+                    <TextField margin='normal' error={!isEmailValid} type='email' fullWidth label='Email Address' name='email' helperText={!isEmailValid && 'Invalid Email'}/>
+                    <TextField margin='normal' error={!isPasswordValid} type='password' fullWidth label='Password' name='password' helperText={!isPasswordValid && 'Password must be at least 8 characters long and have: one upper and one lowercase letter, a numeral, a symbol'}/>
+                    <TextField margin='normal' error={!isPasswordVerified} type='password' fullWidth label='Confirm Password' name='passwordCheck' helperText={!isPasswordVerified && 'Does not match password'}/>
                     <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
                             Sign Up
                     </Button>
