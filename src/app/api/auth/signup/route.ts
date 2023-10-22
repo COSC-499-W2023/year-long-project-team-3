@@ -7,7 +7,6 @@ export async function POST(req: Request) {
         let isEmailValid = true
         let isPasswordValid = true
         let isPasswordVerified = true
-        console.log({ email, password })
         // TODO: check database for emails already in use
         // Check if email already exists
         /*
@@ -43,7 +42,6 @@ export async function POST(req: Request) {
         const { password: newUserPassword, ...rest } = newUser
         return NextResponse.json({ user: rest, message: 'User created successfully' })
         */
-        console.log({ body })
         const errorBody = {isEmailValid, isPasswordValid, isPasswordVerified}
         return NextResponse.json({ body: errorBody, error: null })
     } catch (error) {

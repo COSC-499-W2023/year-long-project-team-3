@@ -33,8 +33,6 @@ export default function Form() {
         if(data.body.isEmailValid && data.body.isPasswordValid && data.body.isPasswordVerified) {
             router.push('/')
             router.refresh()
-        } else {
-            console.log(data)
         }
     }
 
