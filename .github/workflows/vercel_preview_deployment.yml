@@ -20,3 +20,9 @@ jobs:
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
       - name: Deploy Project Artifacts to Vercel
         run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Save deployment URL
+        run: vercel > deployment-url.txt
+      - uses: actions/upload-artifact@v2
+        with:
+          name: deployment-url
+          path: deployment-url.txt
