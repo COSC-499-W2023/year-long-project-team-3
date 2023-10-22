@@ -29,14 +29,14 @@
         "next-auth": "^4.23.2",
         "pino": "^8.16.0",
         "react": "latest",
-        "react-dom": "latest"
+        "react-dom": "latest",
+        "autoprefixer": "latest"
     },
     "devDependencies": {
         "@testing-library/cypress": "^10.0.1",
         "@types/node": "latest",
         "@types/react": "latest",
         "@types/react-dom": "latest",
-        "autoprefixer": "latest",
         "cypress": "^13.3.0",
         "dotenv-cli": "^7.3.0",
         "eslint": "latest",
