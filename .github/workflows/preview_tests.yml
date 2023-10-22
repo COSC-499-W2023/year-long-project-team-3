@@ -19,7 +19,6 @@ jobs:
                 check-name: 'Deploy Preview'
                 repo-token: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
                 wait-interval: 10
-
             - name: Checkout
               uses: actions/checkout@v4
             - name: Write cypress.env.json
@@ -28,12 +27,6 @@ jobs:
             - name: Write .env
               run: |
                   echo "${{ secrets.ENV_TEST_LOCAL }}" > .env
-#            - name: Build and start the app
-#              run: |
-#                  npm install
-#                  npm run build
-#                  mkdir -p /home/runner/work/year-long-project-team-3/debugs
-#                  npm run start >> /home/runner/work/year-long-project-team-3/debugs/output.txt 2>&1 &
             - name: Cypress Run Component Tests
               uses: cypress-io/github-action@v6
               env:
@@ -41,7 +34,6 @@ jobs:
                 GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
                 CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
               with:
-                  install: false
                   wait-on: ${{ secrets.BASE_URL }}
                   browser: chromium
                   config: baseUrl=${{ secrets.BASE_URL }}
@@ -60,10 +52,3 @@ jobs:
                   browser: chromium
                   record: true
                   parallel: true
-#            - name: Save output.txt as artifact
-#              uses: actions/upload-artifact@v2
-#              if: failure()
-#              with:
-#                  name: output
-#                  path: /home/runner/work/year-long-project-team-3/debugs/output.txt
-#                  if-no-files-found: ignore
