@@ -9,6 +9,8 @@
 
 ### Burn-up Chart
 
+![](imgs/burnup-week-7.png)
+
 ### Usernames
 
 -   @justino599 - Justin Schoenit
