@@ -3,6 +3,9 @@
 ## Team 3 - Week 6&7 (09/10/2023 - 22/10/2023)
 
 ### Milestone Goals
+  
+-   Project and Environment setup (dockerization, setting up CI + linting, database setup)
+-   User account creation, login and logout
 
 ### Burn-up Chart
 
