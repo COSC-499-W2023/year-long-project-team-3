@@ -16,8 +16,16 @@
 
 ### Completed Tasks
 
+![](imgs/completed-week-7.png)
+
 ### In-progress Tasks
 
+![](imgs/in-progress-week-7.png)
+
 ### Test Report
+
+![](imgs/github-actions-week-7.png)
+
+![](imgs/cypress-tests-week-7.png)
 
 ### Additional Context
