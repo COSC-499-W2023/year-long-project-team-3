@@ -14,6 +14,7 @@ export default function Form() {
     const [isEmailValid, setIsEmailValid] = useState(true)
     const [isPasswordValid, setIsPasswordValid] = useState(true)
     const [isPasswordVerified, setIsPasswordVerified] = useState(true)
+    const [isEmailAvailable, setIsEmailAvailable] = useState(true)
     const router = useRouter()
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -30,7 +31,8 @@ export default function Form() {
         setIsEmailValid(data.body.isEmailValid)
         setIsPasswordValid(data.body.isPasswordValid)
         setIsPasswordVerified(data.body.isPasswordVerified)
-        if (data.body.isEmailValid && data.body.isPasswordValid && data.body.isPasswordVerified) {
+        setIsEmailAvailable(data.body.isEmailAvailable)
+        if (data.body.isEmailValid && data.body.isPasswordValid && data.body.isPasswordVerified && data.body.isEmailAvailable) {
             router.push('/')
             router.refresh()
         }

@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server'
+import prisma from '@/lib/prisma'
+import { User } from '@prisma/client'
 
 export async function POST(req: Request) {
     try {
@@ -7,16 +9,7 @@ export async function POST(req: Request) {
         let isEmailValid = true
         let isPasswordValid = true
         let isPasswordVerified = true
-        // TODO: check database for emails already in use
-        // Check if email already exists
-        /*
-        const existingEmail = await prisma.user.findUnique({
-            where: {email: email },
-        })
-        if(existingEmail) {
-            return NextResponse.json({ user: null, message: 'Email already in use'},)
-        }
-        */
+        let isEmailAvailable = true
         // validate email address is valid
         let emailRegex = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/
         if (!emailRegex.test(email)) {
@@ -31,20 +24,33 @@ export async function POST(req: Request) {
         if (password != passwordCheck) {
             isPasswordVerified = false
         }
-        // TODO: create user object in database
-        /*
-        const newUser = await prisma.user.create({
-            data: {
-                email,
-                password,
-            },
+
+        // Check if email already exists
+        const existingEmail = await prisma.user.findUnique({
+            where: {email: email },
+        }).catch(() => {
+            console.log('still throwing')
         })
-        const { password: newUserPassword, ...rest } = newUser
-        return NextResponse.json({ user: rest, message: 'User created successfully' })
-        */
-        const errorBody = { isEmailValid, isPasswordValid, isPasswordVerified }
+        if(existingEmail) {
+            isEmailAvailable = false
+        }
+
+        if (isEmailValid && isPasswordValid && isPasswordVerified && isEmailAvailable) {
+            // create user object in database
+            const newUser = await prisma.user.create({
+                data: {
+                    email,
+                    password,
+                },
+            }).catch(() => {
+                console.log('data base throwing')
+            })
+        }
+        const errorBody = { isEmailValid, isPasswordValid, isPasswordVerified, isEmailAvailable }
+        console.log(errorBody)
         return NextResponse.json({ body: errorBody, error: null })
     } catch (error) {
+        console.log('error happening')
         return NextResponse.json({ body: null, error: 'error', message: 'Something went wrong!' })
     }
 }
