@@ -32,7 +32,12 @@ export default function Form() {
         setIsPasswordValid(data.body.isPasswordValid)
         setIsPasswordVerified(data.body.isPasswordVerified)
         setIsEmailAvailable(data.body.isEmailAvailable)
-        if (data.body.isEmailValid && data.body.isPasswordValid && data.body.isPasswordVerified && data.body.isEmailAvailable) {
+        if (
+            data.body.isEmailValid &&
+            data.body.isPasswordValid &&
+            data.body.isPasswordVerified &&
+            data.body.isEmailAvailable
+        ) {
             router.push('/')
             router.refresh()
         }

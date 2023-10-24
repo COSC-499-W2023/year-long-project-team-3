@@ -26,25 +26,29 @@ export async function POST(req: Request) {
         }
 
         // Check if email already exists
-        const existingEmail = await prisma.user.findUnique({
-            where: {email: email },
-        }).catch(() => {
-            console.log('still throwing')
-        })
-        if(existingEmail) {
+        const existingEmail = await prisma.user
+            .findUnique({
+                where: { email: email },
+            })
+            .catch(() => {
+                console.log('still throwing')
+            })
+        if (existingEmail) {
             isEmailAvailable = false
         }
 
         if (isEmailValid && isPasswordValid && isPasswordVerified && isEmailAvailable) {
             // create user object in database
-            const newUser = await prisma.user.create({
-                data: {
-                    email,
-                    password,
-                },
-            }).catch(() => {
-                console.log('data base throwing')
-            })
+            const newUser = await prisma.user
+                .create({
+                    data: {
+                        email,
+                        password,
+                    },
+                })
+                .catch(() => {
+                    console.log('data base throwing')
+                })
         }
         const errorBody = { isEmailValid, isPasswordValid, isPasswordVerified, isEmailAvailable }
         console.log(errorBody)
