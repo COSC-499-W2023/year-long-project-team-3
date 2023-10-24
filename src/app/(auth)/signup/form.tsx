@@ -59,15 +59,19 @@ export default function Form() {
                 <form onSubmit={handleSubmit}>
                     <TextField
                         margin='normal'
-                        error={!isEmailValid}
+                        size='medium'
+                        variant='outlined'
+                        error={!isEmailValid || !isEmailAvailable}
                         type='email'
                         fullWidth
                         label='Email Address'
                         name='email'
-                        helperText={!isEmailValid && 'Invalid Email'}
+                        helperText={(!isEmailValid && 'Invalid Email') || (!isEmailAvailable && 'Email already in use')}
                     />
                     <TextField
                         margin='normal'
+                        size='medium'
+                        variant='outlined'
                         error={!isPasswordValid}
                         type='password'
                         fullWidth
@@ -80,6 +84,8 @@ export default function Form() {
                     />
                     <TextField
                         margin='normal'
+                        size='medium'
+                        variant='outlined'
                         error={!isPasswordVerified}
                         type='password'
                         fullWidth
