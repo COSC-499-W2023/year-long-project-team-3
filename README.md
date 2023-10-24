@@ -35,6 +35,12 @@ docker-compose -f dev-docker-compose.yml up -d
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+### Apply latest database migrations
+
+```bash
+npx prisma db push
+```
+
 ### Linting the Project
 
 Run the following to lint and format the project
@@ -48,15 +54,29 @@ npm run lint
 Run the following to open Cypress
 
 ```bash
-cypress open
+npm run cypress:open
 ```
 
 ### Development environment variable
 
-Add this following code to a `.env` file
+Please view in private channel #dotenv
 
-```dotenv
-DATABASE_URL="postgresql://postgres:password123@localhost:5432/postgres?schema=dev"
+### Database migration
+
+If you make changes to prisma models, you can migrate the database by
+
+```bash
+npx prisma migrate dev --name <migration-name>
+```
+
+Note: `migration-name` should be a short description of the changes you made
+
+### Database exploration
+
+You can view your tables, columns, and make changes to your local database by
+
+```bash
+npm run prisma:explore
 ```
 
 ## Chosen Project

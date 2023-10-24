@@ -2,26 +2,29 @@
 
 import styles from './SignInPage.module.css'
 import { signIn } from 'next-auth/react'
+import logger from '@/utils/logger'
+
+require('dotenv').config()
 
 const SignInPage = () => {
     return (
-        <div className={styles.signInPage}>
+        <div className={styles.signInPage} id='sign-in-page'>
             <h1>Sign In Page</h1>
-            <button className={styles.signInBtn} onClick={signInWithGoogle}>
-                Login with Google
+            <button className={styles.signInBtn} onClick={(e) => signInWithGoogle(e)} data-cy='google-sign-in-btn'>
+                Sign in with Google
             </button>
         </div>
     )
 
-    async function signInWithGoogle(): Promise<void> {
-        let authResponse
+    function signInWithGoogle(e: React.MouseEvent<HTMLButtonElement>): void {
         try {
-            authResponse = await signIn('google')
+            e.preventDefault()
+            signIn('google').catch((error) => {
+                logger.error('An unexpected error occurred while log in with Google: ' + error)
+            })
         } catch (error) {
-            console.error(error)
+            logger.error('An unexpected error occurred while log in with Google: ' + error)
         }
-
-        console.log(authResponse)
     }
 }
 

@@ -1,13 +1,27 @@
-import { type NextAuthOptions } from 'next-auth'
+import { type NextAuthOptions, type User } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { User } from '@prisma/client'
 import prisma from '@/lib/prisma'
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/lib/constants'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import logger from '@/utils/logger'
+
+require('dotenv').config()
 
 export const authOptions: NextAuthOptions = {
-    secret: process.env.NEXTAUTH_SECRET as string,
+    debug: true,
+    logger: {
+        debug: (msg) => {
+            logger.info(msg)
+        },
+        warn: (msg) => {
+            logger.warn(msg)
+        },
+        error: (msg) => {
+            logger.error(msg)
+        },
+    },
+    secret: process.env.NEXTAUTH_SECRET,
     pages: {
         signIn: '/signin',
         error: '/signin',
@@ -24,9 +38,9 @@ export const authOptions: NextAuthOptions = {
                 return {
                     id: profile.sub,
                     email: profile.email,
-                    emailVerified: true, // Don't need to verify emails since we're using Google
                 }
             },
+            checks: ['none'],
         }),
         CredentialsProvider({
             id: 'credentials',
@@ -74,10 +88,15 @@ export const authOptions: NextAuthOptions = {
     ],
     callbacks: {
         jwt: async ({ token, user }) => {
+            logger.info('jwt callback' + JSON.stringify(token) + JSON.stringify(user))
             if (user) {
                 token.user = user
             }
             return token
+        },
+        redirect: async ({ url, baseUrl }) => {
+            logger.info('redirect callback' + url + baseUrl)
+            return baseUrl
         },
     },
 }
