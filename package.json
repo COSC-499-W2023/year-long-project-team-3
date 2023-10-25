@@ -23,6 +23,7 @@
         "react-dom": "latest"
     },
     "devDependencies": {
+        "@emotion/eslint-plugin": "^11.11.0",
         "@types/node": "latest",
         "@types/react": "latest",
         "@types/react-dom": "latest",
