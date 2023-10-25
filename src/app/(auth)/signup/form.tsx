@@ -67,6 +67,7 @@ export default function Form() {
                         label='Email Address'
                         name='email'
                         helperText={(!isEmailValid && 'Invalid Email') || (!isEmailAvailable && 'Email already in use')}
+                        data-cy='email'
                     />
                     <TextField
                         margin='normal'
@@ -81,6 +82,7 @@ export default function Form() {
                             !isPasswordValid &&
                             'Password must be at least 8 characters long and have: one upper and one lowercase letter, a numeral, a symbol'
                         }
+                        data-cy='password'
                     />
                     <TextField
                         margin='normal'
@@ -92,13 +94,14 @@ export default function Form() {
                         label='Confirm Password'
                         name='passwordCheck'
                         helperText={!isPasswordVerified && 'Does not match password'}
+                        data-cy='passwordVerification'
                     />
-                    <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
+                    <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }} data-cy='submit'>
                         Sign Up
                     </Button>
                     <Grid container>
                         <Grid item xs>
-                            <Link href='#' variant='body2'>
+                            <Link href='#' variant='body2' data-cy='login'>
                                 Already have an account?
                             </Link>
                         </Grid>
