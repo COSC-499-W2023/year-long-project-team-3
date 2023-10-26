@@ -17,11 +17,11 @@
         "@mui/icons-material": "^5.14.12",
         "@mui/material": "^5.14.12",
         "@prisma/client": "^5.4.0",
-        "autoprefixer": "latest",
         "dotenv": "^16.3.1",
         "next": "^13.5.4",
         "react": "latest",
-        "react-dom": "latest"
+        "react-dom": "latest",
+        "autoprefixer": "latest"
     },
     "devDependencies": {
         "@types/node": "latest",
