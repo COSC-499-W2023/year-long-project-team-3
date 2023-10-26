@@ -12,7 +12,7 @@ export default function LandingPageAppBar() {
                     Harp
                 </Typography>
                 <Box sx={{ m: 2, display: 'flex', flexDirection: 'row', gap: '16px' }}>
-                    <Button sx={{ textTransform: 'capitalize', fontSize: 20 }}>Login</Button>
+                    <Button sx={{ textTransform: 'capitalize', fontSize: 20, fontWeight: 'bold' }}>Login</Button>
                     <Button variant='contained' sx={{ textTransform: 'capitalize', fontSize: 20, borderRadius: 28 }}>
                         Sign Up
                     </Button>

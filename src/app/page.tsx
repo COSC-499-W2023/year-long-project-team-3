@@ -13,18 +13,43 @@ export default function Home() {
     return (
         <>
             <LandingPageAppBar></LandingPageAppBar>
-            <Box sx={{ display: 'flex', flexGrow: 1, alignItems: 'center', flexDirection: 'column', p: 4 }}>
-                <Typography variant='h2' sx={{ fontWeight: 'medium' }}>
+            <Box
+                sx={{ display: 'flex', flexGrow: 1, alignItems: 'center', flexDirection: 'column', gap: '2rem', p: 6 }}
+            >
+                <Logo fontSize={200}></Logo>
+                <Typography
+                    variant='h2'
+                    sx={{
+                        fontWeight: 'medium',
+                        maxWidth: {
+                            md: undefined,
+                            lg: '70%',
+                            xl: '45%',
+                        },
+                        textAlign: 'center',
+                    }}
+                >
                     A Secure Platform for Anonymous Video Submission
                 </Typography>
-                <Typography variant='h4' sx={{ color: 'grey' }}>
+                <Typography
+                    variant='h4'
+                    sx={{
+                        color: 'grey',
+                        maxWidth: {
+                            md: undefined,
+                            lg: '70%',
+                            xl: '45%',
+                        },
+                        textAlign: 'center',
+                    }}
+                >
                     Easily send and receive videos for professional settings with a focus on protecting your privacy
                 </Typography>
-                <Box sx={{ gap: '30%' }}>
-                    <Button variant='contained' sx={{ borderRadius: 28 }}>
+                <Box sx={{ display: 'flex', gap: '1rem' }}>
+                    <Button variant='contained' sx={{ fontSize: 20, borderRadius: 28, textTransform: 'capitalize' }}>
                         Get Started
                     </Button>
-                    <Button variant='contained' sx={{ borderRadius: 28 }}>
+                    <Button variant='contained' sx={{ fontSize: 20, borderRadius: 28, textTransform: 'capitalize' }}>
                         Find Out More
                     </Button>
                 </Box>
