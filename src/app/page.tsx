@@ -1,14 +1,17 @@
-import { AppBar, Toolbar, Typography } from '@mui/material'
-import { Box } from '@mui/system'
+import { Alert, Box } from '@mui/material'
+
+const boxCss = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+}
 
 export default function Home() {
     return (
-    // <Box sx={{ flexGrow: 1 }}>
-        <AppBar position='static'>
-            <Typography variant='h6' component='div' sx={{flexGrow: 1}}>
-            Test
-            </Typography>
-        </AppBar>
-    // </Box>
+        <Box sx={boxCss}>
+            <h1 data-cy='header'>Harp</h1>
+            <Alert severity='success'>This is now the home page</Alert>
+        </Box>
     )
 }
