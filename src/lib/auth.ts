@@ -11,14 +11,16 @@ require('dotenv').config()
 export const authOptions: NextAuthOptions = {
     debug: true,
     logger: {
-        debug: (msg) => {
-            logger.info(msg)
+        debug: (msg, metadata) => {
+            const child = logger.child({ 'metadata:': metadata })
+            child.debug(msg)
         },
         warn: (msg) => {
             logger.warn(msg)
         },
-        error: (msg) => {
-            logger.error(msg)
+        error: (msg, metadata) => {
+            const child = logger.child({ ...metadata })
+            child.error(msg)
         },
     },
     secret: process.env.NEXTAUTH_SECRET,
@@ -40,7 +42,6 @@ export const authOptions: NextAuthOptions = {
                     email: profile.email,
                 }
             },
-            checks: ['none'],
         }),
         CredentialsProvider({
             id: 'credentials',
@@ -95,7 +96,7 @@ export const authOptions: NextAuthOptions = {
             return token
         },
         redirect: async ({ url, baseUrl }) => {
-            logger.info('redirect callback' + url + baseUrl)
+            logger.info('redirect callback: ' + url + ' -> ' + baseUrl)
             return baseUrl
         },
     },

@@ -1,54 +1,37 @@
-import { DELAY, TIMEOUT } from '../../utils/constants'
+import { TIMEOUT } from '../../utils/constants'
 import { getHeaders } from '../../utils/headers'
 
-describe.skip('Test auth', () => {
+describe('Test auth', () => {
     before(() => {
-        cy.task('clearDB')
+        // cy.task('clearDB')
+        cy.setCookie(Cypress.env('next-auth.callback-url'), Cypress.env('BASE_URL'))
+        cy.setCookie('next-auth.session-token', 'valid-token')
+        cy.intercept(
+            {
+                method: 'GET',
+                url: 'https://accounts.google.com/o/oauth2/v2/auth?*',
+            },
+            (req) => {
+                const redirectUri = req.query['redirect_uri'] as string
+                const state = req.query['state'] as string
+                const code = req.query['code'] as string
+                const scope = req.query['scope'] as string
+                const authuser = req.query['authuser'] as number
+                const prompt = req.query['prompt'] as string
+                const url = `${ redirectUri }?code=${ code }&state=${ state }&scope=${ scope }&authuser=${ authuser }&prompt=${ prompt }`
+                req.redirect(url, 302)
+            }
+        ).as('googleSignIn')
+        cy.intercept('http://localhost:3000/api/auth/callback/google?*', (req) => {
+            req.redirect('http://localhost:3000/', 302)
+        }).as('googleSignInCallback')
     })
     it('should log in with google', () => {
         // TODO: Visit landing page, check if logged in, if not, redirect to /signin instead of visit /signin directly
         cy.visit('/signin', { headers: getHeaders() })
         cy.get('h1').should('include.text', 'Sign In Page')
         cy.get('[data-cy="google-sign-in-btn"]').should('include.text', 'Sign in with Google').click()
-
-        cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('eq', '')
-        cy.origin(
-            'https://accounts.google.com',
-            {
-                args: {
-                    username: Cypress.env('GOOGLE_USER'),
-                    password: Cypress.env('GOOGLE_PW'),
-                    cookieName: Cypress.env('COOKIE_NAME'),
-                    TIMEOUT: TIMEOUT,
-                    DELAY: DELAY,
-                },
-            },
-            ({ username, password, cookieName, TIMEOUT, DELAY }) => {
-                Cypress.on(
-                    'uncaught:exception',
-                    (err) =>
-                        !err.message.includes('ResizeObserver loop') &&
-                        !err.message.includes('Error in protected function')
-                )
-
-                // Type username
-                cy.get('input[type=email]', { timeout: TIMEOUT.MEDIUM }).should('be.visible').type(username)
-                cy.get('button').contains('Next').click()
-
-                // Type password
-                cy.get('input[type=password]', { timeout: TIMEOUT.LONG }).as('pwfInp')
-                cy.get('@pwfInp')
-                    .should('be.visible')
-                    .then(($pwfInp) => {
-                        // find the one that is not hidden
-                        const $visiblePwfInp = $pwfInp.filter((i, el) => {
-                            return !Cypress.$(el).is(':hidden')
-                        })
-                        cy.wrap($visiblePwfInp).type(password)
-                        cy.get('button').contains('Next').click()
-                    })
-            }
-        )
+        cy.wait(['@googleSignInCallback'], { timeout: TIMEOUT.EXTRA_LONG })
 
         cy.location('origin', { timeout: TIMEOUT.EXTRA_LONG }).should('eq', Cypress.config().baseUrl)
         cy.location('pathname').should('eq', '/')
