@@ -1,0 +1,27 @@
+# Exclude unecessary folders
+.github
+.husky
+.next
+node_modules
+public
+
+# Exclude tests
+cypress
+
+# Exclude configuration files
+.dockerignore
+.env
+.eslint*
+.gitignore
+.lintstagedrc.js
+.prettier*
+*docker-compose*
+*Dockerfile*
+*.config.js
+tsconfig.json
+
+# Exlude documentation
+docs
+*.md
+
+npm-debug.log

@@ -3,9 +3,9 @@
 ## Team Members
 
 -   Seth Akins (Hedgemon4)
--   Teresa Saller (te-sa)
 -   Erin Hiebert (SecondFeline)
 -   K Phan (ketphan02)
+-   Teresa Saller (te-sa)
 -   Justin Schoenit (justino599)
 
 ## Project Setup
@@ -25,23 +25,15 @@ Run the following command to install dependencies
 npm install
 ```
 
-### Running the Project
+### Running the Project and the Database
 
-Run the following command to start the project
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-### Running the Database
-
-To run the dev database, run the following command
+Run the following to start the project and run the dev database
 
 ```bash
 docker-compose -f dev-docker-compose.yml up -d
 ```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ### Linting the Project
 
