@@ -10,7 +10,7 @@ const boxCss = {
 export default function Home() {
     return (
         <Box sx={boxCss}>
-            <h1>Harp</h1>
+            <h1 data-cy='header'>Harp</h1>
             <Alert severity='success'>This is now the home page</Alert>
         </Box>
     )
