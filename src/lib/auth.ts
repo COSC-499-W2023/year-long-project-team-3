@@ -9,7 +9,6 @@ import logger from '@/utils/logger'
 require('dotenv').config()
 
 export const authOptions: NextAuthOptions = {
-    debug: true,
     logger: {
         debug: (msg, metadata) => {
             const child = logger.child({ 'metadata:': metadata })
