@@ -17,9 +17,6 @@ jobs:
                 wait-interval: 10
             - name: Checkout
               uses: actions/checkout@v4
-            - name: Write cypress.env.json
-              run: |
-                  echo '${{ secrets.CYPRESS_ENV_CI }}' > cypress.env.json
             - name: Write .env
               run: |
                   echo "${{ secrets.ENV_TEST_LOCAL }}" > .env

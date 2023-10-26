@@ -3,9 +3,7 @@ import { getHeaders } from '../../utils/headers'
 
 describe('Test auth', () => {
     before(() => {
-        // cy.task('clearDB')
-        cy.setCookie(Cypress.env('next-auth.callback-url'), Cypress.env('BASE_URL'))
-        cy.setCookie('next-auth.session-token', 'valid-token')
+        cy.task('clearDB')
         cy.intercept(
             {
                 method: 'GET',
@@ -22,8 +20,8 @@ describe('Test auth', () => {
                 req.redirect(url, 302)
             }
         ).as('googleSignIn')
-        cy.intercept('http://localhost:3000/api/auth/callback/google?*', (req) => {
-            req.redirect('http://localhost:3000/', 302)
+        cy.intercept('/api/auth/callback/google?*', (req) => {
+            req.redirect('/', 302)
         }).as('googleSignInCallback')
     })
     it('should log in with google', () => {
