@@ -4,6 +4,9 @@ on:
     push:
         branches-ignore:
             - main
+        paths-ignore:
+            - docs/**
+            - README.md
 jobs:
     cypress-run:
         runs-on: ubuntu-latest
