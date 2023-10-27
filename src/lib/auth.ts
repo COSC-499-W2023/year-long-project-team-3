@@ -1,10 +1,11 @@
-import { type NextAuthOptions, type User } from 'next-auth'
+import { type NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import prisma from '@/lib/prisma'
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/lib/constants'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import logger from '@/utils/logger'
+import { compare } from 'bcrypt'
 
 export const authOptions: NextAuthOptions = {
     logger: {
@@ -22,8 +23,8 @@ export const authOptions: NextAuthOptions = {
     },
     secret: process.env.nextAuthSecret,
     pages: {
-        signIn: '/signin',
-        error: '/signin',
+        signIn: '/login',
+        error: '/login',
     },
     adapter: PrismaAdapter(prisma),
     session: {
@@ -58,22 +59,28 @@ export const authOptions: NextAuthOptions = {
                     return null
                 }
 
-                const user: User = await prisma.user
-                    .findUniqueOrThrow({
-                        where: {
-                            email: credentials?.email,
-                        },
-                    })
-                    .catch(() => {
-                        // TODO: Handle error better
-                        throw new Error('User not found')
-                    })
+                const existingUser = await prisma.user.findUnique({
+                    where: { email: credentials?.email },
+                })
+                if (!existingUser) {
+                    // TODO: Handle error better
+                    return null
+                }
 
-                if (user) {
+                // May not have password if logging in with Google
+                if (existingUser?.password) {
+                    // Check if entered password matches password in database
+                    const passwordMatch = await compare(credentials.password, existingUser.password)
+                    if (!passwordMatch) {
+                        return null
+                    }
+                }
+
+                if (existingUser) {
                     // Any object returned will be saved in `user` property of the JWT
                     return {
-                        id: user.id,
-                        email: user.email,
+                        id: existingUser.id,
+                        email: existingUser.email,
                     } as any
                 }
 

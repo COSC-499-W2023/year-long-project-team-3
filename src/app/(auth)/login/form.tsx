@@ -9,37 +9,31 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { FormEvent, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { signIn } from 'next-auth/react'
 
 export default function Form() {
-    const [isEmailValid, setIsEmailValid] = useState(true)
-    const [isPasswordValid, setIsPasswordValid] = useState(true)
-    const [isPasswordVerified, setIsPasswordVerified] = useState(true)
-    const [isEmailAvailable, setIsEmailAvailable] = useState(true)
     const router = useRouter()
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const formData = new FormData(e.currentTarget)
-        const response = await fetch('api/auth/signup', {
-            method: 'POST',
-            body: JSON.stringify({
-                email: formData.get('email'),
-                password: formData.get('password'),
-                passwordCheck: formData.get('passwordCheck'),
-            }),
+
+        const email = formData.get('email')
+        const password = formData.get('password')
+
+        const signInData = await signIn('credentials', {
+            email: email,
+            password: password,
+            redirect: false,
         })
-        const data = await response.json()
-        setIsEmailValid(data.body.isEmailValid)
-        setIsPasswordValid(data.body.isPasswordValid)
-        setIsPasswordVerified(data.body.isPasswordVerified)
-        setIsEmailAvailable(data.body.isEmailAvailable)
-        if (
-            data.body.isEmailValid &&
-            data.body.isPasswordValid &&
-            data.body.isPasswordVerified &&
-            data.body.isEmailAvailable
-        ) {
-            router.push('/')
+
+        console.log(signInData)
+
+        if (signInData?.error) {
+            // TODO: Add toast message here
+            console.log('Error!')
+        } else {
             router.refresh()
+            router.push('/')
         }
     }
 
@@ -54,60 +48,41 @@ export default function Form() {
                 }}
             >
                 <Typography component='h1' variant='h5'>
-                    Sign Up
+                    Login
                 </Typography>
                 <form onSubmit={handleSubmit}>
                     <TextField
                         margin='normal'
                         size='medium'
                         variant='outlined'
-                        error={!isEmailValid || !isEmailAvailable}
                         type='email'
                         fullWidth
                         label='Email Address'
                         name='email'
-                        helperText={(!isEmailValid && 'Invalid Email') || (!isEmailAvailable && 'Email already in use')}
                         data-cy='email'
                     />
                     <TextField
                         margin='normal'
                         size='medium'
                         variant='outlined'
-                        error={!isPasswordValid}
                         type='password'
                         fullWidth
                         label='Password'
                         name='password'
-                        helperText={
-                            !isPasswordValid &&
-                            'Password must be at least 8 characters long and have: one upper and one lowercase letter, a numeral, a symbol'
-                        }
                         data-cy='password'
                     />
-                    <TextField
-                        margin='normal'
-                        size='medium'
-                        variant='outlined'
-                        error={!isPasswordVerified}
-                        type='password'
-                        fullWidth
-                        label='Confirm Password'
-                        name='passwordCheck'
-                        helperText={!isPasswordVerified && 'Does not match password'}
-                        data-cy='passwordVerification'
-                    />
                     <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }} data-cy='submit'>
-                        Sign Up
+                        Login
                     </Button>
                     <Grid container>
                         <Grid item xs>
-                            <Link href='/../login' variant='body2' data-cy='login'>
-                                Already have an account?
+                            <Link href='/../signup' variant='body2' data-cy='login'>
+                                Don&apos;t have an account?
                             </Link>
                         </Grid>
                         <Grid item>
                             <Link href='/../signin' variant='body2'>
-                                Sign up with Google.
+                                Sign in with Google.
                             </Link>
                         </Grid>
                     </Grid>
