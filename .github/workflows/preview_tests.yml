@@ -23,7 +23,7 @@ jobs:
             - name: Write environment variables
               run: |
                   echo "${{ secrets.ENV_TEST_LOCAL }}" > .env
-                  echo "${{ secrets.CYPRESS_ENV_JSON }}" > cypress.config.json
+                  echo "" > cypress.config.json
             - name: Cypress Run Component Tests
               uses: cypress-io/github-action@v6
               env:

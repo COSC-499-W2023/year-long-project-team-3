@@ -13,9 +13,8 @@ jobs:
             - run: npm ci
             - name: Write environment variables
               run: |
-                  echo "${{ secrets.ENV_PREVIEW }}" > .env
-                  echo "${{ secrets.ENV_TEST_LOCAL }}" > .env.test.local
-                  echo "${{ secrets.CYPRESS_ENV_JSON }}" > cypress.config.json
+                  echo "${{ secrets.ENV_TEST_LOCAL }}" > .env
+                  echo "" > cypress.config.json
             - name: ESLint
               run: npm run lint
             - name: Prettier
