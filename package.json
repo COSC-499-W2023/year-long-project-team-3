@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "dev": "next dev",
-        "dev:docker": "docker-compose -f dev-docker-compose.yml up db -d",
+        "dev:docker": "docker-compose -f docker-compose.dev.yml up db -d",
         "dev:test": "dotenv -e .env.test.local next dev",
         "build": "next build",
         "start": "next start",
