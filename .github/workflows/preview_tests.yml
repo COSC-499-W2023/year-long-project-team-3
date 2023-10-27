@@ -24,6 +24,8 @@ jobs:
               run: |
                   echo "${{ secrets.ENV_TEST_LOCAL }}" > .env
                   echo "" > cypress.config.json
+            - name: Migrate Database
+              run: npx prisma migrate dev
             - name: Cypress Run Component Tests
               uses: cypress-io/github-action@v6
               env:
