@@ -3,7 +3,7 @@ import Logo from '@/components/Logo/logo'
 
 export default function LandingPageAppBar() {
     return (
-        <AppBar position='static' sx={{ backgroundColor: 'white' }}>
+        <AppBar data-cy='landing-page-app-bar' position='static' sx={{ backgroundColor: 'white' }}>
             <Toolbar disableGutters>
                 <Box sx={{ m: 2 }}>
                     <Logo fontSize={30} />
@@ -13,7 +13,11 @@ export default function LandingPageAppBar() {
                 </Typography>
                 <Box sx={{ m: 2, display: 'flex', flexDirection: 'row', gap: '16px' }}>
                     <Button sx={{ textTransform: 'capitalize', fontSize: 20, fontWeight: 'bold' }}>Login</Button>
-                    <Button variant='contained' sx={{ textTransform: 'capitalize', fontSize: 20, borderRadius: 28 }}>
+                    <Button
+                        variant='contained'
+                        sx={{ textTransform: 'capitalize', fontSize: 20, borderRadius: 28 }}
+                        data-cy='sign-up-button'
+                    >
                         Sign Up
                     </Button>
                 </Box>

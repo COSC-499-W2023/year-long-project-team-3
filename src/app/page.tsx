@@ -1,4 +1,4 @@
-import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material'
+import { Box, Button, Typography } from '@mui/material'
 import Logo from '@/components/Logo/logo'
 import LandingPageAppBar from '@/components/LandingPage/LandingPageAppBar'
 
@@ -28,6 +28,7 @@ export default function Home() {
                         },
                         textAlign: 'center',
                     }}
+                    data-cy='motto'
                 >
                     A Secure Platform for Anonymous Video Submission
                 </Typography>
@@ -42,6 +43,7 @@ export default function Home() {
                         },
                         textAlign: 'center',
                     }}
+                    data-cy='platform-description'
                 >
                     Easily send and receive videos for professional settings with a focus on protecting your privacy
                 </Typography>
