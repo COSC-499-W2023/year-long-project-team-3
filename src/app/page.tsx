@@ -38,8 +38,8 @@ export default function Home() {
                         color: '#9E9E9E',
                         maxWidth: {
                             md: undefined,
-                            lg: '70%',
-                            xl: '45%',
+                            lg: '75%',
+                            xl: '50%',
                         },
                         textAlign: 'center',
                     }}

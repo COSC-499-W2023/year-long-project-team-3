@@ -9,6 +9,6 @@ describe('test page', () => {
     it('contains platform description', () => {
         cy.visit('/')
         cy.get('[data-cy="motto"').contains('Secure Platform')
-        cy.get('[data-cy="platform-description"]').contains('send and receive')
+        cy.get('[data-cy="platform-description"]').contains('Professional video')
     })
 })
