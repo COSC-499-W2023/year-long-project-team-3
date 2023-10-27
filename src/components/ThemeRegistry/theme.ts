@@ -6,9 +6,12 @@ const inter: NextFont = Inter({ subsets: ['latin'] })
 
 export const theme: Theme = createTheme({
     palette: {
+        background: {
+            default: 'white',
+        },
         mode: 'light',
         primary: {
-            main: '#0d3cd4',
+            main: '#007DFC',
         },
         secondary: {
             main: '#f50057',
