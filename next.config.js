@@ -2,7 +2,6 @@
 const nextConfig = () => {
     const getEnvironmentVariables = () => {
         const environmentVariables = [
-            'NODE_ENV',
             'DATABASE_URL',
             'GOOGLE_CLIENT_ID',
             'GOOGLE_CLIENT_SECRET',
