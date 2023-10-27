@@ -49,16 +49,19 @@ export const authOptions: NextAuthOptions = {
             },
             async authorize(credentials) {
                 if (!credentials?.email || !credentials?.password) {
+                    logger.error('Missing email or password!')
                     return null
                 }
                 const existingUser = await prisma.user.findUnique({
                     where: { email: credentials?.email },
                 })
                 if (!existingUser) {
+                    logger.error('No such user!')
                     return null
                 }
                 const passwordMatch = await compare(credentials.password, existingUser.password!)
                 if (!passwordMatch) {
+                    logger.error('Incorrect password!')
                     return null
                 }
                 return {

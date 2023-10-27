@@ -7,7 +7,7 @@ import Link from '@mui/material/Link'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
-import { FormEvent, useState } from 'react'
+import { FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 
