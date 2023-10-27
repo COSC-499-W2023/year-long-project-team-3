@@ -7,7 +7,7 @@
 3. Paste the contents into a new file called `.env` in the root directory of the project
 4. Run the database
     ```bash
-    docker-compose -f dev-docker-compose.yml up db -d
+    docker-compose -f docker-compose.dev.yml up db -d
     ```
 5. Migrate the database
     ```bash

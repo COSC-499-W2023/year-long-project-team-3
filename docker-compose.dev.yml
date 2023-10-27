@@ -1,4 +1,4 @@
-# Run with: `docker-compose -f dev-docker-compose.yml up -d`
+# Run with: `docker-compose -f docker-compose.dev.yml up -d`
 services:
     db:
         image: postgres

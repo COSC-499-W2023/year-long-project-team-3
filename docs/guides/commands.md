@@ -12,7 +12,7 @@ npm install
 Run the following to start the project and run the dev database
 
 ```bash
-docker-compose -f dev-docker-compose.yml up -d
+docker-compose -f docker-compose.dev.yml up -d
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
