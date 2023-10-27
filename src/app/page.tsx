@@ -1,89 +1,61 @@
-import { Alert } from '@mui/material'
+import { Box, Button, Typography } from '@mui/material'
+import Logo from '@/components/Logo/logo'
+import LandingPageAppBar from '@/components/LandingPage/LandingPageAppBar'
 
-import Image from 'next/image'
-import styles from './page.module.css'
+const boxCss = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+}
 
 export default function Home() {
     return (
-        <main className={styles.main}>
-            <Alert severity='success'>Installed Material UI</Alert>
-            <div className={styles.description}>
-                <p data-test='page text'>
-                    Get started by editing&nbsp;
-                    <code className={styles.code}>src/app/page.tsx</code>
-                </p>
-                <div>
-                    <a
-                        href='https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
-                        target='_blank'
-                        rel='noopener noreferrer'
-                    >
-                        By{' '}
-                        <Image
-                            src='/vercel.svg'
-                            alt='Vercel Logo'
-                            className={styles.vercelLogo}
-                            width={100}
-                            height={24}
-                            priority
-                        />
-                    </a>
-                </div>
-            </div>
-
-            <div className={styles.center}>
-                <Image className={styles.logo} src='/next.svg' alt='Next.js Logo' width={180} height={37} priority />
-            </div>
-
-            <div className={styles.grid}>
-                <a
-                    href='https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
-                    className={styles.card}
-                    target='_blank'
-                    rel='noopener noreferrer'
+        <>
+            <LandingPageAppBar></LandingPageAppBar>
+            <Box
+                sx={{ display: 'flex', flexGrow: 1, alignItems: 'center', flexDirection: 'column', gap: '2rem', p: 6 }}
+            >
+                <Logo fontSize={200}></Logo>
+                <Typography
+                    variant='h2'
+                    sx={{
+                        fontWeight: 'medium',
+                        maxWidth: {
+                            md: undefined,
+                            lg: '70%',
+                            xl: '45%',
+                        },
+                        textAlign: 'center',
+                    }}
+                    data-cy='motto'
                 >
-                    <h2>
-                        Docs <span>-&gt;</span>
-                    </h2>
-                    <p>Find in-depth information about Next.js features and API.</p>
-                </a>
-
-                <a
-                    href='https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
-                    className={styles.card}
-                    target='_blank'
-                    rel='noopener noreferrer'
+                    A Secure Platform for Anonymous Video Submission
+                </Typography>
+                <Typography
+                    variant='h4'
+                    sx={{
+                        color: '#9E9E9E',
+                        maxWidth: {
+                            md: undefined,
+                            lg: '75%',
+                            xl: '50%',
+                        },
+                        textAlign: 'center',
+                    }}
+                    data-cy='platform-description'
                 >
-                    <h2>
-                        Learn <span>-&gt;</span>
-                    </h2>
-                    <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-                </a>
-
-                <a
-                    href='https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
-                    className={styles.card}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                >
-                    <h2>
-                        Templates <span>-&gt;</span>
-                    </h2>
-                    <p>Explore the Next.js 13 playground.</p>
-                </a>
-
-                <a
-                    href='https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
-                    className={styles.card}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                >
-                    <h2>
-                        Deploy <span>-&gt;</span>
-                    </h2>
-                    <p>Instantly deploy your Next.js site to a shareable URL with Vercel.</p>
-                </a>
-            </div>
-        </main>
+                    Professional video sharing made easy, with a focus on protecting your privacy
+                </Typography>
+                <Box sx={{ display: 'flex', gap: '1rem' }}>
+                    <Button variant='contained' sx={{ fontSize: 20, borderRadius: 28, textTransform: 'capitalize' }}>
+                        Get Started
+                    </Button>
+                    <Button variant='contained' sx={{ fontSize: 20, borderRadius: 28, textTransform: 'capitalize' }}>
+                        Find Out More
+                    </Button>
+                </Box>
+            </Box>
+        </>
     )
 }

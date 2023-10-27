@@ -11,7 +11,7 @@
         "start:test": "dotenv -e .env.test.local next start",
         "lint": "next lint --fix && prettier . --write",
         "prepare": "husky install",
-        "cypress:open": "dotenv -e .env.test.local cypress open",
+        "cypress": "cypress open",
         "prisma:explore": "prisma studio",
         "prisma:explore-test": "dotenv -e .env.test.local prisma studio",
         "postinstall": "prisma generate"
