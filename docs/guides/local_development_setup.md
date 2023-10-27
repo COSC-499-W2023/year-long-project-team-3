@@ -1,6 +1,4 @@
-# Project setup
-
-## Local development
+# Local Development Setup
 1. Install dependencies
     ```bash
     npm install
@@ -19,4 +17,3 @@
     ```bash
     npm run dev
     ```
-Happy hacking!
