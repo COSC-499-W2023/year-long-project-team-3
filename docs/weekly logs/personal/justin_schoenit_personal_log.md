@@ -1,5 +1,34 @@
 # Weekly Individual Log - Justin Schoenit
 
+## Week 6/7 (Oct 9 - Oct 22)
+
+### Tasks
+
+![](imgs/week-7-tasks-justin.png)
+
+### Goals
+
+-   Look into AWS S3/WebRTC
+-   Setup Cypress
+-   Implement login/logout
+-   Create some mocks
+-   User creation on database side & setup tests for it
+-   Setup database(s)
+-   Dockerization
+-   Deploy with Vercel
+-   Do tutorials for stuff on tech stack
+
+### My Contributions
+
+-   Setup 2 databases
+-   Worked on Figma mocks
+-   Did NextJS tutorial
+-   Did a bunch of code review
+
+### Additional Context
+
+Was a lot of learning this week and making sure that testing stuff was up and running
+
 ## Week 5 (Oct 2 - Oct 8)
 
 ### Tasks

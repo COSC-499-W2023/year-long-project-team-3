@@ -10,13 +10,12 @@ cypress
 
 # Exclude configuration files
 .dockerignore
-.env
 .eslint*
 .gitignore
 .lintstagedrc.js
 .prettier*
 *docker-compose*
-*Dockerfile*
+Dockerfile.dev
 *.config.js
 tsconfig.json
 
@@ -25,3 +24,7 @@ docs
 *.md
 
 npm-debug.log
+
+# Environment variables
+.env
+.env*.local
