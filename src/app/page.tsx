@@ -35,7 +35,7 @@ export default function Home() {
                 <Typography
                     variant='h4'
                     sx={{
-                        color: 'grey',
+                        color: '#9E9E9E',
                         maxWidth: {
                             md: undefined,
                             lg: '70%',
