@@ -45,7 +45,7 @@ export default function Home() {
                     }}
                     data-cy='platform-description'
                 >
-                    Easily send and receive videos for professional settings with a focus on protecting your privacy
+                    Professional video sharing made easy, with a focus on protecting your privacy
                 </Typography>
                 <Box sx={{ display: 'flex', gap: '1rem' }}>
                     <Button variant='contained' sx={{ fontSize: 20, borderRadius: 28, textTransform: 'capitalize' }}>
