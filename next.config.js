@@ -20,10 +20,9 @@ const nextConfig = () => {
 
         // Return environment variables
         return {
-            databaseURL: process.env.DATABASE_URL,
             googleClientId: process.env.GOOGLE_CLIENT_ID,
             googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+            cypressBaseUrl: process.env.CYPRESS_BASE_URL,
             nextAuthSecret: process.env.NEXTAUTH_SECRET,
         }
     }

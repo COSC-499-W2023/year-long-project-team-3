@@ -5,6 +5,7 @@
 3. Repeat steps 1 and 2 for `.env.docker.local`
 4. Initialize database
 ```bash
+docker-compose -f docker-compose.dev.yml up db -d
 npx prisma migrate dev
 ```
 5. Run docker

@@ -4,7 +4,7 @@ import clearDB from './cypress/tasks/clearDB'
 export default defineConfig({
     projectId: process.env.cypressProjectId,
     e2e: {
-        baseUrl: process.env.baseURL,
+        baseUrl: process.env.cypressBaseUrl,
         setupNodeEvents(on, config) {
             // implement node event listeners here
             on('task', {
