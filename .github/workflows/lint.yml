@@ -15,7 +15,7 @@ jobs:
               run: |
                   echo "${{ secrets.ENV_PREVIEW }}" > .env
                   echo "${{ secrets.ENV_TEST_LOCAL }}" > .env.test.local
-                  echo "" > cypress.config.json
+                  echo "${{ secrets.CYPRESS_ENV_JSON }}" > cypress.config.json
             - name: ESLint
               run: npm run lint
             - name: Prettier
