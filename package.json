@@ -15,7 +15,8 @@
         "cypress:run": "cypress run",
         "prisma:explore": "prisma studio",
         "prisma:explore-test": "dotenv -e .env.test.local prisma studio",
-        "postinstall": "prisma generate"
+        "postinstall": "prisma generate",
+        "migrate": "prisma migrate dev"
     },
     "dependencies": {
         "@emotion/react": "^11.11.1",

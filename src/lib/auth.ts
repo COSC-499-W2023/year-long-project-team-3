@@ -6,8 +6,6 @@ import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/lib/constants'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import logger from '@/utils/logger'
 
-require('dotenv').config()
-
 export const authOptions: NextAuthOptions = {
     logger: {
         debug: (msg, metadata) => {
@@ -22,7 +20,7 @@ export const authOptions: NextAuthOptions = {
             child.error(msg)
         },
     },
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: process.env.nextAuthSecret,
     pages: {
         signIn: '/signin',
         error: '/signin',
@@ -33,8 +31,8 @@ export const authOptions: NextAuthOptions = {
     },
     providers: [
         GoogleProvider({
-            clientId: process.env.GOOGLE_CLIENT_ID as string,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+            clientId: process.env.googleClientId as string,
+            clientSecret: process.env.googleClientSecret as string,
             profile(profile) {
                 return {
                     id: profile.sub,
