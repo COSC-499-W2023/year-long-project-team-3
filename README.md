@@ -16,11 +16,13 @@
 -   [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
 ### Step-by-step guide
-- [Local Development Setup](docs/guides/local_development_setup.md)
-- [Local Docker Development Setup](docs/guides/local_docker_development_setup.md)
+
+-   [Local Development Setup](docs/guides/local_development_setup.md)
+-   [Local Docker Development Setup](docs/guides/local_docker_development_setup.md)
 
 ### Common commands
-- [Common commands](docs/guides/commands.md)
+
+-   [Common commands](docs/guides/commands.md)
 
 ## Chosen Project
 
