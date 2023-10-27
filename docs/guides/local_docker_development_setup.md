@@ -4,7 +4,7 @@
 2. Paste the contents into a new file called `.env` in the root directory of the project
 3. Initialize database
 ```bash
-npx dotenv -e .env.docker.local prisma migrate dev
+npx prisma migrate dev
 ```
 3. Run docker
 ```bash
