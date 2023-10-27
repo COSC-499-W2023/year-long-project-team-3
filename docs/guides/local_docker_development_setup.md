@@ -1,13 +1,14 @@
 # Local Docker Development Setup
 
-1. Go in the #dotenv in Capstone Discord server to find the link to `.env.docker.local` and copy the contents
+1. Go in the #dotenv in Capstone Discord server to find the link to `.env` and copy the contents
 2. Paste the contents into a new file called `.env` in the root directory of the project
-3. Initialize database
+3. Repeat steps 1 and 2 for `.env.docker.local`
+4. Initialize database
 ```bash
 npx prisma migrate dev
 ```
-3. Run docker
+5. Run docker
 ```bash
 npm run dev:docker
 ```
-4. Go to http://localhost:3000
+6. Go to http://localhost:3000
