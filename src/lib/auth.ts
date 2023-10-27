@@ -42,52 +42,29 @@ export const authOptions: NextAuthOptions = {
             },
         }),
         CredentialsProvider({
-            id: 'credentials',
             name: 'Credentials',
-            type: 'credentials',
             credentials: {
-                email: { label: 'Email', type: 'text', placeholder: 'johndoe@example.com', required: true },
-                password: { label: 'Password', type: 'password', required: true },
+                email: { label: 'Email', type: 'email', placeholder: 'john@mail.com' },
+                password: { label: 'Password', type: 'password' },
             },
-            async authorize(credentials, _) {
+            async authorize(credentials) {
                 if (!credentials?.email || !credentials?.password) {
-                    // TODO: Handle error better
                     return null
                 }
-                if (!isValidPassword(credentials.password)) {
-                    // TODO: Handle error better
-                    return null
-                }
-
                 const existingUser = await prisma.user.findUnique({
                     where: { email: credentials?.email },
                 })
                 if (!existingUser) {
-                    // TODO: Handle error better
                     return null
                 }
-
-                // May not have password if logging in with Google
-                if (existingUser?.password) {
-                    // Check if entered password matches password in database
-                    const passwordMatch = await compare(credentials.password, existingUser.password)
-                    if (!passwordMatch) {
-                        return null
-                    }
+                const passwordMatch = await compare(credentials.password, existingUser.password!)
+                if (!passwordMatch) {
+                    return null
                 }
-
-                if (existingUser) {
-                    // Any object returned will be saved in `user` property of the JWT
-                    return {
-                        id: existingUser.id,
-                        email: existingUser.email,
-                    } as any
+                return {
+                    id: existingUser.id,
+                    email: existingUser.email,
                 }
-
-                // If you return null then an error will be displayed advising the user to check their details.
-                return null
-
-                // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
             },
         }),
     ],
