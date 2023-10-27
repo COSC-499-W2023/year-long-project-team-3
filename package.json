@@ -5,7 +5,7 @@
     "scripts": {
         "dev": "next dev",
         "dev:docker": "docker-compose -f docker-compose.dev.yml up -d",
-        "dev:test": "dotenv -e .env.test.local next dev",
+        "dev:test": "dotenv -e .env.stagging.test.local next dev",
         "build": "next build",
         "start": "next start",
         "lint": "next lint --fix && prettier . --write",
@@ -13,7 +13,7 @@
         "cypress:open": "cypress open",
         "cypress:run": "cypress run",
         "prisma:explore": "prisma studio",
-        "prisma:explore-test": "dotenv -e .env.test.local prisma studio",
+        "prisma:explore-test": "dotenv -e .env.stagging.test.local prisma studio",
         "postinstall": "prisma generate",
         "migrate": "prisma migrate dev"
     },
