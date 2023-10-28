@@ -20,7 +20,7 @@ export default function LandingPageAppBar() {
                     <Button
                         sx={{ textTransform: 'capitalize', fontSize: 20, fontWeight: 'bold', borderRadius: 28 }}
                         data-cy='login-button'
-                        onClick={() => router.push('/signin')}
+                        onClick={() => router.push('/login')}
                     >
                         Login
                     </Button>
@@ -28,6 +28,7 @@ export default function LandingPageAppBar() {
                         variant='contained'
                         sx={{ textTransform: 'capitalize', fontSize: 20, borderRadius: 28 }}
                         data-cy='sign-up-button'
+                        onClick={() => router.push('/signup')}
                     >
                         Sign Up
                     </Button>
