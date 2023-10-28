@@ -9,6 +9,8 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { FormEvent, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import LandingPageAppBar from '@/components/LandingPage/LandingPageAppBar'
+import Logo from '@/components/Logo/logo'
 
 export default function Form() {
     const [isEmailValid, setIsEmailValid] = useState(true)
@@ -44,75 +46,71 @@ export default function Form() {
     }
 
     return (
-        <Container component='main' maxWidth='xs'>
+        <>
+            <LandingPageAppBar></LandingPageAppBar>
+            <Box sx={{ marginTop: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <Logo fontSize={80} />
+            </Box>
             <Box
                 sx={{
-                    marginTop: 8,
+                    marginTop: 2,
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
                 }}
             >
-                <Typography component='h1' variant='h5'>
+                <Typography variant='h4' sx={{fontWeight: 'medium'}}>
                     Sign Up
                 </Typography>
-                <form onSubmit={handleSubmit}>
-                    <TextField
-                        margin='normal'
-                        size='medium'
-                        variant='outlined'
-                        error={!isEmailValid || !isEmailAvailable}
-                        type='email'
-                        fullWidth
-                        label='Email Address'
-                        name='email'
-                        helperText={(!isEmailValid && 'Invalid Email') || (!isEmailAvailable && 'Email already in use')}
-                        data-cy='email'
-                    />
-                    <TextField
-                        margin='normal'
-                        size='medium'
-                        variant='outlined'
-                        error={!isPasswordValid}
-                        type='password'
-                        fullWidth
-                        label='Password'
-                        name='password'
-                        helperText={
-                            !isPasswordValid &&
+                <form onSubmit={handleSubmit} >
+                    <Box
+                        gap={1}
+                        sx={{
+                            p: 5,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}>
+                        <TextField
+                            margin='normal'
+                            variant='outlined'
+                            error={!isEmailValid || !isEmailAvailable}
+                            type='email'
+                            label='Email Address'
+                            name='email'
+                            helperText={(!isEmailValid && 'Invalid Email') || (!isEmailAvailable && 'Email already in use')}
+                            data-cy='email'
+                        />
+                        <TextField
+                            margin='normal'
+                            variant='outlined'
+                            error={!isPasswordValid}
+                            type='password'
+                            label='Password'
+                            name='password'
+                            helperText={
+                                !isPasswordValid &&
                             'Password must be at least 8 characters long and have: one upper and one lowercase letter, a numeral, a symbol'
-                        }
-                        data-cy='password'
-                    />
-                    <TextField
-                        margin='normal'
-                        size='medium'
-                        variant='outlined'
-                        error={!isPasswordVerified}
-                        type='password'
-                        fullWidth
-                        label='Confirm Password'
-                        name='passwordCheck'
-                        helperText={!isPasswordVerified && 'Does not match password'}
-                        data-cy='passwordVerification'
-                    />
-                    <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }} data-cy='submit'>
+                            }
+                            data-cy='password'
+                        />
+                        <TextField
+                            margin='normal'
+                            variant='outlined'
+                            error={!isPasswordVerified}
+                            type='password'
+                            label='Confirm Password'
+                            name='passwordCheck'
+                            helperText={!isPasswordVerified && 'Does not match password'}
+                            data-cy='passwordVerification'
+                        />
+                        <Button type='submit' variant='contained' sx={{ fontSize: 15, borderRadius: 28 }} data-cy='submit'>
                         Sign Up
-                    </Button>
-                    <Grid container>
-                        <Grid item xs>
-                            <Link href='#' variant='body2' data-cy='login'>
-                                Already have an account?
-                            </Link>
-                        </Grid>
-                        <Grid item>
-                            <Link href='#' variant='body2'>
-                                Sign up with Google.
-                            </Link>
-                        </Grid>
-                    </Grid>
+                        </Button>
+                    </Box>
                 </form>
             </Box>
-        </Container>
+
+        </>
     )
 }
