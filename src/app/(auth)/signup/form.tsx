@@ -65,10 +65,10 @@ export default function Form() {
                     alignItems: 'center',
                 }}
             >
-                <Typography variant='h4' sx={{fontWeight: 'medium'}}>
+                <Typography variant='h4' sx={{ fontWeight: 'medium' }}>
                     Sign Up
                 </Typography>
-                <form onSubmit={handleSubmit} >
+                <form onSubmit={handleSubmit}>
                     <Box
                         gap={1}
                         sx={{
@@ -76,7 +76,8 @@ export default function Form() {
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
-                        }}>
+                        }}
+                    >
                         <TextField
                             margin='normal'
                             variant='outlined'
@@ -84,7 +85,9 @@ export default function Form() {
                             type='email'
                             label='Email Address'
                             name='email'
-                            helperText={(!isEmailValid && 'Invalid Email') || (!isEmailAvailable && 'Email already in use')}
+                            helperText={
+                                (!isEmailValid && 'Invalid Email') || (!isEmailAvailable && 'Email already in use')
+                            }
                             data-cy='email'
                         />
                         <TextField
@@ -96,7 +99,7 @@ export default function Form() {
                             name='password'
                             helperText={
                                 !isPasswordValid &&
-                            'Password must be at least 8 characters long and have: one upper and one lowercase letter, a numeral, a symbol'
+                                'Password must be at least 8 characters long and have: one upper and one lowercase letter, a numeral, a symbol'
                             }
                             data-cy='password'
                         />
@@ -110,8 +113,13 @@ export default function Form() {
                             helperText={!isPasswordVerified && 'Does not match password'}
                             data-cy='passwordVerification'
                         />
-                        <Button type='submit' variant='contained' sx={{ fontSize: 15, borderRadius: 28 }} data-cy='submit'>
-                        Sign Up
+                        <Button
+                            type='submit'
+                            variant='contained'
+                            sx={{ fontSize: 15, borderRadius: 28 }}
+                            data-cy='submit'
+                        >
+                            Sign Up
                         </Button>
                     </Box>
                 </form>

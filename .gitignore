@@ -36,10 +36,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Loggings
-/logs
-
 # cypress
 /cypress/screenshots
 /cypress/videos
-cypress.env.json
