@@ -11,6 +11,10 @@ jobs:
               with:
                   node-version: '18.18.0'
             - run: npm ci
+            - name: Write environment variables
+              run: |
+                  echo "${{ secrets.ENV_TEST_LOCAL }}" > .env
+                  echo "" > cypress.config.json
             - name: ESLint
               run: npm run lint
             - name: Prettier

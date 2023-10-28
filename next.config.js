@@ -2,13 +2,13 @@
 const nextConfig = () => {
     const getEnvironmentVariables = () => {
         const environmentVariables = [
-            'NODE_ENV',
             'DATABASE_URL',
             'GOOGLE_CLIENT_ID',
             'GOOGLE_CLIENT_SECRET',
             'NEXT_PUBLIC_BASE_URL',
             'NEXTAUTH_URL',
             'NEXTAUTH_SECRET',
+            'CYPRESS_PROJECT_ID',
         ]
 
         // Check if all environment variables are set
@@ -23,6 +23,7 @@ const nextConfig = () => {
             googleClientId: process.env.GOOGLE_CLIENT_ID,
             googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
             cypressBaseUrl: process.env.CYPRESS_BASE_URL,
+            cypressProjectId: process.env.CYPRESS_PROJECT_ID,
             nextAuthSecret: process.env.NEXTAUTH_SECRET,
         }
     }

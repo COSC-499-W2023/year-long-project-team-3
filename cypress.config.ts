@@ -1,10 +1,12 @@
 import { defineConfig } from 'cypress'
 import clearDB from './cypress/tasks/clearDB'
 
+require('dotenv').config()
+
 export default defineConfig({
-    projectId: process.env.cypressProjectId,
     e2e: {
-        baseUrl: process.env.cypressBaseUrl,
+        projectId: process.env.CYPRESS_PROJECT_ID,
+        baseUrl: process.env.CYPRESS_BASE_URL,
         setupNodeEvents(on, config) {
             // implement node event listeners here
             on('task', {
