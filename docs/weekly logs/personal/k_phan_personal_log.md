@@ -1,23 +1,20 @@
 # K Phan
 
 ## Term 1 Week 6 and 7 (October 09, 2023 - October 22, 2023)
-
 ### Week's Goals
-
--   Finish testing user creation feature
+-  Finish testing user creation feature
 
 ### Tasks Worked on
-
--   Set up deployment for Preview
--   Set up End-to-End testing with Cypress
--   Set up Google Test Account
--   Set up Vercel alias for Preview deployment
--   Set up Cypress Cloud for test monitoring
--   Upgraded Github Actions to run Cypress on Preview deployment
--   Upgraded Github Actions to use test database
--   Added Cypress tests for user creation feature
--   Added logging for project
--   Added saving logs in Github Actions
+- Set up deployment for Preview
+- Set up End-to-End testing with Cypress
+- Set up Google Test Account
+- Set up Vercel alias for Preview deployment
+- Set up Cypress Cloud for test monitoring
+- Upgraded Github Actions to run Cypress on Preview deployment
+- Upgraded Github Actions to use test database
+- Added Cypress tests for user creation feature
+- Added logging for project
+- Added saving logs in Github Actions
 
 ### Teamformation Report
 

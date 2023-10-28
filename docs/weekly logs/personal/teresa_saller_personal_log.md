@@ -73,6 +73,7 @@ In progress:
 
 This week, I finished setting up our testing framework, Cypress. I also spent a lot of time going through tutorials for
 the framework we are going to use, and dockerized our application to ensure operating system differences won't affect
+development.
 
 ### Goals
 
