@@ -2,25 +2,27 @@
 
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
-import Grid from '@mui/material/Grid'
-import Link from '@mui/material/Link'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import Container from '@mui/material/Container'
 import { FormEvent, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import LandingPageAppBar from '@/components/LandingPage/LandingPageAppBar'
 import Logo from '@/components/Logo/logo'
 
 export default function Form() {
+    // Page vars to keep track of if user input is valid or not
     const [isEmailValid, setIsEmailValid] = useState(true)
     const [isPasswordValid, setIsPasswordValid] = useState(true)
     const [isPasswordVerified, setIsPasswordVerified] = useState(true)
     const [isEmailAvailable, setIsEmailAvailable] = useState(true)
     const router = useRouter()
+
+    // Function for when user wants to submit form data
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        // Get data from form
         const formData = new FormData(e.currentTarget)
+        // Send form data to api
         const response = await fetch('api/auth/signup', {
             method: 'POST',
             body: JSON.stringify({
@@ -29,17 +31,21 @@ export default function Form() {
                 passwordCheck: formData.get('passwordCheck'),
             }),
         })
+
+        // Get result from api. Result will be if the users input is valid or not
         const data = await response.json()
         setIsEmailValid(data.body.isEmailValid)
         setIsPasswordValid(data.body.isPasswordValid)
         setIsPasswordVerified(data.body.isPasswordVerified)
         setIsEmailAvailable(data.body.isEmailAvailable)
+        // If all the fields are valid then send user to next page
         if (
             data.body.isEmailValid &&
             data.body.isPasswordValid &&
             data.body.isPasswordVerified &&
             data.body.isEmailAvailable
         ) {
+            // Change this to the login page once developed
             router.push('/')
             router.refresh()
         }
@@ -110,7 +116,6 @@ export default function Form() {
                     </Box>
                 </form>
             </Box>
-
         </>
     )
 }
