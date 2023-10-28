@@ -1,7 +1,12 @@
+'use client'
+
 import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material'
 import Logo from '@/components/Logo/logo'
+import { useRouter } from 'next/navigation'
 
 export default function LandingPageAppBar() {
+    const router = useRouter()
+
     return (
         <AppBar data-cy='landing-page-app-bar' position='static' sx={{ backgroundColor: 'white' }}>
             <Toolbar disableGutters>
@@ -12,7 +17,11 @@ export default function LandingPageAppBar() {
                     Harp
                 </Typography>
                 <Box sx={{ m: 2, display: 'flex', flexDirection: 'row', gap: '16px' }}>
-                    <Button sx={{ textTransform: 'capitalize', fontSize: 20, fontWeight: 'bold', borderRadius: 28 }}>
+                    <Button
+                        sx={{ textTransform: 'capitalize', fontSize: 20, fontWeight: 'bold', borderRadius: 28 }}
+                        data-cy='login-button'
+                        onClick={() => router.push('/signin')}
+                    >
                         Login
                     </Button>
                     <Button
