@@ -51,4 +51,4 @@
 
 ### Additional Context
 
--   The past two weeks were heavy with tutorial work and actually understanding building a Next.JS app
+- The past two weeks were heavy with tutorial work and actually understanding building a Next.JS app

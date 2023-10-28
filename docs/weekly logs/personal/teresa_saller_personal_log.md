@@ -27,6 +27,7 @@ My goals this week were to brainstorm all tasks and finish the project plan.
 
 Since this week was a project planning week, we did not get started on features yet. We will start working on features next week.
 
+
 ## Teresa Saller - Week 5 (2023/10/02 - 2023/10/08)
 
 ![teresa-saller-tasks-w5](imgs/teresa-saller-tasks-w5.png)
@@ -54,6 +55,7 @@ start on our login/logout feature next week.
 This week was focused on setup, so not everyone was able to work on the project concurrently, as there were a lot of
 dependencies.
 
+
 ## Teresa Saller - Week 6&7 (2023/10/09-2023/10/22)
 
 ![teresa-saller-tasks-w6](imgs/teresa-saller-tasks-w6.png)
@@ -61,19 +63,16 @@ dependencies.
 ### Tasks
 
 Completed:
-
--   [Setup Cypress#52](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/52)
--   [Dockerize NextJs Application#30](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/30)
--   [React Tutorial](https://react.dev/learn/tutorial-tic-tac-toe)
+- [Setup Cypress#52](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/52)
+- [Dockerize NextJs Application#30](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/30)
+- [React Tutorial](https://react.dev/learn/tutorial-tic-tac-toe)
 
 In progress:
-
--   [Refactoring test directory #109](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/109)
--   [NextJS Tutorial](https://nextjs.org/learn/basics/create-nextjs-app)
+- [Refactoring test directory #109](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/109)
+- [NextJS Tutorial](https://nextjs.org/learn/basics/create-nextjs-app)
 
 This week, I finished setting up our testing framework, Cypress. I also spent a lot of time going through tutorials for
 the framework we are going to use, and dockerized our application to ensure operating system differences won't affect
-development.
 
 ### Goals
 

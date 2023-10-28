@@ -35,5 +35,5 @@
 
 ### Additional Context
 
--   A lot of time this week was spent on tutorials and research. Most team members are done the Next.Js tutorial (~5h).
--   Additionally, time was spent on researching and flushing out our CI/CD pipeline
+- A lot of time this week was spent on tutorials and research. Most team members are done the Next.Js tutorial (~5h).
+- Additionally, time was spent on researching and flushing out our CI/CD pipeline
