@@ -25,8 +25,9 @@ describe('Test auth', () => {
         }).as('googleSignInCallback')
     })
     it('should log in with google', () => {
-        // TODO: Visit landing page, check if logged in, if not, redirect to /signin instead of visit /signin directly
-        cy.visit('/signin', { headers: getHeaders() })
+        cy.visit('/', { headers: getHeaders() })
+        cy.get('[data-cy="login-button"]').click()
+
         cy.get('h1').should('include.text', 'Sign In Page')
         cy.get('[data-cy="google-sign-in-btn"]').should('include.text', 'Sign in with Google').click()
         cy.wait(['@googleSignInCallback'], { timeout: TIMEOUT.EXTRA_LONG })
