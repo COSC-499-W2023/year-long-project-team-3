@@ -10,7 +10,6 @@ cypress
 
 # Exclude configuration files
 .dockerignore
-.env
 .eslint*
 .gitignore
 .lintstagedrc.js
@@ -25,3 +24,7 @@ docs
 *.md
 
 npm-debug.log
+
+# Environment variables
+.env
+.env*.local

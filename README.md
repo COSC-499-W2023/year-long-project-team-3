@@ -10,54 +10,19 @@
 
 ## Project Setup
 
-First, run the development server:
-
 ### Requirements
 
 -   [NodeJS 18.18](https://nodejs.org/en)
 -   [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
-### Installing Dependencies
+### Step-by-step guide
 
-Run the following command to install dependencies
+-   [Local Development Setup](docs/guides/local_development_setup.md)
+-   [Local Docker Development Setup](docs/guides/local_docker_development_setup.md)
 
-```bash
-npm install
-```
+### Common commands
 
-### Running the Project and the Database
-
-Run the following to start the project and run the dev database
-
-```bash
-docker-compose -f dev-docker-compose.yml up -d
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-### Linting the Project
-
-Run the following to lint and format the project
-
-```bash
-npm run lint
-```
-
-### Testing the Project
-
-Run the following to open Cypress
-
-```bash
-cypress open
-```
-
-### Development environment variable
-
-Add this following code to a `.env` file
-
-```dotenv
-DATABASE_URL="postgresql://postgres:password123@localhost:5432/postgres?schema=dev"
-```
+-   [Common commands](docs/guides/commands.md)
 
 ## Chosen Project
 
