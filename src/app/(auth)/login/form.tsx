@@ -10,6 +10,7 @@ import Container from '@mui/material/Container'
 import { FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
+import { toast } from 'react-toastify'
 
 export default function Form() {
     const router = useRouter()
@@ -27,10 +28,16 @@ export default function Form() {
         })
 
         console.log(signInData)
-
         if (signInData?.error) {
-            // TODO: Add toast message here
-            console.log('Error!')
+            toast.error('An error occurred during sign-up!', {
+                position: 'top-right',
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: 'light',
+            })
         } else {
             router.refresh()
             router.push('/')
