@@ -17,7 +17,6 @@
 - Added saving logs in Github Actions
 
 ### Teamformation Report
-
 ![](./imgs/week-6-k-phan-tasks.png)
 
 ## Term 1 Week 5 (October 02, 2023 - October 08, 2023)
