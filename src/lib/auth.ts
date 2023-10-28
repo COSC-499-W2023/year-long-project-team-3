@@ -85,8 +85,3 @@ export const authOptions: NextAuthOptions = {
         },
     },
 }
-
-function isValidPassword(password: string): boolean {
-    const regExp = new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])(?=.*[a-zA-Z\d@$!%*?&])$/)
-    return password.length >= MIN_PASSWORD_LENGTH && password.length <= MAX_PASSWORD_LENGTH && regExp.test(password)
-}
