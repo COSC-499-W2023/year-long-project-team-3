@@ -10,7 +10,7 @@ export default function LandingPageAppBar() {
     return (
         <AppBar data-cy='landing-page-app-bar' position='static' sx={{ backgroundColor: 'white' }}>
             <Toolbar disableGutters>
-                <Box sx={{ m: 2 }}>
+                <Box sx={{ m: 2 }} onClick={() => router.push('/')}>
                     <Logo fontSize={30} />
                 </Box>
                 <Typography color='primary' variant='h4' component='div' sx={{ flexGrow: 1, fontWeight: 'bold' }}>
@@ -28,6 +28,7 @@ export default function LandingPageAppBar() {
                         variant='contained'
                         sx={{ textTransform: 'capitalize', fontSize: 20, borderRadius: 28 }}
                         data-cy='sign-up-button'
+                        onClick={() => router.push('/signup')}
                     >
                         Sign Up
                     </Button>
