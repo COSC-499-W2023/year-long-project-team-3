@@ -1,5 +1,4 @@
 import { TIMEOUT } from '../../utils/constants'
-import { getHeaders } from '../../utils/headers'
 
 describe('Test auth', () => {
     before(() => {
@@ -25,7 +24,7 @@ describe('Test auth', () => {
         }).as('googleSignInCallback')
     })
     it('should log in with google', () => {
-        cy.visit('/', { headers: getHeaders() })
+        cy.visit('/')
         cy.get('[data-cy="login-button"]').click()
 
         cy.get('h1').should('include.text', 'Sign In Page')
