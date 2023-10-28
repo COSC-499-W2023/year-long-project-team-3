@@ -4,6 +4,9 @@ on:
     push:
         branches-ignore:
             - main
+        paths-ignore:
+            - docs/**
+            - README.md
 jobs:
     cypress-run:
         runs-on: ubuntu-latest
@@ -11,36 +14,34 @@ jobs:
             - name: Wait for preview deployment
               uses: lewagon/wait-on-check-action@v1.3.1
               with:
-                ref: ${{ github.ref }}
-                check-name: 'Deploy Preview'
-                repo-token: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
-                wait-interval: 10
+                  ref: ${{ github.ref }}
+                  check-name: 'Deploy Preview'
+                  repo-token: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
+                  wait-interval: 10
             - name: Checkout
               uses: actions/checkout@v4
-            - name: Write cypress.env.json
-              run: |
-                  echo '${{ secrets.CYPRESS_ENV_CI }}' > cypress.env.json
-            - name: Write .env
+            - name: Write environment variables
               run: |
                   echo "${{ secrets.ENV_TEST_LOCAL }}" > .env
+                  echo "" > cypress.config.json
+            - name: Migrate Database
+              run: npx prisma migrate dev
             - name: Cypress Run Component Tests
               uses: cypress-io/github-action@v6
               env:
-                CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-                GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
+                  CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+                  GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
               with:
-                browser: chrome
-                component: true
-                wait-on: ${{ secrets.CYPRESS_BASE_URL }}
-                config: baseUrl=${{ secrets.CYPRESS_BASE_URL }}
+                  browser: chrome
+                  component: true
+                  wait-on: ${{ secrets.CYPRESS_BASE_URL }}
             - name: Cypress Run E2E Tests
               uses: cypress-io/github-action@v6
               env:
-                CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-                GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
+                  CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+                  GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
               with:
-                install: false
-                config: baseUrl=${{ secrets.CYPRESS_BASE_URL }}
-                wait-on: ${{ secrets.CYPRESS_BASE_URL }}
-                browser: chrome
-                record: true
+                  install: false
+                  wait-on: ${{ secrets.CYPRESS_BASE_URL }}
+                  browser: chrome
+                  record: true

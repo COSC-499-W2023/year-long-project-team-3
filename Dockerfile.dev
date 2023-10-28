@@ -1,0 +1,28 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+
+COPY prisma ./prisma
+
+ARG $ARG_DATABASE_URL
+ENV DATABASE_URL $ARG_DATABASE_URL
+ARG $ARG_NEXTAUTH_URL
+ENV NEXTAUTH_URL $ARG_NEXTAUTH_URL
+
+RUN npm install
+
+COPY . .
+
+RUN rm -rf prisma
+
+RUN mkdir -p .next
+RUN chown node:node . node_modules .next
+RUN chown -R node:node node_modules/.prisma
+
+USER node
+
+EXPOSE 3000
+
+CMD ["npm", "run", "dev"]

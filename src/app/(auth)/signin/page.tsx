@@ -4,8 +4,6 @@ import styles from './SignInPage.module.css'
 import { signIn } from 'next-auth/react'
 import logger from '@/utils/logger'
 
-require('dotenv').config()
-
 const SignInPage = () => {
     return (
         <div className={styles.signInPage} id='sign-in-page'>
