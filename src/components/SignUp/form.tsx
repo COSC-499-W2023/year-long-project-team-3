@@ -4,53 +4,39 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { FormEvent, useState } from 'react'
+import { FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import LandingPageAppBar from '@/components/LandingPage/LandingPageAppBar'
 import Logo from '@/components/Logo/logo'
 
 export default function Form() {
-    // Page vars to keep track of if user input is valid or not
-    const [isEmailValid, setIsEmailValid] = useState(true)
-    const [isPasswordValid, setIsPasswordValid] = useState(true)
-    const [isPasswordVerified, setIsPasswordVerified] = useState(true)
-    const [isEmailAvailable, setIsEmailAvailable] = useState(true)
     const router = useRouter()
-
     // Function for when user wants to submit form data
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         // Get data from form
         const formData = new FormData(e.currentTarget)
-        // Send form data to api
-        const response = await fetch('api/auth/signup', {
-            method: 'POST',
-            body: JSON.stringify({
-                email: formData.get('email'),
-                password: formData.get('password'),
-                passwordCheck: formData.get('passwordCheck'),
-            }),
-        })
 
-        // Get result from api. Result will be if the users input is valid or not
-        const data = await response.json()
-        setIsEmailValid(data.body.isEmailValid)
-        setIsPasswordValid(data.body.isPasswordValid)
-        setIsPasswordVerified(data.body.isPasswordVerified)
-        setIsEmailAvailable(data.body.isEmailAvailable)
-        // If all the fields are valid then send user to next page
-        if (
-            data.body.isEmailValid &&
-            data.body.isPasswordValid &&
-            data.body.isPasswordVerified &&
-            data.body.isEmailAvailable
-        ) {
+        // I have no idea how to check passwords match in any other way
+        const password = formData.get('password')
+        const passwordCheck = formData.get('passwordCheck')
+
+        if (password == passwordCheck) {
+        // Send form data to api
+            const response = await fetch('api/auth/signup', {
+                method: 'POST',
+                body: JSON.stringify({
+                    email: formData.get('email'),
+                    password: formData.get('password'),
+                    passwordCheck: formData.get('passwordCheck'),
+                }),
+            })
+
             // Change this to the login page once developed
             router.push('/')
             router.refresh()
         }
     }
-
     return (
         <>
             <LandingPageAppBar></LandingPageAppBar>
@@ -84,13 +70,10 @@ export default function Form() {
                             style={{width: 400}}
                             margin='normal'
                             variant='outlined'
-                            error={!isEmailValid || !isEmailAvailable}
                             type='email'
                             label='Email Address'
                             name='email'
-                            helperText={
-                                (!isEmailValid && 'Invalid Email') || (!isEmailAvailable && 'Email already in use')
-                            }
+                            required
                             data-cy='email'
                         />
                         <TextField
@@ -98,15 +81,10 @@ export default function Form() {
                             margin='normal'
                             fullWidth
                             variant='outlined'
-                            error={!isPasswordValid}
                             type='password'
                             label='Password'
                             name='password'
-                            helperText={
-                                !isPasswordValid &&
-                                'Password must be at least 8 characters long and have: ' +
-                              'one upper and one lowercase letter, a numeral, a symbol'
-                            }
+                            required
                             data-cy='password'
                         />
                         <TextField
@@ -114,11 +92,10 @@ export default function Form() {
                             margin='normal'
                             fullWidth
                             variant='outlined'
-                            error={!isPasswordVerified}
                             type='password'
                             label='Confirm Password'
                             name='passwordCheck'
-                            helperText={!isPasswordVerified && 'Does not match password'}
+                            required
                             data-cy='passwordVerification'
                         />
                         <Button

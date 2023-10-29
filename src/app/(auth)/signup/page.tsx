@@ -1,5 +1,5 @@
-import Form from './form'
+import Form from '../../../components/SignUp/form'
 
-export default async function SignUp() {
+export default function SignUp() {
     return <Form />
 }

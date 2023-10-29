@@ -1,49 +1,15 @@
 import { NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
-
+import { emailVerification, passwordVerification, passwordMatchVerification, emailExistsInDatabase } from '@/utils/verification'
 export async function POST(req: Request) {
     try {
         // Collect information from page
         const body = await req.json()
         // Deconstruct request
         const { email, password, passwordCheck } = body
-        // Validation variables
-        let isEmailValid = true
-        let isPasswordValid = true
-        let isPasswordVerified = true
-        let isEmailAvailable = true
-
-        // Validate email address using regular expression
-        let emailRegex = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/
-        if (!emailRegex.test(email)) {
-            isEmailValid = false
-        }
-
-        // Validate password using regular expression
-        let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-        if (!passwordRegex.test(password)) {
-            isPasswordValid = false
-        }
-
-        // Validate password and confirmation password are equivalent
-        if (password != passwordCheck) {
-            isPasswordVerified = false
-        }
-
-        // Check if email already exists in database
-        const existingEmail = await prisma.user
-            .findUnique({
-                where: { email: email },
-            })
-            .catch(() => {
-                console.log('Unable to connect to database')
-            })
-        if (existingEmail) {
-            isEmailAvailable = false
-        }
 
         // If all input fields valid, create the user and store in the database
-        if (isEmailValid && isPasswordValid && isPasswordVerified && isEmailAvailable) {
+        if (emailVerification(email) && passwordVerification(password) && passwordMatchVerification(password, passwordCheck) && await emailExistsInDatabase(email)) {
             const newUser = await prisma.user
                 .create({
                     data: {
@@ -55,7 +21,6 @@ export async function POST(req: Request) {
                     console.log('Unable to create user')
                 })
             const userId = await prisma.user.findUnique({ where: { email: email } })
-            console.log(userId)
             if (userId) {
                 const userAccount = await prisma.account
                     .create({
@@ -73,8 +38,7 @@ export async function POST(req: Request) {
         }
 
         // Send off all validation checks to the page so that UI displays possible errors to user
-        const errorBody = { isEmailValid, isPasswordValid, isPasswordVerified, isEmailAvailable }
-        return NextResponse.json({ body: errorBody, error: null })
+        return NextResponse.json({ body: null, error: null })
     } catch (error) {
         return NextResponse.json({ body: null, error: 'error', message: 'Something went wrong!' })
     }
