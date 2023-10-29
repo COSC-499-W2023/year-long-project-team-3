@@ -6,14 +6,14 @@ import Grid from '@mui/material/Grid'
 import Link from '@mui/material/Link'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { FormEvent } from 'react'
+import { type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { toast } from 'react-toastify'
 import LandingPageAppBar from '@/components/LandingPage/LandingPageAppBar'
 import Logo from '@/components/Logo/logo'
 
-export default function Form() {
+export default function LoginForm() {
     const router = useRouter()
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()

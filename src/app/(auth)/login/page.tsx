@@ -1,5 +1,5 @@
-import Form from './form'
+import LoginForm from '../../../components/LoginForm/form'
 
-export default async function Login() {
-    return <Form />
+export default async function LoginPage() {
+    return <LoginForm />
 }

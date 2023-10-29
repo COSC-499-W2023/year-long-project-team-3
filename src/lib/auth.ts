@@ -50,6 +50,7 @@ export const authOptions: NextAuthOptions = {
             async authorize(credentials) {
                 if (!credentials?.email || !credentials?.password) {
                     logger.error('Missing email or password!')
+                    // TODO: Handle error better
                     return null
                 }
                 const existingUser = await prisma.user.findUnique({
@@ -57,11 +58,13 @@ export const authOptions: NextAuthOptions = {
                 })
                 if (!existingUser) {
                     logger.error('No such user!')
+                    // TODO: Handle error better
                     return null
                 }
                 const passwordMatch = await compare(credentials.password, existingUser.password!)
                 if (!passwordMatch) {
                     logger.error('Incorrect password!')
+                    // TODO: Handle error better
                     return null
                 }
                 return {

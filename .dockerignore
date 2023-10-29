@@ -15,7 +15,7 @@ cypress
 .lintstagedrc.js
 .prettier*
 *docker-compose*
-Dockerfile.dev
+*Dockerfile*
 *.config.js
 tsconfig.json
 
