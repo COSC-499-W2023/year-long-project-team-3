@@ -10,7 +10,6 @@ import { type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { toast } from 'react-toastify'
-import LandingPageAppBar from '@/components/LandingPage/LandingPageAppBar'
 import Logo from '@/components/Logo/logo'
 
 export default function LoginForm() {
@@ -47,7 +46,6 @@ export default function LoginForm() {
 
     return (
         <>
-            <LandingPageAppBar></LandingPageAppBar>
             <Box sx={{ marginTop: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Logo fontSize={80} />
             </Box>

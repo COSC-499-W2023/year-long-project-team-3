@@ -1,12 +1,12 @@
-import LandingPageAppBar from '@/components/LandingPage/LandingPageAppBar'
 import Box from '@mui/material/Box'
 import Logo from '@/components/Logo/logo'
 import Typography from '@mui/material/Typography'
+import UserAccountNav from '@/components/UserAccountNav/UserAccountNav'
 
 const page = () => {
     return (
         <>
-            <LandingPageAppBar></LandingPageAppBar>
+            <UserAccountNav></UserAccountNav>
             <Box sx={{ marginTop: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Logo fontSize={80} />
             </Box>

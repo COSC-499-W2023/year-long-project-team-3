@@ -6,7 +6,6 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { FormEvent, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import LandingPageAppBar from '@/components/LandingPage/LandingPageAppBar'
 import Logo from '@/components/Logo/logo'
 import Grid from '@mui/material/Grid'
 import Link from '@mui/material/Link'
@@ -56,7 +55,6 @@ export default function Form() {
 
     return (
         <>
-            <LandingPageAppBar></LandingPageAppBar>
             <Box sx={{ marginTop: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Logo fontSize={80} />
             </Box>

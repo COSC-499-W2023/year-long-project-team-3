@@ -1,6 +1,6 @@
 import { Box, Button, Typography } from '@mui/material'
 import Logo from '@/components/Logo/logo'
-import LandingPageAppBar from '@/components/LandingPage/LandingPageAppBar'
+import UserAccountNav from '@/components/UserAccountNav/UserAccountNav'
 
 const boxCss = {
     display: 'flex',
@@ -12,7 +12,7 @@ const boxCss = {
 export default function Home() {
     return (
         <>
-            <LandingPageAppBar></LandingPageAppBar>
+            <UserAccountNav></UserAccountNav>
             <Box
                 sx={{ display: 'flex', flexGrow: 1, alignItems: 'center', flexDirection: 'column', gap: '2rem', p: 6 }}
             >
