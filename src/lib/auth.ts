@@ -2,6 +2,7 @@ import { type NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import prisma from '@/lib/prisma'
+import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/lib/constants'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import logger from '@/utils/logger'
 import { compare } from 'bcrypt'
@@ -55,6 +56,12 @@ export const authOptions: NextAuthOptions = {
                 if (!existingUser) {
                     throw new Error('No such user!')
                 }
+                if (!isValidPassword(credentials.password)) {
+                    throw new Error('Invalid password!')
+                }
+                if (!isValidEmail(credentials.email)) {
+                    throw new Error('Invalid email!')
+                }
                 const passwordMatch = await compare(credentials.password, existingUser.password!)
                 if (!passwordMatch) {
                     throw new Error('Wrong password!')
@@ -79,4 +86,14 @@ export const authOptions: NextAuthOptions = {
             return baseUrl
         },
     },
+}
+
+function isValidEmail(email: string): boolean {
+    const regExp = new RegExp(/[a-z0-9]+@[a-z]+\.[a-z]{2,3}/)
+    return regExp.test(email)
+}
+
+function isValidPassword(password: string): boolean {
+    const regExp = new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])(?=.*[a-zA-Z\d@$!%*?&])$/)
+    return password.length >= MIN_PASSWORD_LENGTH && password.length <= MAX_PASSWORD_LENGTH && regExp.test(password)
 }
