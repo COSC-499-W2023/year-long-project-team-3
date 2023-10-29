@@ -152,7 +152,8 @@ export default function Form() {
 function signInWithGoogle(e: React.MouseEvent<HTMLButtonElement>): void {
     try {
         e.preventDefault()
-        signIn('google').catch((error) => {
+        // FIXME: callback URL is being ignored
+        signIn('google', { callbackUrl: `${ process.env.NEXT_PUBLIC_BASE_URL }/dashboard` }).catch((error) => {
             logger.error('An unexpected error occurred while log in with Google: ' + error)
         })
     } catch (error) {
