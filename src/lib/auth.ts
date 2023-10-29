@@ -2,7 +2,6 @@ import { type NextAuthOptions, type User } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import prisma from '@/lib/prisma'
-import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/lib/constants'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import logger from '@/utils/logger'
 import { compare } from 'bcrypt'
@@ -24,7 +23,6 @@ export const authOptions: NextAuthOptions = {
     secret: process.env.nextAuthSecret,
     pages: {
         signIn: '/login',
-        error: '/login',
     },
     adapter: PrismaAdapter(prisma),
     session: {
