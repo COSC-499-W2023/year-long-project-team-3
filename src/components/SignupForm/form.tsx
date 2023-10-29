@@ -9,6 +9,8 @@ import { useRouter } from 'next/navigation'
 import Logo from '@/components/Logo/logo'
 import Grid from '@mui/material/Grid'
 import Link from '@mui/material/Link'
+import { signIn } from 'next-auth/react'
+import logger from '@/utils/logger'
 
 export default function Form() {
     // Page vars to keep track of if user input is valid or not
@@ -138,13 +140,22 @@ export default function Form() {
                             </Link>
                         </Grid>
                         <Grid item>
-                            <Link href='/signin' variant='body2'>
-                                Sign up with Google.
-                            </Link>
+                            <Button onClick={(e) => signInWithGoogle(e)}>Sign in with Google.</Button>
                         </Grid>
                     </Grid>
                 </form>
             </Box>
         </>
     )
+}
+
+function signInWithGoogle(e: React.MouseEvent<HTMLButtonElement>): void {
+    try {
+        e.preventDefault()
+        signIn('google').catch((error) => {
+            logger.error('An unexpected error occurred while log in with Google: ' + error)
+        })
+    } catch (error) {
+        logger.error('An unexpected error occurred while log in with Google: ' + error)
+    }
 }

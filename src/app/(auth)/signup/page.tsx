@@ -1,4 +1,4 @@
-import Form from './form'
+import Form from '../../../components/SignupForm/form'
 import UserAccountNav from '@/components/UserAccountNav/UserAccountNav'
 
 export default async function SignUp() {

@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { toast } from 'react-toastify'
 import Logo from '@/components/Logo/logo'
+import logger from '@/utils/logger'
 
 export default function LoginForm() {
     const router = useRouter()
@@ -96,13 +97,22 @@ export default function LoginForm() {
                             </Link>
                         </Grid>
                         <Grid item>
-                            <Link href='/signin' variant='body2'>
-                                Sign in with Google.
-                            </Link>
+                            <Button onClick={(e) => signInWithGoogle(e)}>Sign in with Google.</Button>
                         </Grid>
                     </Grid>
                 </form>
             </Box>
         </>
     )
+}
+
+function signInWithGoogle(e: React.MouseEvent<HTMLButtonElement>): void {
+    try {
+        e.preventDefault()
+        signIn('google').catch((error) => {
+            logger.error('An unexpected error occurred while log in with Google: ' + error)
+        })
+    } catch (error) {
+        logger.error('An unexpected error occurred while log in with Google: ' + error)
+    }
 }

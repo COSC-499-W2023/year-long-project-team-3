@@ -2,8 +2,11 @@ import Box from '@mui/material/Box'
 import Logo from '@/components/Logo/logo'
 import Typography from '@mui/material/Typography'
 import UserAccountNav from '@/components/UserAccountNav/UserAccountNav'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
 
-const page = () => {
+const page = async () => {
+    const session = await getServerSession(authOptions)
     return (
         <>
             <UserAccountNav></UserAccountNav>
@@ -19,7 +22,7 @@ const page = () => {
                 }}
             >
                 <Typography variant='h4' sx={{ fontWeight: 'medium' }}>
-                    Welcome to the dashboard!
+                    Welcome to the dashboard, {session?.user?.email}!
                 </Typography>
             </Box>
         </>
