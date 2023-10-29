@@ -15,7 +15,7 @@ import logger from '@/utils/logger'
 
 export default function LoginForm() {
     const router = useRouter()
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const formData = new FormData(e.currentTarget)
 
@@ -53,7 +53,7 @@ export default function LoginForm() {
                 <Typography variant='h4' sx={{ fontWeight: 'medium' }}>
                     Login
                 </Typography>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleLogin}>
                     <Box
                         gap={1}
                         sx={{

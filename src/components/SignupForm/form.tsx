@@ -12,7 +12,7 @@ import Link from '@mui/material/Link'
 import { signIn } from 'next-auth/react'
 import logger from '@/utils/logger'
 
-export default function Form() {
+export default function SignUpForm() {
     // Page vars to keep track of if user input is valid or not
     const [isEmailValid, setIsEmailValid] = useState(true)
     const [isPasswordValid, setIsPasswordValid] = useState(true)
@@ -21,7 +21,7 @@ export default function Form() {
     const router = useRouter()
 
     // Function for when user wants to submit form data
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    const handleSignUp = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         // Get data from form
         const formData = new FormData(e.currentTarget)
@@ -72,7 +72,7 @@ export default function Form() {
                 <Typography variant='h4' sx={{ fontWeight: 'medium' }}>
                     Sign Up
                 </Typography>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSignUp}>
                     <Box
                         gap={1}
                         sx={{
