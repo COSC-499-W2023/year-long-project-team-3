@@ -62,8 +62,7 @@ export const authOptions: NextAuthOptions = {
                 if (!isValidEmail(credentials.email)) {
                     throw new Error('Invalid email!')
                 }
-                const passwordMatch = await compare(credentials.password, existingUser.password!)
-                if (!passwordMatch) {
+                if (!(await passwordMatch(credentials.password, existingUser.password!))) {
                     throw new Error('Wrong password!')
                 }
                 return {
@@ -94,6 +93,10 @@ function isValidEmail(email: string): boolean {
 }
 
 function isValidPassword(password: string): boolean {
-    const regExp = new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])(?=.*[a-zA-Z\d@$!%*?&])$/)
+    const regExp = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
     return password.length >= MIN_PASSWORD_LENGTH && password.length <= MAX_PASSWORD_LENGTH && regExp.test(password)
+}
+
+async function passwordMatch(enteredPassword: string, password: string) {
+    return await compare(enteredPassword, password)
 }
