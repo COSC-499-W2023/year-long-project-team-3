@@ -83,7 +83,7 @@ export default function Form() {
                         }}
                     >
                         <TextField
-                            style={{width: 400}}
+                            style={{ width: 400 }}
                             margin='normal'
                             variant='outlined'
                             error={!isEmailValid || !isEmailAvailable}
@@ -96,7 +96,7 @@ export default function Form() {
                             data-cy='email'
                         />
                         <TextField
-                            style={{width: 400}}
+                            style={{ width: 400 }}
                             margin='normal'
                             fullWidth
                             variant='outlined'
@@ -107,12 +107,12 @@ export default function Form() {
                             helperText={
                                 !isPasswordValid &&
                                 'Password must be at least 8 characters long and have: ' +
-                              'one upper and one lowercase letter, a numeral, a symbol'
+                                    'one upper and one lowercase letter, a numeral, a symbol'
                             }
                             data-cy='password'
                         />
                         <TextField
-                            style={{width: 400}}
+                            style={{ width: 400 }}
                             margin='normal'
                             fullWidth
                             variant='outlined'
@@ -134,12 +134,12 @@ export default function Form() {
                     </Box>
                     <Grid container>
                         <Grid item xs>
-                            <Link href='/../login' variant='body2' data-cy='login'>
+                            <Link href='/login' variant='body2' data-cy='login'>
                                 Already have an account?
                             </Link>
                         </Grid>
                         <Grid item>
-                            <Link href='/../signin' variant='body2'>
+                            <Link href='/signin' variant='body2'>
                                 Sign up with Google.
                             </Link>
                         </Grid>

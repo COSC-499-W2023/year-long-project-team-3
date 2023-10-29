@@ -30,7 +30,7 @@ export default function LoginForm() {
 
         console.log(signInData)
         if (signInData?.error) {
-            toast.error('An error occurred during sign-up!', {
+            toast.error('An error occurred during login!', {
                 position: 'top-right',
                 autoClose: 3000,
                 hideProgressBar: false,
@@ -73,6 +73,7 @@ export default function LoginForm() {
                         }}
                     >
                         <TextField
+                            style={{ width: 400 }}
                             margin='normal'
                             variant='outlined'
                             type='email'
@@ -81,6 +82,7 @@ export default function LoginForm() {
                             data-cy='email'
                         />
                         <TextField
+                            style={{ width: 400 }}
                             margin='normal'
                             variant='outlined'
                             type='password'
@@ -99,12 +101,12 @@ export default function LoginForm() {
                     </Box>
                     <Grid container>
                         <Grid item xs>
-                            <Link href='/../signup' variant='body2' data-cy='login'>
+                            <Link href='/signup' variant='body2' data-cy='login'>
                                 Don&apos;t have an account?
                             </Link>
                         </Grid>
                         <Grid item>
-                            <Link href='/../signin' variant='body2'>
+                            <Link href='/signin' variant='body2'>
                                 Sign in with Google.
                             </Link>
                         </Grid>
