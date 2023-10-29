@@ -40,6 +40,7 @@ export default function Form() {
         setIsPasswordValid(data.body.isPasswordValid)
         setIsPasswordVerified(data.body.isPasswordVerified)
         setIsEmailAvailable(data.body.isEmailAvailable)
+
         // If all the fields are valid then send user to next page
         if (
             data.body.isEmailValid &&
@@ -47,10 +48,10 @@ export default function Form() {
             data.body.isPasswordVerified &&
             data.body.isEmailAvailable
         ) {
-            // Change this to the login page once developed
-            router.push('/')
+            router.push('/login')
             router.refresh()
         }
+        // TODO: add toast?
     }
 
     return (
