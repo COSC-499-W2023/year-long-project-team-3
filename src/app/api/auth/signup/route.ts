@@ -56,6 +56,22 @@ export async function POST(req: Request) {
                 .catch(() => {
                     console.log('Unable to create user')
                 })
+            const userId = await prisma.user.findUnique({ where: { email: email } })
+            console.log(userId)
+            if (userId) {
+                const userAccount = await prisma.account
+                    .create({
+                        data: {
+                            userId: userId.id,
+                            type: 'oauth',
+                            provider: 'credentials',
+                            providerAccountId: '',
+                        },
+                    })
+                    .catch(() => {
+                        console.log('Unable store user account information')
+                    })
+            }
         }
 
         // Send off all validation checks to the page so that UI displays possible errors to user

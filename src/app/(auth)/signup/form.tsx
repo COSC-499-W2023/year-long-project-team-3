@@ -65,6 +65,7 @@ export default function Form() {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
+                    minWidth: 'md',
                 }}
             >
                 <Typography variant='h4' sx={{ fontWeight: 'medium' }}>
@@ -78,9 +79,11 @@ export default function Form() {
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
+                            minWidth: 'xl',
                         }}
                     >
                         <TextField
+                            style={{width: 400}}
                             margin='normal'
                             variant='outlined'
                             error={!isEmailValid || !isEmailAvailable}
@@ -93,7 +96,9 @@ export default function Form() {
                             data-cy='email'
                         />
                         <TextField
+                            style={{width: 400}}
                             margin='normal'
+                            fullWidth
                             variant='outlined'
                             error={!isPasswordValid}
                             type='password'
@@ -101,12 +106,15 @@ export default function Form() {
                             name='password'
                             helperText={
                                 !isPasswordValid &&
-                                'Password must be at least 8 characters long and have: one upper and one lowercase letter, a numeral, a symbol'
+                                'Password must be at least 8 characters long and have: ' +
+                              'one upper and one lowercase letter, a numeral, a symbol'
                             }
                             data-cy='password'
                         />
                         <TextField
+                            style={{width: 400}}
                             margin='normal'
+                            fullWidth
                             variant='outlined'
                             error={!isPasswordVerified}
                             type='password'
