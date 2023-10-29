@@ -1,4 +1,4 @@
-import { type NextAuthOptions, type User } from 'next-auth'
+import { type NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import prisma from '@/lib/prisma'
@@ -47,23 +47,17 @@ export const authOptions: NextAuthOptions = {
             },
             async authorize(credentials) {
                 if (!credentials?.email || !credentials?.password) {
-                    logger.error('Missing email or password!')
-                    // TODO: Handle error better
-                    return null
+                    throw new Error('Missing email or password!')
                 }
                 const existingUser = await prisma.user.findUnique({
                     where: { email: credentials?.email },
                 })
                 if (!existingUser) {
-                    logger.error('No such user!')
-                    // TODO: Handle error better
-                    return null
+                    throw new Error('No such user!')
                 }
                 const passwordMatch = await compare(credentials.password, existingUser.password!)
                 if (!passwordMatch) {
-                    logger.error('Incorrect password!')
-                    // TODO: Handle error better
-                    return null
+                    throw new Error('Wrong password!')
                 }
                 return {
                     id: existingUser.id,

@@ -29,15 +29,7 @@ export default function LoginForm() {
 
         console.log(signInData)
         if (signInData?.error) {
-            toast.error('An error occurred during login!', {
-                position: 'top-right',
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                theme: 'light',
-            })
+            toast.error(signInData.error)
         } else {
             router.refresh()
             router.push('/dashboard')
