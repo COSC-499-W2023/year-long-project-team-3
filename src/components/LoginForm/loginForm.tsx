@@ -96,7 +96,7 @@ export default function LoginForm() {
                         <Button
                             type='submit'
                             variant='contained'
-                            sx={{ fontSize: 15, borderRadius: 28 }}
+                            sx={{ fontSize: 15, borderRadius: 28, textTransform: 'capitalize' }}
                             data-cy='submit'
                         >
                             Log In
@@ -109,7 +109,11 @@ export default function LoginForm() {
                             </Link>
                         </Grid>
                         <Grid item>
-                            <Button data-cy='google-sign-in-btn' onClick={(e) => signInWithGoogle(e)}>
+                            <Button
+                                data-cy='google-sign-in-btn'
+                                sx={{ textTransform: 'capitalize' }}
+                                onClick={(e) => signInWithGoogle(e)}
+                            >
                                 Sign in with Google
                             </Button>
                         </Grid>
