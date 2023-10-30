@@ -2,11 +2,15 @@ import { NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import logger from '@/utils/logger'
 import { UserSignUpData } from '@/types/auth/user'
+import { isEmailUnique } from '@/utils/verification'
 
 export async function POST(req: Request) {
     try {
         const body: UserSignUpData = await req.json()
         const { email, password } = body
+        if (!(await isEmailUnique(email))) {
+            return NextResponse.json({ error: 'This email address is already in use' }, { status: 400 })
+        }
 
         // If all input fields valid, create the user and store in the database
         if (isSignUpDataValid(body)) {

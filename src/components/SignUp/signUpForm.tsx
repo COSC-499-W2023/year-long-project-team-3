@@ -145,7 +145,11 @@ export default function SignUpForm() {
         })
 
         // Change this to the login page once developed
-        router.push('/')
-        router.refresh()
+        if (response.status == 201) {
+            router.push('/')
+            router.refresh()
+        } else {
+            // TODO: toast error message
+        }
     }
 }
