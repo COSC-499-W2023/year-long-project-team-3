@@ -6,21 +6,35 @@ import Grid from '@mui/material/Grid'
 import Link from '@mui/material/Link'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import React, { type FormEvent, useState } from 'react'
+import React from 'react'
 import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { toast } from 'react-toastify'
 import Logo from '@/components/Logo/logo'
 import logger from '@/utils/logger'
-import { isEmailValid, isPasswordValid } from '@/utils/auth'
+import * as yup from 'yup'
+import { useFormik } from 'formik'
+import { UserSignUpData } from '@/types/auth/user'
+
+const validationSchema = yup.object().shape({
+    email: yup.string().email('Enter a valid email').required('Email is required'),
+    password: yup.string().required('Enter your password'),
+})
 
 export default function LoginForm() {
     const router = useRouter()
 
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [emailError, setEmailError] = useState(false)
-    const [passwordError, setPasswordError] = useState(false)
+    const formik = useFormik({
+        initialValues: {
+            email: '',
+            password: '',
+            passwordConfirmation: '',
+        },
+        validationSchema: validationSchema,
+        onSubmit: (values) => {
+            handleSubmit(values).then()
+        },
+    })
 
     return (
         <>
@@ -33,12 +47,13 @@ export default function LoginForm() {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
+                    minWidth: 'md',
                 }}
             >
                 <Typography variant='h4' sx={{ fontWeight: 'medium' }}>
                     Login
                 </Typography>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={formik.handleSubmit}>
                     <Box
                         gap={1}
                         sx={{
@@ -46,6 +61,7 @@ export default function LoginForm() {
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
+                            minWidth: 'xl',
                         }}
                     >
                         <TextField
@@ -55,10 +71,11 @@ export default function LoginForm() {
                             type='email'
                             label='Email Address'
                             name='email'
-                            required
-                            onChange={(e) => setEmail(e.target.value)}
-                            value={email}
-                            error={emailError}
+                            value={formik.values.email}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            error={formik.touched.email && Boolean(formik.errors.email)}
+                            helperText={formik.touched.email && formik.errors.email}
                             data-cy='email'
                         />
                         <TextField
@@ -69,10 +86,11 @@ export default function LoginForm() {
                             type='password'
                             label='Password'
                             name='password'
-                            required
-                            onChange={(e) => setPassword(e.target.value)}
-                            value={password}
-                            error={passwordError}
+                            value={formik.values.password}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            error={formik.touched.password && Boolean(formik.errors.password)}
+                            helperText={formik.touched.password && formik.errors.password}
                             data-cy='password'
                         />
                         <Button
@@ -101,31 +119,21 @@ export default function LoginForm() {
         </>
     )
 
-    async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-        e.preventDefault()
-        new FormData(e.currentTarget)
+    async function handleSubmit(values: UserSignUpData) {
+        const signInData = await signIn('credentials', {
+            email: values.email,
+            password: values.password,
+            redirect: false,
+        })
 
-        // Validate and set errors on field if not valid
-        setEmailError(!isEmailValid(email))
-        setPasswordError(!isPasswordValid(password))
-        console.log(emailError)
-        console.log(passwordError)
-        console.log(email)
-        console.log(password)
-        if (!emailError && !passwordError) {
-            const signInData = await signIn('credentials', {
-                email: email,
-                password: password,
-                redirect: false,
-            })
-
-            console.log(signInData)
-            if (signInData?.error) {
-                toast.error(signInData.error)
-            } else {
-                router.refresh()
-                router.push('/dashboard')
-            }
+        // Change this to the login page once developed
+        if (!signInData) {
+            toast.error('Error during login!')
+        } else if (signInData.error) {
+            toast.error(signInData.error)
+        } else {
+            router.push('/dashboard')
+            router.refresh()
         }
     }
 }
