@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import React, { FormEvent, useState } from 'react'
+import React from 'react'
 import { useRouter } from 'next/navigation'
 import Logo from '@/components/Logo/logo'
 import Grid from '@mui/material/Grid'
@@ -146,7 +146,8 @@ export default function SignUpForm() {
         </>
     )
 
-    async function handleSubmit(values: FormEvent<HTMLFormElement>) {
+    // FIXME: Parameter values implicitly has an 'any' type
+    async function handleSubmit(values) {
         // Send form data to api
         const response = await fetch('api/auth/signup', {
             method: 'POST',

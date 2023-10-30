@@ -12,7 +12,7 @@ import { signIn } from 'next-auth/react'
 import { toast } from 'react-toastify'
 import Logo from '@/components/Logo/logo'
 import logger from '@/utils/logger'
-import { isEmailValid, isPasswordValid } from '@/utils/verification'
+import { isEmailValid, isPasswordValid } from '@/utils/auth'
 
 export default function LoginForm() {
     const router = useRouter()
