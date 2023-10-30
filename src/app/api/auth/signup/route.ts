@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
-import { isSignUpDataValid } from '@/utils/verification'
 import logger from '@/utils/logger'
 import { UserSignUpData } from '@/types/auth/user'
 
@@ -10,31 +9,18 @@ export async function POST(req: Request) {
         const { email, password } = body
 
         // If all input fields valid, create the user and store in the database
-        if (await isSignUpDataValid(body)) {
-            const userAccount = await prisma.account.create({
-                data: {
-                    userId: '',
-                    type: 'bcrypt',
-                    provider: 'credentials',
-                    providerAccountId: '',
-                },
-            })
-
-            // TODO: Check if new account associate with any user
+        if (isSignUpDataValid(body)) {
             const newUser = await prisma.user.create({
                 data: {
                     email,
                     password,
-                },
-            })
-
-            // Map account to user
-            await prisma.account.update({
-                where: {
-                    id: userAccount.id,
-                },
-                data: {
-                    userId: newUser.id,
+                    accounts: {
+                        create: {
+                            type: 'bcrypt',
+                            provider: 'credentials',
+                            providerAccountId: email,
+                        },
+                    },
                 },
             })
 
@@ -54,7 +40,12 @@ export async function POST(req: Request) {
             )
         }
     } catch (error) {
-        logger.info
+        logger.error(error)
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }
+}
+
+function isSignUpDataValid(signUpData: UserSignUpData) {
+    // TODO: More validation
+    return true
 }

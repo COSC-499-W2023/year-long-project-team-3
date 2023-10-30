@@ -8,7 +8,7 @@ import { FormEvent, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import LandingPageAppBar from '@/components/LandingPage/LandingPageAppBar'
 import Logo from '@/components/Logo/logo'
-import { isEmailUnique, isEmailValid, isPasswordValid } from '@/utils/verification'
+import { isEmailValid, isPasswordValid } from '@/utils/auth'
 
 export default function SignUpForm() {
     const router = useRouter()
@@ -18,7 +18,6 @@ export default function SignUpForm() {
     const [password, setPassword] = useState('')
     const [passwordCheck, setPasswordCheck] = useState('')
     const [emailError, setEmailError] = useState(false)
-    const [duplicateEmailError, setDuplicateEmailError] = useState(false)
     const [passwordError, setPasswordError] = useState(false)
     const [passwordCheckError, setPasswordCheckError] = useState(false)
     return (
@@ -60,7 +59,7 @@ export default function SignUpForm() {
                             required
                             onChange={(e) => setEmail(e.target.value)}
                             value={email}
-                            error={emailError || duplicateEmailError}
+                            error={emailError}
                             data-cy='email'
                         />
                         <TextField
@@ -112,8 +111,7 @@ export default function SignUpForm() {
         setEmailError(!isEmailValid(email))
         setPasswordError(!isPasswordValid(password))
         setPasswordCheckError(password == passwordCheck)
-        setDuplicateEmailError(!isEmailUnique(email))
-        if (emailError && passwordError && passwordCheckError && duplicateEmailError) {
+        if (emailError && passwordError && passwordCheckError) {
             // Send form data to api
             const response = await fetch('api/auth/signup', {
                 method: 'POST',
