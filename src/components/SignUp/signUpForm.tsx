@@ -15,6 +15,7 @@ import * as yup from 'yup'
 import { useFormik } from 'formik'
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/lib/constants'
 import { UserSignUpData } from '@/types/auth/user'
+import { toast } from 'react-toastify'
 
 const getCharacterValidationError = (str: string): string => {
     return `Your password must have at least one ${ str } character.`
@@ -157,12 +158,13 @@ export default function SignUpForm() {
             }),
         })
 
-        // Change this to the login page once developed
-        if (response.status == 201) {
+        const errorMessage = await response.json()
+
+        if (response.status != 201) {
+            toast.error(errorMessage.error)
+        } else {
             router.push('/login')
             router.refresh()
-        } else {
-            // TODO: toast error message (This will be done on Teresa's PR)
         }
     }
 }

@@ -3,6 +3,7 @@ import prisma from '@/lib/prisma'
 import logger from '@/utils/logger'
 import { UserSignUpData } from '@/types/auth/user'
 import { isEmailUnique, isValidPassword } from '@/utils/verification'
+import { hash } from 'bcrypt'
 
 export async function POST(req: Request) {
     try {
@@ -15,10 +16,11 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'The input password is not valid' }, { status: 400 })
         }
 
+        const hashedPassword = await hash(password, 10)
         const newUser = await prisma.user.create({
             data: {
                 email,
-                password,
+                password: hashedPassword,
                 accounts: {
                     create: {
                         type: 'bcrypt',
@@ -28,14 +30,16 @@ export async function POST(req: Request) {
                 },
             },
         })
-        if (newUser != null)
-        {return NextResponse.json(
-            {
-                user: newUser,
-            },
-            { status: 201 }
-        )}
-        else {return NextResponse.json({ error: 'Unable to create user ' }, { status: 500 })}
+        if (newUser != null) {
+            return NextResponse.json(
+                {
+                    user: newUser,
+                },
+                { status: 201 }
+            )
+        } else {
+            return NextResponse.json({ error: 'Unable to create user ' }, { status: 500 })
+        }
     } catch (error) {
         logger.error(error)
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })

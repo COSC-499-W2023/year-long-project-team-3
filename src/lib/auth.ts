@@ -56,6 +56,7 @@ export const authOptions: NextAuthOptions = {
                 if (!existingUser) {
                     throw new Error('No such user!')
                 }
+                // TODO: already checked on frontend, check here as well?
                 if (!isValidPassword(credentials.password)) {
                     throw new Error('Invalid password!')
                 }
