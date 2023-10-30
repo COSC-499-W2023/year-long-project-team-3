@@ -1,4 +1,4 @@
-import SignUpForm from '@/components/SignUp/signUpForm'
+import Form from '../../../components/SignUp/signUpForm'
 import UserAccountNav from '@/components/UserAccountNav/UserAccountNav'
 
 export default async function SignUp() {
@@ -6,7 +6,7 @@ export default async function SignUp() {
     return (
         <>
             <UserAccountNav />
-            <SignUpForm />
+            <Form />
         </>
     )
 }

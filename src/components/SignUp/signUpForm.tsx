@@ -11,50 +11,19 @@ import Grid from '@mui/material/Grid'
 import Link from '@mui/material/Link'
 import { signIn } from 'next-auth/react'
 import logger from '@/utils/logger'
+import { isEmailUnique, isEmailValid, isPasswordValid } from '@/utils/verification'
 
 export default function SignUpForm() {
-    // Page vars to keep track of if user input is valid or not
-    const [isEmailValid, setIsEmailValid] = useState(true)
-    const [isPasswordValid, setIsPasswordValid] = useState(true)
-    const [isPasswordVerified, setIsPasswordVerified] = useState(true)
-    const [isEmailAvailable, setIsEmailAvailable] = useState(true)
     const router = useRouter()
 
-    // Function for when user wants to submit form data
-    const handleSignUp = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        // Get data from form
-        const formData = new FormData(e.currentTarget)
-        // Send form data to api
-        const response = await fetch('api/auth/signup', {
-            method: 'POST',
-            body: JSON.stringify({
-                email: formData.get('email'),
-                password: formData.get('password'),
-                passwordCheck: formData.get('passwordCheck'),
-            }),
-        })
-
-        // Get result from api. Result will be if the users input is valid or not
-        const data = await response.json()
-        setIsEmailValid(data.body.isEmailValid)
-        setIsPasswordValid(data.body.isPasswordValid)
-        setIsPasswordVerified(data.body.isPasswordVerified)
-        setIsEmailAvailable(data.body.isEmailAvailable)
-
-        // If all the fields are valid then send user to next page
-        if (
-            data.body.isEmailValid &&
-            data.body.isPasswordValid &&
-            data.body.isPasswordVerified &&
-            data.body.isEmailAvailable
-        ) {
-            router.push('/login')
-            router.refresh()
-        }
-        // TODO: add toast?
-    }
-
+    // Values for form and form validation
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [passwordCheck, setPasswordCheck] = useState('')
+    const [emailError, setEmailError] = useState(false)
+    const [duplicateEmailError, setDuplicateEmailError] = useState(false)
+    const [passwordError, setPasswordError] = useState(false)
+    const [passwordCheckError, setPasswordCheckError] = useState(false)
     return (
         <>
             <Box sx={{ marginTop: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -72,7 +41,7 @@ export default function SignUpForm() {
                 <Typography variant='h4' sx={{ fontWeight: 'medium' }}>
                     Sign Up
                 </Typography>
-                <form onSubmit={handleSignUp}>
+                <form onSubmit={handleSubmit}>
                     <Box
                         gap={1}
                         sx={{
@@ -87,13 +56,13 @@ export default function SignUpForm() {
                             style={{ width: 400 }}
                             margin='normal'
                             variant='outlined'
-                            error={!isEmailValid || !isEmailAvailable}
                             type='email'
                             label='Email Address'
                             name='email'
-                            helperText={
-                                (!isEmailValid && 'Invalid Email') || (!isEmailAvailable && 'Email already in use')
-                            }
+                            required
+                            onChange={(e) => setEmail(e.target.value)}
+                            value={email}
+                            error={emailError || duplicateEmailError}
                             data-cy='email'
                         />
                         <TextField
@@ -101,15 +70,13 @@ export default function SignUpForm() {
                             margin='normal'
                             fullWidth
                             variant='outlined'
-                            error={!isPasswordValid}
                             type='password'
                             label='Password'
                             name='password'
-                            helperText={
-                                !isPasswordValid &&
-                                'Password must be at least 8 characters long and have: ' +
-                                    'one upper and one lowercase letter, a numeral, a symbol'
-                            }
+                            required
+                            onChange={(e) => setPassword(e.target.value)}
+                            value={password}
+                            error={passwordError}
                             data-cy='password'
                         />
                         <TextField
@@ -117,11 +84,13 @@ export default function SignUpForm() {
                             margin='normal'
                             fullWidth
                             variant='outlined'
-                            error={!isPasswordVerified}
                             type='password'
                             label='Confirm Password'
                             name='passwordCheck'
-                            helperText={!isPasswordVerified && 'Does not match password'}
+                            required
+                            onChange={(e) => setPasswordCheck(e.target.value)}
+                            value={passwordCheck}
+                            error={passwordCheckError}
                             data-cy='passwordVerification'
                         />
                         <Button
@@ -147,6 +116,31 @@ export default function SignUpForm() {
             </Box>
         </>
     )
+
+    async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+        e.preventDefault()
+        const formData = new FormData(e.currentTarget)
+        // Validate and set errors on field if not valid
+        setEmailError(!isEmailValid(email))
+        setPasswordError(!isPasswordValid(password))
+        setPasswordCheckError(password == passwordCheck)
+        setDuplicateEmailError(!isEmailUnique(email))
+        if (emailError && passwordError && passwordCheckError && duplicateEmailError) {
+            // Send form data to api
+            const response = await fetch('api/auth/signup', {
+                method: 'POST',
+                body: JSON.stringify({
+                    email: formData.get('email'),
+                    password: formData.get('password'),
+                    passwordCheck: formData.get('passwordCheck'),
+                }),
+            })
+
+            // Change this to the login page once developed
+            router.push('/')
+            router.refresh()
+        }
+    }
 }
 
 function signInWithGoogle(e: React.MouseEvent<HTMLButtonElement>): void {

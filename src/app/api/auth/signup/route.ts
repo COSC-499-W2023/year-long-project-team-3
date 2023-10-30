@@ -1,83 +1,62 @@
 import { NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { hash } from 'bcrypt'
+import { isSignUpDataValid } from '@/utils/verification'
+import logger from '@/utils/logger'
+import { UserSignUpData } from '@/types/auth/user'
 
 export async function POST(req: Request) {
     try {
-        // Collect information from page
-        const body = await req.json()
-        // Deconstruct request
-        const { email, password, passwordCheck } = body
-        // Validation variables
-        let isEmailValid = true
-        let isPasswordValid = true
-        let isPasswordVerified = true
-        let isEmailAvailable = true
-
-        // Validate email address using regular expression
-        let emailRegex = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/
-        if (!emailRegex.test(email)) {
-            isEmailValid = false
-        }
-
-        // Validate password using regular expression
-        let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-        if (!passwordRegex.test(password)) {
-            isPasswordValid = false
-        }
-
-        // Validate password and confirmation password are equivalent
-        if (password != passwordCheck) {
-            isPasswordVerified = false
-        }
-
-        // Check if email already exists in database
-        const existingEmail = await prisma.user
-            .findUnique({
-                where: { email: email },
-            })
-            .catch(() => {
-                console.log('Unable to connect to database')
-            })
-        if (existingEmail) {
-            isEmailAvailable = false
-        }
+        const body: UserSignUpData = await req.json()
+        const { email, password } = body
 
         // If all input fields valid, create the user and store in the database
         const hashedPassword = await hash(password, 10)
-        if (isEmailValid && isPasswordValid && isPasswordVerified && isEmailAvailable) {
-            const newUser = await prisma.user
-                .create({
-                    data: {
-                        email,
-                        password: hashedPassword,
-                    },
-                })
-                .catch(() => {
-                    console.log('Unable to create user')
-                })
-            const userId = await prisma.user.findUnique({ where: { email: email } })
-            console.log(userId)
-            if (userId) {
-                const userAccount = await prisma.account
-                    .create({
-                        data: {
-                            userId: userId.id,
-                            type: 'oauth',
-                            provider: 'credentials',
-                            providerAccountId: '',
-                        },
-                    })
-                    .catch(() => {
-                        console.log('Unable store user account information')
-                    })
-            }
-        }
+        if (await isSignUpDataValid(body)) {
+            const userAccount = await prisma.account.create({
+                data: {
+                    userId: '',
+                    type: 'bcrypt',
+                    provider: 'credentials',
+                    providerAccountId: '',
+                },
+            })
 
-        // Send off all validation checks to the page so that UI displays possible errors to user
-        const errorBody = { isEmailValid, isPasswordValid, isPasswordVerified, isEmailAvailable }
-        return NextResponse.json({ body: errorBody, error: null })
+            // TODO: Check if new account associate with any user
+            const newUser = await prisma.user.create({
+                data: {
+                    email,
+                    password: hashedPassword,
+                },
+            })
+
+            // Map account to user
+            await prisma.account.update({
+                where: {
+                    id: userAccount.id,
+                },
+                data: {
+                    userId: newUser.id,
+                },
+            })
+
+            return NextResponse.json(
+                {
+                    user: newUser,
+                },
+                { status: 201 }
+            )
+        } else {
+            logger.error(`Cannot create user with ${ email }`)
+            return NextResponse.json(
+                {
+                    error: 'Internal Server Error',
+                },
+                { status: 500 }
+            )
+        }
     } catch (error) {
-        return NextResponse.json({ body: null, error: 'error', message: 'Something went wrong!' })
+        logger.info
+        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }
 }
