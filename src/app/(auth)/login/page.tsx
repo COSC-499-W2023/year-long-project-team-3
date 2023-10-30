@@ -1,8 +1,13 @@
 import LoginForm from '../../../components/LoginForm/form'
 import UserAccountNav from '@/components/UserAccountNav/UserAccountNav'
+import { getServerSession } from 'next-auth'
+import Dashboard from '@/components/Dashboard'
 
 export default async function LoginPage() {
-    return (
+    const session = await getServerSession()
+    return session ? (
+        <Dashboard userEmail={session!.user!.email!}></Dashboard>
+    ) : (
         <>
             <UserAccountNav />
             <LoginForm />

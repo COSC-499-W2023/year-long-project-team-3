@@ -1,14 +1,7 @@
-import { Box, Button, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import Logo from '@/components/Logo/logo'
 import UserAccountNav from '@/components/UserAccountNav/UserAccountNav'
-
-const boxCss = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
-}
-
+import HomePageButton from '@/components/HomePageButton'
 export default function Home() {
     return (
         <>
@@ -48,12 +41,8 @@ export default function Home() {
                     Professional video sharing made easy, with a focus on protecting your privacy
                 </Typography>
                 <Box sx={{ display: 'flex', gap: '1rem' }}>
-                    <Button variant='contained' sx={{ fontSize: 20, borderRadius: 28, textTransform: 'capitalize' }}>
-                        Get Started
-                    </Button>
-                    <Button variant='contained' sx={{ fontSize: 20, borderRadius: 28, textTransform: 'capitalize' }}>
-                        Find Out More
-                    </Button>
+                    <HomePageButton route='/dashboard' text='Get Started'></HomePageButton>
+                    <HomePageButton route='/' text='Find Out More'></HomePageButton>
                 </Box>
             </Box>
         </>
