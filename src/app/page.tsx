@@ -2,6 +2,7 @@ import { Box, Typography } from '@mui/material'
 import Logo from '@/components/Logo/logo'
 import UserAccountNav from '@/components/UserAccountNav/UserAccountNav'
 import HomePageButton from '@/components/HomePageButton'
+
 export default function Home() {
     return (
         <>
@@ -42,7 +43,7 @@ export default function Home() {
                 </Typography>
                 <Box sx={{ display: 'flex', gap: '1rem' }}>
                     <HomePageButton route='/dashboard' text='Get Started'></HomePageButton>
-                    <HomePageButton route='/' text='Find Out More'></HomePageButton>
+                    <HomePageButton route='/learn-more' text='Find Out More'></HomePageButton>
                 </Box>
             </Box>
         </>
