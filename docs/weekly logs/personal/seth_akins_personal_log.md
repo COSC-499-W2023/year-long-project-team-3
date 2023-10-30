@@ -98,3 +98,33 @@ In Progress Tasks:
 - Our group is still getting used to working with NextJS, and our velocity currently looks low but I think that is
   mainly due to that we are not working on many of the project features currently, but still doing a lot of research,
   meetings, and tutorials
+
+## Week 8 (23/10/2023 - 29/10/2023)
+
+### Tasks Breakdown
+
+![](imgs/week-8-seth-akins-task-breakdown.png)
+
+### Goals
+
+- The main goal this week was to finish the parts of the first milestone that are required.
+- For me, this mainly involved implementing the landing page of the website, and reviewing other people's code.
+- I also helped some others with issues they experienced with their tasks
+
+### Tasks
+
+#### Completed Tasks
+
+- [Create Theme for Material UI](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/119)
+- [Minor Fixes](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/121)
+- [Create Landing Page](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/111)
+- [Initial Project Setup](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/24)
+
+#### In Progress Tasks
+
+- N/A
+
+### Additional Context
+
+Overall, I think that the way we split the tasks was not complementary to completing them easily, and I think that we
+will have to reconsider how we do that moving forwards.
