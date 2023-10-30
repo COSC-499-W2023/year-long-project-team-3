@@ -97,7 +97,9 @@ export default function LoginForm() {
                             </Link>
                         </Grid>
                         <Grid item>
-                            <Button onClick={(e) => signInWithGoogle(e)}>Sign in with Google.</Button>
+                            <Button data-cy='google-sign-in-btn' onClick={(e) => signInWithGoogle(e)}>
+                                Sign in with Google.
+                            </Button>
                         </Grid>
                     </Grid>
                 </form>

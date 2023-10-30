@@ -1,5 +1,7 @@
 import { TIMEOUT } from '../../utils/constants'
 
+// TODO: fix
+
 describe('Test auth', () => {
     before(() => {
         cy.task('clearDB')
@@ -27,8 +29,8 @@ describe('Test auth', () => {
         cy.visit('/')
         cy.get('[data-cy="login-button"]').click()
 
-        cy.get('h1').should('include.text', 'Sign In Page')
-        cy.get('[data-cy="google-sign-in-btn"]').should('include.text', 'Sign in with Google').click()
+        cy.get('h4').should('include.text', 'Login')
+        cy.get('[data-cy="google-sign-in-btn"]').should('include.text', 'Sign in with Google.').click()
         cy.wait(['@googleSignInCallback'], { timeout: TIMEOUT.EXTRA_LONG })
 
         cy.location('origin', { timeout: TIMEOUT.EXTRA_LONG }).should('eq', Cypress.config().baseUrl)
