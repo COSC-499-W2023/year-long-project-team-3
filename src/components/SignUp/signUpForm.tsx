@@ -4,42 +4,26 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { FormEvent } from 'react'
+import { FormEvent, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import LandingPageAppBar from '@/components/LandingPage/LandingPageAppBar'
 import Logo from '@/components/Logo/logo'
+import { isEmailUnique, isEmailValid, isPasswordValid } from '@/utils/verification'
 
-export default function Form() {
+export default function SignUpForm() {
     const router = useRouter()
-    // Function for when user wants to submit form data
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        // Get data from form
-        const formData = new FormData(e.currentTarget)
 
-        // I have no idea how to check passwords match in any other way
-        const password = formData.get('password')
-        const passwordCheck = formData.get('passwordCheck')
-
-        if (password == passwordCheck) {
-        // Send form data to api
-            const response = await fetch('api/auth/signup', {
-                method: 'POST',
-                body: JSON.stringify({
-                    email: formData.get('email'),
-                    password: formData.get('password'),
-                    passwordCheck: formData.get('passwordCheck'),
-                }),
-            })
-
-            // Change this to the login page once developed
-            router.push('/')
-            router.refresh()
-        }
-    }
+    // Values for form and form validation
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [passwordCheck, setPasswordCheck] = useState('')
+    const [emailError, setEmailError] = useState(false)
+    const [duplicateEmailError, setDuplicateEmailError] = useState(false)
+    const [passwordError, setPasswordError] = useState(false)
+    const [passwordCheckError, setPasswordCheckError] = useState(false)
     return (
         <>
-            <LandingPageAppBar></LandingPageAppBar>
+            <LandingPageAppBar />
             <Box sx={{ marginTop: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Logo fontSize={80} />
             </Box>
@@ -67,17 +51,20 @@ export default function Form() {
                         }}
                     >
                         <TextField
-                            style={{width: 400}}
+                            style={{ width: 400 }}
                             margin='normal'
                             variant='outlined'
                             type='email'
                             label='Email Address'
                             name='email'
                             required
+                            onChange={(e) => setEmail(e.target.value)}
+                            value={email}
+                            error={emailError || duplicateEmailError}
                             data-cy='email'
                         />
                         <TextField
-                            style={{width: 400}}
+                            style={{ width: 400 }}
                             margin='normal'
                             fullWidth
                             variant='outlined'
@@ -85,10 +72,13 @@ export default function Form() {
                             label='Password'
                             name='password'
                             required
+                            onChange={(e) => setPassword(e.target.value)}
+                            value={password}
+                            error={passwordError}
                             data-cy='password'
                         />
                         <TextField
-                            style={{width: 400}}
+                            style={{ width: 400 }}
                             margin='normal'
                             fullWidth
                             variant='outlined'
@@ -96,6 +86,9 @@ export default function Form() {
                             label='Confirm Password'
                             name='passwordCheck'
                             required
+                            onChange={(e) => setPasswordCheck(e.target.value)}
+                            value={passwordCheck}
+                            error={passwordCheckError}
                             data-cy='passwordVerification'
                         />
                         <Button
@@ -111,4 +104,29 @@ export default function Form() {
             </Box>
         </>
     )
+
+    async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+        e.preventDefault()
+        const formData = new FormData(e.currentTarget)
+        // Validate and set errors on field if not valid
+        setEmailError(!isEmailValid(email))
+        setPasswordError(!isPasswordValid(password))
+        setPasswordCheckError(password == passwordCheck)
+        setDuplicateEmailError(!isEmailUnique(email))
+        if (emailError && passwordError && passwordCheckError && duplicateEmailError) {
+            // Send form data to api
+            const response = await fetch('api/auth/signup', {
+                method: 'POST',
+                body: JSON.stringify({
+                    email: formData.get('email'),
+                    password: formData.get('password'),
+                    passwordCheck: formData.get('passwordCheck'),
+                }),
+            })
+
+            // Change this to the login page once developed
+            router.push('/')
+            router.refresh()
+        }
+    }
 }

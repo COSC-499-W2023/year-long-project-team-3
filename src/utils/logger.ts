@@ -10,7 +10,7 @@ export default pino({
                 } else if (obj['level'] >= 30) {
                     console.warn(objStr)
                 } else {
-                    console.log(objStr)
+                    console.info(objStr)
                 }
             }
             try {
