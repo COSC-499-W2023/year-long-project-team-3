@@ -10,6 +10,7 @@ import Logo from '@/components/Logo/logo'
 import * as yup from 'yup'
 import { useFormik } from 'formik'
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/lib/constants'
+import { UserSignUpData } from '@/types/auth/user'
 
 const getCharacterValidationError = (str: string): string => {
     return `Your password must have at least one ${ str } character.`
@@ -133,7 +134,7 @@ export default function SignUpForm() {
         </>
     )
 
-    async function handleSubmit(values) {
+    async function handleSubmit(values: UserSignUpData) {
         // Send form data to api
         const response = await fetch('api/auth/signup', {
             method: 'POST',
