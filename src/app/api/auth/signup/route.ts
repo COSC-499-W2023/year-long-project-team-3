@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
-import { hash } from 'bcrypt'
 import { isSignUpDataValid } from '@/utils/verification'
 import logger from '@/utils/logger'
 import { UserSignUpData } from '@/types/auth/user'
@@ -11,7 +10,6 @@ export async function POST(req: Request) {
         const { email, password } = body
 
         // If all input fields valid, create the user and store in the database
-        const hashedPassword = await hash(password, 10)
         if (await isSignUpDataValid(body)) {
             const userAccount = await prisma.account.create({
                 data: {
@@ -26,7 +24,7 @@ export async function POST(req: Request) {
             const newUser = await prisma.user.create({
                 data: {
                     email,
-                    password: hashedPassword,
+                    password,
                 },
             })
 

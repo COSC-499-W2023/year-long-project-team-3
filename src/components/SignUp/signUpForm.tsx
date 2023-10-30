@@ -124,8 +124,8 @@ export default function SignUpForm() {
         setEmailError(!isEmailValid(email))
         setPasswordError(!isPasswordValid(password))
         setPasswordCheckError(password == passwordCheck)
-        setDuplicateEmailError(!isEmailUnique(email))
-        if (emailError && passwordError && passwordCheckError && duplicateEmailError) {
+        setDuplicateEmailError(!(await isEmailUnique(email)))
+        if (!emailError && !passwordError && !passwordCheckError && !duplicateEmailError) {
             // Send form data to api
             const response = await fetch('api/auth/signup', {
                 method: 'POST',
