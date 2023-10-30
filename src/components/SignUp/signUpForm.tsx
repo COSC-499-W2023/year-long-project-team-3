@@ -157,8 +157,13 @@ export default function SignUpForm() {
             }),
         })
 
-        router.push('/login')
-        router.refresh()
+        // Change this to the login page once developed
+        if (response.status == 201) {
+            router.push('/login')
+            router.refresh()
+        } else {
+            // TODO: toast error message (This will be done on Teresa's PR)
+        }
     }
 }
 
