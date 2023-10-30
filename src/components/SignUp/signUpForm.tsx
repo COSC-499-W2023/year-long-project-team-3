@@ -4,22 +4,48 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { FormEvent, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import LandingPageAppBar from '@/components/LandingPage/LandingPageAppBar'
 import Logo from '@/components/Logo/logo'
-import { isEmailValid, isPasswordValid } from '@/utils/auth'
+import * as yup from 'yup'
+import { useFormik } from 'formik'
+import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/lib/constants'
+
+const getCharacterValidationError = (str: string): string => {
+    return `Your password must have at least one ${ str } character.`
+}
+
+const validationSchema = yup.object().shape({
+    email: yup.string().email('Enter a valid email').required('Email is required'),
+    password: yup
+        .string()
+        .min(MIN_PASSWORD_LENGTH, `Password should be a minimum of ${ MIN_PASSWORD_LENGTH } characters long.`)
+        .max(MAX_PASSWORD_LENGTH, `Password should be a maximum of ${ MAX_PASSWORD_LENGTH } characters long.`)
+        .required('Enter your password')
+        .matches(/[0-9]/, getCharacterValidationError('number'))
+        .matches(/[a-z]/, getCharacterValidationError('lowercase'))
+        .matches(/[A-Z]/, getCharacterValidationError('uppercase')),
+    passwordConfirmation: yup
+        .string()
+        .required('Please re-type your password')
+        .oneOf([yup.ref('password')], 'Your passwords must match'),
+})
 
 export default function SignUpForm() {
     const router = useRouter()
 
-    // Values for form and form validation
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [passwordCheck, setPasswordCheck] = useState('')
-    const [emailError, setEmailError] = useState(false)
-    const [passwordError, setPasswordError] = useState(false)
-    const [passwordCheckError, setPasswordCheckError] = useState(false)
+    const formik = useFormik({
+        initialValues: {
+            email: '',
+            password: '',
+            passwordConfirmation: '',
+        },
+        validationSchema: validationSchema,
+        onSubmit: (values) => {
+            handleSubmit(values).then()
+        },
+    })
+
     return (
         <>
             <LandingPageAppBar />
@@ -38,7 +64,7 @@ export default function SignUpForm() {
                 <Typography variant='h4' sx={{ fontWeight: 'medium' }}>
                     Sign Up
                 </Typography>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={formik.handleSubmit}>
                     <Box
                         gap={1}
                         sx={{
@@ -56,10 +82,11 @@ export default function SignUpForm() {
                             type='email'
                             label='Email Address'
                             name='email'
-                            required
-                            onChange={(e) => setEmail(e.target.value)}
-                            value={email}
-                            error={emailError}
+                            value={formik.values.email}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            error={formik.touched.email && Boolean(formik.errors.email)}
+                            helperText={formik.touched.email && formik.errors.email}
                             data-cy='email'
                         />
                         <TextField
@@ -70,10 +97,11 @@ export default function SignUpForm() {
                             type='password'
                             label='Password'
                             name='password'
-                            required
-                            onChange={(e) => setPassword(e.target.value)}
-                            value={password}
-                            error={passwordError}
+                            value={formik.values.password}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            error={formik.touched.password && Boolean(formik.errors.password)}
+                            helperText={formik.touched.password && formik.errors.password}
                             data-cy='password'
                         />
                         <TextField
@@ -83,11 +111,12 @@ export default function SignUpForm() {
                             variant='outlined'
                             type='password'
                             label='Confirm Password'
-                            name='passwordCheck'
-                            required
-                            onChange={(e) => setPasswordCheck(e.target.value)}
-                            value={passwordCheck}
-                            error={passwordCheckError}
+                            name='passwordConfirmation'
+                            value={formik.values.passwordConfirmation}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            error={formik.touched.passwordConfirmation && Boolean(formik.errors.passwordConfirmation)}
+                            helperText={formik.touched.passwordConfirmation && formik.errors.passwordConfirmation}
                             data-cy='passwordVerification'
                         />
                         <Button
@@ -104,27 +133,18 @@ export default function SignUpForm() {
         </>
     )
 
-    async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-        e.preventDefault()
-        const formData = new FormData(e.currentTarget)
-        // Validate and set errors on field if not valid
-        setEmailError(!isEmailValid(email))
-        setPasswordError(!isPasswordValid(password))
-        setPasswordCheckError(password == passwordCheck)
-        if (emailError && passwordError && passwordCheckError) {
-            // Send form data to api
-            const response = await fetch('api/auth/signup', {
-                method: 'POST',
-                body: JSON.stringify({
-                    email: formData.get('email'),
-                    password: formData.get('password'),
-                    passwordCheck: formData.get('passwordCheck'),
-                }),
-            })
+    async function handleSubmit(values) {
+        // Send form data to api
+        const response = await fetch('api/auth/signup', {
+            method: 'POST',
+            body: JSON.stringify({
+                email: values.email,
+                password: values.password,
+            }),
+        })
 
-            // Change this to the login page once developed
-            router.push('/')
-            router.refresh()
-        }
+        // Change this to the login page once developed
+        router.push('/')
+        router.refresh()
     }
 }

@@ -3,7 +3,7 @@ import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/lib/constants'
 export function isEmailValid(email: string) {
     // Validate email address using regular expression
     let emailRegex = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/
-    return !emailRegex.test(email)
+    return emailRegex.test(email)
 }
 
 export function isPasswordValid(password: string) {
