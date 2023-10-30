@@ -1,6 +1,5 @@
 import prisma from '@/lib/prisma'
 import logger from '@/utils/logger'
-import { bool } from 'yup'
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/lib/constants'
 
 export async function isEmailUnique(email: string): Promise<boolean> {
