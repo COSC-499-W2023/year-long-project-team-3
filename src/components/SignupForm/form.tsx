@@ -140,7 +140,7 @@ export default function SignUpForm() {
                             </Link>
                         </Grid>
                         <Grid item>
-                            <Button onClick={(e) => signInWithGoogle(e)}>Sign in with Google.</Button>
+                            <Button onClick={(e) => signInWithGoogle(e)}>Sign in with Google</Button>
                         </Grid>
                     </Grid>
                 </form>

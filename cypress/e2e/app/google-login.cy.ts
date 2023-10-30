@@ -1,7 +1,5 @@
 import { TIMEOUT } from '../../utils/constants'
 
-// TODO: fix
-
 describe('Test auth', () => {
     before(() => {
         cy.task('clearDB')
