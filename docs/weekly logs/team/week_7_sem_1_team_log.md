@@ -3,7 +3,7 @@
 ## Team 3 - Week 6&7 (09/10/2023 - 22/10/2023)
 
 ### Milestone Goals
-
+  
 -   Project and Environment setup (dockerization, setting up CI + linting, database setup)
 -   User account creation, login and logout
 
@@ -35,5 +35,5 @@
 
 ### Additional Context
 
--   A lot of time this week was spent on tutorials and research. Most team members are done the Next.Js tutorial (~5h).
--   Additionally, time was spent on researching and flushing out our CI/CD pipeline
+- A lot of time this week was spent on tutorials and research. Most team members are done the Next.Js tutorial (~5h).
+- Additionally, time was spent on researching and flushing out our CI/CD pipeline
