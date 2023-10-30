@@ -52,3 +52,24 @@
 ### Additional Context
 
 -   The past two weeks were heavy with tutorial work and actually understanding building a Next.JS app
+
+## Week 8 (23/10/2023 - 29/10/2023)
+
+![](imgs/week-8-erin-tasks.png)
+
+### Week Tasks
+
+-   Log in/Log out/Sign up #34 (In progress)
+-   Handle backend for sign up #45 (In review)
+-   Create sign up form UI #43 (In review)
+
+### Week Goals
+
+-   Completed cypress testing for sign in page
+-   Connected database to current sign up functions, now queries the database for already created accounts and also create accounts
+-   Further researching methods of sign up for a Next.JS application in the terms of more specific UI elements
+-   Finished up signup and addressed reviews on it
+
+### Additional Context
+
+-   My branch was heavily dependent on the database and that not being merged into master until friday evening prevented reviews on signup branch
