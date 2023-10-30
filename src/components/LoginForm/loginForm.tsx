@@ -6,36 +6,21 @@ import Grid from '@mui/material/Grid'
 import Link from '@mui/material/Link'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import React, { type FormEvent } from 'react'
+import React, { type FormEvent, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { toast } from 'react-toastify'
 import Logo from '@/components/Logo/logo'
 import logger from '@/utils/logger'
+import { isEmailValid, isPasswordValid } from '@/utils/verification'
 
 export default function LoginForm() {
     const router = useRouter()
-    const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        const formData = new FormData(e.currentTarget)
 
-        const email = formData.get('email')
-        const password = formData.get('password')
-
-        const signInData = await signIn('credentials', {
-            email: email,
-            password: password,
-            redirect: false,
-        })
-
-        console.log(signInData)
-        if (signInData?.error) {
-            toast.error(signInData.error)
-        } else {
-            router.refresh()
-            router.push('/dashboard')
-        }
-    }
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [emailError, setEmailError] = useState(false)
+    const [passwordError, setPasswordError] = useState(false)
 
     return (
         <>
@@ -53,7 +38,7 @@ export default function LoginForm() {
                 <Typography variant='h4' sx={{ fontWeight: 'medium' }}>
                     Login
                 </Typography>
-                <form onSubmit={handleLogin}>
+                <form onSubmit={handleSubmit}>
                     <Box
                         gap={1}
                         sx={{
@@ -70,15 +55,24 @@ export default function LoginForm() {
                             type='email'
                             label='Email Address'
                             name='email'
+                            required
+                            onChange={(e) => setEmail(e.target.value)}
+                            value={email}
+                            error={emailError}
                             data-cy='email'
                         />
                         <TextField
                             style={{ width: 400 }}
                             margin='normal'
+                            fullWidth
                             variant='outlined'
                             type='password'
                             label='Password'
                             name='password'
+                            required
+                            onChange={(e) => setPassword(e.target.value)}
+                            value={password}
+                            error={passwordError}
                             data-cy='password'
                         />
                         <Button
@@ -106,6 +100,34 @@ export default function LoginForm() {
             </Box>
         </>
     )
+
+    async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+        e.preventDefault()
+        new FormData(e.currentTarget)
+
+        // Validate and set errors on field if not valid
+        setEmailError(!isEmailValid(email))
+        setPasswordError(!isPasswordValid(password))
+        console.log(emailError)
+        console.log(passwordError)
+        console.log(email)
+        console.log(password)
+        if (!emailError && !passwordError) {
+            const signInData = await signIn('credentials', {
+                email: email,
+                password: password,
+                redirect: false,
+            })
+
+            console.log(signInData)
+            if (signInData?.error) {
+                toast.error(signInData.error)
+            } else {
+                router.refresh()
+                router.push('/dashboard')
+            }
+        }
+    }
 }
 
 function signInWithGoogle(e: React.MouseEvent<HTMLButtonElement>): void {

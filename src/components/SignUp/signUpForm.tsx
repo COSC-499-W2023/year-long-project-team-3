@@ -137,7 +137,7 @@ export default function SignUpForm() {
             })
 
             // Change this to the login page once developed
-            router.push('/')
+            router.push('/login')
             router.refresh()
         }
     }

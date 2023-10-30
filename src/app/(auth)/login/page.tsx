@@ -1,4 +1,4 @@
-import LoginForm from '../../../components/LoginForm/form'
+import LoginForm from '../../../components/LoginForm/loginForm'
 import UserAccountNav from '@/components/UserAccountNav/UserAccountNav'
 import { getServerSession } from 'next-auth'
 import Dashboard from '@/components/Dashboard'
