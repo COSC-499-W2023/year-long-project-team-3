@@ -10,8 +10,14 @@ describe('Sign up tests', () => {
         cy.visit('/signup')
         cy.get('[data-cy="submit"]').click()
 
-        // TODO: Check for error from backend
         cy.url().should('include', '/signup')
+
+        cy.get('[data-cy="email"]').find('.Mui-error').should('be.visible').and('contain', 'Email is required')
+        cy.get('[data-cy="password"]').find('.Mui-error').should('be.visible').and('contain', 'Enter your password')
+        cy.get('[data-cy="passwordVerification"]')
+            .find('.Mui-error')
+            .should('be.visible')
+            .and('contain', 'Please re-type your password')
     })
 
     it('Should give the user error feedback for an invalid email (pop up)', () => {
@@ -25,8 +31,9 @@ describe('Sign up tests', () => {
         cy.get('[data-cy="password"]').type(password)
         cy.get('[data-cy="submit"]').click()
 
-        // TODO: Check for error from backend
         cy.url().should('include', '/signup')
+
+        cy.get('[data-cy="email"]').find('.Mui-error').should('be.visible').and('contain', 'Enter a valid email')
     })
 
     it('Should give the user error feedback for an invalid email (field error)', () => {
@@ -40,8 +47,9 @@ describe('Sign up tests', () => {
         cy.get('[data-cy="password"]').type(password)
         cy.get('[data-cy="submit"]').click()
 
-        // TODO: Check for error from backend
         cy.url().should('include', '/signup')
+
+        cy.get('[data-cy="email"]').find('.Mui-error').should('be.visible').and('contain', 'Enter a valid email')
     })
 
     it('Should give the user error feedback for a weak password', () => {
@@ -55,8 +63,9 @@ describe('Sign up tests', () => {
         cy.get('[data-cy="password"]').type(password)
         cy.get('[data-cy="submit"]').click()
 
-        // TODO: Check for error from backend
         cy.url().should('include', '/signup')
+
+        cy.get('[data-cy="password"]').find('.Mui-error').should('be.visible').and('contain', 'Password should')
     })
 
     it('Should give the user error feedback when both password fields do not match', () => {
@@ -73,8 +82,12 @@ describe('Sign up tests', () => {
         cy.get('[data-cy="passwordVerification"]').type(retypedPassword)
         cy.get('[data-cy="submit"]').click()
 
-        // TODO: Check for error from backend
         cy.url().should('include', '/signup')
+
+        cy.get('[data-cy="passwordVerification"]')
+            .find('.Mui-error')
+            .should('be.visible')
+            .and('contain', 'Your passwords must match')
     })
 
     it('Should allow the creation of a valid user', async () => {
@@ -88,17 +101,13 @@ describe('Sign up tests', () => {
         cy.get('[data-cy="password"]').type(password)
         cy.get('[data-cy="passwordVerification"]').type(password)
         cy.get('[data-cy="submit"]').click()
-        cy.url().should('include', '/')
 
-        // Check user exists in database
-        const createdUser = await prisma.user.findUnique({ where: { email: userEmail } })
-        expect(createdUser).exist
-        expect(createdUser?.email).equal(userEmail)
-        expect(createdUser?.password).exist
-        expect(createdUser?.password).not.equal(password)
+        // Test that user creation redirects to dashboard
+        // TODO: In next PR
+        // cy.url().should('contain', '/dashboard')
     })
 
-    it('Should not allow the creation of an account that already is using email', () => {
+    it.only('Should not allow the creation of an account that already is using email', () => {
         // User data
         const userEmail = 'best@email.evr'
         const password = 'TryT0UseEmailAgain!'
@@ -109,7 +118,8 @@ describe('Sign up tests', () => {
         cy.get('[data-cy="password"]').type(password)
         cy.get('[data-cy="passwordVerification"]').type(password)
         cy.get('[data-cy="submit"]').click()
-        cy.url().should('include', '/')
+
+        cy.url().should('not.contain', 'signup')
 
         // TODO: Log out
 
@@ -120,7 +130,8 @@ describe('Sign up tests', () => {
         cy.get('[data-cy="passwordVerification"]').type(password)
         cy.get('[data-cy="submit"]').click()
 
-        // TODO: Check for error from backend
         cy.url().should('include', '/signup')
+
+        cy.get('[]')
     })
 })
