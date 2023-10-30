@@ -6,9 +6,11 @@ describe('test page', () => {
         cy.get('[data-cy="sign-up-button"]').contains('Sign Up')
     })
 
-    it('contains platform description', () => {
+    it('Contains platform description', () => {
         cy.visit('/')
-        cy.get('[data-cy="motto"').contains('Secure Platform')
+        cy.get('[data-cy="motto"]').contains('Secure Platform')
         cy.get('[data-cy="platform-description"]').contains('Professional video')
     })
+
+    // TODO: add tests for buttons and navigation
 })
