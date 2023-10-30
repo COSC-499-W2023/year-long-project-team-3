@@ -22,7 +22,7 @@ describe('Sign up tests', () => {
         // Check that a valid email must be entered
         cy.visit('/signup')
         cy.get('[data-cy="email"]').type(email)
-        cy.get('[data-cy="email"]').type(password)
+        cy.get('[data-cy="password"]').type(password)
         cy.get('[data-cy="submit"]').click()
 
         // TODO: Check for error from backend
@@ -37,7 +37,7 @@ describe('Sign up tests', () => {
         // Second email verification
         cy.visit('/signup')
         cy.get('[data-cy="email"]').type(email)
-        cy.get('[data-cy="email"]').type(password)
+        cy.get('[data-cy="password"]').type(password)
         cy.get('[data-cy="submit"]').click()
 
         // TODO: Check for error from backend
@@ -52,7 +52,7 @@ describe('Sign up tests', () => {
         // Check that appropriate password form must be used
         cy.visit('/signup')
         cy.get('[data-cy="email"]').type(email)
-        cy.get('[data-cy="email"]').type(password)
+        cy.get('[data-cy="password"]').type(password)
         cy.get('[data-cy="submit"]').click()
 
         // TODO: Check for error from backend

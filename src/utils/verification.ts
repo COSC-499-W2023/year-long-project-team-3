@@ -4,7 +4,7 @@ import { UserSignUpData } from '@/types/auth/user'
 
 export function isEmailValid(email: string) {
     // Validate email address using regular expression
-    let emailRegex = /[a-z0-9]+@[a-z]{2,3}/
+    let emailRegex = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/
     return !emailRegex.test(email)
 }
 
