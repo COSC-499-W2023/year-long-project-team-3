@@ -7,9 +7,29 @@ on:
     workflow_dispatch:
 
 jobs:
+    lint:
+        name: Lint
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@v4
+            -   uses: actions/setup-node@v3
+                with:
+                    node-version: '18.18.0'
+            -   name: Install dependencies
+                run: npm ci
+            -   name: Write environment variables
+                run: |
+                    echo "${{ secrets.ENV_TEST_LOCAL }}" > .env
+                    echo "" > cypress.config.json
+            -   name: ESLint
+                run: npm run lint
+            -   name: Prettier
+                run: npx prettier . --check
+
     deploy-preview:
         name: Deploy Preview
         runs-on: ubuntu-latest
+        needs: [ lint ]
         env:
             VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
             VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
@@ -62,11 +82,29 @@ jobs:
                     parallel: true
                     config: baseUrl=${{ secrets.CYPRESS_BASE_URL }}
 
+    cypress-component:
+        name: Cypress Run Component tests on Preview deployment
+        runs-on: ubuntu-latest
+        needs: [ deploy-preview, setup-preview-db ]
+        steps:
+            -   uses: actions/checkout@v4
+            -   name: Write environment variables
+                run: |
+                    echo "${{ secrets.ENV_PREVIEW }}" > .env
+            -   name: Run Component Tests
+                uses: cypress-io/github-action@v6
+                env:
+                    CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+                    GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
+                with:
+                    browser: chrome
+                    component: true
+
 
     deploy-production:
         name: Deploy Production
         runs-on: ubuntu-latest
-        needs: [ cypress-e2e ]
+        needs: [ cypress-e2e, cypress-component ]
         env:
             VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
             VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
