@@ -44,7 +44,7 @@ jobs:
     cypress-e2e:
         name: Run cypress E2E tests on Preview deployment
         runs-on: ubuntu-latest
-        needs: [ deploy-preview, setup-db ]
+        needs: [ deploy-preview, setup-preview-db ]
         steps:
             -   uses: actions/checkout@v4
             -   name: Write environment variables
