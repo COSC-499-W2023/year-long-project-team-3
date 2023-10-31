@@ -28,6 +28,7 @@ describe('Sign up tests', () => {
         const testValues = [
             { email: 'badEmail', expectedResponse: 'Enter a valid email' },
             { email: 'incomplete@email', expectedResponse: 'Enter a valid email' },
+            { email: 'incomplete@email.', expectedResponse: 'Enter a valid email' },
         ]
 
         // Check that a valid email must be entered
@@ -92,6 +93,7 @@ describe('Sign up tests', () => {
             .and('contain', 'Your passwords must match')
     })
 
+    // Skip these two tests because this is about to be completed in another PR
     it.skip('Should allow the creation of a valid user', () => {
         // User data
         const userEmail = 'best@email.evr'
