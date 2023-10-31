@@ -82,3 +82,27 @@ logout, but Erin has things under control, so I pivoted to doing more set-up wor
 tutorial done and help my teammates wrap up any loose ends.
 
 ### Additional Context
+
+
+## Teresa Saller - Week 8 (2023/10/23 - 2023/10/29)
+
+![teresa-saller-tasks-w8](imgs/teresa-saller-tasks-w8.png)
+
+### Tasks
+
+Completed:
+- [NextJS Tutorial](https://nextjs.org/learn/basics/create-nextjs-app)
+
+In progress:
+- [Login #126](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/126)
+
+This week, I finished the NextJS tutorial. I have also been working on login.
+
+### Goals
+
+My goal for this week was to have the tutorial done and help my teammates wrap up any loose ends. My goal for next week
+is to have login properly wrapped up (write tests and do better form validation) and give a good presentation. 
+
+### Additional Context
+
+My PR depends on Erin and K's PRs, so it will be the last to get merged.
