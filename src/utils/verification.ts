@@ -14,8 +14,13 @@ export async function isEmailUnique(email: string): Promise<boolean> {
     }
 }
 
+export function isValidEmail(email: string): boolean {
+    const emailRegex: RegExp = /[]/
+    return emailRegex.test(email)
+}
+
 export function isValidPassword(password: string): boolean {
-    const passwordRegex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])^[^ ]+$/
+    const passwordRegex: RegExp = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])^[^ ]+$/
     return (
         passwordRegex.test(password) && password.length >= MIN_PASSWORD_LENGTH && password.length <= MAX_PASSWORD_LENGTH
     )
