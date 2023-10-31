@@ -130,7 +130,6 @@ export default function LoginForm() {
                 redirect: false,
             })
 
-            // Change this to the login page once developed
             if (!signInData) {
                 toast.error('Error during login!')
             } else if (signInData.error) {
