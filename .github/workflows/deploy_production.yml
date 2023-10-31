@@ -4,7 +4,6 @@ on:
     push:
         branches:
             - master
-            - 139-update-workflow-to-save-rate-limit-+-better-pipeline
     workflow_dispatch:
 
 jobs:
