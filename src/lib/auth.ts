@@ -76,8 +76,7 @@ export const authOptions: NextAuthOptions = {
             return token
         },
         redirect: async ({ url, baseUrl }) => {
-            logger.info('redirect callback: ' + url + ' -> ' + baseUrl)
-            return baseUrl
+            return url.startsWith(baseUrl) ? Promise.resolve(url) : Promise.resolve(baseUrl)
         },
     },
 }

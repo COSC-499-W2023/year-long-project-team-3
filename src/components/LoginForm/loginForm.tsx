@@ -141,16 +141,20 @@ export default function LoginForm() {
             router.refresh()
         }
     }
+
+    function signInWithGoogle(e: React.MouseEvent<HTMLButtonElement>): void {
+        try {
+            e.preventDefault()
+            signIn('google', {
+                callbackUrl: `${ process.env.NEXT_PUBLIC_BASE_URL }/dashboard`,
+                redirect: true,
+            }).catch((error) => {
+                logger.error('An unexpected error occurred while log in with Google: ' + error)
+            })
+        } catch (error) {
+            logger.error('An unexpected error occurred while log in with Google: ' + error)
+        }
+    }
+
 }
 
-function signInWithGoogle(e: React.MouseEvent<HTMLButtonElement>): void {
-    try {
-        e.preventDefault()
-        // FIXME: callback URL is being ignored
-        signIn('google', { callbackUrl: `${ process.env.NEXT_PUBLIC_BASE_URL }/dashboard` }).catch((error) => {
-            logger.error('An unexpected error occurred while log in with Google: ' + error)
-        })
-    } catch (error) {
-        logger.error('An unexpected error occurred while log in with Google: ' + error)
-    }
-}
