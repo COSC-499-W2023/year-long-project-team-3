@@ -149,6 +149,7 @@ export default function SignUpForm() {
         if (response.status == 201) {
             router.push('/')
             router.refresh()
+            console.log(await response.json())
         } else {
             // TODO: toast error message (This will be done on Teresa's PR)
         }

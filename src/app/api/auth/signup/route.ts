@@ -26,6 +26,7 @@ export async function POST(req: Request) {
                     create: {
                         type: 'bcrypt',
                         provider: 'credentials',
+                        // TODO: This should be changed to an id instead of an email
                         providerAccountId: email,
                     },
                 },
