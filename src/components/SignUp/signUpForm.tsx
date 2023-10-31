@@ -149,7 +149,7 @@ export default function SignUpForm() {
             router.push('/')
             router.refresh()
         } else {
-            // TODO: toast error message
+            // TODO: toast error message (This will be done on Teresa's PR)
         }
     }
 }
