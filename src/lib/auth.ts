@@ -20,7 +20,7 @@ export const authOptions: NextAuthOptions = {
             child.error(msg)
         },
     },
-    secret: process.env.nextAuthSecret ?? 'secret',
+    secret: process.env.nextAuthSecret,
     pages: {
         signIn: '/login',
     },
@@ -46,19 +46,20 @@ export const authOptions: NextAuthOptions = {
                 password: { label: 'Password', type: 'password' },
             },
             async authorize(credentials) {
+                const errorMessage: string = 'Unable to login with provided credentials'
                 if (!credentials) {
-                    throw new Error('Invalid credentials!')
+                    throw new Error(errorMessage)
                 }
                 const existingUser = await prisma.user.findUnique({
                     where: { email: credentials.email },
                 })
                 // !existingUser.password is the case for Google logins
-                if (
-                    !existingUser ||
-                    !existingUser.password ||
-                    !(await passwordMatch(credentials.password, existingUser.password!))
-                ) {
-                    throw new Error('Unable to login with provided credentials')
+                const isCredentialValid =
+                    !!existingUser &&
+                    existingUser.password &&
+                    (await passwordMatch(credentials.password, existingUser.password!))
+                if (!isCredentialValid) {
+                    throw new Error(errorMessage)
                 }
                 return {
                     id: existingUser.id,
@@ -81,6 +82,6 @@ export const authOptions: NextAuthOptions = {
     },
 }
 
-async function passwordMatch(enteredPassword: string, password: string) {
-    return await compare(enteredPassword, password)
+function passwordMatch(enteredPassword: string, password: string): Promise<boolean> {
+    return compare(enteredPassword, password)
 }

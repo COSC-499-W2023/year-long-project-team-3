@@ -3,11 +3,13 @@
 import { Box, Typography } from '@mui/material'
 import Logo from '@/components/Logo'
 import Header from '@/components/Header'
-import HomePageButton from '@/components/HomePageButton'
+import LandingPageButton from 'src/components/LandingPageButton'
 import { type SessionContextValue, useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 
 export default function HomePage() {
     const session: SessionContextValue = useSession()
+    const router = useRouter()
 
     return (
         <>
@@ -47,10 +49,18 @@ export default function HomePage() {
                     Professional video sharing made easy, with a focus on protecting your privacy
                 </Typography>
                 <Box sx={{ display: 'flex', gap: '1rem' }}>
-                    <HomePageButton route='/dashboard' text='Get Started'></HomePageButton>
-                    <HomePageButton route='/find-out-more' text='Find Out More'></HomePageButton>
+                    <LandingPageButton text='Get Started' handleOnClick={handleClickGetStarted}></LandingPageButton>
+                    <LandingPageButton text='Find Out More' handleOnClick={handleClickFindOutMore}></LandingPageButton>
                 </Box>
             </Box>
         </>
     )
+
+    function handleClickGetStarted() {
+        router.push('/dashboard')
+    }
+
+    function handleClickFindOutMore() {
+        router.push('/find-out-more')
+    }
 }
