@@ -21,6 +21,7 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'This email address is already in use' }, { status: 400 })
         }
 
+        // TODO: Put rounds (10) in env file and change its value
         const hashedPassword = await hash(password, 10)
         const newUser = await prisma.user.create({
             data: {
@@ -42,16 +43,13 @@ export async function POST(req: Request) {
                 updatedAt: true,
             },
         })
-        if (newUser != null) {
-            return NextResponse.json(
-                {
-                    user: newUser,
-                },
-                { status: 201 }
-            )
-        } else {
-            return NextResponse.json({ error: 'Unable to create user' }, { status: 500 })
-        }
+
+        return NextResponse.json(
+            {
+                user: newUser,
+            },
+            { status: 201 }
+        )
     } catch (err) {
         const errMessage = JSON.stringify(err, Object.getOwnPropertyNames(err))
         logger.error(errMessage)
