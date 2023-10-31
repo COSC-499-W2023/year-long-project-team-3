@@ -67,6 +67,9 @@ jobs:
         name: Deploy Production
         runs-on: ubuntu-latest
         needs: [ cypress-e2e ]
+        env:
+            VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+            VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         steps:
             -   uses: actions/checkout@v4
             -   name: Install Vercel CLI
