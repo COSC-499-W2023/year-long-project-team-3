@@ -4,9 +4,9 @@ import { AppBar, Toolbar, Typography } from '@mui/material'
 import HeaderLogo from '../HeaderLogo'
 import { type SessionContextValue, useSession } from 'next-auth/react'
 
-export type UserAccountNavProps = {} & SessionContextValue
+export type HeaderProps = {} & SessionContextValue
 
-export default function Header(props: UserAccountNavProps) {
+export default function Header(props: HeaderProps) {
     const { status } = props
 
     return (

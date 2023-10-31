@@ -2,12 +2,12 @@
 
 import { Button } from '@mui/material'
 
-export type HomePageButtonProps = {
+export type LandingPageButtonProps = {
     text: string
     handleOnClick: () => void
 }
 
-export default function LandingPageButton(props: HomePageButtonProps) {
+export default function LandingPageButton(props: LandingPageButtonProps) {
     return (
         <Button
             data-cy='home-page-button'

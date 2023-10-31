@@ -20,6 +20,7 @@ const nextConfig = () => {
 
         // Return environment variables
         return {
+            appBaseUrl: process.env.NEXT_PUBLIC_BASE_URL,
             googleClientId: process.env.GOOGLE_CLIENT_ID,
             googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
             cypressBaseUrl: process.env.CYPRESS_BASE_URL,

@@ -9,7 +9,7 @@ export default function DashboardPage() {
     return (
         <>
             <Header {...session} />
-            <Dashboard userEmail={session.data?.user?.email!}></Dashboard>
+            <Dashboard userEmail={session.data?.user?.email!} />
         </>
     )
 }

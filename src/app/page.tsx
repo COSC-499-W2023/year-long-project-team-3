@@ -17,7 +17,7 @@ export default function HomePage() {
             <Box
                 sx={{ display: 'flex', flexGrow: 1, alignItems: 'center', flexDirection: 'column', gap: '2rem', p: 6 }}
             >
-                <Logo fontSize={200}></Logo>
+                <Logo fontSize={200} />
                 <Typography
                     variant='h2'
                     sx={{
@@ -49,8 +49,8 @@ export default function HomePage() {
                     Professional video sharing made easy, with a focus on protecting your privacy
                 </Typography>
                 <Box sx={{ display: 'flex', gap: '1rem' }}>
-                    <LandingPageButton text='Get Started' handleOnClick={handleClickGetStarted}></LandingPageButton>
-                    <LandingPageButton text='Find Out More' handleOnClick={handleClickFindOutMore}></LandingPageButton>
+                    <LandingPageButton text='Get Started' handleOnClick={handleClickGetStarted} />
+                    <LandingPageButton text='Find Out More' handleOnClick={handleClickFindOutMore} />
                 </Box>
             </Box>
         </>

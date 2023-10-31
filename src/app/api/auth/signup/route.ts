@@ -9,7 +9,9 @@ export async function POST(req: Request) {
     try {
         const body: UserSignUpData = await req.json()
         const { email, password } = body
-        if (!isValidEmail(email) || !(await isEmailUnique(email))) {
+
+        const isUserSignUpDataValid = isValidEmail(email) && (await isEmailUnique(email))
+        if (!isUserSignUpDataValid) {
             return NextResponse.json({ error: 'The input email is not valid' }, { status: 400 })
         }
         if (!isValidPassword(password)) {

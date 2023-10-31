@@ -16,11 +16,12 @@ import * as yup from 'yup'
 import { useFormik } from 'formik'
 import { UserSignUpData } from '@/types/auth/user'
 import { getEmailRegex } from '@/utils/verification'
+import { ObjectSchema } from 'yup'
 
-const validationSchema = yup.object().shape({
-    email: yup.string().matches(getEmailRegex(), 'Enter a valid email').required('Email is required'),
-    password: yup.string().required('Enter your password'),
-})
+export type LoginFormInputsData = {
+    email: string
+    password: string
+}
 
 export default function LoginForm() {
     const router = useRouter()
@@ -29,12 +30,9 @@ export default function LoginForm() {
         initialValues: {
             email: '',
             password: '',
-            passwordConfirmation: '',
         },
         validationSchema: validationSchema,
-        onSubmit: (values) => {
-            handleSubmit(values).then()
-        },
+        onSubmit: (values: LoginFormInputsData) => handleSubmit(values),
     })
 
     return (
@@ -124,31 +122,41 @@ export default function LoginForm() {
         </>
     )
 
-    async function handleSubmit(values: UserSignUpData) {
-        const signInData = await signIn('credentials', {
-            email: values.email,
-            password: values.password,
-            redirect: false,
-        })
+    async function handleSubmit(userData: UserSignUpData) {
+        try {
+            const signInData = await signIn('credentials', {
+                email: userData.email,
+                password: userData.password,
+                redirect: false,
+            })
 
-        // Change this to the login page once developed
-        if (!signInData) {
-            toast.error('Error during login!')
-        } else if (signInData.error) {
-            toast.error(signInData.error)
-        } else {
-            router.push('/dashboard')
-            router.refresh()
+            // Change this to the login page once developed
+            if (!signInData) {
+                toast.error('Error during login!')
+            } else if (signInData.error) {
+                toast.error(signInData.error)
+            } else {
+                logger.info(`User ${ userData.email } successfully signed up`)
+                router.push('/dashboard')
+                router.refresh()
+            }
+        } catch (err) {
+            const errMessage = JSON.stringify(err, Object.getOwnPropertyNames(err))
+            logger.error(errMessage)
         }
     }
 
-    function signInWithGoogle(e: React.MouseEvent<HTMLButtonElement>): void {
+    function signInWithGoogle(e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault()
         signIn('google', {
-            callbackUrl: '/dashboard',
-            redirect: true,
+            callbackUrl: `${ process.env.appBaseUrl }/dashboard`,
         }).catch((err) => {
             logger.error('An unexpected error occurred while log in with Google: ' + err.error)
         })
     }
 }
+
+const validationSchema: ObjectSchema<LoginFormInputsData> = yup.object().shape({
+    email: yup.string().matches(getEmailRegex(), 'Enter a valid email').required('Email is required'),
+    password: yup.string().required('Enter your password'),
+})

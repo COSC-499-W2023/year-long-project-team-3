@@ -13,7 +13,10 @@ import { signIn } from 'next-auth/react'
 import { useFormik } from 'formik'
 import logger from '@/utils/logger'
 import { toast } from 'react-toastify'
-import { validationSchema } from '@/utils/schema'
+import * as yup from 'yup'
+import { getEmailRegex } from '@/utils/verification'
+import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/lib/constants'
+import { ObjectSchema } from 'yup'
 
 export type SignUpFormInputsData = {
     email: string
@@ -161,10 +164,30 @@ export default function SignUpForm() {
         }
     }
 
-    function signInWithGoogle(e: React.MouseEvent<HTMLButtonElement>): void {
+    function signInWithGoogle(e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault()
-        signIn('google', { callbackUrl: '/dashboard' }).catch((err) => {
+        signIn('google', { callbackUrl: `${ process.env.appBaseUrl }/dashboard` }).catch((err) => {
             logger.error('An unexpected error occurred while log in with Google: ' + err.error)
         })
     }
 }
+
+const getCharacterValidationError = (missingCharacter: string): string => {
+    return `Your password must have at least one ${ missingCharacter } character`
+}
+
+const validationSchema: ObjectSchema<SignUpFormInputsData> = yup.object().shape({
+    email: yup.string().matches(getEmailRegex(), 'Enter a valid email').required('Email is required'),
+    password: yup
+        .string()
+        .min(MIN_PASSWORD_LENGTH, `Password should be a minimum of ${ MIN_PASSWORD_LENGTH } characters long`)
+        .max(MAX_PASSWORD_LENGTH, `Password should be a maximum of ${ MAX_PASSWORD_LENGTH } characters long`)
+        .required('Enter your password')
+        .matches(/[0-9]/, getCharacterValidationError('numeric'))
+        .matches(/[a-z]/, getCharacterValidationError('lowercase'))
+        .matches(/[A-Z]/, getCharacterValidationError('uppercase')),
+    passwordConfirmation: yup
+        .string()
+        .required('Please re-type your password')
+        .oneOf([yup.ref('password')], 'Your passwords must match'),
+})
