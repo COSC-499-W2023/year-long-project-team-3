@@ -1,3 +1,5 @@
+'use client'
+
 import { SvgIcon } from '@mui/material'
 
 export type LogoProps = {

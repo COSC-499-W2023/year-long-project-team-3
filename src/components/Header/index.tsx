@@ -1,3 +1,5 @@
+'use client'
+
 import HeaderSignOutButtons from '@/components/HeaderSignOutButtons'
 import HeaderSignInButtons from '@/components/HeaderSignInButtons'
 import { AppBar, Toolbar, Typography } from '@mui/material'

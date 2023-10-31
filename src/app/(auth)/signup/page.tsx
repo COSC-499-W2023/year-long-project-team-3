@@ -10,21 +10,21 @@ export default function SignUpPage() {
     const session: SessionContextValue = useSession()
     const { status } = session
     const router = useRouter()
-    const [isSignUpFormVisible, setIsSignUpFormVisible] = useState(false)
+    const [isSignUpPageVisible, setIsSignUpPageVisible] = useState(false)
 
     useEffect(() => {
         if (status === 'authenticated') {
-            setIsSignUpFormVisible(false)
+            setIsSignUpPageVisible(false)
             router.push('/dashboard')
         } else if (status === 'unauthenticated') {
-            setIsSignUpFormVisible(true)
+            setIsSignUpPageVisible(true)
         } else {
-            setIsSignUpFormVisible(false)
+            setIsSignUpPageVisible(false)
         }
     }, [router, status])
 
     return (
-        isSignUpFormVisible && (
+        isSignUpPageVisible && (
             <>
                 <Header {...session} />
                 <SignUpForm />
