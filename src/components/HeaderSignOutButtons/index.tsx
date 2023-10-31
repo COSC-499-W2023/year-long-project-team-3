@@ -4,7 +4,7 @@ import { Box, Button } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 
-const SignOut = () => {
+export default function HeaderSignOutButtons() {
     useRouter()
     return (
         <Box sx={{ m: 2, display: 'flex', flexDirection: 'row', gap: '16px' }}>
@@ -19,5 +19,3 @@ const SignOut = () => {
         </Box>
     )
 }
-
-export default SignOut

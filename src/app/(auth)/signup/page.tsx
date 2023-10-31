@@ -1,6 +1,6 @@
 'use client'
 
-import UserAccountNav from '@/components/UserAccountNav/UserAccountNav'
+import Header from '@/components/Header'
 import SignUpForm from '@/components/SignUpForm'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -26,7 +26,7 @@ export default function SignUpPage() {
     return (
         isSignUpFormVisible && (
             <>
-                <UserAccountNav {...session} />
+                <Header {...session} />
                 <SignUpForm />
             </>
         )

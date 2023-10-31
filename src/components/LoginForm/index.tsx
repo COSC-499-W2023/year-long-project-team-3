@@ -113,7 +113,7 @@ export default function LoginForm() {
                             <Button
                                 data-cy='google-sign-in-btn'
                                 sx={{ textTransform: 'capitalize' }}
-                                onClick={(e) => signInWithGoogle(e)}
+                                onClick={signInWithGoogle}
                             >
                                 Sign in with Google
                             </Button>
@@ -145,14 +145,10 @@ export default function LoginForm() {
     function signInWithGoogle(e: React.MouseEvent<HTMLButtonElement>): void {
         e.preventDefault()
         signIn('google', {
-            callbackUrl: `${ process.env.NEXT_PUBLIC_BASE_URL }/dashboard`,
+            callbackUrl: '/dashboard',
             redirect: true,
-        }).then((err) => {
-            const errMessage = JSON.stringify(err, Object.getOwnPropertyNames(err))
-            logger.error('An unexpected error occurred while log in with Google: ' + errMessage)
+        }).catch((err) => {
+            logger.error('An unexpected error occurred while log in with Google: ' + err.error)
         })
-
     }
-
 }
-

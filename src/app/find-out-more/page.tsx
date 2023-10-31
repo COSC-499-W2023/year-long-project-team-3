@@ -1,5 +1,7 @@
+'use client'
+
 import React from 'react'
-import UserAccountNav from '@/components/UserAccountNav/UserAccountNav'
+import Header from '@/components/Header'
 import { Box } from '@mui/material'
 import Logo from '@/components/Logo'
 import Typography from '@mui/material/Typography'
@@ -10,7 +12,7 @@ export default function FindOutMorePage() {
 
     return (
         <>
-            <UserAccountNav {...session} />
+            <Header {...session} />
             <Box sx={{ marginTop: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Logo fontSize={80} />
             </Box>

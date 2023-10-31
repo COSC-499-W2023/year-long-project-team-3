@@ -2,7 +2,7 @@
 
 import { Box, Typography } from '@mui/material'
 import Logo from '@/components/Logo'
-import UserAccountNav from '@/components/UserAccountNav/UserAccountNav'
+import Header from '@/components/Header'
 import HomePageButton from '@/components/HomePageButton'
 import { type SessionContextValue, useSession } from 'next-auth/react'
 
@@ -11,7 +11,7 @@ export default function HomePage() {
 
     return (
         <>
-            <UserAccountNav {...session} />
+            <Header {...session} />
             <Box
                 sx={{ display: 'flex', flexGrow: 1, alignItems: 'center', flexDirection: 'column', gap: '2rem', p: 6 }}
             >

@@ -4,7 +4,7 @@ import { Box } from '@mui/material'
 import Logo from '@/components/Logo'
 import { useRouter } from 'next/navigation'
 
-const LogoNav = () => {
+const HeaderLogo = () => {
     const router = useRouter()
     return (
         <Box sx={{ m: 2 }} onClick={() => router.push('/')}>
@@ -13,4 +13,4 @@ const LogoNav = () => {
     )
 }
 
-export default LogoNav
+export default HeaderLogo

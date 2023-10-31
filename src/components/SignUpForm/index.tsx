@@ -163,9 +163,8 @@ export default function SignUpForm() {
 
     function signInWithGoogle(e: React.MouseEvent<HTMLButtonElement>): void {
         e.preventDefault()
-        signIn('google', { callbackUrl: `${ process.env.NEXT_PUBLIC_BASE_URL }/dashboard` }).catch((err) => {
-            const errMessage = JSON.stringify(err, Object.getOwnPropertyNames(err))
-            logger.error('An unexpected error occurred while log in with Google: ' + errMessage)
+        signIn('google', { callbackUrl: '/dashboard' }).catch((err) => {
+            logger.error('An unexpected error occurred while log in with Google: ' + err.error)
         })
     }
 }

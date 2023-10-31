@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { Box, Button } from '@mui/material'
 
-const SignIn = () => {
+export default function HeaderSignInButtons() {
     const router = useRouter()
     return (
         <Box sx={{ m: 2, display: 'flex', flexDirection: 'row', gap: '16px' }}>
@@ -25,5 +25,3 @@ const SignIn = () => {
         </Box>
     )
 }
-
-export default SignIn
