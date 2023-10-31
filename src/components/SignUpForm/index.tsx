@@ -6,37 +6,20 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import React from 'react'
 import { useRouter } from 'next/navigation'
-import Logo from '@/components/Logo/logo'
+import Logo from '@/components/Logo'
 import Grid from '@mui/material/Grid'
 import Link from '@mui/material/Link'
 import { signIn } from 'next-auth/react'
-import * as yup from 'yup'
 import { useFormik } from 'formik'
-import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/lib/constants'
-import { UserSignUpData } from '@/types/auth/user'
-import { getEmailRegex } from '@/utils/verification'
 import logger from '@/utils/logger'
 import { toast } from 'react-toastify'
+import { validationSchema } from '@/utils/schema'
 
-const getCharacterValidationError = (str: string): string => {
-    return `Your password must have at least one ${ str } character`
+export type SignUpFormInputsData = {
+    email: string
+    password: string
+    passwordConfirmation: string
 }
-
-const validationSchema = yup.object().shape({
-    email: yup.string().matches(getEmailRegex(), 'Enter a valid email').required('Email is required'),
-    password: yup
-        .string()
-        .min(MIN_PASSWORD_LENGTH, `Password should be a minimum of ${ MIN_PASSWORD_LENGTH } characters long`)
-        .max(MAX_PASSWORD_LENGTH, `Password should be a maximum of ${ MAX_PASSWORD_LENGTH } characters long`)
-        .required('Enter your password')
-        .matches(/[0-9]/, getCharacterValidationError('numeric'))
-        .matches(/[a-z]/, getCharacterValidationError('lowercase'))
-        .matches(/[A-Z]/, getCharacterValidationError('uppercase')),
-    passwordConfirmation: yup
-        .string()
-        .required('Please re-type your password')
-        .oneOf([yup.ref('password')], 'Your passwords must match'),
-})
 
 export default function SignUpForm() {
     const router = useRouter()
@@ -48,9 +31,7 @@ export default function SignUpForm() {
             passwordConfirmation: '',
         },
         validationSchema: validationSchema,
-        onSubmit: (values) => {
-            handleSubmit(values).then()
-        },
+        onSubmit: (values: SignUpFormInputsData) => handleSubmit(values),
     })
 
     return (
@@ -144,7 +125,7 @@ export default function SignUpForm() {
                             <Button
                                 data-cy='google-sign-in-btn'
                                 sx={{ textTransform: 'capitalize' }}
-                                onClick={(e) => signInWithGoogle(e)}
+                                onClick={signInWithGoogle}
                             >
                                 Sign in with Google
                             </Button>
@@ -155,7 +136,7 @@ export default function SignUpForm() {
         </>
     )
 
-    async function handleSubmit(values: UserSignUpData) {
+    async function handleSubmit(values: SignUpFormInputsData) {
         try {
             // Send form data to api
             const response = await fetch('api/auth/signup', {
@@ -174,20 +155,17 @@ export default function SignUpForm() {
             } else {
                 toast.error(userInfo.error)
             }
-        } catch (error) {
-            logger.error(error)
+        } catch (err) {
+            const errMessage = JSON.stringify(err, Object.getOwnPropertyNames(err))
+            logger.error(errMessage)
         }
     }
-}
 
-function signInWithGoogle(e: React.MouseEvent<HTMLButtonElement>): void {
-    try {
+    function signInWithGoogle(e: React.MouseEvent<HTMLButtonElement>): void {
         e.preventDefault()
-        // FIXME: callback URL is being ignored
-        signIn('google', { callbackUrl: `${ process.env.NEXT_PUBLIC_BASE_URL }/dashboard` }).catch((error) => {
-            logger.error('An unexpected error occurred while log in with Google: ' + error)
+        signIn('google', { callbackUrl: `${ process.env.NEXT_PUBLIC_BASE_URL }/dashboard` }).catch((err) => {
+            const errMessage = JSON.stringify(err, Object.getOwnPropertyNames(err))
+            logger.error('An unexpected error occurred while log in with Google: ' + errMessage)
         })
-    } catch (error) {
-        logger.error('An unexpected error occurred while log in with Google: ' + error)
     }
 }

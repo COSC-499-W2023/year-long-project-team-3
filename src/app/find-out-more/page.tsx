@@ -1,13 +1,16 @@
 import React from 'react'
 import UserAccountNav from '@/components/UserAccountNav/UserAccountNav'
 import { Box } from '@mui/material'
-import Logo from '@/components/Logo/logo'
+import Logo from '@/components/Logo'
 import Typography from '@mui/material/Typography'
+import { type SessionContextValue, useSession } from 'next-auth/react'
 
-const page = () => {
+export default function FindOutMorePage() {
+    const session: SessionContextValue = useSession()
+
     return (
         <>
-            <UserAccountNav></UserAccountNav>
+            <UserAccountNav {...session} />
             <Box sx={{ marginTop: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Logo fontSize={80} />
             </Box>
@@ -72,5 +75,3 @@ const page = () => {
         </>
     )
 }
-
-export default page

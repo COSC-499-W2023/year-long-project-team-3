@@ -10,7 +10,7 @@ import React from 'react'
 import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { toast } from 'react-toastify'
-import Logo from '@/components/Logo/logo'
+import Logo from '@/components/Logo'
 import logger from '@/utils/logger'
 import * as yup from 'yup'
 import { useFormik } from 'formik'
@@ -143,17 +143,15 @@ export default function LoginForm() {
     }
 
     function signInWithGoogle(e: React.MouseEvent<HTMLButtonElement>): void {
-        try {
-            e.preventDefault()
-            signIn('google', {
-                callbackUrl: `${ process.env.NEXT_PUBLIC_BASE_URL }/dashboard`,
-                redirect: true,
-            }).catch((error) => {
-                logger.error('An unexpected error occurred while log in with Google: ' + error)
-            })
-        } catch (error) {
-            logger.error('An unexpected error occurred while log in with Google: ' + error)
-        }
+        e.preventDefault()
+        signIn('google', {
+            callbackUrl: `${ process.env.NEXT_PUBLIC_BASE_URL }/dashboard`,
+            redirect: true,
+        }).then((err) => {
+            const errMessage = JSON.stringify(err, Object.getOwnPropertyNames(err))
+            logger.error('An unexpected error occurred while log in with Google: ' + errMessage)
+        })
+
     }
 
 }

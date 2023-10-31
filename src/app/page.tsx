@@ -1,12 +1,17 @@
+'use client'
+
 import { Box, Typography } from '@mui/material'
-import Logo from '@/components/Logo/logo'
+import Logo from '@/components/Logo'
 import UserAccountNav from '@/components/UserAccountNav/UserAccountNav'
 import HomePageButton from '@/components/HomePageButton'
+import { type SessionContextValue, useSession } from 'next-auth/react'
 
-export default function Home() {
+export default function HomePage() {
+    const session: SessionContextValue = useSession()
+
     return (
         <>
-            <UserAccountNav></UserAccountNav>
+            <UserAccountNav {...session} />
             <Box
                 sx={{ display: 'flex', flexGrow: 1, alignItems: 'center', flexDirection: 'column', gap: '2rem', p: 6 }}
             >

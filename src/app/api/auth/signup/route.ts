@@ -33,6 +33,12 @@ export async function POST(req: Request) {
                     },
                 },
             },
+            select: {
+                id: true,
+                email: true,
+                createdAt: true,
+                updatedAt: true,
+            },
         })
         if (newUser != null) {
             return NextResponse.json(
@@ -42,10 +48,11 @@ export async function POST(req: Request) {
                 { status: 201 }
             )
         } else {
-            return NextResponse.json({ error: 'Unable to create user ' }, { status: 500 })
+            return NextResponse.json({ error: 'Unable to create user' }, { status: 500 })
         }
-    } catch (error) {
-        logger.error(error)
+    } catch (err) {
+        const errMessage = JSON.stringify(err, Object.getOwnPropertyNames(err))
+        logger.error(errMessage)
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }
 }

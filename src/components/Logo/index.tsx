@@ -1,6 +1,10 @@
 import { SvgIcon } from '@mui/material'
 
-export default function Logo(props: { fontSize: number }) {
+export type LogoProps = {
+    fontSize: number
+}
+
+export default function Logo(props: LogoProps) {
     /*
      *  This component is the logo for the website. It takes a fontSize which sets the size of the logo.
      *  Currently it is just a placeholder logo, but it can be replaced with an actual logo later on.

@@ -1,7 +1,7 @@
 'use client'
 
 import { Box } from '@mui/material'
-import Logo from '@/components/Logo/logo'
+import Logo from '@/components/Logo'
 import { useRouter } from 'next/navigation'
 
 const LogoNav = () => {
