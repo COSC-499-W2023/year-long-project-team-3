@@ -2,7 +2,6 @@ import { type NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import prisma from '@/lib/prisma'
-import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/lib/constants'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import logger from '@/utils/logger'
 import { compare } from 'bcrypt'
@@ -50,9 +49,6 @@ export const authOptions: NextAuthOptions = {
                 if (!credentials) {
                     throw new Error('Invalid credentials!')
                 }
-                if (!credentials.email || !credentials.password) {
-                    throw new Error('Missing email or password!')
-                }
                 const existingUser = await prisma.user.findUnique({
                     where: { email: credentials.email },
                 })
@@ -63,12 +59,6 @@ export const authOptions: NextAuthOptions = {
                     !(await passwordMatch(credentials.password, existingUser.password!))
                 ) {
                     throw new Error('Unable to login with provided credentials')
-                }
-                if (!isValidPassword(credentials.password)) {
-                    throw new Error('Invalid password!')
-                }
-                if (!isValidEmail(credentials.email)) {
-                    throw new Error('Invalid email!')
                 }
                 return {
                     id: existingUser.id,
@@ -90,16 +80,6 @@ export const authOptions: NextAuthOptions = {
             return baseUrl
         },
     },
-}
-
-function isValidEmail(email: string): boolean {
-    const regExp = new RegExp(/[a-z0-9]+@[a-z]+\.[a-z]{2,3}/)
-    return regExp.test(email)
-}
-
-function isValidPassword(password: string): boolean {
-    const regExp = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
-    return password.length >= MIN_PASSWORD_LENGTH && password.length <= MAX_PASSWORD_LENGTH && regExp.test(password)
 }
 
 async function passwordMatch(enteredPassword: string, password: string) {
