@@ -147,7 +147,8 @@ export default function SignUpForm() {
 
             // Change this to the login page once developed
             if (response.status == 201) {
-                logger.info('User successfully signed up')
+                const userInfo = await response.json()
+                logger.info(`User ${ userInfo.email } successfully signed up`)
                 router.push('/')
                 router.refresh()
             } else {
