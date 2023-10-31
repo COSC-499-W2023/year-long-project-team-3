@@ -39,7 +39,7 @@ jobs:
                 run: |
                     echo "${{ secrets.ENV_PREVIEW }}" > .env
             -   name: Migrate Database
-                run: npx prisma migrate dev
+                run: npx prisma migrate dev &>-
 
     cypress-e2e:
         name: Run cypress E2E tests on preview deployment
@@ -47,6 +47,9 @@ jobs:
         needs: [ deploy-preview, setup-db ]
         steps:
             -   uses: actions/checkout@v4
+            -   name: Write environment variables
+                run: |
+                    echo "${{ secrets.ENV_PREVIEW }}" > .env
             -   name: Cypress Run E2E Tests
                 uses: cypress-io/github-action@v6
                 env:
