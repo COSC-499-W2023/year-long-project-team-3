@@ -4,6 +4,9 @@ on:
     workflow_dispatch:
         branches-ignore:
             - main
+    push:
+        branches-ignore:
+            - main
 
 jobs:
     deploy-preview:
