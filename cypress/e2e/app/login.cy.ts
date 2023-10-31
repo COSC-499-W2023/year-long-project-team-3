@@ -68,6 +68,13 @@ describe('Login tests', () => {
         cy.get('[data-cy="sign-out-button"]').click()
 
         cy.title().should('eq', 'Harp: A Secure Platform for Videos')
+        cy.get('[data-cy="sign-up-button"]').contains('Sign Up')
+        cy.get('[data-cy="login-button"]').contains('Login')
+
+        // We should be able to log in again
+        cy.get('[data-cy="login-button"]').click()
+
+        cy.url().should('include', '/login')
     })
 
     it('Should not allow user to login with invalid credentials', () => {
