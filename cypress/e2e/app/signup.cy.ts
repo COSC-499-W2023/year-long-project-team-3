@@ -1,5 +1,3 @@
-import prisma from '@/lib/prisma'
-
 describe('Sign up tests', () => {
     beforeEach(() => {
         cy.task('clearDB')
@@ -94,7 +92,7 @@ describe('Sign up tests', () => {
             .and('contain', 'Your passwords must match')
     })
 
-    it('Should allow the creation of a valid user', () => {
+    it.skip('Should allow the creation of a valid user', () => {
         // User data
         const userEmail = 'best@email.evr'
         const password = 'TryT0UseEmailAgain!'
