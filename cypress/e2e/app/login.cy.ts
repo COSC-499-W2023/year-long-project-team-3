@@ -20,7 +20,7 @@ describe('Login tests', () => {
     })
 
     it('Should give the user error feedback for an invalid email', () => {
-        // user data
+        // User data
         const testValues = [
             { email: 'badEmail', expectedResponse: 'Enter a valid email' },
             { email: 'incomplete@email', expectedResponse: 'Enter a valid email' },
@@ -52,6 +52,36 @@ describe('Login tests', () => {
         cy.get('[data-cy="submit"]').click()
 
         // We shouldn't be on the signup page anymore
-        cy.url().should('include', 'login')
+        cy.url().should('include', '/login')
+
+        // We should be able to log in
+        cy.get('[data-cy="email"]').type(userEmail)
+        cy.get('[data-cy="password"]').type(password)
+        cy.get('[data-cy="submit"]').click()
+
+        // We shouldn't be on the login page anymore
+        cy.url().should('include', '/dashboard')
+
+        cy.get('[data-cy="dashboard-message"]').should('contain', `Welcome to the dashboard, ${ userEmail }!`)
+    })
+
+    it('Should not allow user to login with invalid credentials', () => {
+        // User data
+        const userEmail = 'joe@test.com'
+        const password = 'P@ssw0rd'
+
+        cy.visit('/login')
+
+        // We should not be able to log in
+        cy.get('[data-cy="email"]').type(userEmail)
+        cy.get('[data-cy="password"]').type(password)
+        cy.get('[data-cy="submit"]').click()
+
+        // We should still be on the login page
+        cy.url().should('include', '/login')
+
+        cy.get('.Toastify__toast-container')
+            .should('be.visible')
+            .and('contain', 'Unable to login with provided credentials')
     })
 })

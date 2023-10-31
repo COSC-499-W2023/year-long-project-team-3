@@ -18,7 +18,7 @@ export default function Dashboard(props: { userEmail: string }) {
                     alignItems: 'center',
                 }}
             >
-                <Typography variant='h4' sx={{ fontWeight: 'medium' }}>
+                <Typography data-cy='dashboard-message' variant='h4' sx={{ fontWeight: 'medium' }}>
                     Welcome to the dashboard, {props.userEmail}!
                 </Typography>
             </Box>
