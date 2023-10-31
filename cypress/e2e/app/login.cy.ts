@@ -1,7 +1,12 @@
 import { TIMEOUT } from '../../utils/constants'
+import { v4 as uuidv4 } from 'uuid'
 
 describe('Login tests', () => {
     before(() => {
+        cy.task('clearDB')
+    })
+
+    beforeEach(() => {
         cy.task('clearDB')
     })
 
@@ -43,7 +48,7 @@ describe('Login tests', () => {
 
     it('Should allow user to create an account, login, and logout', () => {
         // User data
-        const userEmail = 'test@test.com'
+        const userEmail = `test-${ uuidv4() }@test.com`
         const password = 'P@ssw0rd'
 
         // Create user
@@ -80,7 +85,7 @@ describe('Login tests', () => {
 
     it('Should not allow user to login with invalid credentials', () => {
         // User data (does not exist in database)
-        const userEmail = 'joe@test.com'
+        const userEmail = `test-${ uuidv4() }@test.com`
         const password = 'P@ssw0rd'
 
         cy.visit('/login')
@@ -100,7 +105,7 @@ describe('Login tests', () => {
 
     it('Should not allow user to login with incorrect password', () => {
         // User data (user exists but password is wrong)
-        const userEmail = 'test@test.com'
+        const userEmail = `test-${ uuidv4() }@test.com`
         const password = '12345'
 
         cy.visit('/login')

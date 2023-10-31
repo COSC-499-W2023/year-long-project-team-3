@@ -1,4 +1,9 @@
+import { v4 as uuidv4 } from 'uuid'
+
 describe('Sign up tests', () => {
+    before(() => {
+        cy.task('clearDB')
+    })
     beforeEach(() => {
         cy.task('clearDB')
     })
@@ -96,7 +101,7 @@ describe('Sign up tests', () => {
     // Skip these two tests because this is about to be completed in another PR
     it('Should allow the creation of a valid user', () => {
         // User data
-        const userEmail = 'best@email.evr'
+        const userEmail = `best-${ uuidv4() }@email.evr`
         const password = 'TryT0UseEmailAgain!'
 
         // Create user
@@ -112,7 +117,7 @@ describe('Sign up tests', () => {
 
     it('Should not allow the creation of an account that already is using email', () => {
         // User data
-        const userEmail = 'best@email.evr'
+        const userEmail = `best-${ uuidv4() }@email.evr`
         const password = 'TryT0UseEmailAgain!'
 
         // Create user
