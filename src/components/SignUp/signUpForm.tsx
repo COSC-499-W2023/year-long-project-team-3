@@ -67,7 +67,7 @@ export default function SignUpForm() {
                     minWidth: 'md',
                 }}
             >
-                <Typography variant='h4' sx={{ fontWeight: 'medium' }}>
+                <Typography data-cy='title' variant='h4' sx={{ fontWeight: 'medium' }}>
                     Sign Up
                 </Typography>
                 <form onSubmit={formik.handleSubmit}>
@@ -136,7 +136,7 @@ export default function SignUpForm() {
                     </Box>
                     <Grid container>
                         <Grid item xs>
-                            <Link href='/login' variant='body2' data-cy='login'>
+                            <Link data-cy='link-to-login' href='/login' variant='body2'>
                                 Already have an account?
                             </Link>
                         </Grid>

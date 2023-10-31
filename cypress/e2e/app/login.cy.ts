@@ -109,4 +109,11 @@ describe('Login tests', () => {
             .should('be.visible')
             .and('contain', 'Unable to login with provided credentials')
     })
+
+    it('Should navigate to signup when clicking on Don\'t have an account?', () => {
+        cy.visit('/login')
+        cy.get('[data-cy="link-to-signup"]').click()
+        cy.url().should('include', '/signup')
+        cy.get('[data-cy="title"]').contains('Sign Up')
+    })
 })

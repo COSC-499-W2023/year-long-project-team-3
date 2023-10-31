@@ -134,4 +134,11 @@ describe('Sign up tests', () => {
 
         cy.get('.Toastify__toast-container').should('be.visible').and('contain', 'The input email is not valid')
     })
+
+    it('Should navigate to login when clicking on Already have an account?', () => {
+        cy.visit('/signup')
+        cy.get('[data-cy="link-to-login"]').click()
+        cy.url().should('include', '/login')
+        cy.get('[data-cy="title"]').contains('Login')
+    })
 })
