@@ -24,6 +24,7 @@ const nextConfig = () => {
             googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
             cypressBaseUrl: process.env.CYPRESS_BASE_URL,
             cypressProjectId: process.env.CYPRESS_PROJECT_ID,
+            nextAuthSecret: process.env.NEXTAUTH_SECRET,
         }
     }
 
