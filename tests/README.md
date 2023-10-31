@@ -1,1 +1,1 @@
-This is the home for all your tests.
+Our tests can be found in the [cypress folder](../cypress)
