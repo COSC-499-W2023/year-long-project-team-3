@@ -18,17 +18,17 @@ import { UserSignUpData } from '@/types/auth/user'
 import { toast } from 'react-toastify'
 
 const getCharacterValidationError = (str: string): string => {
-    return `Your password must have at least one ${ str } character.`
+    return `Your password must have at least one ${ str } character`
 }
 
 const validationSchema = yup.object().shape({
     email: yup.string().email('Enter a valid email').required('Email is required'),
     password: yup
         .string()
-        .min(MIN_PASSWORD_LENGTH, `Password should be a minimum of ${ MIN_PASSWORD_LENGTH } characters long.`)
-        .max(MAX_PASSWORD_LENGTH, `Password should be a maximum of ${ MAX_PASSWORD_LENGTH } characters long.`)
+        .min(MIN_PASSWORD_LENGTH, `Password should be a minimum of ${ MIN_PASSWORD_LENGTH } characters long`)
+        .max(MAX_PASSWORD_LENGTH, `Password should be a maximum of ${ MAX_PASSWORD_LENGTH } characters long`)
         .required('Enter your password')
-        .matches(/[0-9]/, getCharacterValidationError('number'))
+        .matches(/[0-9]/, getCharacterValidationError('numeric'))
         .matches(/[a-z]/, getCharacterValidationError('lowercase'))
         .matches(/[A-Z]/, getCharacterValidationError('uppercase')),
     passwordConfirmation: yup
