@@ -38,4 +38,20 @@ describe('Login tests', () => {
             cy.get('[data-cy="email"]').find('p.Mui-error').should('be.visible').and('contain', input.expectedResponse)
         })
     })
+
+    it('Should allow user to create an account and login', () => {
+        // User data
+        const userEmail = 'test@test.com'
+        const password = 'P@ssw0rd'
+
+        // Create user
+        cy.visit('/signup')
+        cy.get('[data-cy="email"]').type(userEmail)
+        cy.get('[data-cy="password"]').type(password)
+        cy.get('[data-cy="passwordVerification"]').type(password)
+        cy.get('[data-cy="submit"]').click()
+
+        // We shouldn't be on the signup page anymore
+        cy.url().should('include', 'login')
+    })
 })

@@ -15,9 +15,10 @@ import logger from '@/utils/logger'
 import * as yup from 'yup'
 import { useFormik } from 'formik'
 import { UserSignUpData } from '@/types/auth/user'
+import { getEmailRegex } from '@/utils/verification'
 
 const validationSchema = yup.object().shape({
-    email: yup.string().email('Enter a valid email').required('Email is required'),
+    email: yup.string().matches(getEmailRegex(), 'Enter a valid email').required('Email is required'),
     password: yup.string().required('Enter your password'),
 })
 

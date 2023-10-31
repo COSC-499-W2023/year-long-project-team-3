@@ -52,9 +52,9 @@ describe('Sign up tests', () => {
                 pass: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
                 expectedResponse: 'Password should be a maximum of 100 characters long',
             },
-            { pass: 'Password', expectedResponse: 'Your password must have at least one number character.' },
-            { pass: 'passw0rd', expectedResponse: 'Your password must have at least one uppercase character.' },
-            { pass: 'PASSW0RD', expectedResponse: 'Your password must have at least one lowercase character.' },
+            { pass: 'Password', expectedResponse: 'Your password must have at least one numeric character' },
+            { pass: 'passw0rd', expectedResponse: 'Your password must have at least one uppercase character' },
+            { pass: 'PASSW0RD', expectedResponse: 'Your password must have at least one lowercase character' },
         ]
 
         // Check that appropriate password form must be used
@@ -94,7 +94,7 @@ describe('Sign up tests', () => {
     })
 
     // Skip these two tests because this is about to be completed in another PR
-    it.skip('Should allow the creation of a valid user', () => {
+    it('Should allow the creation of a valid user', () => {
         // User data
         const userEmail = 'best@email.evr'
         const password = 'TryT0UseEmailAgain!'
@@ -107,10 +107,10 @@ describe('Sign up tests', () => {
         cy.get('[data-cy="submit"]').click()
 
         // We shouldn't be on the signup page anymore
-        cy.url().should('include', 'dashboard')
+        cy.url().should('include', 'login')
     })
 
-    it.skip('Should not allow the creation of an account that already is using email', () => {
+    it('Should not allow the creation of an account that already is using email', () => {
         // User data
         const userEmail = 'best@email.evr'
         const password = 'TryT0UseEmailAgain!'
@@ -132,6 +132,6 @@ describe('Sign up tests', () => {
 
         cy.url().should('include', '/signup')
 
-        cy.get('.Toastify__toast-container').should('be.visible').and('contain', 'This email address is already in use')
+        cy.get('.Toastify__toast-container').should('be.visible').and('contain', 'The input email is not valid')
     })
 })
