@@ -11,13 +11,14 @@ import * as yup from 'yup'
 import { useFormik } from 'formik'
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/lib/constants'
 import { UserSignUpData } from '@/types/auth/user'
+import { getEmailRegex } from '@/utils/verification'
 
 const getCharacterValidationError = (str: string): string => {
     return `Your password must have at least one ${ str } character.`
 }
 
 const validationSchema = yup.object().shape({
-    email: yup.string().email('Enter a valid email').required('Email is required'),
+    email: yup.string().matches(getEmailRegex(), 'Enter a valid email').required('Email is required'),
     password: yup
         .string()
         .min(MIN_PASSWORD_LENGTH, `Password should be a minimum of ${ MIN_PASSWORD_LENGTH } characters long.`)
