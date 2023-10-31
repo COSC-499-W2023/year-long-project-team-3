@@ -20,7 +20,6 @@ export const authOptions: NextAuthOptions = {
             child.error(msg)
         },
     },
-    secret: process.env.nextAuthSecret ?? 'secret',
     pages: {
         signIn: '/login',
     },
