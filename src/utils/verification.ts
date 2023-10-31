@@ -9,7 +9,8 @@ export async function isEmailUnique(email: string): Promise<boolean> {
         })
         return existingEmail == null
     } catch (err) {
-        logger.error(err)
+        const errMessage = JSON.stringify(err, Object.getOwnPropertyNames(err))
+        logger.error(errMessage)
         return false
     }
 }

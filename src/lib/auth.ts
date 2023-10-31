@@ -1,10 +1,10 @@
-import { type NextAuthOptions, type User } from 'next-auth'
+import { type NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import prisma from '@/lib/prisma'
-import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/lib/constants'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import logger from '@/utils/logger'
+import { compare } from 'bcrypt'
 
 export const authOptions: NextAuthOptions = {
     logger: {
@@ -22,8 +22,7 @@ export const authOptions: NextAuthOptions = {
     },
     secret: process.env.nextAuthSecret,
     pages: {
-        signIn: '/signin',
-        error: '/signin',
+        signIn: '/login',
     },
     adapter: PrismaAdapter(prisma),
     session: {
@@ -41,46 +40,31 @@ export const authOptions: NextAuthOptions = {
             },
         }),
         CredentialsProvider({
-            id: 'credentials',
             name: 'Credentials',
-            type: 'credentials',
             credentials: {
-                email: { label: 'Email', type: 'text', placeholder: 'johndoe@example.com', required: true },
-                password: { label: 'Password', type: 'password', required: true },
+                email: { label: 'Email', type: 'email', placeholder: 'john@mail.com' },
+                password: { label: 'Password', type: 'password' },
             },
-            async authorize(credentials, _) {
-                if (!credentials?.email || !credentials?.password) {
-                    // TODO: Handle error better
-                    return null
+            async authorize(credentials) {
+                const errorMessage: string = 'Unable to login with provided credentials'
+                if (!credentials) {
+                    throw new Error(errorMessage)
                 }
-                if (!isValidPassword(credentials.password)) {
-                    // TODO: Handle error better
-                    return null
+                const existingUser = await prisma.user.findUnique({
+                    where: { email: credentials.email },
+                })
+                // !existingUser.password is the case for Google logins
+                const isCredentialValid =
+                    !!existingUser &&
+                    existingUser.password &&
+                    (await passwordMatch(credentials.password, existingUser.password!))
+                if (!isCredentialValid) {
+                    throw new Error(errorMessage)
                 }
-
-                const user: User = await prisma.user
-                    .findUniqueOrThrow({
-                        where: {
-                            email: credentials?.email,
-                        },
-                    })
-                    .catch(() => {
-                        // TODO: Handle error better
-                        throw new Error('User not found')
-                    })
-
-                if (user) {
-                    // Any object returned will be saved in `user` property of the JWT
-                    return {
-                        id: user.id,
-                        email: user.email,
-                    } as any
+                return {
+                    id: existingUser.id,
+                    email: existingUser.email,
                 }
-
-                // If you return null then an error will be displayed advising the user to check their details.
-                return null
-
-                // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
             },
         }),
     ],
@@ -93,13 +77,11 @@ export const authOptions: NextAuthOptions = {
             return token
         },
         redirect: async ({ url, baseUrl }) => {
-            logger.info('redirect callback: ' + url + ' -> ' + baseUrl)
-            return baseUrl
+            return url.startsWith(baseUrl) ? Promise.resolve(url) : Promise.resolve(baseUrl)
         },
     },
 }
 
-function isValidPassword(password: string): boolean {
-    const regExp = new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])(?=.*[a-zA-Z\d@$!%*?&])$/)
-    return password.length >= MIN_PASSWORD_LENGTH && password.length <= MAX_PASSWORD_LENGTH && regExp.test(password)
+function passwordMatch(enteredPassword: string, password: string): Promise<boolean> {
+    return compare(enteredPassword, password)
 }

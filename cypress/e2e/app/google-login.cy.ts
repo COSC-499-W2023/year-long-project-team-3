@@ -23,11 +23,11 @@ describe('Test auth', () => {
             req.redirect('/', 302)
         }).as('googleSignInCallback')
     })
-    it('should log in with google', () => {
+    it('Should log in with google', () => {
         cy.visit('/')
         cy.get('[data-cy="login-button"]').click()
 
-        cy.get('h1').should('include.text', 'Sign In Page')
+        cy.get('[data-cy="title"]').contains('Login')
         cy.get('[data-cy="google-sign-in-btn"]').should('include.text', 'Sign in with Google').click()
         cy.wait(['@googleSignInCallback'], { timeout: TIMEOUT.EXTRA_LONG })
 

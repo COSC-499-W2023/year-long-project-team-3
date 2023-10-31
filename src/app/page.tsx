@@ -1,22 +1,23 @@
-import { Box, Button, Typography } from '@mui/material'
-import Logo from '@/components/Logo/logo'
-import LandingPageAppBar from '@/components/LandingPage/LandingPageAppBar'
+'use client'
 
-const boxCss = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
-}
+import { Box, Typography } from '@mui/material'
+import Logo from '@/components/Logo'
+import Header from '@/components/Header'
+import LandingPageButton from 'src/components/LandingPageButton'
+import { type SessionContextValue, useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 
-export default function Home() {
+export default function HomePage() {
+    const session: SessionContextValue = useSession()
+    const router = useRouter()
+
     return (
         <>
-            <LandingPageAppBar></LandingPageAppBar>
+            <Header {...session} />
             <Box
                 sx={{ display: 'flex', flexGrow: 1, alignItems: 'center', flexDirection: 'column', gap: '2rem', p: 6 }}
             >
-                <Logo fontSize={200}></Logo>
+                <Logo fontSize={200} />
                 <Typography
                     variant='h2'
                     sx={{
@@ -48,14 +49,18 @@ export default function Home() {
                     Professional video sharing made easy, with a focus on protecting your privacy
                 </Typography>
                 <Box sx={{ display: 'flex', gap: '1rem' }}>
-                    <Button variant='contained' sx={{ fontSize: 20, borderRadius: 28, textTransform: 'capitalize' }}>
-                        Get Started
-                    </Button>
-                    <Button variant='contained' sx={{ fontSize: 20, borderRadius: 28, textTransform: 'capitalize' }}>
-                        Find Out More
-                    </Button>
+                    <LandingPageButton text='Get Started' handleOnClick={handleClickGetStarted} />
+                    <LandingPageButton text='Find Out More' handleOnClick={handleClickFindOutMore} />
                 </Box>
             </Box>
         </>
     )
+
+    function handleClickGetStarted() {
+        router.push('/dashboard')
+    }
+
+    function handleClickFindOutMore() {
+        router.push('/find-out-more')
+    }
 }
