@@ -39,7 +39,7 @@ describe('Login tests', () => {
         })
     })
 
-    it('Should allow user to create an account and login', () => {
+    it('Should allow user to create an account, login, and logout', () => {
         // User data
         const userEmail = 'test@test.com'
         const password = 'P@ssw0rd'
@@ -63,12 +63,37 @@ describe('Login tests', () => {
         cy.url().should('include', '/dashboard')
 
         cy.get('[data-cy="dashboard-message"]').should('contain', `Welcome to the dashboard, ${ userEmail }!`)
+
+        // We should be able to log out
+        cy.get('[data-cy="sign-out-button"]').click()
+
+        cy.title().should('eq', 'Harp: A Secure Platform for Videos')
     })
 
     it('Should not allow user to login with invalid credentials', () => {
-        // User data
+        // User data (does not exist in database)
         const userEmail = 'joe@test.com'
         const password = 'P@ssw0rd'
+
+        cy.visit('/login')
+
+        // We should not be able to log in
+        cy.get('[data-cy="email"]').type(userEmail)
+        cy.get('[data-cy="password"]').type(password)
+        cy.get('[data-cy="submit"]').click()
+
+        // We should still be on the login page
+        cy.url().should('include', '/login')
+
+        cy.get('.Toastify__toast-container')
+            .should('be.visible')
+            .and('contain', 'Unable to login with provided credentials')
+    })
+
+    it('Should not allow user to login with incorrect password', () => {
+        // User data (user exists but password is wrong)
+        const userEmail = 'test@test.com'
+        const password = '12345'
 
         cy.visit('/login')
 

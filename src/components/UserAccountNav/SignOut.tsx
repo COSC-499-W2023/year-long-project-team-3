@@ -11,7 +11,7 @@ const SignOut = () => {
             <Button
                 variant='contained'
                 sx={{ textTransform: 'capitalize', fontSize: 20, borderRadius: 28 }}
-                data-cy='sign-up-button'
+                data-cy='sign-out-button'
                 onClick={() => signOut()}
             >
                 Sign Out
