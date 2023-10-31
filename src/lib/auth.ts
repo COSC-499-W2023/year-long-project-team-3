@@ -47,24 +47,28 @@ export const authOptions: NextAuthOptions = {
                 password: { label: 'Password', type: 'password' },
             },
             async authorize(credentials) {
-                if (!credentials?.email || !credentials?.password) {
+                if (!credentials) {
+                    throw new Error('Invalid credentials!')
+                }
+                if (!credentials.email || !credentials.password) {
                     throw new Error('Missing email or password!')
                 }
                 const existingUser = await prisma.user.findUnique({
-                    where: { email: credentials?.email },
+                    where: { email: credentials.email },
                 })
-                if (!existingUser) {
-                    throw new Error('No such user!')
+                // !existingUser.password is the case for Google logins
+                if (
+                    !existingUser ||
+                    !existingUser.password ||
+                    !(await passwordMatch(credentials.password, existingUser.password!))
+                ) {
+                    throw new Error('Unable to login with provided credentials')
                 }
-                // TODO: already checked on frontend, check here as well?
                 if (!isValidPassword(credentials.password)) {
                     throw new Error('Invalid password!')
                 }
                 if (!isValidEmail(credentials.email)) {
                     throw new Error('Invalid email!')
-                }
-                if (!(await passwordMatch(credentials.password, existingUser.password!))) {
-                    throw new Error('Wrong password!')
                 }
                 return {
                     id: existingUser.id,

@@ -43,7 +43,7 @@ export default function Home() {
                 </Typography>
                 <Box sx={{ display: 'flex', gap: '1rem' }}>
                     <HomePageButton route='/dashboard' text='Get Started'></HomePageButton>
-                    <HomePageButton route='/learn-more' text='Find Out More'></HomePageButton>
+                    <HomePageButton route='/find-out-more' text='Find Out More'></HomePageButton>
                 </Box>
             </Box>
         </>
