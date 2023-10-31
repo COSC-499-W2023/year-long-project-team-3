@@ -6,8 +6,8 @@ on:
             - docs/**
             - '**/*.md'
 jobs:
-    setup:
-        name: Set up environments
+    cypress-component:
+        name: Cypress Run Component Tests
         runs-on: ubuntu-latest
         steps:
             -   uses: actions/checkout@v4
@@ -21,22 +21,12 @@ jobs:
                     echo "${{ secrets.ENV_TEST_LOCAL }}" > .env
                     echo "" > cypress.config.json
 
-    lint:
-        name: Run Lint and Prettier
-        runs-on: ubuntu-latest
-        needs: [ setup ]
-        steps:
             -   name: ESLint
                 run: npm run lint
             -   name: Prettier
                 run: npx prettier . --check
 
-    cypress-component:
-        name: Run cypress component tests
-        runs-on: ubuntu-latest
-        needs: [ setup, lint ]
-        steps:
-            -   name: Cypress Run Component Tests
+            -   name: Run Component Tests
                 uses: cypress-io/github-action@v6
                 env:
                     CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
