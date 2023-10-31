@@ -1,4 +1,4 @@
-describe('test page', () => {
+describe('Test landing page', () => {
     it('Contains landing app bar with correct text', () => {
         cy.visit('/')
         cy.title().should('eq', 'Harp: A Secure Platform for Videos')
@@ -12,5 +12,23 @@ describe('test page', () => {
         cy.get('[data-cy="platform-description"]').contains('Professional video')
     })
 
-    // TODO: add tests for buttons and navigation
+    it('Contains two buttons', () => {
+        cy.visit('/')
+        cy.get('[data-cy="home-page-button"]').contains('Get Started')
+        cy.get('[data-cy="home-page-button"]').contains('Find Out More')
+    })
+
+    it('Navigates to Mission Statement page after clicking on Find Out More', () => {
+        cy.visit('/')
+        cy.get('[data-cy="home-page-button"]').contains('Find Out More').click()
+        cy.url().should('include', '/find-out-more')
+        cy.get('[data-cy="title"]').contains('Mission Statement')
+    })
+
+    it('Navigates to Login page after clicking on Get Started', () => {
+        cy.visit('/')
+        cy.get('[data-cy="home-page-button"]').contains('Get Started').click()
+        cy.url().should('include', '/login')
+        cy.get('[data-cy="title"]').contains('Login')
+    })
 })

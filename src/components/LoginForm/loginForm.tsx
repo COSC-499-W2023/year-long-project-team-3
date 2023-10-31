@@ -51,7 +51,7 @@ export default function LoginForm() {
                     minWidth: 'md',
                 }}
             >
-                <Typography variant='h4' sx={{ fontWeight: 'medium' }}>
+                <Typography data-cy='title' variant='h4' sx={{ fontWeight: 'medium' }}>
                     Login
                 </Typography>
                 <form onSubmit={formik.handleSubmit}>

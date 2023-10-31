@@ -20,6 +20,7 @@ const page = () => {
                 }}
             >
                 <Typography
+                    data-cy='title'
                     variant='h2'
                     sx={{
                         fontWeight: 'medium',
@@ -31,7 +32,6 @@ const page = () => {
                         textAlign: 'center',
                         pb: 5,
                     }}
-                    data-cy=''
                 >
                     Mission Statement
                 </Typography>
@@ -46,7 +46,6 @@ const page = () => {
                         },
                         textAlign: 'center',
                     }}
-                    data-cy=''
                 >
                     The purpose of our software is to allow users to easily send and receive videos through their web
                     browser. Users will be able to protect their privacy in those videos by optionally blurring their
