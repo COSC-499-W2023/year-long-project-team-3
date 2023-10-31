@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import logger from '@/utils/logger'
 import { UserSignUpData } from '@/types/auth/user'
-import { isEmailUnique, isValidEmail, isValidPassword } from '@/utils/verification'
+import { isEmailUnique, isValidPassword } from '@/utils/verification'
 import { hash } from 'bcrypt'
 
 export async function POST(req: Request) {
@@ -28,6 +28,7 @@ export async function POST(req: Request) {
                     create: {
                         type: 'bcrypt',
                         provider: 'credentials',
+                        // TODO: This should be changed to an id instead of an email
                         providerAccountId: email,
                     },
                 },

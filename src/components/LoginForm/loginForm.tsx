@@ -105,7 +105,7 @@ export default function LoginForm() {
                     </Box>
                     <Grid container>
                         <Grid item xs>
-                            <Link href='/signup' variant='body2' data-cy='login'>
+                            <Link data-cy='link-to-signup' href='/signup' variant='body2'>
                                 Don&apos;t have an account?
                             </Link>
                         </Grid>

@@ -10,12 +10,12 @@ import Logo from '@/components/Logo/logo'
 import Grid from '@mui/material/Grid'
 import Link from '@mui/material/Link'
 import { signIn } from 'next-auth/react'
-import logger from '@/utils/logger'
 import * as yup from 'yup'
 import { useFormik } from 'formik'
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/lib/constants'
 import { UserSignUpData } from '@/types/auth/user'
 import { getEmailRegex } from '@/utils/verification'
+import logger from '@/utils/logger'
 import { toast } from 'react-toastify'
 
 const getCharacterValidationError = (str: string): string => {
@@ -67,7 +67,7 @@ export default function SignUpForm() {
                     minWidth: 'md',
                 }}
             >
-                <Typography variant='h4' sx={{ fontWeight: 'medium' }}>
+                <Typography data-cy='title' variant='h4' sx={{ fontWeight: 'medium' }}>
                     Sign Up
                 </Typography>
                 <form onSubmit={formik.handleSubmit}>
@@ -136,7 +136,7 @@ export default function SignUpForm() {
                     </Box>
                     <Grid container>
                         <Grid item xs>
-                            <Link href='/login' variant='body2' data-cy='login'>
+                            <Link data-cy='link-to-login' href='/login' variant='body2'>
                                 Already have an account?
                             </Link>
                         </Grid>
@@ -156,22 +156,26 @@ export default function SignUpForm() {
     )
 
     async function handleSubmit(values: UserSignUpData) {
-        // Send form data to api
-        const response = await fetch('api/auth/signup', {
-            method: 'POST',
-            body: JSON.stringify({
-                email: values.email,
-                password: values.password,
-            }),
-        })
+        try {
+            // Send form data to api
+            const response = await fetch('api/auth/signup', {
+                method: 'POST',
+                body: JSON.stringify({
+                    email: values.email,
+                    password: values.password,
+                }),
+            })
 
-        const errorMessage = await response.json()
-
-        if (response.status != 201) {
-            toast.error(errorMessage.error)
-        } else {
-            router.push('/login')
-            router.refresh()
+            const userInfo = await response.json()
+            if (response.status == 201) {
+                logger.info(`User ${ userInfo.user.email } successfully signed up`)
+                router.push('/login')
+                router.refresh()
+            } else {
+                toast.error(userInfo.error)
+            }
+        } catch (error) {
+            logger.error(error)
         }
     }
 }
