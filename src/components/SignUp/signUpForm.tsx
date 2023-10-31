@@ -12,6 +12,7 @@ import { useFormik } from 'formik'
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/lib/constants'
 import { UserSignUpData } from '@/types/auth/user'
 import { getEmailRegex } from '@/utils/verification'
+import logger from '@/utils/logger'
 
 const getCharacterValidationError = (str: string): string => {
     return `Your password must have at least one ${ str } character.`
@@ -43,9 +44,7 @@ export default function SignUpForm() {
             passwordConfirmation: '',
         },
         validationSchema: validationSchema,
-        onSubmit: (values) => {
-            handleSubmit(values).then()
-        },
+        onSubmit: (values) => handleSubmit(values),
     })
 
     return (
@@ -136,21 +135,26 @@ export default function SignUpForm() {
     )
 
     async function handleSubmit(values: UserSignUpData) {
-        // Send form data to api
-        const response = await fetch('api/auth/signup', {
-            method: 'POST',
-            body: JSON.stringify({
-                email: values.email,
-                password: values.password,
-            }),
-        })
+        try {
+            // Send form data to api
+            const response = await fetch('api/auth/signup', {
+                method: 'POST',
+                body: JSON.stringify({
+                    email: values.email,
+                    password: values.password,
+                }),
+            })
 
-        // Change this to the login page once developed
-        if (response.status == 201) {
-            router.push('/')
-            router.refresh()
-        } else {
-            // TODO: toast error message (This will be done on Teresa's PR)
+            // Change this to the login page once developed
+            if (response.status == 201) {
+                logger.info('User successfully signed up')
+                router.push('/')
+                router.refresh()
+            } else {
+                // TODO: toast error message (This will be done on Teresa's PR)
+            }
+        } catch (error) {
+            logger.error(error)
         }
     }
 }
