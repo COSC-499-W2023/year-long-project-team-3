@@ -20,6 +20,9 @@
 -   [Local Development Setup](docs/guides/local_development_setup.md)
 -   [Local Docker Development Setup](docs/guides/local_docker_development_setup.md)
 
+### Tests
+-  [Manually run E2E tests on PR](docs/guides/run_e2e_github_actions.md)
+
 ### Common commands
 
 -   [Common commands](docs/guides/commands.md)

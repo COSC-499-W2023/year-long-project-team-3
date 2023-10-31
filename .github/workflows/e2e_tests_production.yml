@@ -1,0 +1,93 @@
+name: Production Deployment
+
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+    deploy-preview:
+        name: Deploy Preview
+        runs-on: ubuntu-latest
+        env:
+            VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+            VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        steps:
+            -   uses: actions/checkout@v4
+            -   name: Install Vercel CLI
+                run: npm install --global vercel@latest
+            -   name: Pull Vercel Environment Information
+                run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+            -   name: Write .env
+                run: |
+                    echo "${{ secrets.ENV_PREVIEW }}" > .env
+            -   name: Build Project Artifacts
+                run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+            -   name: Deploy Project Artifacts to Vercel
+                run: |
+                    url="$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})"
+                    vercel alias --token=${{ secrets.VERCEL_TOKEN }} set "$url" ubco-capstone-team-3.vercel.app
+
+    setup-preview-db:
+        name: Set up Preview database
+        runs-on: ubuntu-latest
+        needs: [ deploy-preview ]
+        steps:
+            -   uses: actions/checkout@v4
+            -   name: Write environment variables
+                run: |
+                    echo "${{ secrets.ENV_PREVIEW }}" > .env
+            -   name: Migrate Database
+                run: npx prisma migrate dev &>-
+
+    cypress-e2e:
+        name: Run cypress E2E tests on preview deployment
+        runs-on: ubuntu-latest
+        needs: [ deploy-preview, setup-db ]
+        steps:
+            -   uses: actions/checkout@v4
+            -   name: Write environment variables
+                run: |
+                    echo "${{ secrets.ENV_PREVIEW }}" > .env
+            -   name: Cypress Run E2E Tests
+                uses: cypress-io/github-action@v6
+                env:
+                    CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+                    GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
+                with:
+                    wait-on: ${{ secrets.CYPRESS_BASE_URL }}
+                    browser: chrome
+                    record: true
+                    parallel: true
+                    config: baseUrl=${{ secrets.CYPRESS_BASE_URL }}
+
+
+    deploy-production:
+        name: Deploy Production
+        runs-on: ubuntu-latest
+        needs: [ cypress-e2e ]
+        steps:
+            -   uses: actions/checkout@v4
+            -   name: Install Vercel CLI
+                run: npm install --global vercel@latest
+            -   name: Pull Vercel Environment Information
+                run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+            -   name: Write .env
+                run: |
+                    echo "${{ secrets.ENV_PRODUCTION }}" > .env
+            -   name: Build Project Artifacts
+                run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+            -   name: Deploy Project Artifacts to Vercel
+                run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+    setup-production-db:
+        name: Set up Production database
+        runs-on: ubuntu-latest
+        needs: [ deploy-production ]
+        steps:
+            -   uses: actions/checkout@v4
+            -   name: Write environment variables
+                run: |
+                    echo "${{ secrets.ENV_PRODUCTION }}" > .env
+            -   name: Migrate Database
+                run: npx prisma migrate dev &>-
