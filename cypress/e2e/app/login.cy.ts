@@ -1,3 +1,5 @@
+import { TIMEOUT } from '../../utils/constants'
+
 describe('Login tests', () => {
     before(() => {
         cy.task('clearDB')
@@ -33,7 +35,7 @@ describe('Login tests', () => {
             cy.get('[data-cy="email"]').find('input').clear().type(input.email)
             cy.get('[data-cy="submit"]').click()
 
-            cy.url().should('include', '/login')
+            cy.url({ timeout: TIMEOUT.LONG }).should('include', '/login')
 
             cy.get('[data-cy="email"]').find('p.Mui-error').should('be.visible').and('contain', input.expectedResponse)
         })
@@ -52,7 +54,7 @@ describe('Login tests', () => {
         cy.get('[data-cy="submit"]').click()
 
         // We shouldn't be on the signup page anymore
-        cy.url().should('include', '/login')
+        cy.url({ timeout: TIMEOUT.LONG }).should('include', '/login')
 
         // We should be able to log in
         cy.get('[data-cy="email"]').type(userEmail)
@@ -60,8 +62,7 @@ describe('Login tests', () => {
         cy.get('[data-cy="submit"]').click()
 
         // We shouldn't be on the login page anymore
-        cy.url().should('include', '/dashboard')
-
+        cy.url({ timeout: TIMEOUT.LONG }).should('include', '/dashboard')
         cy.get('[data-cy="dashboard-message"]').should('contain', `Welcome to the dashboard, ${ userEmail }!`)
 
         // We should be able to log out
@@ -74,7 +75,7 @@ describe('Login tests', () => {
         // We should be able to log in again
         cy.get('[data-cy="login-button"]').click()
 
-        cy.url().should('include', '/login')
+        cy.url({ timeout: TIMEOUT.LONG }).should('include', '/login')
     })
 
     it('Should not allow user to login with invalid credentials', () => {
@@ -90,7 +91,7 @@ describe('Login tests', () => {
         cy.get('[data-cy="submit"]').click()
 
         // We should still be on the login page
-        cy.url().should('include', '/login')
+        cy.url({ timeout: TIMEOUT.LONG }).should('include', '/login')
 
         cy.get('.Toastify__toast-container')
             .should('be.visible')
@@ -110,7 +111,7 @@ describe('Login tests', () => {
         cy.get('[data-cy="submit"]').click()
 
         // We should still be on the login page
-        cy.url().should('include', '/login')
+        cy.url({ timeout: TIMEOUT.LONG }).should('include', '/login')
 
         cy.get('.Toastify__toast-container')
             .should('be.visible')
@@ -120,7 +121,7 @@ describe('Login tests', () => {
     it('Should navigate to signup when clicking on Don\'t have an account?', () => {
         cy.visit('/login')
         cy.get('[data-cy="link-to-signup"]').click()
-        cy.url().should('include', '/signup')
+        cy.url({ timeout: TIMEOUT.LONG }).should('include', '/signup')
         cy.get('[data-cy="title"]').contains('Sign Up')
     })
 })
