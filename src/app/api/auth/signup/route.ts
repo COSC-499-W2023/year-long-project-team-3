@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import logger from '@/utils/logger'
 import { UserSignUpData } from '@/types/auth/user'
-import { isEmailUnique, isValidPassword } from '@/utils/verification'
+import { isEmailUnique, isValidEmail, isValidPassword } from '@/utils/verification'
 import { hash } from 'bcrypt'
 
 export async function POST(req: Request) {
@@ -10,10 +10,13 @@ export async function POST(req: Request) {
         const body: UserSignUpData = await req.json()
         const { email, password } = body
         if (!(await isEmailUnique(email))) {
-            return NextResponse.json({ error: 'This email address is already in use' }, { status: 400 })
+            return NextResponse.json({ error: 'The input email is not valid' }, { status: 400 })
         }
         if (!isValidPassword(password)) {
             return NextResponse.json({ error: 'The input password is not valid' }, { status: 400 })
+        }
+        if (!(await isEmailUnique(email))) {
+            return NextResponse.json({ error: 'This email address is already in use' }, { status: 400 })
         }
 
         const hashedPassword = await hash(password, 10)
