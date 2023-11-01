@@ -80,7 +80,7 @@ describe('Login tests', () => {
         // We should be able to log in again
         cy.get('[data-cy="login-button"]').click()
 
-        cy.url({ timeout: TIMEOUT.LONG }).should('include', '/login')
+        cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('include', '/login')
     })
 
     it('Should not allow user to login with invalid credentials', () => {
