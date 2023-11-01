@@ -58,5 +58,4 @@ jobs:
                     wait-on: ${{ secrets.CYPRESS_BASE_URL }}
                     browser: chrome
                     record: true
-                    parallel: true
                     config: baseUrl=${{ secrets.CYPRESS_BASE_URL }}
