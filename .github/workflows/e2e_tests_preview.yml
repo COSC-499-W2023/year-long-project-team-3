@@ -36,14 +36,15 @@ jobs:
     setup-db:
         name: Set up database
         runs-on: ubuntu-latest
-        needs: ${{ inputs.run_deploy == true && ['deploy-preview'] || [] }}
+        if: ${{ always() }}
+        needs: [ 'deploy-preview' ]
         steps:
             -   uses: actions/checkout@v4
             -   name: Write environment variables
                 run: |
                     echo "${{ secrets.ENV_PREVIEW }}" > .env
             -   name: Migrate Database
-                run: npx prisma migrate dev &>-
+                run: npx prisma migrate reset &> prisma_migrate.log
 
 
 
