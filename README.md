@@ -61,7 +61,7 @@ directory.
 ```
 .
 ├── ...
-├── cypress                 # Tests (E2E and component)
+├── cypress                 # Tests (E2E, component, and unit)
 ├── docs                    # Documentation files
 │   ├── ...
 │   ├── guides              # Project set-up guides
