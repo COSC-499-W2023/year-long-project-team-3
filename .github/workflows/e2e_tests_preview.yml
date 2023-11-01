@@ -36,7 +36,7 @@ jobs:
     setup-db:
         name: Set up database
         runs-on: ubuntu-latest
-        if: ${{ always() }}
+        if: ${{ inputs.run_deploy }}
         needs: [ 'deploy-preview' ]
         steps:
             -   uses: actions/checkout@v4
@@ -51,6 +51,7 @@ jobs:
     cypress-e2e:
         name: Run cypress E2E tests on preview deployment
         runs-on: ubuntu-latest
+        if: ${{ always() }}
         needs: [ deploy-preview, setup-db ]
         steps:
             -   uses: actions/checkout@v4
