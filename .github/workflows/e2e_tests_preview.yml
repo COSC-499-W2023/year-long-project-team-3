@@ -2,11 +2,18 @@ name: Cypress E2E Tests (Preview Deployment)
 
 on:
     workflow_dispatch:
+        inputs:
+            run_deploy:
+                description: 'Run deploy-preview job'
+                required: true
+                type: boolean
+                default: false
 
 jobs:
     deploy-preview:
         name: Deploy Preview
         runs-on: ubuntu-latest
+        if: ${{ inputs.run_deploy }}
         env:
             VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
             VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
