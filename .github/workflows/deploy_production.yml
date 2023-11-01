@@ -80,6 +80,7 @@ jobs:
                     browser: chrome
                     record: true
                     config: baseUrl=${{ secrets.CYPRESS_BASE_URL }}
+                    group: 'E2E Tests on Production workflow'
 
     cypress-component:
         name: Cypress Run Component tests on Preview deployment
