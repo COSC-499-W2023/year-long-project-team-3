@@ -73,7 +73,7 @@ describe('Login tests', () => {
         // We should be able to log out
         cy.get('[data-cy="sign-out-button"]').click()
 
-        cy.title().should('eq', 'Harp: A Secure Platform for Videos')
+        cy.title().should('eq', 'Harp: A Secure Platform for Anonymous Video Submission')
         cy.get('[data-cy="sign-up-button"]').contains('Sign Up')
         cy.get('[data-cy="login-button"]').contains('Login')
 
