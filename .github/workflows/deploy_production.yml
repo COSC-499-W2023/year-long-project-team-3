@@ -58,7 +58,7 @@ jobs:
                 run: |
                     echo "${{ secrets.ENV_PREVIEW }}" > .env
             -   name: Migrate Database
-                run: npx prisma migrate dev &>-
+                run: npx prisma migrate dev &> prisma_migrate.log
 
     cypress-e2e:
         name: Run cypress E2E tests on Preview deployment
