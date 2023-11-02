@@ -22,4 +22,13 @@ export default defineConfig({
             bundler: 'webpack',
         },
     },
+
+    reporter: 'mochawesome',
+    reporterOptions: {
+        charts: true,
+        overwrite: false,
+        html: false,
+        json: true,
+        reportDir: 'cypress/reports/mochawesome-report',
+    },
 })

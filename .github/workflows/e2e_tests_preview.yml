@@ -38,6 +38,7 @@ jobs:
         runs-on: ubuntu-latest
         if: ${{ inputs.run_deploy }}
         needs: [ 'deploy-preview' ]
+        continue-on-error: true
         steps:
             -   uses: actions/checkout@v4
             -   name: Write environment variables
@@ -52,6 +53,7 @@ jobs:
         name: Run cypress E2E tests on preview deployment
         runs-on: ubuntu-latest
         if: always()
+        continue-on-error: true
         needs: [ deploy-preview, setup-db ]
         steps:
             -   uses: actions/checkout@v4
@@ -70,15 +72,32 @@ jobs:
                     record: true
                     config: baseUrl=${{ secrets.CYPRESS_BASE_URL }}
                     group: 'E2E Tests on Preview workflow'
-            -   name: Report test result to Pull Request
-                if: always()
-#                run: |
-#                  gh api --method POST \
-#                  -H "Accept: application/vnd.github+json" \
-#                  "/repos/COSC-499-W2023/year-long-project-team-3/$PULL_REQUEST_NUMBER/comments" \
-#                  -f body='#### Cypress Tests: ${{ steps.cypress-run.outcome }}. See results at ${{ steps.cypress-run.outputs.dashboardUrl }}' \
-#                  -f event='COMMENT'
+            -   name: Merge reports to 1 report file
                 run: |
-                    echo "===============> Version from CYPRESS_PULL_REQUEST_ID is $CYPRESS_PULL_REQUEST_ID"
-                env:
-                    GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
+                    npx mochawesome-merge cypress/reports/mochawesome-report/*.json > cypress/reports/test_results.json
+            -   name: Convert report file to markdown
+                run: |
+                    npx mochawesome-json-to-md -p cypress/reports/test_results.json -o cypress/reports/test_results.md
+            -   name: Save markdown to report later
+                uses: actions/upload-artifact@v3
+                with:
+                    name: test-results
+                    path: cypress/reports/test_results.md
+
+    results-report:
+        name: Report results
+        runs-on: ubuntu-latest
+        if: always()
+        needs: [ cypress-e2e ]
+        steps:
+            -   uses: actions/checkout@v4
+            -   name: Download test results
+                uses: actions/download-artifact@v3
+                with:
+                    name: test-results
+            -   name: Create comment
+                uses: peter-evans/create-or-update-comment@v3
+                with:
+                    issue-number: $CYPRESS_PULL_REQUEST_ID
+                    body-path: cypress/reports/test_results.md
+                    token: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
