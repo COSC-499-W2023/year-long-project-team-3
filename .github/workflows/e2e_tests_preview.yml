@@ -73,10 +73,9 @@ jobs:
             -   name: Hoiye
                 if: always()
                 run: |
-                  gh api \
-                  --method POST \
+                  gh api --method POST \
                   -H "Accept: application/vnd.github+json" \
-                  /repos/COSC-499-W2023/year-long-project-team-3/$PULL_REQUEST_NUMBER/comments \
+                  "/repos/COSC-499-W2023/year-long-project-team-3/$PULL_REQUEST_NUMBER/comments" \
                   -f body='#### Cypress Tests: ${{ steps.cypress-run.outcome }}. See results at ${{ steps.cypress-run.outputs.dashboardUrl }}' \
                   -f event='COMMENT'
                 env:
