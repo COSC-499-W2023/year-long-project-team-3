@@ -79,7 +79,7 @@ jobs:
 #                  -f body='#### Cypress Tests: ${{ steps.cypress-run.outcome }}. See results at ${{ steps.cypress-run.outputs.dashboardUrl }}' \
 #                  -f event='COMMENT'
                 run: |
-                    run: echo "===============> Version from $GITHUB_REF"
+                    echo "===============> Version from $GITHUB_REF"
                 env:
                     GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
                     PULL_REQUEST_NUMBER: ${{ steps.findPr.outputs.pr }}
