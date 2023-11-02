@@ -70,10 +70,6 @@ jobs:
 #                    record: true
 #                    config: baseUrl=${{ secrets.CYPRESS_BASE_URL }}
 #                    group: 'E2E Tests on Preview workflow'
-            -   uses: jwalton/gh-find-current-pr@v1
-                id: findPr
-                env:
-                    GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
             -   name: Report test result to Pull Request
                 if: always()
 #                run: |
