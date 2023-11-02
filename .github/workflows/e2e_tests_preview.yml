@@ -51,7 +51,7 @@ jobs:
     cypress-e2e:
         name: Run cypress E2E tests on preview deployment
         runs-on: ubuntu-latest
-        if: ${{ always() }}
+        if: always()
         needs: [ deploy-preview, setup-db ]
         steps:
             -   uses: actions/checkout@v4
@@ -69,3 +69,13 @@ jobs:
                     record: true
                     config: baseUrl=${{ secrets.CYPRESS_BASE_URL }}
                     group: 'E2E Tests on Preview workflow'
+            -   name: Hoiye
+                if: always()
+                run: |
+                  gh api \
+                  --method POST \
+                  -H "Accept: application/vnd.github+json" \
+                  /repos/COSC-499-W2023/repo_name/year-long-project-team-3/${{ github.event.issue.number }}/comments \
+                  -f body='#### Cypress Tests: ${{ steps.cypress-results.outcome }}. See results at ${{ steps.cypress-results.outputs.dashboardUrl }}'
+                env:
+                    GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
