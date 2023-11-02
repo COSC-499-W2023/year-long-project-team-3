@@ -70,14 +70,10 @@ jobs:
 #                    record: true
 #                    config: baseUrl=${{ secrets.CYPRESS_BASE_URL }}
 #                    group: 'E2E Tests on Preview workflow'
-            -   name: Hoiye
+            -   name: Report test result to Pull Request
                 if: always()
+                uses: thollander/actions-comment-pull-request@v2
                 run: |
-                  gh api --method POST \
-                  -H "Accept: application/vnd.github+json" \
-                  "/repos/COSC-499-W2023/year-long-project-team-3/$PULL_REQUEST_NUMBER/comments" \
-                  -f body='#### Cypress Tests: ${{ steps.cypress-run.outcome }}. See results at ${{ steps.cypress-run.outputs.dashboardUrl }}' \
-                  -f event='COMMENT'
+                  #### Cypress Tests: ${{ steps.cypress-run.outcome }}. See results at ${{ steps.cypress-run.outputs.dashboardUrl }}
                 env:
                     GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
-                    PULL_REQUEST_NUMBER: ${{ github.event.number }}
