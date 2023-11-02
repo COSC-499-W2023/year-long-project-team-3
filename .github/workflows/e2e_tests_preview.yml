@@ -75,7 +75,8 @@ jobs:
                   gh api \
                   --method POST \
                   -H "Accept: application/vnd.github+json" \
-                  /repos/COSC-499-W2023/repo_name/year-long-project-team-3/${{ github.event.issue.number }}/comments \
-                  -f body='#### Cypress Tests: ${{ steps.cypress-results.outcome }}. See results at ${{ steps.cypress-results.outputs.dashboardUrl }}'
+                  /repos/COSC-499-W2023/year-long-project-team-3/${{ $CYPRESS_PULL_REQUEST_ID }}/comments \
+                  -f body='#### Cypress Tests: ${{ steps.cypress-results.outcome }}. See results at ${{ steps.cypress-results.outputs.dashboardUrl }}' \
+                  -f event='COMMENT'
                 env:
                     GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
