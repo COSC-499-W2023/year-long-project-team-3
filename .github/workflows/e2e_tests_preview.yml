@@ -95,8 +95,11 @@ jobs:
                 uses: actions/download-artifact@v3
                 with:
                     name: test-results
-                    path: cypress/reports/test_results.md
-            -   name: Create comment
+                    path: cypress/reports
+            -   name: Extract test result
+                run: |
+                    zip -r cypress/reports/test_results.zip cypress/reports/test_results.md
+            -   name: Create report and post on PR
                 uses: peter-evans/create-or-update-comment@v3
                 with:
                     issue-number: $CYPRESS_PULL_REQUEST_ID
