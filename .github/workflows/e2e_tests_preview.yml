@@ -95,10 +95,10 @@ jobs:
                     path: cypress/reports
             -   name: Extract test result
                 run: |
-                    zip -r cypress/reports/test_results.zip cypress/reports/test_results
+                    unzip cypress/reports/test_results.zip
             -   name: Merge reports to 1 report file
                 run: |
-                    npx mochawesome-merge cypress/reports/test_results/*.json > cypress/reports/test_results.json
+                    npx mochawesome-merge cypress/reports/*.json > cypress/reports/test_results.json
             -   name: Convert report file to markdown
                 run: |
                     npx mochawesome-json-to-md -p cypress/reports/test_results.json -o cypress/reports/test_results.md
