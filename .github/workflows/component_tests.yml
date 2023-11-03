@@ -11,6 +11,8 @@ jobs:
     cypress-component:
         name: Cypress Run Component Tests
         runs-on: ubuntu-latest
+        outputs:
+            PR_ID: ${{ steps.save-cypress-outputs.outputs.PR_ID }}
         steps:
             -   uses: actions/checkout@v4
             -   uses: actions/setup-node@v3
@@ -37,6 +39,10 @@ jobs:
                     install: false
                     browser: chrome
                     component: true
+            -   name: Save cypress outputs
+                id: save-cypress-outputs
+                run: |
+                    echo "PR_ID=$CYPRESS_PULL_REQUEST_ID" >> $GITHUB_OUTPUT
             -   name: Upload test results
                 uses: actions/upload-artifact@v3
                 with:
@@ -47,7 +53,7 @@ jobs:
         name: Report results
         runs-on: ubuntu-latest
         if: always()
-        needs: [ cypress-e2e ]
+        needs: [ cypress-component ]
         steps:
             -   uses: actions/checkout@v4
             -   name: Download test results
@@ -64,7 +70,7 @@ jobs:
             -   name: Create report and post on PR
                 uses: peter-evans/create-or-update-comment@v3
                 env:
-                    PR_ID: ${{ needs.cypress-e2e.outputs.PR_ID }}
+                    PR_ID: ${{ needs.cypress-component.outputs.PR_ID }}
                 with:
                     issue-number: ${{ env.PR_ID }}
                     body-path: cypress/reports/test_results.md
