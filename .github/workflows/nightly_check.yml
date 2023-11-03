@@ -1,7 +1,6 @@
 name: Cypress nightly tests (Preview Deployment)
 
 on:
-    push:
     schedule:
         # runs tests every day at 4am
         -   cron: '0 4 * * *'
