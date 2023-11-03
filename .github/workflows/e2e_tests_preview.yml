@@ -68,7 +68,6 @@ jobs:
                     wait-on: ${{ secrets.CYPRESS_BASE_URL }}
                     browser: chrome
                     config: baseUrl=${{ secrets.CYPRESS_BASE_URL }}
-                    group: 'E2E Tests on Preview workflow'
             -   name: Save cypress outputs
                 id: save-cypress-outputs
                 run: |
