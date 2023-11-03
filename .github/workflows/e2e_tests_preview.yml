@@ -54,6 +54,8 @@ jobs:
         runs-on: ubuntu-latest
         if: always()
         needs: [ deploy-preview, setup-db ]
+        outputs:
+            PR_ID: ${{ steps.save-cypress-outputs.outputs.PR_ID }}
         steps:
             -   uses: actions/checkout@v4
             -   name: Write environment variables
@@ -98,7 +100,9 @@ jobs:
                     npx mochawesome-json-to-md -p cypress/reports/test_results.json -o cypress/reports/test_results.md
             -   name: Create report and post on PR
                 uses: peter-evans/create-or-update-comment@v3
+                env:
+                    PR_ID: ${{ needs.cypress-e2e.outputs.PR_ID }}
                 with:
-                    issue-number: ${{ steps.save-cypress-outputs.outputs.PR_ID }}
+                    issue-number: $PR_ID
                     body-path: cypress/reports/test_results.md
                     token: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
