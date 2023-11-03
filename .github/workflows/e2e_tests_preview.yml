@@ -94,7 +94,7 @@ jobs:
                     path: cypress/reports
             -   name: Merge reports to 1 report file
                 run: |
-                    npx mochawesome-merge cypress/reports/*.json > cypress/reports/test_results.json
+                    npx mochawesome-merge cypress/reports/*.json > cypress/reports/test_results.json --reportTitle="E2E Test Results"
             -   name: Convert report file to markdown
                 run: |
                     npx mochawesome-json-to-md -p cypress/reports/test_results.json -o cypress/reports/test_results.md

@@ -1,16 +1,36 @@
 name: Cypress nightly tests (Preview Deployment)
 
 on:
+    push:
     schedule:
         # runs tests every day at 4am
         -   cron: '0 4 * * *'
 
 
 jobs:
+    lint:
+        name: Lint
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@v4
+            -   uses: actions/setup-node@v3
+                with:
+                    node-version: '18.18.0'
+            -   name: Install dependencies
+                run: npm ci
+            -   name: Write environment variables
+                run: |
+                    echo "${{ secrets.ENV_PREVIEW }}" > .env
+                    echo "" > cypress.config.json
+            -   name: ESLint
+                run: npm run lint
+            -   name: Prettier
+                run: npx prettier . --check
+
     deploy-preview:
         name: Deploy Preview
         runs-on: ubuntu-latest
-        if: ${{ inputs.run_deploy }}
+        needs: [ lint ]
         env:
             VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
             VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
@@ -30,12 +50,10 @@ jobs:
                     url="$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})"
                     vercel alias --token=${{ secrets.VERCEL_TOKEN }} set "$url" ubco-capstone-team-3.vercel.app
 
-    setup-db:
-        name: Set up database
+    setup-preview-db:
+        name: Set up Preview database
         runs-on: ubuntu-latest
-        if: ${{ inputs.run_deploy }}
-        needs: [ 'deploy-preview' ]
-        continue-on-error: true
+        needs: [ deploy-preview ]
         steps:
             -   uses: actions/checkout@v4
             -   name: Write environment variables
@@ -45,12 +63,9 @@ jobs:
                 run: npx prisma migrate dev &> prisma_migrate.log
 
     cypress-e2e:
-        name: Run cypress E2E tests on preview deployment
+        name: Run cypress E2E tests on Preview deployment
         runs-on: ubuntu-latest
-        if: always()
-        needs: [ deploy-preview, setup-db ]
-        outputs:
-            PR_ID: ${{ steps.save-cypress-outputs.outputs.PR_ID }}
+        needs: [ deploy-preview, setup-preview-db ]
         steps:
             -   uses: actions/checkout@v4
             -   name: Write environment variables
@@ -58,19 +73,30 @@ jobs:
                     echo "${{ secrets.ENV_PREVIEW }}" > .env
             -   name: Cypress Run E2E Tests
                 uses: cypress-io/github-action@v6
-                continue-on-error: true
                 env:
+                    CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
                     GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
                 with:
                     wait-on: ${{ secrets.CYPRESS_BASE_URL }}
                     browser: chrome
+                    record: true
                     config: baseUrl=${{ secrets.CYPRESS_BASE_URL }}
-            -   name: Save cypress outputs
-                id: save-cypress-outputs
+                    group: 'E2E Tests on Production workflow'
+
+    cypress-component:
+        name: Cypress Run Component tests on Preview deployment
+        runs-on: ubuntu-latest
+        needs: [ deploy-preview, setup-preview-db ]
+        steps:
+            -   uses: actions/checkout@v4
+            -   name: Write environment variables
                 run: |
-                    echo "PR_ID=$CYPRESS_PULL_REQUEST_ID" >> $GITHUB_OUTPUT
-            -   name: Upload test results
-                uses: actions/upload-artifact@v3
+                    echo "${{ secrets.ENV_PREVIEW }}" > .env
+            -   name: Run Component Tests
+                uses: cypress-io/github-action@v6
+                env:
+                    CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+                    GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
                 with:
-                    name: test-results
-                    path: cypress/reports/e2e/e2e*.json
+                    browser: chrome
+                    component: true
