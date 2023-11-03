@@ -18,7 +18,7 @@ jobs:
                 run: npm ci
             -   name: Write environment variables
                 run: |
-                    echo "${{ secrets.ENV_TEST_LOCAL }}" > .env
+                    echo "${{ secrets.ENV_PREVIEW }}" > .env
                     echo "" > cypress.config.json
             -   name: ESLint
                 run: npm run lint

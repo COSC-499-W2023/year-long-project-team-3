@@ -37,3 +37,36 @@ jobs:
                     install: false
                     browser: chrome
                     component: true
+            -   name: Upload test results
+                uses: actions/upload-artifact@v3
+                with:
+                    name: component-test-results
+                    path: cypress/reports/components/components*.json
+
+    results-report:
+        name: Report results
+        runs-on: ubuntu-latest
+        if: always()
+        needs: [ cypress-e2e ]
+        steps:
+            -   uses: actions/checkout@v4
+            -   name: Download test results
+                uses: actions/download-artifact@v3
+                with:
+                    name: component-test-results
+                    path: cypress/reports
+            -   name: Merge reports to 1 report file
+                run: |
+                    npx mochawesome-merge cypress/reports/*.json > cypress/reports/test_results.json
+            -   name: Convert report file to markdown
+                run: |
+                    npx mochawesome-json-to-md -p cypress/reports/test_results.json -o cypress/reports/test_results.md
+            -   name: Create report and post on PR
+                uses: peter-evans/create-or-update-comment@v3
+                env:
+                    PR_ID: ${{ needs.cypress-e2e.outputs.PR_ID }}
+                with:
+                    issue-number: ${{ env.PR_ID }}
+                    body-path: cypress/reports/test_results.md
+                    token: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
+

@@ -1,13 +1,10 @@
-name: Cypress E2E Tests (Preview Deployment)
+name: Cypress nightly tests (Preview Deployment)
 
 on:
-    workflow_dispatch:
-        inputs:
-            run_deploy:
-                description: 'Run deploy-preview job'
-                required: false
-                type: boolean
-                default: false
+    schedule:
+        # runs tests every day at 4am
+        -   cron: '0 4 * * *'
+
 
 jobs:
     deploy-preview:
@@ -47,8 +44,6 @@ jobs:
             -   name: Migrate Database
                 run: npx prisma migrate dev &> prisma_migrate.log
 
-
-
     cypress-e2e:
         name: Run cypress E2E tests on preview deployment
         runs-on: ubuntu-latest
@@ -77,32 +72,5 @@ jobs:
             -   name: Upload test results
                 uses: actions/upload-artifact@v3
                 with:
-                    name: e2e-test-results
+                    name: test-results
                     path: cypress/reports/e2e/e2e*.json
-
-    results-report:
-        name: Report results
-        runs-on: ubuntu-latest
-        if: always()
-        needs: [ cypress-e2e ]
-        steps:
-            -   uses: actions/checkout@v4
-            -   name: Download test results
-                uses: actions/download-artifact@v3
-                with:
-                    name: e2e-test-results
-                    path: cypress/reports
-            -   name: Merge reports to 1 report file
-                run: |
-                    npx mochawesome-merge cypress/reports/*.json > cypress/reports/test_results.json
-            -   name: Convert report file to markdown
-                run: |
-                    npx mochawesome-json-to-md -p cypress/reports/test_results.json -o cypress/reports/test_results.md
-            -   name: Create report and post on PR
-                uses: peter-evans/create-or-update-comment@v3
-                env:
-                    PR_ID: ${{ needs.cypress-e2e.outputs.PR_ID }}
-                with:
-                    issue-number: ${{ env.PR_ID }}
-                    body-path: cypress/reports/test_results.md
-                    token: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
