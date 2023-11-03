@@ -60,7 +60,6 @@ jobs:
                 run: |
                     echo "${{ secrets.ENV_PREVIEW }}" > .env
             -   name: Cypress Run E2E Tests
-                id: cypress-run
                 uses: cypress-io/github-action@v6
                 continue-on-error: true
                 env:
@@ -72,6 +71,10 @@ jobs:
                     record: true
                     config: baseUrl=${{ secrets.CYPRESS_BASE_URL }}
                     group: 'E2E Tests on Preview workflow'
+            -   name: Save cypress outputs
+                id: save-cypress-outputs
+                run: |
+                    echo "PR_ID=$CYPRESS_PULL_REQUEST_ID" >> $GITHUB_OUTPUT
             -   name: Save markdown to report later
                 uses: actions/upload-artifact@v3
                 with:
@@ -102,6 +105,6 @@ jobs:
             -   name: Create report and post on PR
                 uses: peter-evans/create-or-update-comment@v3
                 with:
-                    issue-number: $CYPRESS_PULL_REQUEST_ID
+                    issue-number: ${{ steps.save-cypress-outputs.outputs.PR_ID }}
                     body-path: cypress/reports/test_results.md
                     token: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
