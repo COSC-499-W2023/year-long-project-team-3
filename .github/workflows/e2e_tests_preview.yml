@@ -75,11 +75,14 @@ jobs:
                 id: save-cypress-outputs
                 run: |
                     echo "PR_ID=$CYPRESS_PULL_REQUEST_ID" >> $GITHUB_OUTPUT
-            -   name: Save markdown to report later
+            -   name: Save test results
+                run: |
+                    zip -r cypress/reports/test_results.zip cypress/reports/mochawesome-report/*.json
+            -   name: Upload test results
                 uses: actions/upload-artifact@v3
                 with:
                     name: test-results
-                    path: cypress/reports/mochawesome-report/*.json
+                    path: cypress/reports/test_results.zip
 
     results-report:
         name: Report results
@@ -92,7 +95,7 @@ jobs:
                 uses: actions/download-artifact@v3
                 with:
                     name: test-results
-                    path: cypress/reports
+                    path: cypress/reports/test_results.zip
             -   name: Extract test result
                 run: |
                     unzip cypress/reports/test_results.zip
