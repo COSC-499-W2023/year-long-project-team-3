@@ -103,6 +103,6 @@ jobs:
                 env:
                     PR_ID: ${{ needs.cypress-e2e.outputs.PR_ID }}
                 with:
-                    issue-number: $PR_ID
+                    issue-number: ${{ env.PR_ID }}
                     body-path: cypress/reports/test_results.md
                     token: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
