@@ -94,10 +94,10 @@ jobs:
                     path: cypress/reports
             -   name: Merge reports to 1 report file
                 run: |
-                    npx mochawesome-merge cypress/reports/*.json > cypress/reports/test_results.json --reportTitle="E2E Test Results"
+                    npx mochawesome-merge cypress/reports/*.json > cypress/reports/test_results.json
             -   name: Convert report file to markdown
                 run: |
-                    npx mochawesome-json-to-md -p cypress/reports/test_results.json -o cypress/reports/test_results.md
+                    npx mochawesome-json-to-md -p cypress/reports/test_results.json -o cypress/reports/test_results.md --reportTitle="E2E Test Results #${{ env.PR_ID }}"
             -   name: Create report and post on PR
                 uses: peter-evans/create-or-update-comment@v3
                 env:
