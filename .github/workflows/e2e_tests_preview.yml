@@ -77,7 +77,7 @@ jobs:
                 uses: actions/upload-artifact@v3
                 with:
                     name: test-results
-                    path: cypress/reports/e2e/*.json
+                    path: cypress/reports/e2e/e2e*.json
 
     results-report:
         name: Report results
