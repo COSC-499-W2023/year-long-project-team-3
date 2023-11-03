@@ -63,26 +63,21 @@ jobs:
                 uses: cypress-io/github-action@v6
                 continue-on-error: true
                 env:
-                    CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
                     GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
                 with:
                     wait-on: ${{ secrets.CYPRESS_BASE_URL }}
                     browser: chrome
-                    record: true
                     config: baseUrl=${{ secrets.CYPRESS_BASE_URL }}
                     group: 'E2E Tests on Preview workflow'
             -   name: Save cypress outputs
                 id: save-cypress-outputs
                 run: |
                     echo "PR_ID=$CYPRESS_PULL_REQUEST_ID" >> $GITHUB_OUTPUT
-            -   name: Save test results
-                run: |
-                    zip -r cypress/reports/test_results.zip cypress/reports/mochawesome-report/*.json
             -   name: Upload test results
                 uses: actions/upload-artifact@v3
                 with:
                     name: test-results
-                    path: cypress/reports/test_results.zip
+                    path: cypress/reports/e2e/*.json
 
     results-report:
         name: Report results
@@ -95,7 +90,7 @@ jobs:
                 uses: actions/download-artifact@v3
                 with:
                     name: test-results
-                    path: cypress/reports/test_results.zip
+                    path: cypress/reports
             -   name: Extract test result
                 run: |
                     unzip cypress/reports/test_results.zip
