@@ -106,3 +106,28 @@ is to have login properly wrapped up (write tests and do better form validation)
 ### Additional Context
 
 My PR depends on Erin and K's PRs, so it will be the last to get merged.
+
+
+## Teresa Saller - Week 9 (2023/10/30 - 2023/11/05)
+
+![teresa-saller-tasks-w9](imgs/teresa-saller-tasks-w9.png)
+
+### Tasks
+
+Completed:
+- [Login #126](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/126)
+- [Add logo next to tab title #150](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/150)
+
+In progress:
+- [Clicking on "Harp" takes you back to the landing page #161](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/161)
+- Make UI mocks for dashboard for sending videos
+
+This week, I finished the Login PR. Our team spent quite a bit of time on presentation prep, and we were able to give a 
+good presentation. I also worked on some minor UI fixes and got started making UI mocks for our dashboard.
+
+### Goals
+
+My goal for this week was to have login properly wrapped up (write tests and do better form validation) and give a good presentation.
+My goal for next week is to continue working on my mocks while gathering feedback from my teammates.
+
+### Additional Context
