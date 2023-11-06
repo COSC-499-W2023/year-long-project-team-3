@@ -70,7 +70,7 @@ jobs:
             -   name: Create report and post on PR
                 uses: peter-evans/create-or-update-comment@v3
                 env:
-                    PR_ID: ${{ needs.cypress-component.outputs.PR_ID }}
+                    PR_ID: ${{ needs.cypress-component.outputs.PR_ID || github.event.number }}
                 with:
                     issue-number: ${{ env.PR_ID }}
                     body-path: cypress/reports/test_results.md
