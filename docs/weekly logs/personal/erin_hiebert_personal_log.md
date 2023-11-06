@@ -73,3 +73,22 @@
 ### Additional Context
 
 -   My branch was heavily dependent on the database and that not being merged into master until friday evening prevented reviews on signup branch
+
+## Week 9 (30/10/2023 - 05/11/2023)
+
+![](imgs/week-9-erin-tasks.png)
+
+### Week Tasks
+
+-   Exporting database UML diagram from our prisma schema  #155 (In review)
+-   Log in/Log out/Sign up #34 (Completed)
+
+### Week Goals
+
+-   Prepare and present mini demo
+-   Finish up signup features for mini demo
+-   Figured out how to convert project prisma schema into a UML diagram for ease when design document will be created
+
+### Additional Context
+
+-   NA
