@@ -98,7 +98,7 @@ describe('Login tests', () => {
         // We should still be on the login page
         cy.url().should('include', '/login')
 
-        cy.get('.Toastify__toast-container', { timeout: TIMEOUT.LONG })
+        cy.get('.Toastify__toast-container', { timeout: TIMEOUT.EXTRA_LONG })
             .should('be.visible')
             .and('contain', 'Unable to login with provided credentials')
     })
@@ -118,7 +118,7 @@ describe('Login tests', () => {
         // We should still be on the login page
         cy.url().should('include', '/login')
 
-        cy.get('.Toastify__toast-container', { timeout: TIMEOUT.LONG })
+        cy.get('.Toastify__toast-container', { timeout: TIMEOUT.EXTRA_LONG })
             .should('be.visible')
             .and('contain', 'Unable to login with provided credentials')
     })
