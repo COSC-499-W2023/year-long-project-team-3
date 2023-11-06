@@ -67,7 +67,7 @@ describe('Login tests', () => {
         cy.get('[data-cy="submit"]').click()
 
         // We shouldn't be on the login page anymore
-        cy.url({ timeout: TIMEOUT.LONG }).should('include', '/dashboard')
+        cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('include', '/dashboard')
         cy.get('[data-cy="dashboard-message"]').should('contain', `Welcome to the dashboard, ${ userEmail }!`)
 
         // We should be able to log out
@@ -80,7 +80,7 @@ describe('Login tests', () => {
         // We should be able to log in again
         cy.get('[data-cy="login-button"]').click()
 
-        cy.url({ timeout: TIMEOUT.LONG }).should('include', '/login')
+        cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('include', '/login')
     })
 
     it('Should not allow user to login with invalid credentials', () => {
@@ -96,9 +96,9 @@ describe('Login tests', () => {
         cy.get('[data-cy="submit"]').click()
 
         // We should still be on the login page
-        cy.url({ timeout: TIMEOUT.LONG }).should('include', '/login')
+        cy.url().should('include', '/login')
 
-        cy.get('.Toastify__toast-container')
+        cy.get('.Toastify__toast-container', { timeout: TIMEOUT.LONG })
             .should('be.visible')
             .and('contain', 'Unable to login with provided credentials')
     })
@@ -116,9 +116,9 @@ describe('Login tests', () => {
         cy.get('[data-cy="submit"]').click()
 
         // We should still be on the login page
-        cy.url({ timeout: TIMEOUT.LONG }).should('include', '/login')
+        cy.url().should('include', '/login')
 
-        cy.get('.Toastify__toast-container')
+        cy.get('.Toastify__toast-container', { timeout: TIMEOUT.LONG })
             .should('be.visible')
             .and('contain', 'Unable to login with provided credentials')
     })

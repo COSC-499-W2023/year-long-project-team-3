@@ -14,12 +14,34 @@ export default defineConfig({
             })
         },
         experimentalModifyObstructiveThirdPartyCode: true,
+
+        reporter: 'mochawesome',
+        reporterOptions: {
+            charts: true,
+            overwrite: false,
+            html: false,
+            json: true,
+            reportDir: 'cypress/reports/e2e',
+            reportFilename: 'e2e',
+            reportTitle: 'E2E Tests',
+        },
     },
 
     component: {
         devServer: {
             framework: 'next',
             bundler: 'webpack',
+        },
+
+        reporter: 'mochawesome',
+        reporterOptions: {
+            charts: true,
+            overwrite: false,
+            html: false,
+            json: true,
+            reportDir: 'cypress/reports/components',
+            reportFilename: 'components',
+            reportTitle: 'Component Tests',
         },
     },
 })

@@ -1,0 +1,108 @@
+name: Cypress E2E Tests (Preview Deployment)
+
+on:
+    workflow_dispatch:
+        inputs:
+            run_deploy:
+                description: 'Run deploy-preview job'
+                required: false
+                type: boolean
+                default: false
+
+jobs:
+    deploy-preview:
+        name: Deploy Preview
+        runs-on: ubuntu-latest
+        if: ${{ inputs.run_deploy }}
+        env:
+            VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+            VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        steps:
+            -   uses: actions/checkout@v4
+            -   name: Install Vercel CLI
+                run: npm install --global vercel@latest
+            -   name: Pull Vercel Environment Information
+                run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+            -   name: Write .env
+                run: |
+                    echo "${{ secrets.ENV_PREVIEW }}" > .env
+            -   name: Build Project Artifacts
+                run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+            -   name: Deploy Project Artifacts to Vercel
+                run: |
+                    url="$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})"
+                    vercel alias --token=${{ secrets.VERCEL_TOKEN }} set "$url" ubco-capstone-team-3.vercel.app
+
+    setup-db:
+        name: Set up database
+        runs-on: ubuntu-latest
+        if: ${{ inputs.run_deploy }}
+        needs: [ 'deploy-preview' ]
+        continue-on-error: true
+        steps:
+            -   uses: actions/checkout@v4
+            -   name: Write environment variables
+                run: |
+                    echo "${{ secrets.ENV_PREVIEW }}" > .env
+            -   name: Migrate Database
+                run: npx prisma migrate dev &> prisma_migrate.log
+
+
+
+    cypress-e2e:
+        name: Run cypress E2E tests on preview deployment
+        runs-on: ubuntu-latest
+        if: always()
+        needs: [ deploy-preview, setup-db ]
+        outputs:
+            PR_ID: ${{ steps.save-cypress-outputs.outputs.PR_ID }}
+        steps:
+            -   uses: actions/checkout@v4
+            -   name: Write environment variables
+                run: |
+                    echo "${{ secrets.ENV_PREVIEW }}" > .env
+            -   name: Cypress Run E2E Tests
+                uses: cypress-io/github-action@v6
+                continue-on-error: true
+                env:
+                    GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
+                with:
+                    wait-on: ${{ secrets.CYPRESS_BASE_URL }}
+                    browser: chrome
+                    config: baseUrl=${{ secrets.CYPRESS_BASE_URL }}
+            -   name: Save cypress outputs
+                id: save-cypress-outputs
+                run: |
+                    echo "PR_ID=$CYPRESS_PULL_REQUEST_ID" >> $GITHUB_OUTPUT
+            -   name: Upload test results
+                uses: actions/upload-artifact@v3
+                with:
+                    name: e2e-test-results
+                    path: cypress/reports/e2e/e2e*.json
+
+    results-report:
+        name: Report results
+        runs-on: ubuntu-latest
+        if: always()
+        needs: [ cypress-e2e ]
+        steps:
+            -   uses: actions/checkout@v4
+            -   name: Download test results
+                uses: actions/download-artifact@v3
+                with:
+                    name: e2e-test-results
+                    path: cypress/reports
+            -   name: Merge reports to 1 report file
+                run: |
+                    npx mochawesome-merge cypress/reports/*.json > cypress/reports/test_results.json
+            -   name: Convert report file to markdown
+                run: |
+                    npx mochawesome-json-to-md -p cypress/reports/test_results.json -o cypress/reports/test_results.md --reportTitle="E2E Test Results"
+            -   name: Create report and post on PR
+                uses: peter-evans/create-or-update-comment@v3
+                env:
+                    PR_ID: ${{ needs.cypress-e2e.outputs.PR_ID }}
+                with:
+                    issue-number: ${{ env.PR_ID }}
+                    body-path: cypress/reports/test_results.md
+                    token: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}

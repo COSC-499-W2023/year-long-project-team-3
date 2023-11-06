@@ -1,0 +1,78 @@
+name: Cypress Component Tests
+
+on:
+    push:
+        branches-ignore:
+            - master
+        paths-ignore:
+            - docs/**
+            - '**/*.md'
+jobs:
+    cypress-component:
+        name: Cypress Run Component Tests
+        runs-on: ubuntu-latest
+        outputs:
+            PR_ID: ${{ steps.save-cypress-outputs.outputs.PR_ID }}
+        steps:
+            -   uses: actions/checkout@v4
+            -   uses: actions/setup-node@v3
+                with:
+                    node-version: '18.18.0'
+            -   name: Install dependencies
+                run: npm ci
+            -   name: Write environment variables
+                run: |
+                    echo "${{ secrets.ENV_TEST_LOCAL }}" > .env
+                    echo "" > cypress.config.json
+
+            -   name: ESLint
+                run: npm run lint
+            -   name: Prettier
+                run: npx prettier . --check
+
+            -   name: Run Component Tests
+                uses: cypress-io/github-action@v6
+                env:
+                    CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+                    GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
+                with:
+                    install: false
+                    browser: chrome
+                    component: true
+            -   name: Save cypress outputs
+                id: save-cypress-outputs
+                run: |
+                    echo "PR_ID=$CYPRESS_PULL_REQUEST_ID" >> $GITHUB_OUTPUT
+            -   name: Upload test results
+                uses: actions/upload-artifact@v3
+                with:
+                    name: component-test-results
+                    path: cypress/reports/components/components*.json
+
+    results-report:
+        name: Report results
+        runs-on: ubuntu-latest
+        if: always()
+        needs: [ cypress-component ]
+        steps:
+            -   uses: actions/checkout@v4
+            -   name: Download test results
+                uses: actions/download-artifact@v3
+                with:
+                    name: component-test-results
+                    path: cypress/reports
+            -   name: Merge reports to 1 report file
+                run: |
+                    npx mochawesome-merge cypress/reports/*.json > cypress/reports/test_results.json
+            -   name: Convert report file to markdown
+                run: |
+                    npx mochawesome-json-to-md -p cypress/reports/test_results.json -o cypress/reports/test_results.md --reportTitle="Component Test Results"
+            -   name: Create report and post on PR
+                uses: peter-evans/create-or-update-comment@v3
+                env:
+                    PR_ID: ${{ needs.cypress-component.outputs.PR_ID }}
+                with:
+                    issue-number: ${{ env.PR_ID }}
+                    body-path: cypress/reports/test_results.md
+                    token: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
+

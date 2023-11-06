@@ -1,6 +1,6 @@
 import { isValidEmail, isValidPassword } from '@/utils/verification'
 
-describe('test signup validation functions', () => {
+describe('Test signup validation functions', () => {
     it('should check password is valid', () => {
         let result: boolean = isValidPassword('abC12345')
         expect(result).to.be.true
