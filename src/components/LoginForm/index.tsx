@@ -52,7 +52,7 @@ export default function LoginForm() {
                 <Typography data-cy='title' variant='h4' sx={{ fontWeight: 'medium' }}>
                     Login
                 </Typography>
-                <form onSubmit={formik.handleSubmit}>
+                <form onSubmit={formik.handleSubmit} noValidate>
                     <Box
                         gap={1}
                         sx={{

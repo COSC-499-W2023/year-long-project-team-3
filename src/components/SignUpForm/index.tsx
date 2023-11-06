@@ -54,7 +54,7 @@ export default function SignUpForm() {
                 <Typography data-cy='title' variant='h4' sx={{ fontWeight: 'medium' }}>
                     Sign Up
                 </Typography>
-                <form onSubmit={formik.handleSubmit}>
+                <form onSubmit={formik.handleSubmit} noValidate>
                     <Box
                         gap={1}
                         sx={{
