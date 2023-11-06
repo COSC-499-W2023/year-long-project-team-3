@@ -128,3 +128,33 @@ In Progress Tasks:
 
 Overall, I think that the way we split the tasks was not complementary to completing them easily, and I think that we
 will have to reconsider how we do that moving forwards.
+
+## Week 9 (30/10/2023 - 05/11/2023)
+
+### Tasks Breakdown
+
+![](imgs/week-9-seth-akins-tasks.png)
+
+### Goals
+
+- The main goal for this week was to wrap up what we wanted to present at the mini presentation and prep for the
+  presentation.
+- The team also met to discuss the next milestone, and allocated tasks for the first two weeks.
+- I started on my task, which is to have us be able to upload and retrieve videos from AWS S3
+
+### Tasks
+
+#### Completed Tasks
+
+- [Backend unit testing for log in, sign up, and log out ](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/48)
+- [Log in/Log out/Sign up](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/34)
+- [Setup AWS S3 to store videos from website](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/151)
+
+### In-Progress Tasks
+
+- [Setup REST Api to Upload Video to S3](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/157)
+- [Uploading videos to & retrieving videos from AWS S3](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/56)
+
+### Additional Context
+
+- I was very happy with the polish of the product we delivered for the mini-presentation
