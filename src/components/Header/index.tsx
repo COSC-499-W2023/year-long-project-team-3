@@ -16,7 +16,7 @@ export default function Header(props: HeaderProps) {
     return (
         <AppBar data-cy='landing-page-app-bar' position='static' sx={{ backgroundColor: 'white' }}>
             <Toolbar disableGutters>
-                <Box sx={{ display: 'flex', alignItems: 'center' }} onClick={() => router.push('/')}>
+                <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={() => router.push('/')}>
                     <HeaderLogo />
                     <Typography color='primary' variant='h4' component='div' sx={{ fontWeight: 'bold' }}>
                         Harp
