@@ -1,5 +1,23 @@
 # K Phan
 
+## Term 1 Week 9 (October 30, 2023 - November 05, 2023)
+
+### Week's Goals
+
+- Have a decent demo
+- Touch up the pipeline for project
+
+### Tasks Worked on
+- Helped teammates with Sign Up features
+- Helped teammates with Sign In features
+- Refactor project structure
+- Helped with preparing for demo
+- Reviewed a lot of PRs
+- Restructured pipeline for CI/CD
+
+### Teamformation Report
+![](./imgs/week-9-k-phan-tasks.png)
+
 ## Term 1 Week 8 (October 23, 2023 - October 29, 2023)
 
 ### Week's Goals
@@ -15,7 +33,7 @@
 - Logger in middleware to log requests
 
 ### Teamformation Report
-
+![](./imgs/week-8-k-phan-tasks.png)
 
 
 ## Term 1 Week 6 and 7 (October 09, 2023 - October 22, 2023)
