@@ -1,6 +1,31 @@
 # Weekly Individual Log - Justin Schoenit
 
-## Week 8 (Oct 9 - Oct 22)
+## Week 9 (Oct 30 - Nov 5)
+
+### Tasks
+
+![](imgs/week-9-tasks-justin.png)
+
+### Goals
+
+- Complete signup/login/logout task
+- Fix broken deployment
+- Prepare presentation
+- Deliver presentation
+- Start UI design for various pages that will be developed this sprint
+
+### My Contributions
+
+- Put that Cypress tutorial to use testing signup form
+- Practiced presentation
+- Gave presentation
+- Started Figma design of video preview page
+
+### Additional Context
+
+Was a lot of work at the beginning of the week to wrap up incomplete tasks before the presentation, and then prepared for the presentation, so the latter half of the week didn't get as many hours allocated to it
+
+## Week 8 (Oct 23 - Oct 29)
 
 ### Tasks
 
@@ -22,6 +47,8 @@
 ### Additional Context
 
 Was a lot of learning this week and debugging platform specific errors
+
+### Week 6/7 (Oct 9 - Oct 22)
 
 ### Tasks
 
