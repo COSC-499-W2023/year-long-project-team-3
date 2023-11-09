@@ -7,14 +7,14 @@ const inter: NextFont = Inter({ subsets: ['latin'] })
 export const theme: Theme = createTheme({
     palette: {
         background: {
-            default: 'white',
+            default: '#FDFCF2',
         },
         mode: 'light',
         primary: {
-            main: '#007DFC',
+            main: '#212FAB',
         },
         secondary: {
-            main: '#f50057',
+            main: '#CDADFF',
         },
     },
     typography: {

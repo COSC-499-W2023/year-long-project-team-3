@@ -14,7 +14,7 @@ export default function Header(props: HeaderProps) {
     const router = useRouter()
 
     return (
-        <AppBar data-cy='landing-page-app-bar' position='static' sx={{ backgroundColor: 'white' }}>
+        <AppBar data-cy='landing-page-app-bar' position='static' sx={{ backgroundColor: '#FDFCF2' }}>
             <Toolbar disableGutters>
                 <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={() => router.push('/')}>
                     <HeaderLogo />
