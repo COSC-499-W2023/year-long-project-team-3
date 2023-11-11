@@ -2,7 +2,6 @@
 
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
-import Grid from '@mui/material/Grid'
 import Link from '@mui/material/Link'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -17,8 +16,9 @@ import { useFormik } from 'formik'
 import { UserSignUpData } from '@/types/auth/user'
 import { getEmailRegex } from '@/utils/verification'
 import { ObjectSchema } from 'yup'
-import { IconButton, InputAdornment } from '@mui/material'
+import { Divider, IconButton, InputAdornment } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
+import GoogleSigninButton from '@/components/GoogleSigninButton'
 
 interface FormValues {
     email: string
@@ -26,9 +26,7 @@ interface FormValues {
 }
 
 export default function LoginForm() {
-    const [values, setValues] = useState({
-        showPassword: false,
-    })
+    const [values, setValues] = useState<{ showPassword: boolean }>({ showPassword: false })
 
     const handleClickShowPassword = () => {
         setValues({ ...values, showPassword: !values.showPassword })
@@ -131,23 +129,15 @@ export default function LoginForm() {
                             Log In
                         </Button>
                     </Box>
-                    <Grid container>
-                        <Grid item xs>
-                            <Link data-cy='link-to-signup' href='/signup' variant='body2'>
-                                Don&apos;t have an account?
-                            </Link>
-                        </Grid>
-                        <Grid item>
-                            <Button
-                                data-cy='google-sign-in-btn'
-                                sx={{ textTransform: 'capitalize' }}
-                                onClick={signInWithGoogle}
-                            >
-                                Sign in with Google
-                            </Button>
-                        </Grid>
-                    </Grid>
                 </form>
+                <Typography>
+                    Don&apos;t have an account yet?{' '}
+                    <Link data-cy='link-to-signup' href='/signup'>
+                        Sign up now
+                    </Link>
+                </Typography>
+                <Divider>OR</Divider>
+                <GoogleSigninButton />
             </Box>
         </>
     )
@@ -173,14 +163,5 @@ export default function LoginForm() {
             const errMessage = JSON.stringify(err, Object.getOwnPropertyNames(err))
             logger.error(errMessage)
         }
-    }
-
-    function signInWithGoogle(e: React.MouseEvent<HTMLButtonElement>) {
-        e.preventDefault()
-        signIn('google', {
-            callbackUrl: `${ process.env.appBaseUrl }/dashboard`,
-        }).catch((err) => {
-            logger.error('An unexpected error occurred while log in with Google: ' + err.error)
-        })
     }
 }
