@@ -136,7 +136,31 @@ export default function LoginForm() {
                         Sign up now
                     </Link>
                 </Typography>
-                <Divider style={{ marginTop: '20px', marginBottom: '20px' }}>OR</Divider>
+                <Box
+                    sx={{
+                        marginTop: 2,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        minWidth: 'md',
+                    }}
+                >
+                    <hr
+                        style={{
+                            backgroundColor: '#757575',
+                            height: 2,
+                            width: 180,
+                        }}
+                    />
+                    <Typography sx={{ margin: '10px' }}>OR</Typography>
+                    <hr
+                        style={{
+                            backgroundColor: '#757575',
+                            height: 2,
+                            width: 180,
+                        }}
+                    />
+                </Box>
                 <GoogleSigninButton />
             </Box>
         </>
