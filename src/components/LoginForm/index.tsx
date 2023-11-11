@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid'
 import Link from '@mui/material/Link'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import React from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { toast } from 'react-toastify'
@@ -17,6 +17,8 @@ import { useFormik } from 'formik'
 import { UserSignUpData } from '@/types/auth/user'
 import { getEmailRegex } from '@/utils/verification'
 import { ObjectSchema } from 'yup'
+import { IconButton, InputAdornment } from '@mui/material'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
 
 export type LoginFormInputsData = {
     email: string
@@ -24,6 +26,17 @@ export type LoginFormInputsData = {
 }
 
 export default function LoginForm() {
+    const [showPassword, setShowPassword] = useState(false)
+    const [password, setPassword] = useState('')
+
+    const handlePasswordVisibility = () => {
+        setShowPassword(!showPassword)
+    }
+
+    const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setPassword(event.target.value)
+    }
+
     const router = useRouter()
 
     const formik = useFormik({
@@ -61,10 +74,10 @@ export default function LoginForm() {
                             flexDirection: 'column',
                             alignItems: 'center',
                             minWidth: 'xl',
+                            '& .MuiTextField-root': { m: 1, width: '40ch' },
                         }}
                     >
                         <TextField
-                            style={{ width: 400 }}
                             margin='normal'
                             variant='outlined'
                             type='email'
@@ -78,9 +91,7 @@ export default function LoginForm() {
                             data-cy='email'
                         />
                         <TextField
-                            style={{ width: 400 }}
                             margin='normal'
-                            fullWidth
                             variant='outlined'
                             type='password'
                             label='Password'
@@ -91,6 +102,21 @@ export default function LoginForm() {
                             error={formik.touched.password && Boolean(formik.errors.password)}
                             helperText={formik.touched.password && formik.errors.password}
                             data-cy='password'
+                        />
+                        <TextField
+                            type={showPassword ? 'text' : 'password'}
+                            value={password}
+                            onChange={handlePasswordChange}
+                            label='Password'
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position='end'>
+                                        <IconButton onClick={handlePasswordVisibility} edge='end'>
+                                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
                         />
                         <Button
                             type='submit'
