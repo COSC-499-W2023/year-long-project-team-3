@@ -20,32 +20,38 @@ import { ObjectSchema } from 'yup'
 import { IconButton, InputAdornment } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 
-export type LoginFormInputsData = {
+interface FormValues {
     email: string
     password: string
 }
 
 export default function LoginForm() {
-    const [showPassword, setShowPassword] = useState(false)
-    const [password, setPassword] = useState('')
+    const [values, setValues] = useState({
+        showPassword: false,
+    })
 
-    const handlePasswordVisibility = () => {
-        setShowPassword(!showPassword)
+    const handleClickShowPassword = () => {
+        setValues({ ...values, showPassword: !values.showPassword })
     }
 
-    const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(event.target.value)
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault()
     }
+
+    const validationSchema: ObjectSchema<FormValues> = yup.object().shape({
+        email: yup.string().matches(getEmailRegex(), 'Enter a valid email').required('Email is required'),
+        password: yup.string().required('Enter your password'),
+    })
 
     const router = useRouter()
 
-    const formik = useFormik({
+    const formik = useFormik<FormValues>({
         initialValues: {
             email: '',
             password: '',
         },
         validationSchema: validationSchema,
-        onSubmit: (values: LoginFormInputsData) => handleSubmit(values),
+        onSubmit: (values) => handleSubmit(values),
     })
 
     return (
@@ -93,7 +99,7 @@ export default function LoginForm() {
                         <TextField
                             margin='normal'
                             variant='outlined'
-                            type='password'
+                            type={values.showPassword ? 'text' : 'password'}
                             label='Password'
                             name='password'
                             value={formik.values.password}
@@ -102,17 +108,15 @@ export default function LoginForm() {
                             error={formik.touched.password && Boolean(formik.errors.password)}
                             helperText={formik.touched.password && formik.errors.password}
                             data-cy='password'
-                        />
-                        <TextField
-                            type={showPassword ? 'text' : 'password'}
-                            value={password}
-                            onChange={handlePasswordChange}
-                            label='Password'
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position='end'>
-                                        <IconButton onClick={handlePasswordVisibility} edge='end'>
-                                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                                        <IconButton
+                                            aria-label='toggle password visibility'
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                        >
+                                            {values.showPassword ? <Visibility /> : <VisibilityOff />}
                                         </IconButton>
                                     </InputAdornment>
                                 ),
@@ -180,8 +184,3 @@ export default function LoginForm() {
         })
     }
 }
-
-const validationSchema: ObjectSchema<LoginFormInputsData> = yup.object().shape({
-    email: yup.string().matches(getEmailRegex(), 'Enter a valid email').required('Email is required'),
-    password: yup.string().required('Enter your password'),
-})
