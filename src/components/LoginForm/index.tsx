@@ -136,7 +136,7 @@ export default function LoginForm() {
                         Sign up now
                     </Link>
                 </Typography>
-                <Divider>OR</Divider>
+                <Divider style={{ marginTop: '20px', marginBottom: '20px' }}>OR</Divider>
                 <GoogleSigninButton />
             </Box>
         </>

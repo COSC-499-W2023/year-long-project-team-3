@@ -1,3 +1,7 @@
+/* code from https://developers.google.com/identity/branding-guidelines */
+
+'use client'
+
 import React from 'react'
 import './GoogleSignInButton.css'
 import { signIn } from 'next-auth/react'
