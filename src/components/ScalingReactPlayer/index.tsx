@@ -1,4 +1,5 @@
-import ReactPlayer from 'react-player'
+import dynamic from 'next/dynamic'
+const ReactPlayer = dynamic(() => import('react-player/lazy'), { ssr: false })
 import { Box } from '@mui/material'
 import React from 'react'
 
