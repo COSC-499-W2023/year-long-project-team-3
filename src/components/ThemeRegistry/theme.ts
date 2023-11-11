@@ -19,5 +19,11 @@ export const theme: Theme = createTheme({
     },
     typography: {
         fontFamily: inter.style.fontFamily,
+        button: {
+            textTransform: 'none',
+        },
+    },
+    shape: {
+        borderRadius: 100,
     },
 })
