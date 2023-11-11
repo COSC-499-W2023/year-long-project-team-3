@@ -5,8 +5,6 @@ import Header from '@/components/Header'
 import { SessionContextValue, useSession } from 'next-auth/react'
 import ProgressDots from '@/components/ProgressDots'
 import { Box, Button, css } from '@mui/material'
-import ReactPlayer from 'react-player'
-import { maxHeight } from '@mui/system'
 import ScalingReactPlayer from '@/components/ScalingReactPlayer'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
@@ -57,7 +55,7 @@ export default function VideoPreviewPage() {
                             maxWidth: '70rem',
                         }}
                     >
-                        <ScalingReactPlayer url={'https://youtu.be/S7TUe5w6RHo?si=1sK-_C5em55Q__uv'} />
+                        <ScalingReactPlayer url={'https://d29gn7cyj93si1.cloudfront.net/sample.mp4'} />
                         <Box
                             sx={{
                                 display: 'flex',
