@@ -33,6 +33,7 @@
         "next": "^13.5.4",
         "next-auth": "^4.23.2",
         "pino": "^8.16.0",
+        "prisma-uml": "^1.1.18",
         "react": "latest",
         "react-dom": "latest",
         "react-toastify": "^9.1.3",
