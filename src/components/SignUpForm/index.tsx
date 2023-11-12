@@ -4,12 +4,10 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import React from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Logo from '@/components/Logo'
-import Grid from '@mui/material/Grid'
 import Link from '@mui/material/Link'
-import { signIn } from 'next-auth/react'
 import { useFormik } from 'formik'
 import logger from '@/utils/logger'
 import { toast } from 'react-toastify'
@@ -17,6 +15,10 @@ import * as yup from 'yup'
 import { getEmailRegex } from '@/utils/verification'
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/lib/constants'
 import { ObjectSchema } from 'yup'
+import { IconButton, InputAdornment } from '@mui/material'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
+import Separator from '@/components/Separator'
+import GoogleSigninButton from '@/components/GoogleSigninButton'
 
 export type SignUpFormInputsData = {
     email: string
@@ -26,6 +28,16 @@ export type SignUpFormInputsData = {
 
 export default function SignUpForm() {
     const router = useRouter()
+
+    const [values, setValues] = useState<{ showPassword: boolean }>({ showPassword: false })
+
+    const handleClickShowPassword = () => {
+        setValues({ ...values, showPassword: !values.showPassword })
+    }
+
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault()
+    }
 
     const formik = useFormik({
         initialValues: {
@@ -52,7 +64,7 @@ export default function SignUpForm() {
                 }}
             >
                 <Typography data-cy='title' variant='h4' sx={{ fontWeight: 'medium' }}>
-                    Sign Up
+                    Signup
                 </Typography>
                 <form onSubmit={formik.handleSubmit} noValidate>
                     <Box
@@ -62,11 +74,11 @@ export default function SignUpForm() {
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
-                            minWidth: 'xl',
+                            minWidth: 'md',
+                            '& .MuiTextField-root': { my: 1.5, mx: 7, width: '100%' },
                         }}
                     >
                         <TextField
-                            style={{ width: 400 }}
                             margin='normal'
                             variant='outlined'
                             type='email'
@@ -76,65 +88,98 @@ export default function SignUpForm() {
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             error={formik.touched.email && Boolean(formik.errors.email)}
+                            // this ensures the layout does not get shifted by the helper text
+                            FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
                             helperText={formik.touched.email && formik.errors.email}
                             data-cy='email'
                         />
                         <TextField
-                            style={{ width: 400 }}
                             margin='normal'
-                            fullWidth
                             variant='outlined'
-                            type='password'
+                            type={values.showPassword ? 'text' : 'password'}
                             label='Password'
                             name='password'
                             value={formik.values.password}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             error={formik.touched.password && Boolean(formik.errors.password)}
+                            // this ensures the layout does not get shifted by the helper text
+                            FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
                             helperText={formik.touched.password && formik.errors.password}
                             data-cy='password'
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position='end'>
+                                        <IconButton
+                                            aria-label='toggle password visibility'
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                        >
+                                            {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
                         />
                         <TextField
-                            style={{ width: 400 }}
                             margin='normal'
-                            fullWidth
                             variant='outlined'
-                            type='password'
+                            type={values.showPassword ? 'text' : 'password'}
                             label='Confirm Password'
                             name='passwordConfirmation'
                             value={formik.values.passwordConfirmation}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             error={formik.touched.passwordConfirmation && Boolean(formik.errors.passwordConfirmation)}
+                            // this ensures the layout does not get shifted by the helper text
+                            FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
                             helperText={formik.touched.passwordConfirmation && formik.errors.passwordConfirmation}
                             data-cy='passwordVerification'
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position='end'>
+                                        <IconButton
+                                            aria-label='toggle password visibility'
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                        >
+                                            {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
                         />
                         <Button
                             type='submit'
                             variant='contained'
-                            sx={{ fontSize: 15, borderRadius: 28, textTransform: 'capitalize' }}
+                            sx={{ marginTop: 2, px: 5, fontSize: 15, borderRadius: 28, textTransform: 'capitalize' }}
                             data-cy='submit'
                         >
                             Sign Up
                         </Button>
                     </Box>
-                    <Grid container>
-                        <Grid item xs>
-                            <Link data-cy='link-to-login' href='/login' variant='body2'>
-                                Already have an account?
-                            </Link>
-                        </Grid>
-                        <Grid item>
-                            <Button
-                                data-cy='google-sign-in-btn'
-                                sx={{ textTransform: 'capitalize' }}
-                                onClick={signInWithGoogle}
-                            >
-                                Sign in with Google
-                            </Button>
-                        </Grid>
-                    </Grid>
                 </form>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        minWidth: 'md',
+                    }}
+                >
+                    <Typography sx={{ mx: 6 }}>
+                        Already have an account?{' '}
+                        <Link data-cy='link-to-login' href='/login'>
+                            Go to login
+                        </Link>
+                    </Typography>
+                    <Box sx={{ my: 4, display: 'flex', alignItems: 'center', width: '100%' }}>
+                        <Separator />
+                        <Typography sx={{ mx: 2 }}>OR</Typography>
+                        <Separator />
+                    </Box>
+                    <GoogleSigninButton />
+                </Box>
             </Box>
         </>
     )
@@ -162,13 +207,6 @@ export default function SignUpForm() {
             const errMessage = JSON.stringify(err, Object.getOwnPropertyNames(err))
             logger.error(errMessage)
         }
-    }
-
-    function signInWithGoogle(e: React.MouseEvent<HTMLButtonElement>) {
-        e.preventDefault()
-        signIn('google', { callbackUrl: `${ process.env.appBaseUrl }/dashboard` }).catch((err) => {
-            logger.error('An unexpected error occurred while log in with Google: ' + err.error)
-        })
     }
 }
 
