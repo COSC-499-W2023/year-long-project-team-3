@@ -78,7 +78,7 @@ export default function LoginForm() {
                             flexDirection: 'column',
                             alignItems: 'center',
                             minWidth: 'xl',
-                            '& .MuiTextField-root': { m: 1, width: '40ch' },
+                            '& .MuiTextField-root': { m: 1.5, width: '40ch' },
                         }}
                     >
                         <TextField
@@ -91,6 +91,7 @@ export default function LoginForm() {
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             error={formik.touched.email && Boolean(formik.errors.email)}
+                            FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
                             helperText={formik.touched.email && formik.errors.email}
                             data-cy='email'
                         />
@@ -104,6 +105,7 @@ export default function LoginForm() {
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             error={formik.touched.password && Boolean(formik.errors.password)}
+                            FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
                             helperText={formik.touched.password && formik.errors.password}
                             data-cy='password'
                             InputProps={{
