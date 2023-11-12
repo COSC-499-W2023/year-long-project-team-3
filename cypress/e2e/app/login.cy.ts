@@ -1,6 +1,5 @@
 import { TIMEOUT } from '../../utils/constants'
 import { v4 as uuidv4 } from 'uuid'
-import logger from '@/utils/logger'
 
 describe('Login tests', () => {
     before(() => {
@@ -131,19 +130,22 @@ describe('Login tests', () => {
         cy.get('[data-cy="title"]').contains('Signup')
     })
 
-    // TODO: fix test
-    it.skip('Should toggle password visibility when clicking on icon button', () => {
+    it('Should toggle password visibility when clicking on icon button', () => {
         cy.visit('/login')
 
-        // password should be obscured initially
-        cy.get('[data-cy="password"]').should('exist').invoke('attr', 'type').should('exist').should('eq', 'password')
+        // Initially, the password input should be of type 'password'
+        cy.get('[data-cy=password] input').should('have.attr', 'type', 'password')
 
-        // clicking on the icon should make the password visible
-        cy.get('[data-cy="toggle-password-visibility"]').click()
-        cy.get('[data-cy="password"]').should('exist').invoke('attr', 'type').should('exist').should('eq', 'text')
+        // Click the toggle password visibility button
+        cy.get('[data-cy=toggle-password-visibility]').click()
 
-        // clicking on the icon again should re-obscure the password
-        cy.get('[data-cy="toggle-password-visibility"]').click()
-        cy.get('[data-cy="password"]').should('exist').invoke('attr', 'type').should('exist').should('eq', 'password')
+        // After clicking, the password input type should change to 'text'
+        cy.get('[data-cy=password] input').should('have.attr', 'type', 'text')
+
+        // Click the toggle password visibility button
+        cy.get('[data-cy=toggle-password-visibility]').click()
+
+        // After clicking again, the password input type should change back to 'password'
+        cy.get('[data-cy=password] input').should('have.attr', 'type', 'password')
     })
 })
