@@ -78,7 +78,7 @@ export default function LoginForm() {
                             flexDirection: 'column',
                             alignItems: 'center',
                             minWidth: 'xl',
-                            '& .MuiTextField-root': { m: 1.5, width: '40ch' },
+                            '& .MuiTextField-root': { m: 1.5, width: '100%' },
                         }}
                     >
                         <TextField
@@ -146,28 +146,20 @@ export default function LoginForm() {
                             Sign up now
                         </Link>
                     </Typography>
-                    <Box
-                        sx={{
-                            marginTop: 2,
-                            display: 'flex',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            minWidth: 'md',
-                        }}
-                    >
+                    <Box sx={{ my: 4, display: 'flex', alignItems: 'center', width: '100%' }}>
                         <hr
                             style={{
                                 backgroundColor: '#757575',
                                 height: 2,
-                                width: 180,
+                                width: '100%',
                             }}
                         />
-                        <Typography sx={{ margin: 2 }}>OR</Typography>
+                        <Typography sx={{ mx: 2 }}>OR</Typography>
                         <hr
                             style={{
                                 backgroundColor: '#757575',
                                 height: 2,
-                                width: 180,
+                                width: '100%',
                             }}
                         />
                     </Box>
