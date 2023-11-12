@@ -27,6 +27,8 @@ interface FormValues {
 }
 
 export default function LoginForm() {
+    const router = useRouter()
+
     const [values, setValues] = useState<{ showPassword: boolean }>({ showPassword: false })
 
     const handleClickShowPassword = () => {
@@ -41,8 +43,6 @@ export default function LoginForm() {
         email: yup.string().matches(getEmailRegex(), 'Enter a valid email').required('Email is required'),
         password: yup.string().required('Enter your password'),
     })
-
-    const router = useRouter()
 
     const formik = useFormik<FormValues>({
         initialValues: {
