@@ -61,3 +61,13 @@ You can view your tables, columns, and make changes to your local database by
 ```bash
 npm run prisma:explore
 ```
+
+## Database UML diagram
+
+Generate a png image of the latest database UML diagram via the database schema by
+
+```bash
+prisma-uml ./prisma/schema.prisma -o png -f ./docs/design/databaseUML.png
+```
+
+Note: file will be added to ./docs/design directory
