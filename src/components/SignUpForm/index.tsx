@@ -114,6 +114,7 @@ export default function SignUpForm() {
                                             aria-label='toggle password visibility'
                                             onClick={handleClickShowPassword}
                                             onMouseDown={handleMouseDownPassword}
+                                            data-cy='toggle-password-visibility'
                                         >
                                             {values.showPassword ? <Visibility /> : <VisibilityOff />}
                                         </IconButton>
@@ -142,6 +143,7 @@ export default function SignUpForm() {
                                             aria-label='toggle password visibility'
                                             onClick={handleClickShowPassword}
                                             onMouseDown={handleMouseDownPassword}
+                                            data-cy='toggle-password-visibility'
                                         >
                                             {values.showPassword ? <Visibility /> : <VisibilityOff />}
                                         </IconButton>

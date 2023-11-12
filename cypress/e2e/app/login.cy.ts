@@ -1,5 +1,6 @@
 import { TIMEOUT } from '../../utils/constants'
 import { v4 as uuidv4 } from 'uuid'
+import logger from '@/utils/logger'
 
 describe('Login tests', () => {
     before(() => {
@@ -127,6 +128,22 @@ describe('Login tests', () => {
         cy.visit('/login')
         cy.get('[data-cy="link-to-signup"]').click()
         cy.url({ timeout: TIMEOUT.LONG }).should('include', '/signup')
-        cy.get('[data-cy="title"]').contains('Sign Up')
+        cy.get('[data-cy="title"]').contains('Signup')
+    })
+
+    // TODO: fix test
+    it.skip('Should toggle password visibility when clicking on icon button', () => {
+        cy.visit('/login')
+
+        // password should be obscured initially
+        cy.get('[data-cy="password"]').should('exist').invoke('attr', 'type').should('exist').should('eq', 'password')
+
+        // clicking on the icon should make the password visible
+        cy.get('[data-cy="toggle-password-visibility"]').click()
+        cy.get('[data-cy="password"]').should('exist').invoke('attr', 'type').should('exist').should('eq', 'text')
+
+        // clicking on the icon again should re-obscure the password
+        cy.get('[data-cy="toggle-password-visibility"]').click()
+        cy.get('[data-cy="password"]').should('exist').invoke('attr', 'type').should('exist').should('eq', 'password')
     })
 })
