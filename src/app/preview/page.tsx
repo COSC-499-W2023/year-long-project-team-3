@@ -55,7 +55,11 @@ export default function VideoPreviewPage() {
                             maxWidth: '70rem',
                         }}
                     >
-                        <ScalingReactPlayer url={'https://d29gn7cyj93si1.cloudfront.net/sample.mp4'} />
+                        <ScalingReactPlayer
+                            url={
+                                'https://d2f59vy9cxchvn.cloudfront.net/9ba9a113-1822-475f-967f-ce4cda67a301/hls/westminster-test.m3u8'
+                            }
+                        />
                         <Box
                             sx={{
                                 display: 'flex',
