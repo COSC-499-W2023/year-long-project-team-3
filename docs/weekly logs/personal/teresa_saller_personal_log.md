@@ -131,3 +131,35 @@ My goal for this week was to have login properly wrapped up (write tests and do 
 My goal for next week is to continue working on my mocks while gathering feedback from my teammates.
 
 ### Additional Context
+
+
+## Teresa Saller - Week 10 (2023/11/06 - 2023/11/12)
+
+![teresa-saller-tasks-w10](imgs/teresa-saller-tasks-w10.png)
+
+### Tasks
+
+Completed:
+- [Clicking on "Harp" takes you back to the landing page #161](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/161)
+- [Get rid of HTML form validator when missing '@' in email address #143](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/143)
+- [Re-Mock Login and Signup to comply with Google Branding #181](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/181)
+
+In progress:
+- [Use sign in with Google branding guidelines #182](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/182)
+- [Make UI Mocks the Process of Sending Videos #165](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/165)
+  - [Mock Dashboard for Sending Videos #177](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/177)
+  - [Mock Recording Page #178](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/178)
+  - [Mock Editing Page #179](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/179)
+  - [Mock Submission Page #180](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/180)
+
+Figma: https://www.figma.com/file/eFSl7Qb39rXHptOUb0phj7/Sending-Videos-Dashboard-(Teresa)?type=design&mode=design&t=xgk8KDODSRV3GCaa-1
+
+This week, I continued making UI mocks for our dashboard. They are currently being reviewed by the team. I also worked on
+making our Signin with Google compliant with Google's branding guidelines and worked on some minor UI/bug fixes.
+
+### Goals
+
+My goal for this week was to continue working on my mocks while gathering feedback from my teammates.
+My goal for next week is to finalize the mocks for the video sending process.
+
+### Additional Context
