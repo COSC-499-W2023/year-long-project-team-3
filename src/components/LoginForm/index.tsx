@@ -92,6 +92,7 @@ export default function LoginForm() {
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             error={formik.touched.email && Boolean(formik.errors.email)}
+                            // this ensures the layout does not get shifted by the helper text
                             FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
                             helperText={formik.touched.email && formik.errors.email}
                             data-cy='email'
@@ -106,6 +107,7 @@ export default function LoginForm() {
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             error={formik.touched.password && Boolean(formik.errors.password)}
+                            // this ensures the layout does not get shifted by the helper text
                             FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
                             helperText={formik.touched.password && formik.errors.password}
                             data-cy='password'
