@@ -19,6 +19,7 @@ import { ObjectSchema } from 'yup'
 import { IconButton, InputAdornment } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import GoogleSigninButton from '@/components/GoogleSigninButton'
+import Separator from '@/components/Separator'
 
 interface FormValues {
     email: string
@@ -77,8 +78,8 @@ export default function LoginForm() {
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
-                            minWidth: 'xl',
-                            '& .MuiTextField-root': { m: 1.5, width: '100%' },
+                            minWidth: 'md',
+                            '& .MuiTextField-root': { my: 1.5, mx: 7, width: '100%' },
                         }}
                     >
                         <TextField
@@ -125,7 +126,7 @@ export default function LoginForm() {
                         <Button
                             type='submit'
                             variant='contained'
-                            sx={{ marginTop: 3, fontSize: 15, borderRadius: 28, textTransform: 'capitalize' }}
+                            sx={{ marginTop: 2, fontSize: 15, borderRadius: 28, textTransform: 'capitalize' }}
                             data-cy='submit'
                         >
                             Log In
@@ -140,28 +141,16 @@ export default function LoginForm() {
                         minWidth: 'md',
                     }}
                 >
-                    <Typography>
+                    <Typography sx={{ mx: 6 }}>
                         Don&apos;t have an account yet?{' '}
                         <Link data-cy='link-to-signup' href='/signup'>
                             Sign up now
                         </Link>
                     </Typography>
                     <Box sx={{ my: 4, display: 'flex', alignItems: 'center', width: '100%' }}>
-                        <hr
-                            style={{
-                                backgroundColor: '#757575',
-                                height: 2,
-                                width: '100%',
-                            }}
-                        />
+                        <Separator />
                         <Typography sx={{ mx: 2 }}>OR</Typography>
-                        <hr
-                            style={{
-                                backgroundColor: '#757575',
-                                height: 2,
-                                width: '100%',
-                            }}
-                        />
+                        <Separator />
                     </Box>
                     <GoogleSigninButton />
                 </Box>
