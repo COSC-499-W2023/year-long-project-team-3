@@ -16,7 +16,7 @@ import { useFormik } from 'formik'
 import { UserSignUpData } from '@/types/auth/user'
 import { getEmailRegex } from '@/utils/verification'
 import { ObjectSchema } from 'yup'
-import { Divider, IconButton, InputAdornment } from '@mui/material'
+import { IconButton, InputAdornment } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import GoogleSigninButton from '@/components/GoogleSigninButton'
 
@@ -125,45 +125,54 @@ export default function LoginForm() {
                         <Button
                             type='submit'
                             variant='contained'
-                            sx={{ fontSize: 15, borderRadius: 28, textTransform: 'capitalize' }}
+                            sx={{ marginTop: 3, fontSize: 15, borderRadius: 28, textTransform: 'capitalize' }}
                             data-cy='submit'
                         >
                             Log In
                         </Button>
                     </Box>
                 </form>
-                <Typography>
-                    Don&apos;t have an account yet?{' '}
-                    <Link data-cy='link-to-signup' href='/signup'>
-                        Sign up now
-                    </Link>
-                </Typography>
                 <Box
                     sx={{
-                        marginTop: 2,
                         display: 'flex',
-                        flexDirection: 'row',
+                        flexDirection: 'column',
                         alignItems: 'center',
                         minWidth: 'md',
                     }}
                 >
-                    <hr
-                        style={{
-                            backgroundColor: '#757575',
-                            height: 2,
-                            width: 180,
+                    <Typography>
+                        Don&apos;t have an account yet?{' '}
+                        <Link data-cy='link-to-signup' href='/signup'>
+                            Sign up now
+                        </Link>
+                    </Typography>
+                    <Box
+                        sx={{
+                            marginTop: 2,
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            minWidth: 'md',
                         }}
-                    />
-                    <Typography sx={{ margin: '10px' }}>OR</Typography>
-                    <hr
-                        style={{
-                            backgroundColor: '#757575',
-                            height: 2,
-                            width: 180,
-                        }}
-                    />
+                    >
+                        <hr
+                            style={{
+                                backgroundColor: '#757575',
+                                height: 2,
+                                width: 180,
+                            }}
+                        />
+                        <Typography sx={{ margin: 2 }}>OR</Typography>
+                        <hr
+                            style={{
+                                backgroundColor: '#757575',
+                                height: 2,
+                                width: 180,
+                            }}
+                        />
+                    </Box>
+                    <GoogleSigninButton />
                 </Box>
-                <GoogleSigninButton />
             </Box>
         </>
     )
