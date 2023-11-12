@@ -126,7 +126,7 @@ export default function LoginForm() {
                         <Button
                             type='submit'
                             variant='contained'
-                            sx={{ marginTop: 2, fontSize: 15, borderRadius: 28, textTransform: 'capitalize' }}
+                            sx={{ marginTop: 2, px: 5, fontSize: 15, borderRadius: 28, textTransform: 'capitalize' }}
                             data-cy='submit'
                         >
                             Log In
