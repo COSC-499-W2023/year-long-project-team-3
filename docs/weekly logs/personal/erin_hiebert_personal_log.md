@@ -92,3 +92,25 @@
 ### Additional Context
 
 -   NA
+
+## Week 10 (06/11/2023 - 12/11/2023)
+
+![](imgs/week-10-erin-tasks.png)
+
+### Week Tasks
+
+-   Exporting database UML diagram from our prisma schema  #155 (Completed)
+-   Create Logo  #187 (Completed)
+-   Mock Dashboard for Receiving Videos  #186 (In Progress)
+-   User Interface Design  #62 (In Progress)
+-   Dashboard Page for Receiving Videos  #58 (In Progress)
+
+### Week Goals
+
+-   Completed changes for UML export feature
+-   Designed and created vectors for app logo, will be imported to app in a future PR
+-   Begin mocks for the dashboard that deals with receiving video submissions to submission boxes
+
+### Additional Context
+
+-   I had 3 midterms this week on wednesday so the beginning of the week I did not complete any capstone work.  I'm not completely pleased with the amount of work I completed though I was more concerned with my exams and getting sufficient mental break afterwards.
