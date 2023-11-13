@@ -29,10 +29,10 @@ export type SignUpFormInputsData = {
 export default function SignUpForm() {
     const router = useRouter()
 
-    const [values, setValues] = useState<{ showPassword: boolean }>({ showPassword: false })
+    const [passwordVisible, setPasswordVisible] = useState(false)
 
     const handleClickShowPassword = () => {
-        setValues({ ...values, showPassword: !values.showPassword })
+        setPasswordVisible(!passwordVisible)
     }
 
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -96,7 +96,7 @@ export default function SignUpForm() {
                         <TextField
                             margin='normal'
                             variant='outlined'
-                            type={values.showPassword ? 'text' : 'password'}
+                            type={passwordVisible ? 'text' : 'password'}
                             label='Password'
                             name='password'
                             value={formik.values.password}
@@ -116,7 +116,7 @@ export default function SignUpForm() {
                                             onMouseDown={handleMouseDownPassword}
                                             data-cy='toggle-password-visibility'
                                         >
-                                            {values.showPassword ? <VisibilityIconOn /> : <VisibilityIconOff />}
+                                            {passwordVisible ? <VisibilityIconOn /> : <VisibilityIconOff />}
                                         </IconButton>
                                     </InputAdornment>
                                 ),
@@ -125,7 +125,7 @@ export default function SignUpForm() {
                         <TextField
                             margin='normal'
                             variant='outlined'
-                            type={values.showPassword ? 'text' : 'password'}
+                            type={passwordVisible ? 'text' : 'password'}
                             label='Confirm Password'
                             name='passwordConfirmation'
                             value={formik.values.passwordConfirmation}
@@ -145,7 +145,7 @@ export default function SignUpForm() {
                                             onMouseDown={handleMouseDownPassword}
                                             data-cy='toggle-confirm-password-visibility'
                                         >
-                                            {values.showPassword ? <VisibilityIconOn /> : <VisibilityIconOff />}
+                                            {passwordVisible ? <VisibilityIconOn /> : <VisibilityIconOff />}
                                         </IconButton>
                                     </InputAdornment>
                                 ),

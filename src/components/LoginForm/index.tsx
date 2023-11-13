@@ -29,10 +29,10 @@ interface FormValues {
 export default function LoginForm() {
     const router = useRouter()
 
-    const [values, setValues] = useState<{ showPassword: boolean }>({ showPassword: false })
+    const [passwordVisible, setPasswordVisible] = useState(false)
 
     const handleClickShowPassword = () => {
-        setValues({ ...values, showPassword: !values.showPassword })
+        setPasswordVisible(!passwordVisible)
     }
 
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -95,7 +95,7 @@ export default function LoginForm() {
                         <TextField
                             margin='normal'
                             variant='outlined'
-                            type={values.showPassword ? 'text' : 'password'}
+                            type={passwordVisible ? 'text' : 'password'}
                             label='Password'
                             name='password'
                             value={formik.values.password}
@@ -115,7 +115,7 @@ export default function LoginForm() {
                                             onMouseDown={handleMouseDownPassword}
                                             data-cy='toggle-password-visibility'
                                         >
-                                            {values.showPassword ? <VisibilityIconOn /> : <VisibilityIconOff />}
+                                            {passwordVisible ? <VisibilityIconOn /> : <VisibilityIconOff />}
                                         </IconButton>
                                     </InputAdornment>
                                 ),
