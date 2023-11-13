@@ -17,9 +17,9 @@ import { UserSignUpData } from '@/types/auth/user'
 import { getEmailRegex } from '@/utils/verification'
 import { ObjectSchema } from 'yup'
 import { IconButton, InputAdornment } from '@mui/material'
-import { Visibility, VisibilityOff } from '@mui/icons-material'
+import { Visibility as VisibilityIconOn, VisibilityOff as VisibilityIconOff } from '@mui/icons-material'
 import GoogleSigninButton from '@/components/GoogleSigninButton'
-import Separator from '@/components/Separator'
+import HorizontalSeparator from 'src/components/HorizontalSeparator'
 
 interface FormValues {
     email: string
@@ -39,28 +39,23 @@ export default function LoginForm() {
         event.preventDefault()
     }
 
-    const validationSchema: ObjectSchema<FormValues> = yup.object().shape({
-        email: yup.string().matches(getEmailRegex(), 'Enter a valid email').required('Email is required'),
-        password: yup.string().required('Enter your password'),
-    })
-
     const formik = useFormik<FormValues>({
         initialValues: {
             email: '',
             password: '',
         },
         validationSchema: validationSchema,
-        onSubmit: (values) => handleSubmit(values),
+        onSubmit: (values: FormValues) => handleSubmit(values),
     })
 
     return (
         <>
-            <Box sx={{ marginTop: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <Box sx={{ mt: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Logo fontSize={80} />
             </Box>
             <Box
                 sx={{
-                    marginTop: 2,
+                    mt: 2,
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
@@ -120,7 +115,7 @@ export default function LoginForm() {
                                             onMouseDown={handleMouseDownPassword}
                                             data-cy='toggle-password-visibility'
                                         >
-                                            {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                                            {values.showPassword ? <VisibilityIconOn /> : <VisibilityIconOff />}
                                         </IconButton>
                                     </InputAdornment>
                                 ),
@@ -129,7 +124,7 @@ export default function LoginForm() {
                         <Button
                             type='submit'
                             variant='contained'
-                            sx={{ marginTop: 2, px: 5, fontSize: 15, borderRadius: 28, textTransform: 'capitalize' }}
+                            sx={{ mt: 2, px: 5, fontSize: 15, borderRadius: 28, textTransform: 'capitalize' }}
                             data-cy='submit'
                         >
                             Log In
@@ -151,9 +146,9 @@ export default function LoginForm() {
                         </Link>
                     </Typography>
                     <Box sx={{ my: 4, display: 'flex', alignItems: 'center', width: '100%' }}>
-                        <Separator />
+                        <HorizontalSeparator />
                         <Typography sx={{ mx: 2 }}>OR</Typography>
-                        <Separator />
+                        <HorizontalSeparator />
                     </Box>
                     <GoogleSigninButton />
                 </Box>
@@ -184,3 +179,8 @@ export default function LoginForm() {
         }
     }
 }
+
+const validationSchema: ObjectSchema<FormValues> = yup.object().shape({
+    email: yup.string().matches(getEmailRegex(), 'Enter a valid email').required('Email is required'),
+    password: yup.string().required('Enter your password'),
+})

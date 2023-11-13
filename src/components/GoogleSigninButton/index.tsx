@@ -7,7 +7,7 @@ import './GoogleSignInButton.css'
 import { signIn } from 'next-auth/react'
 import logger from '@/utils/logger'
 
-const GoogleSignInButton: React.FC = () => {
+export default function GoogleSignInButton() {
     return (
         <button className='gsi-material-button' onClick={signInWithGoogle} data-cy='google-sign-in-btn'>
             <div className='gsi-material-button-state'></div>
@@ -54,5 +54,3 @@ function signInWithGoogle(e: React.MouseEvent<HTMLButtonElement>) {
         logger.error('An unexpected error occurred while log in with Google: ' + err.error)
     })
 }
-
-export default GoogleSignInButton

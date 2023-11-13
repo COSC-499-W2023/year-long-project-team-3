@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-export default function Separator() {
+export default function HorizontalSeparator() {
     return (
         <hr
             style={{
