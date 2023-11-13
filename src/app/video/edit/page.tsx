@@ -26,7 +26,8 @@ export default function VideoPreviewPage() {
                 }}
             >
                 <Header {...session} />
-                <Box // Main Body
+                {/*Main Body*/}
+                <Box
                     sx={{
                         display: 'flex',
                         flexDirection: 'column',
@@ -45,7 +46,8 @@ export default function VideoPreviewPage() {
                     >
                         <ProgressDots activeStep={1} numSteps={3} labels={['Record', 'Edit', 'Submit']} />
                     </Box>
-                    <Box // Contains video and buttons
+                    {/*Contains video and buttons*/}
+                    <Box
                         sx={{
                             display: 'flex',
                             flexDirection: 'column',
@@ -55,6 +57,7 @@ export default function VideoPreviewPage() {
                             maxWidth: '70rem',
                         }}
                     >
+                        {/*TODO: Replace with a dynamic url later*/}
                         <ScalingReactPlayer
                             url={
                                 'https://d2f59vy9cxchvn.cloudfront.net/9ba9a113-1822-475f-967f-ce4cda67a301/hls/westminster-test.m3u8'

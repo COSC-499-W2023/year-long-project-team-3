@@ -9,25 +9,23 @@ export type ProgressDotsProps = {
     labels?: string[]
 }
 
-const ProgressDots: React.FC<ProgressDotsProps> = (props: ProgressDotsProps) => {
-    const { activeStep, numSteps, labels = [] } = props
+const ProgressDots = (props: ProgressDotsProps) => {
+    const { activeStep, numSteps, labels } = props
+    const stepperLabels = labels ? labels : new Array(numSteps).map(() => '')
 
-    for (let i = labels.length; i < numSteps; i++) {
-        labels.push('')
+    if (stepperLabels.length !== numSteps) {
+        throw new Error('The length of labels must be the same as numSteps')
     }
 
     return (
         <Box sx={{ width: '100%' }}>
-            <Stepper activeStep={activeStep} alternativeLabel>
-                {labels.length > 0 ? (
-                    labels.map((label) => (
+            <Stepper activeStep={activeStep} alternativeLabel={!!labels}>
+                {stepperLabels &&
+                    stepperLabels.map((label) => (
                         <Step key={label}>
                             <StepLabel>{label}</StepLabel>
                         </Step>
-                    ))
-                ) : (
-                    <></>
-                )}
+                    ))}
             </Stepper>
         </Box>
     )
