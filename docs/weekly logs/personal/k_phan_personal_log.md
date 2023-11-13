@@ -1,5 +1,19 @@
 # K Phan
 
+## Term 1 Week 10 (November 06, 2023 - November 12, 2023)
+
+### Week's Goals
+- Implementing video for backend
+
+### Tasks Worked On
+- Helped teammates with UI mocks for previewing videos
+- Designed and Researched AWS tools to use for video storage for secured video sending and saving
+- Reviewed PRs
+- Monitored repo health
+
+### Teamformation Report
+![](./imgs/week-10-k-phan-tasks.png)
+
 ## Term 1 Week 9 (October 30, 2023 - November 05, 2023)
 
 ### Week's Goals
