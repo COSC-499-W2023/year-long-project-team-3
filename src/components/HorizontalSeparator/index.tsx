@@ -1,15 +1,8 @@
 'use client'
 
+import { Divider } from '@mui/material'
 import React from 'react'
 
 export default function HorizontalSeparator() {
-    return (
-        <hr
-            style={{
-                backgroundColor: '#757575',
-                height: 2,
-                width: '100%',
-            }}
-        />
-    )
+    return <Divider sx={{ backgroundColor: '#757575', width: '45%' }} />
 }
