@@ -9,13 +9,15 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  email         String    @unique
-  emailVerified DateTime?
-  password      String?
-  accounts      Account[]
+  id             String           @id @default(cuid())
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  email          String           @unique
+  emailVerified  DateTime?
+  password       String?
+  accounts       Account[]
+  ownedVideos    Video[]
+  videoWhitelist VideoWhitelist[]
 }
 
 model Account {
@@ -39,4 +41,23 @@ model Account {
 
   @@unique([provider, providerAccountId])
   @@index([userId])
+}
+
+model Video {
+  id             String          @id @default(cuid())
+  title          String
+  description    String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  owner          User?           @relation(fields: [ownerId], references: [id])
+  ownerId        String?
+  videoWhitelist VideoWhitelist?
+}
+
+model VideoWhitelist {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  video     Video?   @relation(fields: [videoId], references: [id])
+  videoId   String?  @unique
+  users     User[]
 }
