@@ -6,6 +6,8 @@ CREATE TABLE "Video" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "ownerId" TEXT,
+    "s3Key" TEXT,
+    "thumbnail" TEXT,
 
     CONSTRAINT "Video_pkey" PRIMARY KEY ("id")
 );

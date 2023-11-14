@@ -51,6 +51,8 @@ model Video {
   updatedAt      DateTime        @updatedAt
   owner          User?           @relation(fields: [ownerId], references: [id])
   ownerId        String?
+  s3Key          String?
+  thumbnail      String?
   videoWhitelist VideoWhitelist?
 }
 
