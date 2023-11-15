@@ -8,6 +8,7 @@ CREATE TABLE "Video" (
     "ownerId" TEXT,
     "s3Key" TEXT,
     "thumbnail" TEXT,
+    "videoUrl" TEXT,
 
     CONSTRAINT "Video_pkey" PRIMARY KEY ("id")
 );

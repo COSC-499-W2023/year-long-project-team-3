@@ -53,6 +53,7 @@ model Video {
   ownerId        String?
   s3Key          String?
   thumbnail      String?
+  videoUrl       String?
   videoWhitelist VideoWhitelist?
 }
 
