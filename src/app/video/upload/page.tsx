@@ -1,10 +1,13 @@
 'use client'
 
-import { Button } from '@mui/material'
+import { Box, Button } from '@mui/material'
 import { CloudUpload as CloudUploadIcon } from '@mui/icons-material'
 import { styled } from '@mui/material/styles'
-import { ChangeEvent, useState } from 'react'
-import sendVideo from '@/utils/sendVideo'
+import { type ChangeEvent } from 'react'
+import { toast } from 'react-toastify'
+import { useSession } from 'next-auth/react'
+import Header from '@/components/Header'
+import { useRouter } from 'next/navigation'
 
 const VisuallyHiddenInput = styled('input')({
     clipPath: 'inset(50%)',
@@ -17,25 +20,44 @@ const VisuallyHiddenInput = styled('input')({
     width: 1,
 })
 
-const UploadVideoPage = () => {
-    const [uploadedFile, setUploadedFile] = useState<File>()
+export default function UploadVideoPage() {
+    const session = useSession()
+    const router = useRouter()
 
-    const handleFileChanged = async (event: ChangeEvent<HTMLInputElement>) => {
+    const handleFileChanged = (event: ChangeEvent<HTMLInputElement>) => {
         if (!!event.target?.files) {
-            setUploadedFile(event.target.files[0])
-            await sendVideo(event.target.files[0])
+            handleUploadVideo(event.target.files[0])
         }
     }
 
+    const handleUploadVideo = (uploadedFile: File) => {
+        if (!uploadedFile) {
+            toast.error('No file selected')
+        }
+        const videoUploadForm = new FormData()
+        videoUploadForm.append('video', uploadedFile!)
+
+        fetch('/api/video/upload', {
+            method: 'POST',
+            body: videoUploadForm,
+        }).then(() => {
+            toast.success('Video uploaded')
+            router.push('/')
+        })
+    }
+
     return (
-        <div>
-            <h1>Upload Video</h1>
-            <Button component='label' variant='contained' startIcon={<CloudUploadIcon />}>
-                Upload file
-                <VisuallyHiddenInput type='file' onChange={handleFileChanged} />
-            </Button>
-        </div>
+        session.status === 'authenticated' && (
+            <>
+                <Header {...session} />
+                <Box display='flex' width='100%' flexDirection='column' alignItems='center'>
+                    <h1>Upload Video</h1>
+                    <Button component='label' variant='contained' startIcon={<CloudUploadIcon />}>
+                        Upload file
+                        <VisuallyHiddenInput type='file' accept='.mp4' onChange={handleFileChanged} />
+                    </Button>
+                </Box>
+            </>
+        )
     )
 }
-
-export default UploadVideoPage

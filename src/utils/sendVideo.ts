@@ -1,9 +1,8 @@
 import { User, Video } from '@prisma/client'
-import AWS, { Account } from 'aws-sdk'
+import AWS from 'aws-sdk'
 import S3, { PutObjectRequest } from 'aws-sdk/clients/s3'
 import logger from './logger'
 import prisma from '@/lib/prisma'
-import { User as SessionUser } from 'next-auth'
 
 async function makeS3Key(video: Video): Promise<string> {
     if (!video.ownerId) {
@@ -31,7 +30,6 @@ export default async function sendVideo(rawVideo: File, owner: User): Promise<Vi
 
     const newVideo: Video = await prisma.video.create({
         data: {
-            id: rawVideo.name,
             owner: {
                 connect: {
                     id: owner.id,
@@ -58,24 +56,25 @@ export default async function sendVideo(rawVideo: File, owner: User): Promise<Vi
     const uploadParams: PutObjectRequest = {
         Bucket: process.env.awsUploadBucket as string,
         Key: 'new_video_key.mp4',
-        Body: rawVideoBuffer,
+        Body: Buffer.from(rawVideoBuffer),
     }
 
     s3.upload(uploadParams, async (err: Error, data: any) => {
         if (err) {
+            logger.error(err)
             throw new Error(`Unexpected error while uploading video ${ rawVideo.name } to S3`)
-        } else {
-            logger.info(`File ${ newVideo.id } uploaded successfully.`)
-            await prisma.video.update({
-                where: {
-                    id: newVideo.id,
-                },
-                data: {
-                    s3Key: s3Key,
-                    videoUrl: data.Location,
-                },
-            })
         }
+
+        logger.info(`File ${ newVideo.id } uploaded successfully.`)
+        await prisma.video.update({
+            where: {
+                id: newVideo.id,
+            },
+            data: {
+                s3Key: s3Key,
+                videoUrl: data.Location,
+            },
+        })
     })
 
     return newVideo
