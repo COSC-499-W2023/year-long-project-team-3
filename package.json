@@ -60,6 +60,7 @@
         "postcss": "latest",
         "prettier": "3.0.3",
         "prisma": "^5.5.2",
+        "screenfull": "^6.0.2",
         "typescript": "latest"
     },
     "lint-staged": {
