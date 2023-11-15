@@ -1,15 +1,7 @@
-import prisma from '@/lib/prisma'
-import { User, Video } from '@prisma/client'
-import AWS from 'aws-sdk'
+import { Video } from '@prisma/client'
+import AWS, { Account } from 'aws-sdk'
 import S3, { PutObjectRequest } from 'aws-sdk/clients/s3'
 import logger from './logger'
-import { generateUUID } from 'listr2/dist/utils/uuid'
-import fs, { PathLike } from 'fs'
-
-AWS.config.update({
-    region: process.env.awsUploadRegion,
-
-})
 
 async function makeS3Key(video: Video): Promise<string> {
     if (!video.ownerId) {
@@ -25,16 +17,23 @@ async function makeS3Key(video: Video): Promise<string> {
     }
 }
 
-export default async function sendVideo(temporaryVideoPath: PathLike, video: Video) {
-    const key = await makeS3Key(video)
+export default async function sendVideo(rawVideo: File) {
+    // const key = await makeS3Key(video)
+    AWS.config.update({
+        region: process.env.awsUploadRegion,
+        credentials: {
+            accessKeyId: process.env.awsAccessKeyId as string,
+            secretAccessKey: process.env.awsSecretAccessKey as string,
+            sessionToken: process.env.awsSessionToken as string,
+        },
+    })
 
-    const fileStream = fs.createReadStream(temporaryVideoPath)
-
+    const sth = await rawVideo.arrayBuffer()
     const s3 = new S3()
     const uploadParams: PutObjectRequest = {
         Bucket: process.env.awsUploadBucket as string,
-        Key: key,
-        Body: fileStream,
+        Key: 'new_video_key.mp4',
+        Body: sth,
     }
 
     s3.upload(uploadParams, async (err: Error, data: any) => {
@@ -42,14 +41,15 @@ export default async function sendVideo(temporaryVideoPath: PathLike, video: Vid
             logger.error(err)
         } else {
             logger.info(`File uploaded successfully. ${ data.Location }`)
-            await prisma.video.update({
-                where: {
-                    id: video.id,
-                },
-                data: {
-
-                },
-            })
+            // await prisma.video.update({
+            //     where: {
+            //         id: video.id,
+            //     },
+            //     data: {
+            //         s3Key: key,
+            //     },
+            // })
+            console.log('Video uploaded tox S3: ' + data.Location)
         }
     })
 }
