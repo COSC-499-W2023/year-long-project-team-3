@@ -1,7 +1,9 @@
-import { Video } from '@prisma/client'
+import { User, Video } from '@prisma/client'
 import AWS, { Account } from 'aws-sdk'
 import S3, { PutObjectRequest } from 'aws-sdk/clients/s3'
 import logger from './logger'
+import prisma from '@/lib/prisma'
+import { User as SessionUser } from 'next-auth'
 
 async function makeS3Key(video: Video): Promise<string> {
     if (!video.ownerId) {
@@ -12,13 +14,11 @@ async function makeS3Key(video: Video): Promise<string> {
     try {
         return `${ video.title }_${ video.ownerId }_${ video.id }.mp4`
     } catch (error) {
-        logger.error(error)
         throw new Error(`Unexpected error while fetching owner of video ${ video.id }`)
     }
 }
 
-export default async function sendVideo(rawVideo: File) {
-    // const key = await makeS3Key(video)
+export default async function sendVideo(rawVideo: File, owner: User): Promise<Video> {
     AWS.config.update({
         region: process.env.awsUploadRegion,
         credentials: {
@@ -27,29 +27,56 @@ export default async function sendVideo(rawVideo: File) {
             sessionToken: process.env.awsSessionToken as string,
         },
     })
-
-    const sth = await rawVideo.arrayBuffer()
     const s3 = new S3()
+
+    const newVideo: Video = await prisma.video.create({
+        data: {
+            id: rawVideo.name,
+            owner: {
+                connect: {
+                    id: owner.id,
+                },
+            },
+            // TODO: Add title when have supported UI, for now use file name instead
+            title: rawVideo.name,
+            // TODO: Add description when have supported UI
+            description: '',
+            videoWhitelist: {
+                create: {
+                    users: {
+                        connect: {
+                            id: owner.id,
+                        },
+                    },
+                },
+            },
+        },
+    })
+
+    const s3Key = await makeS3Key(newVideo)
+    const rawVideoBuffer = await rawVideo.arrayBuffer()
     const uploadParams: PutObjectRequest = {
         Bucket: process.env.awsUploadBucket as string,
         Key: 'new_video_key.mp4',
-        Body: sth,
+        Body: rawVideoBuffer,
     }
 
     s3.upload(uploadParams, async (err: Error, data: any) => {
         if (err) {
-            logger.error(err)
+            throw new Error(`Unexpected error while uploading video ${ rawVideo.name } to S3`)
         } else {
-            logger.info(`File uploaded successfully. ${ data.Location }`)
-            // await prisma.video.update({
-            //     where: {
-            //         id: video.id,
-            //     },
-            //     data: {
-            //         s3Key: key,
-            //     },
-            // })
-            console.log('Video uploaded tox S3: ' + data.Location)
+            logger.info(`File ${ newVideo.id } uploaded successfully.`)
+            await prisma.video.update({
+                where: {
+                    id: newVideo.id,
+                },
+                data: {
+                    s3Key: s3Key,
+                    videoUrl: data.Location,
+                },
+            })
         }
     })
+
+    return newVideo
 }
