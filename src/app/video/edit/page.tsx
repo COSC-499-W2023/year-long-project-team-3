@@ -8,6 +8,7 @@ import { Box, Button } from '@mui/material'
 import ScalingReactPlayer from '@/components/ScalingReactPlayer'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import EditorTools from '@/components/EditorTools'
 
 export default function VideoPreviewPage() {
     const session: SessionContextValue = useSession()
@@ -33,64 +34,99 @@ export default function VideoPreviewPage() {
                         flexDirection: 'column',
                         alignItems: 'center',
                         gap: '2rem',
-                        margin: '2rem 0',
                         width: '100%',
                         height: '100%',
+                        margin: '2rem 0',
                     }}
                 >
                     <Box
                         sx={{
                             minWidth: '16rem',
-                            width: '50%',
+                            width: '70%',
                         }}
                     >
                         <ProgressDots activeStep={1} numSteps={3} labels={['Record', 'Edit', 'Submit']} />
                     </Box>
-                    {/*Contains video and buttons*/}
                     <Box
                         sx={{
                             display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'space-between',
+                            flexDirection: 'row',
+                            flexGrow: 1,
                             gap: '2rem',
                             width: '100%',
                             height: '100%',
-                            padding: '0 2rem',
-                            maxWidth: '70rem',
                         }}
                     >
-                        {/*TODO: Replace with a dynamic url later*/}
                         <Box
+                            className='column-1'
+                            sx={{
+                                flexGrow: 1,
+                            }}
+                        ></Box>
+                        <Box
+                            className='column-2'
                             sx={{
                                 display: 'flex',
                                 flexDirection: 'column',
+                                flexGrow: 2,
                                 alignItems: 'center',
-                                flexGrow: 1,
-                                flexShrink: 1,
-                                minWidth: '20vh',
-                                minHeight: '20vw',
+                                gap: '2rem',
                             }}
                         >
-                            <ScalingReactPlayer
-                                url={
-                                    'https://d2f59vy9cxchvn.cloudfront.net/9ba9a113-1822-475f-967f-ce4cda67a301/hls/westminster-test.m3u8'
-                                }
-                            />
+                            {/*Contains video and buttons*/}
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'space-between',
+                                    gap: '2rem',
+                                    width: '100%',
+                                    height: '100%',
+                                    maxWidth: '70rem',
+                                }}
+                            >
+                                {/*TODO: Replace with a dynamic url later*/}
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        flexGrow: 1,
+                                        flexShrink: 1,
+                                        minWidth: '20vh',
+                                        minHeight: '20vw',
+                                    }}
+                                >
+                                    <ScalingReactPlayer
+                                        url={
+                                            'https://d2f59vy9cxchvn.cloudfront.net/9ba9a113-1822-475f-967f-ce4cda67a301/hls/westminster-test.m3u8'
+                                        }
+                                    />
+                                </Box>
+                                {/*The back and continue buttons*/}
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        width: '100%',
+                                    }}
+                                >
+                                    <Button variant={'contained'} startIcon={<ArrowBackIcon />}>
+                                        Back
+                                    </Button>
+                                    <Button variant={'contained'} endIcon={<ArrowForwardIcon />}>
+                                        Continue
+                                    </Button>
+                                </Box>
+                            </Box>
                         </Box>
-                        {/*The back and continue buttons*/}
                         <Box
+                            className='column-3'
                             sx={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                width: '100%',
+                                flexGrow: 1,
                             }}
                         >
-                            <Button variant={'contained'} startIcon={<ArrowBackIcon />}>
-                                Back
-                            </Button>
-                            <Button variant={'contained'} endIcon={<ArrowForwardIcon />}>
-                                Continue
-                            </Button>
+                            <EditorTools />
                         </Box>
                     </Box>
                 </Box>
