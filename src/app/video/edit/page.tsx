@@ -71,7 +71,11 @@ export default function VideoPreviewPage() {
                                 minHeight: '20vw',
                             }}
                         >
-                            <ScalingReactPlayer url={'https://www.youtube.com/watch?v=iLX_r_WPrIw'} />
+                            <ScalingReactPlayer
+                                url={
+                                    'https://d2f59vy9cxchvn.cloudfront.net/9ba9a113-1822-475f-967f-ce4cda67a301/hls/westminster-test.m3u8'
+                                }
+                            />
                         </Box>
                         {/*The back and continue buttons*/}
                         <Box
