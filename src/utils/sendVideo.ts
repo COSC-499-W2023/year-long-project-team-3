@@ -55,7 +55,7 @@ export default async function sendVideo(rawVideo: File, owner: User): Promise<Vi
     const rawVideoBuffer = await rawVideo.arrayBuffer()
     const uploadParams: PutObjectRequest = {
         Bucket: process.env.awsUploadBucket as string,
-        Key: 'new_video_key.mp4',
+        Key: s3Key,
         Body: Buffer.from(rawVideoBuffer),
     }
 
