@@ -11,12 +11,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         if (!session || !session.user?.email) {
             return NextResponse.json({ error: 'You must be signed in to upload a video' }, { status: 401 })
         }
-        const userEmail = session?.user?.email as string
-        const user: User = await prisma.user.findUniqueOrThrow({
-            where: {
-                email: userEmail,
-            },
-        })
 
         const body = await req.formData()
         const uploadedVideo = body.get('video')
@@ -24,9 +18,16 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             return NextResponse.json({ error: 'The input video is not valid' }, { status: 400 })
         }
 
-        return await sendVideo(uploadedVideo, user).then((newVideo: Video) => {
-            return NextResponse.json({ video: newVideo }, { status: 201 })
+        const userEmail = session?.user?.email as string
+        const user: User = await prisma.user.findUniqueOrThrow({
+            where: {
+                email: userEmail,
+            },
         })
+
+        return await sendVideo(uploadedVideo, user).then((newVideo: Video) =>
+            NextResponse.json({ video: newVideo }, { status: 201 })
+        )
     } catch (err) {
         logger.error(err)
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
