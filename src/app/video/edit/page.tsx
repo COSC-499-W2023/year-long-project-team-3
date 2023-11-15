@@ -21,8 +21,8 @@ export default function VideoPreviewPage() {
                     alignItems: 'stretch',
                     margin: 0,
                     padding: 0,
-                    width: 'auto',
-                    height: '100%',
+                    width: '100vw',
+                    height: '100vh',
                 }}
             >
                 <Header {...session} />
@@ -31,11 +31,11 @@ export default function VideoPreviewPage() {
                     sx={{
                         display: 'flex',
                         flexDirection: 'column',
-                        justifyContent: 'stretch',
                         alignItems: 'center',
                         gap: '2rem',
-                        margin: '2rem auto',
+                        margin: '2rem 0',
                         width: '100%',
+                        height: '100%',
                     }}
                 >
                     <Box
@@ -51,18 +51,29 @@ export default function VideoPreviewPage() {
                         sx={{
                             display: 'flex',
                             flexDirection: 'column',
+                            justifyContent: 'space-between',
                             gap: '2rem',
                             width: '100%',
+                            height: '100%',
                             padding: '0 2rem',
                             maxWidth: '70rem',
                         }}
                     >
                         {/*TODO: Replace with a dynamic url later*/}
-                        <ScalingReactPlayer
-                            url={
-                                'https://d2f59vy9cxchvn.cloudfront.net/9ba9a113-1822-475f-967f-ce4cda67a301/hls/westminster-test.m3u8'
-                            }
-                        />
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                flexGrow: 1,
+                                flexShrink: 1,
+                                minWidth: '20vh',
+                                minHeight: '20vw',
+                            }}
+                        >
+                            <ScalingReactPlayer url={'https://www.youtube.com/watch?v=iLX_r_WPrIw'} />
+                        </Box>
+                        {/*The back and continue buttons*/}
                         <Box
                             sx={{
                                 display: 'flex',
