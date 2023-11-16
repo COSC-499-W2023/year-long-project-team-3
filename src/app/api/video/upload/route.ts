@@ -25,9 +25,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             },
         })
 
-        return await sendVideo(uploadedVideo, user).then((newVideo: Video) =>
-            NextResponse.json({ video: newVideo }, { status: 201 })
-        )
+        const newVideo = await sendVideo(uploadedVideo, user)
+        return NextResponse.json({ video: newVideo }, { status: 201 })
     } catch (err) {
         logger.error(err)
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
