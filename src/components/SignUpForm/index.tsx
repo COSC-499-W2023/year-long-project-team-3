@@ -30,13 +30,14 @@ export default function SignUpForm() {
     const router = useRouter()
 
     const [passwordVisible, setPasswordVisible] = useState(false)
+    const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false)
 
     const handleClickShowPassword = () => {
         setPasswordVisible(!passwordVisible)
     }
 
-    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault()
+    const handleClickShowConfirmPassword = () => {
+        setConfirmPasswordVisible(!confirmPasswordVisible)
     }
 
     const formik = useFormik({
@@ -113,7 +114,6 @@ export default function SignUpForm() {
                                         <IconButton
                                             aria-label='toggle password visibility'
                                             onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
                                             data-cy='toggle-password-visibility'
                                         >
                                             {passwordVisible ? <VisibilityIconOn /> : <VisibilityIconOff />}
@@ -125,7 +125,7 @@ export default function SignUpForm() {
                         <TextField
                             margin='normal'
                             variant='outlined'
-                            type={passwordVisible ? 'text' : 'password'}
+                            type={confirmPasswordVisible ? 'text' : 'password'}
                             label='Confirm Password'
                             name='passwordConfirmation'
                             value={formik.values.passwordConfirmation}
@@ -141,11 +141,10 @@ export default function SignUpForm() {
                                     <InputAdornment position='end'>
                                         <IconButton
                                             aria-label='toggle confirm password visibility'
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
+                                            onClick={handleClickShowConfirmPassword}
                                             data-cy='toggle-confirm-password-visibility'
                                         >
-                                            {passwordVisible ? <VisibilityIconOn /> : <VisibilityIconOff />}
+                                            {confirmPasswordVisible ? <VisibilityIconOn /> : <VisibilityIconOff />}
                                         </IconButton>
                                     </InputAdornment>
                                 ),
