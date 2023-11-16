@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import Header from '@/components/Header'
 import { SessionContextValue, useSession } from 'next-auth/react'
 import ProgressDots from '@/components/ProgressDots'
@@ -12,6 +12,37 @@ import EditorTools from '@/components/EditorTools'
 
 export default function VideoPreviewPage() {
     const session: SessionContextValue = useSession()
+
+    const resizeNavButtons = () => {
+        const buttonsDiv = document.getElementById('nav-buttons-div')
+        const videoPlayer = document.querySelector('.react-wrapper')
+        const parentDiv = buttonsDiv ? buttonsDiv.parentNode : null
+
+        if (
+            buttonsDiv &&
+            videoPlayer &&
+            videoPlayer instanceof HTMLElement &&
+            parentDiv &&
+            parentDiv instanceof HTMLElement
+        ) {
+            const parentWidth = parentDiv.offsetWidth
+            const videoWidth = videoPlayer.offsetWidth
+            if (videoWidth < parentWidth) {
+                buttonsDiv.style.width = videoWidth + 'px'
+            } else {
+                buttonsDiv.style.width = '100%'
+            }
+        }
+    }
+
+    useEffect(() => {
+        resizeNavButtons()
+        window.addEventListener('resize', resizeNavButtons)
+
+        return () => {
+            window.removeEventListener('resize', resizeNavButtons)
+        }
+    }, [])
 
     return (
         <>
@@ -36,7 +67,7 @@ export default function VideoPreviewPage() {
                         gap: '2rem',
                         width: '100%',
                         height: '100%',
-                        margin: '2rem 0',
+                        padding: '2rem',
                     }}
                 >
                     <Box
@@ -60,7 +91,7 @@ export default function VideoPreviewPage() {
                         <Box
                             className='column-1'
                             sx={{
-                                flexGrow: 1,
+                                width: '20%',
                             }}
                         ></Box>
                         <Box
@@ -68,7 +99,7 @@ export default function VideoPreviewPage() {
                             sx={{
                                 display: 'flex',
                                 flexDirection: 'column',
-                                flexGrow: 2,
+                                width: '60%',
                                 alignItems: 'center',
                                 gap: '2rem',
                             }}
@@ -79,10 +110,11 @@ export default function VideoPreviewPage() {
                                     display: 'flex',
                                     flexDirection: 'column',
                                     justifyContent: 'space-between',
+                                    alignItems: 'center',
                                     gap: '2rem',
                                     width: '100%',
                                     height: '100%',
-                                    maxWidth: '70rem',
+                                    // maxWidth: '70rem',
                                 }}
                             >
                                 {/*TODO: Replace with a dynamic url later*/}
@@ -95,6 +127,7 @@ export default function VideoPreviewPage() {
                                         flexShrink: 1,
                                         minWidth: '20vh',
                                         minHeight: '20vw',
+                                        width: '100%',
                                     }}
                                 >
                                     <ScalingReactPlayer
@@ -105,6 +138,7 @@ export default function VideoPreviewPage() {
                                 </Box>
                                 {/*The back and continue buttons*/}
                                 <Box
+                                    id='nav-buttons-div'
                                     sx={{
                                         display: 'flex',
                                         justifyContent: 'space-between',
@@ -123,7 +157,9 @@ export default function VideoPreviewPage() {
                         <Box
                             className='column-3'
                             sx={{
-                                flexGrow: 1,
+                                width: '20%',
+                                padding: '0 1rem',
+                                borderRadius: '1rem',
                             }}
                         >
                             <EditorTools />
