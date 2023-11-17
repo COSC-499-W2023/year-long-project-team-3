@@ -26,6 +26,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         })
 
         const newVideo = await sendVideo(uploadedVideo, user)
+
+        // Sending this does not mean the video is process successfully.
         return NextResponse.json({ video: newVideo }, { status: 201 })
     } catch (err) {
         logger.error(err)

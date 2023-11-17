@@ -1,4 +1,4 @@
-import { User, Video, VideoWhitelist } from '@prisma/client'
+import { User, Video } from '@prisma/client'
 import AWS from 'aws-sdk'
 import S3, { PutObjectRequest } from 'aws-sdk/clients/s3'
 import logger from './logger'
@@ -53,18 +53,9 @@ export default async function sendVideo(rawVideo: File, owner: User): Promise<Vi
     s3.upload(uploadParams, async (err: Error, data: any) => {
         if (err) {
             logger.error(err)
+            // TODO: Send email/notify to user there is an issue with uploading video
             throw new Error(`Unexpected error while uploading video ${ rawVideo.name } to S3`)
         }
-
-        await prisma.video.update({
-            where: {
-                id: newVideo.id,
-            },
-            data: {
-                s3Key: s3Key,
-                videoUrl: data.Location,
-            },
-        })
 
         await prisma.videoWhitelist.create({
             data: {
@@ -73,15 +64,29 @@ export default async function sendVideo(rawVideo: File, owner: User): Promise<Vi
                         id: newVideo.id,
                     },
                 },
-                users: {
-                    connect: {
-                        id: owner.id,
+                whitelistedUsers: {
+                    create: {
+                        whitelistedUser: {
+                            connect: {
+                                id: owner.id,
+                            },
+                        },
                     },
                 },
             },
         })
 
-        logger.info(`File ${ newVideo.id } uploaded successfully.`)
+        await prisma.video.update({
+            where: {
+                id: newVideo.id,
+            },
+            data: {
+                s3Key: s3Key,
+                rawVideoUrl: data.Location,
+            },
+        })
+
+        logger.info(`File ${ newVideo.id } uploaded to S3 successfully.`)
     })
 
     return newVideo
