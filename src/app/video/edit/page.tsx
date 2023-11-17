@@ -114,7 +114,6 @@ export default function VideoPreviewPage() {
                                     gap: '2rem',
                                     width: '100%',
                                     height: '100%',
-                                    // maxWidth: '70rem',
                                 }}
                             >
                                 {/*TODO: Replace with a dynamic url later*/}
