@@ -1,5 +1,5 @@
 import { Box, Button, Checkbox, FormControlLabel, FormGroup, IconButton, Typography } from '@mui/material'
-import React, { FormEventHandler, useRef, useState } from 'react'
+import React, { ChangeEvent, FormEventHandler, useState } from 'react'
 import { ContentCut, Speed, TuneRounded, VolumeOff, VolumeUp } from '@mui/icons-material'
 import SquareIcon from '@mui/icons-material/Square'
 
@@ -43,24 +43,82 @@ const EditorTools = () => {
     }
 
     const changesMade = () => {
-        return startingState.isMuted !== state.isMuted
+        function deepEqual(obj1: any, obj2: any): boolean {
+            if (obj1 === obj2) {
+                return true
+            }
+
+            if (typeof obj1 !== 'object' || typeof obj2 !== 'object' || obj1 === null || obj2 === null) {
+                return false
+            }
+
+            const keys1 = Object.keys(obj1)
+            const keys2 = Object.keys(obj2)
+
+            if (keys1.length !== keys2.length) {
+                return false
+            }
+
+            for (const key of keys1) {
+                if (!keys2.includes(key) || !deepEqual(obj1[key], obj2[key])) {
+                    return false
+                }
+            }
+
+            return true
+        }
+
+        return !deepEqual(startingState, state)
     }
 
-    const handleFilterChange: FormEventHandler<HTMLDivElement> = (e) => {
+    const handleFilterChange: FormEventHandler<HTMLDivElement> = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, checked } = e.target
-        console.log(name)
-        console.log(checked)
-        setState({ ...state, videoOptions: { ...state.videoOptions, otherOption: !state.videoOptions.otherOption } })
+        const newState = {
+            ...state,
+            videoOptions: { ...state.videoOptions },
+        }
+
+        if (name === 'blur') {
+            newState.videoOptions.blurred = checked
+        } else if (name === 'bwVideo') {
+            newState.videoOptions.bwVideo = checked
+        } else if (name === 'other') {
+            newState.videoOptions.otherOption = checked
+        }
+
+        setState(newState)
     }
 
     return (
         <Box
+            className='editor-tools'
             sx={{
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '1rem',
             }}
         >
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    gap: '0.3rem',
+                }}
+            >
+                {/*Put invisible button to match spacing of buttons below the title*/}
+                <IconButton sx={{ visibility: 'hidden' }}>
+                    <SquareIcon />
+                </IconButton>
+                <Typography
+                    color='black'
+                    variant='h6'
+                    component='div'
+                    textAlign='center'
+                    sx={{ margin: 0, flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContents: 'center' }}
+                >
+                    Video Options
+                </Typography>
+            </Box>
             <Box
                 sx={{
                     display: 'flex',
@@ -76,9 +134,6 @@ const EditorTools = () => {
                         flexDirection: 'column',
                     }}
                 >
-                    <IconButton sx={{ visibility: 'hidden' }}>
-                        <SquareIcon />
-                    </IconButton>
                     <IconButton onClick={handleMuteClick}>{state.isMuted ? <VolumeUp /> : <VolumeOff />}</IconButton>
                     <IconButton
                         onClick={handleFilterClick}
@@ -108,15 +163,6 @@ const EditorTools = () => {
                         gap: '0.5rem',
                     }}
                 >
-                    <Typography
-                        color='black'
-                        variant='h6'
-                        component='div'
-                        textAlign='center'
-                        sx={{ margin: 0, display: 'flex', flexDirection: 'column', justifyContents: 'center' }}
-                    >
-                        Video Options
-                    </Typography>
                     <Box
                         className='editor-options'
                         sx={{
@@ -134,20 +180,18 @@ const EditorTools = () => {
                         >
                             <FormGroup onChange={handleFilterChange}>
                                 <FormControlLabel
-                                    control={<Checkbox size='small' checked={state.videoOptions.blurred} />}
+                                    control={<Checkbox size='small' name='blur' checked={state.videoOptions.blurred} />}
                                     label='Blur Face'
                                 />
                                 <FormControlLabel
-                                    control={<Checkbox size='small' checked={state.videoOptions.bwVideo} />}
+                                    control={
+                                        <Checkbox size='small' name='bwVideo' checked={state.videoOptions.bwVideo} />
+                                    }
                                     label='Black & White Video'
                                 />
                                 <FormControlLabel
                                     control={
-                                        <Checkbox
-                                            size='small'
-                                            name='yourmom'
-                                            checked={state.videoOptions.otherOption}
-                                        />
+                                        <Checkbox size='small' name='other' checked={state.videoOptions.otherOption} />
                                     }
                                     label='Another option'
                                 />
