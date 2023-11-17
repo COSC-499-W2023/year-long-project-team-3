@@ -132,7 +132,7 @@ export default function VideoPreviewPage() {
                                 >
                                     <ScalingReactPlayer
                                         url={
-                                            'https://d2f59vy9cxchvn.cloudfront.net/9ba9a113-1822-475f-967f-ce4cda67a301/hls/westminster-test.m3u8'
+                                            'https://d29gn7cyj93si1.cloudfront.net/Rick%20Astley%20-%20Never%20Gonna%20Give%20You%20Up%20(Official%20Music%20Video)%20[1%20hour%20loop].mp4'
                                         }
                                     />
                                 </Box>
