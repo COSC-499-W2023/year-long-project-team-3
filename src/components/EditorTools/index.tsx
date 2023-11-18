@@ -4,89 +4,73 @@ import { ContentCut, Speed, TuneRounded, VolumeOff, VolumeUp } from '@mui/icons-
 import SquareIcon from '@mui/icons-material/Square'
 
 const EditorTools = () => {
-    const [state, setState] = useState({
-        isMuted: false,
-        videoOptions: {
-            blurred: false,
-            bwVideo: false,
-            otherOption: false,
-        },
-    })
-    const [startingState, setStartingState] = useState({ ...state })
+    const [isMuted, setIsMuted] = useState(false)
+    const [isBlurred, setIsBlurred] = useState(false)
+    const [isBWVideo, setIsBWVideo] = useState(false)
+    const [isOtherOption, setIsOtherOption] = useState(false)
 
-    const [menu, setMenu] = useState({
-        isFilterOpen: true,
-        isCutOpen: false,
-        isPlaybackRateOpen: false,
+    const [startingState, setStartingState] = useState({
+        isMuted: false,
+        isBlurred: false,
+        isBWVideo: false,
+        isOtherOption: false,
     })
+
+    const [isFilterOpen, setIsFilterOpen] = useState(true)
+    const [isCutOpen, setIsCutOpen] = useState(false)
+    const [isPlaybackRateOpen, setIsPlaybackRateOpen] = useState(false)
 
     const handleMuteClick = () => {
-        setState((prevState) => ({
-            ...prevState,
-            isMuted: !prevState.isMuted,
-        }))
+        setIsMuted(!isMuted)
     }
 
     const handleFilterClick = () => {
-        setMenu({ ...menu, isFilterOpen: true, isCutOpen: false, isPlaybackRateOpen: false })
+        setIsFilterOpen(true)
+        setIsCutOpen(false)
+        setIsPlaybackRateOpen(false)
     }
 
     const handleCutClick = () => {
-        setMenu({ ...menu, isFilterOpen: false, isCutOpen: true, isPlaybackRateOpen: false })
+        setIsFilterOpen(false)
+        setIsCutOpen(true)
+        setIsPlaybackRateOpen(false)
     }
 
     const handlePlaybackRateClick = () => {
-        setMenu({ ...menu, isFilterOpen: false, isCutOpen: false, isPlaybackRateOpen: true })
+        setIsFilterOpen(false)
+        setIsCutOpen(false)
+        setIsPlaybackRateOpen(true)
     }
     const handleApplyChangesClick = () => {
-        setStartingState({ ...state })
+        setStartingState({
+            isMuted: isMuted,
+            isBlurred: isBlurred,
+            isBWVideo: isBWVideo,
+            isOtherOption: isOtherOption,
+        })
+
+        // TODO: Actually apply changes to video
     }
 
     const changesMade = () => {
-        function deepEqual(obj1: any, obj2: any): boolean {
-            if (obj1 === obj2) {
-                return true
-            }
-
-            if (typeof obj1 !== 'object' || typeof obj2 !== 'object' || obj1 === null || obj2 === null) {
-                return false
-            }
-
-            const keys1 = Object.keys(obj1)
-            const keys2 = Object.keys(obj2)
-
-            if (keys1.length !== keys2.length) {
-                return false
-            }
-
-            for (const key of keys1) {
-                if (!keys2.includes(key) || !deepEqual(obj1[key], obj2[key])) {
-                    return false
-                }
-            }
-
-            return true
-        }
-
-        return !deepEqual(startingState, state)
+        return !(
+            isMuted === startingState.isMuted &&
+            isBlurred === startingState.isBlurred &&
+            isBWVideo === startingState.isBWVideo &&
+            isOtherOption === startingState.isOtherOption
+        )
     }
 
     const handleFilterChange: FormEventHandler<HTMLDivElement> = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, checked } = e.target
-        const newState = {
-            ...state,
-            videoOptions: { ...state.videoOptions },
-        }
 
         if (name === 'blur') {
-            newState.videoOptions.blurred = checked
+            setIsBlurred(checked)
         } else if (name === 'bwVideo') {
-            newState.videoOptions.bwVideo = checked
+            setIsBWVideo(checked)
         } else if (name === 'other') {
-            newState.videoOptions.otherOption = checked
+            setIsOtherOption(checked)
         }
-
-        setState(newState)
     }
 
     return (
@@ -134,22 +118,19 @@ const EditorTools = () => {
                         flexDirection: 'column',
                     }}
                 >
-                    <IconButton onClick={handleMuteClick}>{state.isMuted ? <VolumeUp /> : <VolumeOff />}</IconButton>
+                    <IconButton onClick={handleMuteClick}>{isMuted ? <VolumeUp /> : <VolumeOff />}</IconButton>
                     <IconButton
                         onClick={handleFilterClick}
-                        sx={{ backgroundColor: menu.isFilterOpen ? 'primary.lighter' : '' }}
+                        sx={{ backgroundColor: isFilterOpen ? 'primary.lighter' : '' }}
                     >
                         <TuneRounded sx={{ transform: 'rotate(270deg)' }} />
                     </IconButton>
-                    <IconButton
-                        onClick={handleCutClick}
-                        sx={{ backgroundColor: menu.isCutOpen ? 'primary.lighter' : '' }}
-                    >
+                    <IconButton onClick={handleCutClick} sx={{ backgroundColor: isCutOpen ? 'primary.lighter' : '' }}>
                         <ContentCut sx={{ transform: 'rotate(270deg)' }} />
                     </IconButton>
                     <IconButton
                         onClick={handlePlaybackRateClick}
-                        sx={{ backgroundColor: menu.isPlaybackRateOpen ? 'primary.lighter' : '' }}
+                        sx={{ backgroundColor: isPlaybackRateOpen ? 'primary.lighter' : '' }}
                     >
                         <Speed />
                     </IconButton>
@@ -175,38 +156,34 @@ const EditorTools = () => {
                     >
                         <Box
                             sx={{
-                                display: menu.isFilterOpen ? '' : 'none',
+                                display: isFilterOpen ? 'block' : 'none',
                             }}
                         >
                             <FormGroup onChange={handleFilterChange}>
                                 <FormControlLabel
-                                    control={<Checkbox size='small' name='blur' checked={state.videoOptions.blurred} />}
+                                    control={<Checkbox size='small' name='blur' checked={isBlurred} />}
                                     label='Blur Face'
                                 />
                                 <FormControlLabel
-                                    control={
-                                        <Checkbox size='small' name='bwVideo' checked={state.videoOptions.bwVideo} />
-                                    }
+                                    control={<Checkbox size='small' name='bwVideo' checked={isBWVideo} />}
                                     label='Black & White Video'
                                 />
                                 <FormControlLabel
-                                    control={
-                                        <Checkbox size='small' name='other' checked={state.videoOptions.otherOption} />
-                                    }
+                                    control={<Checkbox size='small' name='other' checked={isOtherOption} />}
                                     label='Another option'
                                 />
                             </FormGroup>
                         </Box>
                         <Box
                             sx={{
-                                display: menu.isCutOpen ? '' : 'none',
+                                display: isCutOpen ? 'block' : 'none',
                             }}
                         >
                             <Typography>Video trimming menu</Typography>
                         </Box>
                         <Box
                             sx={{
-                                display: menu.isPlaybackRateOpen ? '' : 'none',
+                                display: isPlaybackRateOpen ? 'block' : 'none',
                             }}
                         >
                             <Typography>Video playback rate</Typography>

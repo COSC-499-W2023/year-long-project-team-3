@@ -2,7 +2,7 @@ import dynamic from 'next/dynamic'
 
 const VideoPlayer = dynamic(() => import('../VideoPlayer'), { ssr: false })
 import { Box } from '@mui/material'
-import React, { MutableRefObject, useEffect, useRef, useState } from 'react'
+import React, { MutableRefObject, useCallback, useEffect, useRef, useState } from 'react'
 import ReactPlayer from 'react-player/lazy'
 import screenfull from 'screenfull'
 
@@ -11,15 +11,14 @@ export type ScalingReactPlayerProps = {
 }
 
 const ScalingReactPlayer = (props: ScalingReactPlayerProps) => {
-    const [state, setState] = useState({
-        isPlaying: false,
-        isMuted: false,
-        volume: 1.0,
-        playbackRate: 1.0,
-    })
+    const [isPlaying, setIsPlaying] = useState(false)
+    const [isMuted, setIsMuted] = useState(false)
+    const [volume, setVolume] = useState(1.0)
+    const [playbackRate, setPlaybackRate] = useState(1.0)
+
     const playerRef = useRef() as MutableRefObject<ReactPlayer>
 
-    const updateSize = () => {
+    const rescalePlayer = () => {
         const rw = document.querySelector('.react-wrapper')
 
         if (rw && rw instanceof HTMLElement && rw.parentNode && rw.parentNode instanceof HTMLElement) {
@@ -37,32 +36,32 @@ const ScalingReactPlayer = (props: ScalingReactPlayerProps) => {
         }
     }
 
-    useEffect(() => {
-        const keyboardControl = (evt: KeyboardEvent) => {
+    const keyboardControl = useCallback(
+        (evt: KeyboardEvent) => {
             /*
-            Toggle play/pause the video	k or Spacebar
-            Go back 5 seconds	Left arrow
-            Go back 10 seconds	j
-            Go forward 5 seconds	Right arrow
-            Go forward 10 seconds	l
-            Restart video	Home
-            Bring video to the end	End
-            Go to Full Screen mode	f
-            Exit Full Screen mode	Escape
-            Increase volume 5%	Up arrow
-            Decrease volume 5%	Down arrow
-            Increase speed	Shift + >
-            Decrease speed	Shift + <
-             */
+        Toggle play/pause the video	k or Spacebar
+        Go back 5 seconds	Left arrow
+        Go back 10 seconds	j
+        Go forward 5 seconds	Right arrow
+        Go forward 10 seconds	l
+        Restart video	Home
+        Bring video to the end	End
+        Go to Full Screen mode	f
+        Exit Full Screen mode	Escape
+        Increase volume 5%	Up arrow
+        Decrease volume 5%	Down arrow
+        Increase speed	Shift + >
+        Decrease speed	Shift + <
+         */
             const code = evt.code
             if (code === 'KeyK' || code === 'Space') {
-                setState({ ...state, isPlaying: !state.isPlaying })
+                setIsPlaying(!isPlaying)
             } else if (code === 'KeyM') {
-                setState({ ...state, isMuted: !state.isMuted })
+                setIsMuted(!isMuted)
             } else if (code === 'ArrowUp') {
-                setState({ ...state, volume: Math.min(1, state.volume + 0.05) })
+                setVolume(Math.min(1, volume + 0.05))
             } else if (code === 'ArrowDown') {
-                setState({ ...state, volume: Math.max(0, state.volume - 0.05) })
+                setVolume(Math.max(0, volume - 0.05))
             } else if (code === 'ArrowRight') {
                 playerRef.current &&
                     playerRef.current.seekTo(
@@ -86,25 +85,28 @@ const ScalingReactPlayer = (props: ScalingReactPlayerProps) => {
             } else if (code === 'End') {
                 playerRef.current && playerRef.current.seekTo(playerRef.current.getDuration())
             } else if (code === 'Period' && evt.shiftKey) {
-                setState({ ...state, playbackRate: Math.min(3, state.playbackRate + 0.25) })
+                setPlaybackRate(Math.min(3, playbackRate + 0.25))
             } else if (code === 'Comma' && evt.shiftKey) {
-                setState({ ...state, playbackRate: Math.max(0.25, state.playbackRate - 0.25) })
+                setPlaybackRate(Math.max(0.25, playbackRate - 0.25))
             }
-        }
+        },
+        [isMuted, isPlaying, playbackRate, volume]
+    )
 
+    useEffect(() => {
         // Initial size update
-        updateSize()
+        rescalePlayer()
 
         // Add event listeners
         window.addEventListener('keydown', keyboardControl)
-        window.addEventListener('resize', updateSize)
+        window.addEventListener('resize', rescalePlayer)
 
         // Cleanup the listeners on component unmount
         return () => {
             window.removeEventListener('keydown', keyboardControl)
-            window.removeEventListener('resize', updateSize)
+            window.removeEventListener('resize', rescalePlayer)
         }
-    }, [state, playerRef])
+    }, [keyboardControl])
 
     return (
         <Box
@@ -118,10 +120,10 @@ const ScalingReactPlayer = (props: ScalingReactPlayerProps) => {
                 playerref={playerRef}
                 className='react-player'
                 url={props.url}
-                playing={state.isPlaying}
-                muted={state.isMuted}
-                volume={state.volume}
-                playbackRate={state.playbackRate}
+                playing={isPlaying}
+                muted={isMuted}
+                volume={volume}
+                playbackRate={playbackRate}
                 controls
                 width='100%'
                 height='100%'
