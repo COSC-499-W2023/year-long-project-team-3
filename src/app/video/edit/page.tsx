@@ -1,10 +1,10 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '@/components/Header'
 import { SessionContextValue, useSession } from 'next-auth/react'
 import ProgressDots from '@/components/ProgressDots'
-import { Box, Button } from '@mui/material'
+import { Alert, Box, Button } from '@mui/material'
 import ScalingReactPlayer from '@/components/ScalingReactPlayer'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
@@ -12,6 +12,7 @@ import EditorTools from '@/components/EditorTools'
 
 export default function VideoPreviewPage() {
     const session: SessionContextValue = useSession()
+    const [changesMade, setChangesMade] = useState(false)
 
     const resizeNavButtons = () => {
         const buttonsDiv = document.getElementById('nav-buttons-div')
@@ -64,7 +65,7 @@ export default function VideoPreviewPage() {
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        gap: '2rem',
+                        gap: '1rem',
                         width: '100%',
                         height: '100%',
                         padding: '2rem',
@@ -78,12 +79,21 @@ export default function VideoPreviewPage() {
                     >
                         <ProgressDots activeStep={1} numSteps={3} labels={['Record', 'Edit', 'Submit']} />
                     </Box>
+                    <Alert
+                        severity='info'
+                        sx={{
+                            visibility: changesMade ? 'block' : 'hidden',
+                            borderRadius: '1rem',
+                        }}
+                    >
+                        You have requested changes that will require the video to be processed. These changes will be
+                        processed once you continue to the next page
+                    </Alert>
                     <Box
                         sx={{
                             display: 'flex',
                             flexDirection: 'row',
                             flexGrow: 1,
-                            gap: '2rem',
                             width: '100%',
                             height: '100%',
                         }}
@@ -92,6 +102,7 @@ export default function VideoPreviewPage() {
                             className='column-1'
                             sx={{
                                 width: '20%',
+                                paddingRight: '1rem',
                             }}
                         ></Box>
                         <Box
@@ -135,6 +146,7 @@ export default function VideoPreviewPage() {
                                         }
                                     />
                                 </Box>
+
                                 {/*The back and continue buttons*/}
                                 <Box
                                     id='nav-buttons-div'
@@ -161,7 +173,9 @@ export default function VideoPreviewPage() {
                                 borderRadius: '1rem',
                             }}
                         >
-                            <EditorTools />
+                            <EditorTools
+                                handleHaveChangesBeenMade={(haveChangesBeenMade) => setChangesMade(haveChangesBeenMade)}
+                            />
                         </Box>
                     </Box>
                 </Box>
