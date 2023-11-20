@@ -1,4 +1,5 @@
-import { Consumer } from 'sqs-consumer'
+const SQSConsumer = require('sqs-consumer')
+const { Consumer } = SQSConsumer
 import { Message, SQSClient } from '@aws-sdk/client-sqs'
 
 /* TODO: Remove Prisma Stuff */
@@ -27,11 +28,11 @@ const app = Consumer.create({
     }),
 })
 
-app.on('error', (err) => {
+app.on('error', (err: any) => {
     console.error(err.message)
 })
 
-app.on('processing_error', (err) => {
+app.on('processing_error', (err: any) => {
     console.error(err.message)
 })
 
