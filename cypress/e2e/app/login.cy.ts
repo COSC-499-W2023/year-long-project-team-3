@@ -127,6 +127,25 @@ describe('Login tests', () => {
         cy.visit('/login')
         cy.get('[data-cy="link-to-signup"]').click()
         cy.url({ timeout: TIMEOUT.LONG }).should('include', '/signup')
-        cy.get('[data-cy="title"]').contains('Sign Up')
+        cy.get('[data-cy="title"]').contains('Signup')
+    })
+
+    it('Should toggle password visibility when clicking on icon button', () => {
+        cy.visit('/login')
+
+        // Initially, the password input should be of type 'password'
+        cy.get('[data-cy=password] input').should('have.attr', 'type', 'password')
+
+        // Click the toggle password visibility button
+        cy.get('[data-cy=toggle-password-visibility]').click()
+
+        // After clicking, the password input type should change to 'text'
+        cy.get('[data-cy=password] input').should('have.attr', 'type', 'text')
+
+        // Click the toggle password visibility button
+        cy.get('[data-cy=toggle-password-visibility]').click()
+
+        // After clicking again, the password input type should change back to 'password'
+        cy.get('[data-cy=password] input').should('have.attr', 'type', 'password')
     })
 })
