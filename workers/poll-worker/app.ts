@@ -1,9 +1,11 @@
 const SQSConsumer = require('sqs-consumer')
 const { Consumer } = SQSConsumer
-import { Message, SQSClient } from '@aws-sdk/client-sqs'
+const ClientSqs = require('@aws-sdk/client-sqs')
+const { Message, SQSClient } = ClientSqs
 
 /* TODO: Remove Prisma Stuff */
-import { PrismaClient } from '@prisma/client'
+const Prisma = require('@prisma/client')
+const { PrismaClient } = Prisma
 
 const prismaClientSingleton = () => {
     return new PrismaClient()
@@ -19,9 +21,20 @@ const prisma = globalForPrisma.prisma ?? prismaClientSingleton()
 
 const app = Consumer.create({
     queueUrl: 'https://sqs.ca-central-1.amazonaws.com/932748244514/video-stream-process',
-    handleMessage: async (message: Message) => {
-        const videoMetadata = JSON.parse(<string>message.Body)
-        console.log(videoMetadata.videoId)
+    handleMessage: async (message: typeof Message) => {
+        const videoMetadata = JSON.parse(message.Body)
+        const videoId: number = videoMetadata.videoId
+        await prisma.video.update({
+            where: {
+                videoId: videoId,
+            },
+            data: {
+                s3Key: videoMetadata.guid,
+                isCloudProcessed: true,
+                processedVideoUrl: videoMetadata.hlsUrl,
+                thumbnail: videoMetadata.thumbNailsUrls[0],
+            },
+        })
     },
     sqs: new SQSClient({
         region: 'ca-central-1',

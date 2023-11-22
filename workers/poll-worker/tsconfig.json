@@ -15,7 +15,8 @@
     "isolatedModules": true,
     "incremental": true,
     "types": [
-      "cypress"
+      "cypress",
+      "node"
     ]
   },
   "include": ["**/*.ts", "**/*.tsx",],

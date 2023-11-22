@@ -9,13 +9,15 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  email         String    @unique
-  emailVerified DateTime?
-  password      String?
-  accounts      Account[]
+  id                String                 @id @default(cuid())
+  createdAt         DateTime               @default(now())
+  updatedAt         DateTime               @updatedAt
+  email             String                 @unique
+  emailVerified     DateTime?
+  password          String?
+  accounts          Account[]
+  ownedVideos       Video[]
+  whitelistedVideos VideoWhitelistedUser[]
 }
 
 model Account {
@@ -39,4 +41,39 @@ model Account {
 
   @@unique([provider, providerAccountId])
   @@index([userId])
+}
+
+model Video {
+  id                String          @id @default(cuid())
+  title             String
+  description       String?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  submittedAt       DateTime?
+  owner             User?           @relation(fields: [ownerId], references: [id])
+  ownerId           String?
+  s3Key             String?
+  isCloudProcessed  Boolean         @default(false)
+  thumbnail         String?
+  rawVideoUrl       String?
+  processedVideoUrl String?
+  VideoWhitelist    VideoWhitelist?
+}
+
+model VideoWhitelist {
+  id               String                 @id @default(cuid())
+  videoId          String                 @unique
+  video            Video                  @relation(fields: [videoId], references: [id])
+  whitelistedUsers VideoWhitelistedUser[]
+}
+
+model VideoWhitelistedUser {
+  whitelistedVideoId   String
+  whitelistedVideo     VideoWhitelist @relation(fields: [whitelistedVideoId], references: [id])
+  whitelistedUserId    String
+  whitelistedUser      User           @relation(fields: [whitelistedUserId], references: [id])
+  whitelistedAt        DateTime       @default(now())
+  whitelistedExpiredAt DateTime?
+
+  @@id([whitelistedVideoId, whitelistedUserId])
 }
