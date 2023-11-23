@@ -36,6 +36,18 @@ export default function VideoPreviewPage() {
         }
     }
 
+    const { status } = session
+    useEffect(() => {
+        if (status === 'authenticated') {
+            setIsEditVideoPageVisible(true)
+        } else if (status === 'unauthenticated') {
+            setIsEditVideoPageVisible(false)
+            router.push('/login')
+        } else {
+            setIsEditVideoPageVisible(false)
+        }
+    }, [router, status])
+
     useEffect(() => {
         resizeNavButtons()
         window.addEventListener('resize', resizeNavButtons)
