@@ -1,5 +1,4 @@
 import EditorTools from '@/components/EditorTools'
-import { useState } from 'react'
 import { beforeEach } from 'mocha'
 
 describe('Test editing tools', () => {
