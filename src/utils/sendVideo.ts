@@ -1,17 +1,18 @@
 import { User, Video } from '@prisma/client'
 import AWS from 'aws-sdk'
 import S3, { PutObjectRequest } from 'aws-sdk/clients/s3'
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import logger from './logger'
 import prisma from '@/lib/prisma'
 
-async function makeS3Key(video: Video): Promise<string> {
+async function makeS3Key(video: Video, fileEnding: string): Promise<string> {
     if (!video.ownerId) {
         // TODO: Remove this when adding anonymized feature
         throw new Error(`Missing ownerId in video ${ video.id }`)
     }
 
     try {
-        return `${ video.title }_${ video.ownerId }_${ video.id }.mp4`
+        return `${ video.title }_${ video.ownerId }_${ video.id }.${ fileEnding }`
     } catch (error) {
         throw new Error(`Unexpected error while fetching owner of video ${ video.id }`)
     }
@@ -42,7 +43,7 @@ export default async function sendVideo(rawVideo: File, owner: User): Promise<Vi
         },
     })
 
-    const s3Key = await makeS3Key(newVideo)
+    const s3Key = await makeS3Key(newVideo, 'mp4')
     const rawVideoBuffer = await rawVideo.arrayBuffer()
     const uploadParams: PutObjectRequest = {
         Bucket: process.env.awsUploadBucket as string,
@@ -89,5 +90,21 @@ export default async function sendVideo(rawVideo: File, owner: User): Promise<Vi
         logger.info(`File ${ newVideo.id } uploaded to S3 successfully.`)
     })
 
+    const client: S3Client = new S3Client({})
+    const metadataFile = JSON.stringify({
+        videoId: newVideo.id,
+        srcVideo: s3Key,
+    })
+    const command: PutObjectCommand = new PutObjectCommand({
+        Bucket: process.env.awsUploadBucket as string,
+        Key: await makeS3Key(newVideo, 'json'),
+        Body: metadataFile,
+    })
+    try {
+        const response = await client.send(command)
+        logger.info('Metadata file uploaded successfully')
+    } catch (error) {
+        logger.error(`There was an error in uploading the metadata file: ${ error }`)
+    }
     return newVideo
 }
