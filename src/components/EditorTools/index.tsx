@@ -214,8 +214,9 @@ const EditorTools = (props: EditorToolsProps) => {
                     <Box
                         sx={{
                             display: 'flex',
-                            flexDirection: 'row',
+                            flexDirection: 'column',
                             justifyContent: 'flex-start',
+                            alignItems: 'center',
                             gap: '1rem',
                             width: '100%',
                             margin: '1.5rem 0 0.5rem 0',
@@ -276,6 +277,7 @@ const EditorTools = (props: EditorToolsProps) => {
                         }}
                     ></Box>
                     <Slider
+                        valueLabelDisplay='auto'
                         value={playbackRate}
                         step={0.25}
                         marks={Array.from({ length: 12 }, (_, index) => ({
