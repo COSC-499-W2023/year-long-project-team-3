@@ -88,23 +88,23 @@ export default async function sendVideo(rawVideo: File, owner: User): Promise<Vi
         })
 
         logger.info(`File ${ newVideo.id } uploaded to S3 successfully.`)
-    })
 
-    const client: S3Client = new S3Client({})
-    const metadataFile = JSON.stringify({
-        videoId: newVideo.id,
-        srcVideo: s3Key,
+        const client: S3Client = new S3Client({ region: process.env.awsUploadRegion })
+        const metadataFile = JSON.stringify({
+            videoId: newVideo.id,
+            srcVideo: s3Key,
+        })
+        const command: PutObjectCommand = new PutObjectCommand({
+            Bucket: process.env.awsUploadBucket as string,
+            Key: await makeS3Key(newVideo, 'json'),
+            Body: metadataFile,
+        })
+        try {
+            const response = await client.send(command)
+            logger.info('Metadata file uploaded successfully')
+        } catch (error) {
+            logger.error(`There was an error in uploading the metadata file: ${ error }`)
+        }
     })
-    const command: PutObjectCommand = new PutObjectCommand({
-        Bucket: process.env.awsUploadBucket as string,
-        Key: await makeS3Key(newVideo, 'json'),
-        Body: metadataFile,
-    })
-    try {
-        const response = await client.send(command)
-        logger.info('Metadata file uploaded successfully')
-    } catch (error) {
-        logger.error(`There was an error in uploading the metadata file: ${ error }`)
-    }
     return newVideo
 }
