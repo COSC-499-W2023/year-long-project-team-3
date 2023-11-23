@@ -196,7 +196,9 @@ const EditorTools = (props: EditorToolsProps) => {
                             width: '100%',
                         }}
                     >
-                        <Button onClick={handleFilterClose}>Done</Button>
+                        <Button className='modal-close' onClick={handleFilterClose}>
+                            Done
+                        </Button>
                     </Box>
                 </Box>
             </Modal>
@@ -251,7 +253,9 @@ const EditorTools = (props: EditorToolsProps) => {
                         >
                             Start time must be less than end time
                         </Typography>
-                        <Button onClick={handleCutClose}>Done</Button>
+                        <Button className='modal-close' onClick={handleCutClose}>
+                            Done
+                        </Button>
                     </Box>
                 </Box>
             </Modal>
@@ -296,7 +300,9 @@ const EditorTools = (props: EditorToolsProps) => {
                             width: '100%',
                         }}
                     >
-                        <Button onClick={handlePlaybackRateClose}>Done</Button>
+                        <Button className='modal-close' onClick={handlePlaybackRateClose}>
+                            Done
+                        </Button>
                     </Box>
                 </Box>
             </Modal>
