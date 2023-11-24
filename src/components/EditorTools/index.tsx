@@ -11,7 +11,13 @@ import {
     Slider,
 } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { ContentCut, Speed, TuneRounded, VolumeOff, VolumeUp } from '@mui/icons-material'
+import {
+    ContentCut,
+    Speed,
+    TuneRounded,
+    VolumeOff as VolumeOffIcon,
+    VolumeUp as VolumeUpIcon,
+} from '@mui/icons-material'
 import TimestampInputField from '@/components/TimestampInputField'
 
 export type EditorToolsProps = {
@@ -131,7 +137,7 @@ const EditorTools = (props: EditorToolsProps) => {
                 }}
             >
                 <Tooltip title='Mute' placement='right'>
-                    <IconButton onClick={handleMuteClick}>{isMuted ? <VolumeUp /> : <VolumeOff />}</IconButton>
+                    <IconButton onClick={handleMuteClick}>{isMuted ? <VolumeUpIcon /> : <VolumeOffIcon />}</IconButton>
                 </Tooltip>
                 <Tooltip title='Filters' placement='right'>
                     <IconButton
@@ -224,9 +230,13 @@ const EditorTools = (props: EditorToolsProps) => {
                         <TimestampInputField
                             label='Start Time'
                             value={startTime}
-                            onChange={(value) => setStartTime(value)}
+                            onValidChange={(value) => setStartTime(value)}
                         />
-                        <TimestampInputField label='End Time' value={endTime} onChange={(value) => setEndTime(value)} />
+                        <TimestampInputField
+                            label='End Time'
+                            value={endTime}
+                            onValidChange={(value) => setEndTime(value)}
+                        />
                     </Box>
                     <Box
                         sx={{

@@ -30,3 +30,12 @@ export function isValidPassword(password: string): boolean {
         passwordRegex.test(password) && password.length >= MIN_PASSWORD_LENGTH && password.length <= MAX_PASSWORD_LENGTH
     )
 }
+
+export function validTimestamp(timestamp: string) {
+    if (timestamp === '') {
+        return true
+    }
+    // Validate the input to match the format hh:mm:ss.ms
+    const timeRegex = /^(\d+):([0-5]\d):([0-5]\d)(\.\d{1,3})?$|^(\d+):([0-5]\d)(\.\d{1,3})?$|^(\d+)(\.\d{0,3})?$/
+    return timeRegex.test(timestamp)
+}
