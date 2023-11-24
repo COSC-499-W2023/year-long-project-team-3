@@ -39,7 +39,7 @@ describe('Test video editing page', () => {
             cy.get('.react-player').should('exist')
         })
 
-        it('should have continue and back', () => {
+        it('should have continue and back buttons', () => {
             cy.get('#nav-buttons-div')
                 .find('button')
                 .should('have.length', 2)
