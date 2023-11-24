@@ -17,6 +17,11 @@ async function makeS3Key(video: Video): Promise<string> {
     }
 }
 
+function _removeFileExtension(filename: string): string {
+    // TODO: Remove this when using title instead of filename
+    return filename.replace(/\.[^/.]+$/, '')
+}
+
 export default async function sendVideo(rawVideo: File, owner: User): Promise<Video> {
     AWS.config.update({
         region: process.env.awsUploadRegion,
@@ -36,7 +41,7 @@ export default async function sendVideo(rawVideo: File, owner: User): Promise<Vi
                 },
             },
             // TODO: Add title when have supported UI, for now use file name instead
-            title: rawVideo.name,
+            title: _removeFileExtension(rawVideo.name),
             // TODO: Add description when have supported UI
             description: '',
         },
