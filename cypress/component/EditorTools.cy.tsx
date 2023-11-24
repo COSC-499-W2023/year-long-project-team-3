@@ -4,7 +4,7 @@ import { beforeEach } from 'mocha'
 describe('Test editing tools', () => {
     beforeEach(() => {
         const onChangeSpy = cy.spy().as('onChangeSpy')
-        cy.mount(<EditorTools handleHaveChangesBeenMade={onChangeSpy} />)
+        cy.mount(<EditorTools setIsEditorChanged={onChangeSpy} />)
     })
 
     it('should have 4 buttons', () => {
