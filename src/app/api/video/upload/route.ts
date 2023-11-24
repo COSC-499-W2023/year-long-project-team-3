@@ -1,7 +1,7 @@
 import logger from '@/utils/logger'
 import sendVideo from '@/utils/sendVideo'
 import prisma from '@/lib/prisma'
-import { type User, Video } from '@prisma/client'
+import { type User } from '@prisma/client'
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 
@@ -13,7 +13,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         }
 
         const body = await req.formData()
-        const uploadedVideo = <File>body.get('video')
+        const uploadedVideo = body.get('video')
         if (!isVideoValidType(uploadedVideo)) {
             return NextResponse.json({ error: 'The input video is not valid' }, { status: 400 })
         }
@@ -35,6 +35,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
 }
 
-function isVideoValidType(video: File): boolean {
-    return video !== null
+function isVideoValidType(video: FormDataEntryValue | null): video is File {
+    return video !== null && video.constructor.name === 'File'
 }
