@@ -1,5 +1,28 @@
 # Weekly Individual Log - Justin Schoenit
 
+## Week 10 (Nov 6 - Nov 12)
+
+### Tasks
+
+![](imgs/week-10-tasks-justin.png)
+
+### Goals
+
+- Continue UI design mocks
+- Start implementing some pages
+- Choose colors
+- Flush out dashboard mock
+
+### My Contributions
+
+- Contributed to mocks
+- Implemented a basic video preview page
+- Discussed color choice
+
+### Additional Context
+
+Nope
+
 ## Week 9 (Oct 30 - Nov 5)
 
 ### Tasks
