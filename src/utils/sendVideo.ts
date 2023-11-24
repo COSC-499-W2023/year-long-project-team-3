@@ -22,8 +22,7 @@ async function makeS3Key(video: Video): Promise<string> {
     }
 }
 
-function _removeFileExtension(filename: string): string {
-    // TODO: Remove this when using title instead of filename
+export function removeFileExtension(filename: string): string {
     return filename.replace(/\.[^/.]+$/, '')
 }
 
@@ -43,8 +42,7 @@ export default async function sendVideo(rawVideo: File, owner: User): Promise<Vi
                     id: owner.id,
                 },
             },
-            // TODO: Add title when have supported UI, for now use file name instead
-            title: _removeFileExtension(rawVideo.name),
+            title: removeFileExtension(rawVideo.name),
             // TODO: Add description when have supported UI
             description: '',
         },
