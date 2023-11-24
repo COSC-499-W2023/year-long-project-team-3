@@ -1,7 +1,7 @@
 import logger from '@/utils/logger'
 import sendVideo from '@/utils/sendVideo'
 import prisma from '@/lib/prisma'
-import { type User, Video } from '@prisma/client'
+import { type User } from '@prisma/client'
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 
@@ -36,5 +36,5 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 }
 
 function isVideoValidType(video: FormDataEntryValue | null): video is File {
-    return video !== null && video instanceof File
+    return video !== null && video.constructor.name === 'File'
 }
