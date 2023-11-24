@@ -22,7 +22,7 @@ describe('Sign up tests', () => {
         cy.get('p.Mui-error').should('have.length', 3)
         cy.get('[data-cy="email"]').find('p.Mui-error').should('be.visible').and('contain', 'Email is required')
         cy.get('[data-cy="password"]').find('p.Mui-error').should('be.visible').and('contain', 'Enter your password')
-        cy.get('[data-cy="passwordVerification"]')
+        cy.get('[data-cy="passwordConfirmation"]')
             .find('p.Mui-error')
             .should('be.visible')
             .and('contain', 'Please re-type your password')
@@ -87,12 +87,12 @@ describe('Sign up tests', () => {
         cy.visit('/signup')
         expect(password).not.equal(retypedPassword)
         cy.get('[data-cy="password"]').type(password)
-        cy.get('[data-cy="passwordVerification"]').type(retypedPassword)
+        cy.get('[data-cy="passwordConfirmation"]').type(retypedPassword)
         cy.get('[data-cy="submit"]').click()
 
         cy.url().should('include', '/signup')
 
-        cy.get('[data-cy="passwordVerification"]')
+        cy.get('[data-cy="passwordConfirmation"]')
             .find('p.Mui-error')
             .should('be.visible')
             .and('contain', 'Your passwords must match')
@@ -108,7 +108,7 @@ describe('Sign up tests', () => {
         cy.visit('/signup')
         cy.get('[data-cy="email"]').type(userEmail)
         cy.get('[data-cy="password"]').type(password)
-        cy.get('[data-cy="passwordVerification"]').type(password)
+        cy.get('[data-cy="passwordConfirmation"]').type(password)
         cy.get('[data-cy="submit"]').click()
 
         // We shouldn't be on the signup page anymore
@@ -124,7 +124,7 @@ describe('Sign up tests', () => {
         cy.visit('/signup')
         cy.get('[data-cy="email"]').type(userEmail)
         cy.get('[data-cy="password"]').type(password)
-        cy.get('[data-cy="passwordVerification"]').type(password)
+        cy.get('[data-cy="passwordConfirmation"]').type(password)
         cy.get('[data-cy="submit"]').click()
         cy.url().should('include', '/')
 
@@ -132,7 +132,7 @@ describe('Sign up tests', () => {
         cy.visit('/signup')
         cy.get('[data-cy="email"]').type(userEmail)
         cy.get('[data-cy="password"]').type(password)
-        cy.get('[data-cy="passwordVerification"]').type(password)
+        cy.get('[data-cy="passwordConfirmation"]').type(password)
         cy.get('[data-cy="submit"]').click()
 
         cy.url().should('include', '/signup')
@@ -145,5 +145,43 @@ describe('Sign up tests', () => {
         cy.get('[data-cy="link-to-login"]').click()
         cy.url().should('include', '/login')
         cy.get('[data-cy="title"]').contains('Login')
+    })
+
+    it('Should toggle password visibility when clicking on icon button', () => {
+        cy.visit('/signup')
+
+        // Initially, the password input should be of type 'password'
+        cy.get('[data-cy=password] input').should('have.attr', 'type', 'password')
+
+        // Click the toggle password visibility button
+        cy.get('[data-cy=toggle-password-visibility]').click()
+
+        // After clicking, the password input type should change to 'text'
+        cy.get('[data-cy=password] input').should('have.attr', 'type', 'text')
+
+        // Click the toggle password visibility button
+        cy.get('[data-cy=toggle-password-visibility]').click()
+
+        // After clicking again, the password input type should change back to 'password'
+        cy.get('[data-cy=password] input').should('have.attr', 'type', 'password')
+    })
+
+    it('Should toggle password confirmation visibility when clicking on icon button', () => {
+        cy.visit('/signup')
+
+        // Initially, the password confirmation input should be of type 'password'
+        cy.get('[data-cy=passwordConfirmation] input').should('have.attr', 'type', 'password')
+
+        // Click the toggle password visibility button
+        cy.get('[data-cy=toggle-confirm-password-visibility]').click()
+
+        // After clicking, the password confirmation input type should change to 'text'
+        cy.get('[data-cy=passwordConfirmation] input').should('have.attr', 'type', 'text')
+
+        // Click the toggle password visibility button
+        cy.get('[data-cy=toggle-confirm-password-visibility]').click()
+
+        // After clicking again, the password confirmation input type should change back to 'password'
+        cy.get('[data-cy=passwordConfirmation] input').should('have.attr', 'type', 'password')
     })
 })
