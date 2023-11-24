@@ -7,7 +7,7 @@ import { validTimestamp } from '@/utils/verification'
 export type TimestampInputFieldProps = {
     label: string
     value: string
-    onValidChange: (timestampString: string) => void
+    onChange: (value: string) => void
     sx?: SxProps<Theme>
 }
 
@@ -19,7 +19,7 @@ const TimestampInputField = (props: TimestampInputFieldProps) => {
         const newValue = event.target.value
         if (validTimestamp(newValue)) {
             setError(false)
-            props.onValidChange(newValue)
+            props.onChange(newValue)
         } else {
             setError(true)
         }

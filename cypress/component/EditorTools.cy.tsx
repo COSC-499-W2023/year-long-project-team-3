@@ -11,7 +11,7 @@ describe('Test editing tools', () => {
         cy.get('.editor-tools').find('.MuiIconButton-root').should('have.length', 4)
     })
 
-    it('should lift up if changes have been made', () => {
+    it('should notify parent container when changes are made', () => {
         cy.get('.MuiIconButton-root').first().click()
 
         cy.get('@onChangeSpy').should('have.been.calledWith', true)

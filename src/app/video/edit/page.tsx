@@ -68,8 +68,8 @@ export default function VideoPreviewPage() {
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'stretch',
-                        margin: 0,
-                        padding: 0,
+                        m: 0,
+                        p: 0,
                         width: '100vw',
                         height: '100vh',
                     }}
@@ -84,7 +84,7 @@ export default function VideoPreviewPage() {
                             gap: '1rem',
                             width: '100%',
                             height: '100%',
-                            padding: '2rem',
+                            p: '2rem',
                         }}
                     >
                         <Box
@@ -118,7 +118,7 @@ export default function VideoPreviewPage() {
                                 className='column-1'
                                 sx={{
                                     width: '20%',
-                                    paddingRight: '1rem',
+                                    pr: '1rem',
                                 }}
                             ></Box>
                             <Box
@@ -185,7 +185,7 @@ export default function VideoPreviewPage() {
                                 className='column-3'
                                 sx={{
                                     width: '20%',
-                                    padding: '0 1rem',
+                                    p: '0 1rem',
                                     borderRadius: '1rem',
                                 }}
                             >

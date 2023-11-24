@@ -112,7 +112,7 @@ const EditorTools = (props: EditorToolsProps) => {
         backgroundColor: 'background.default',
         borderRadius: '1rem',
         boxShadow: 24,
-        padding: '1rem 2rem',
+        p: '1rem 2rem',
     }
 
     const parseSeconds = (timestamp: string) => {
@@ -174,7 +174,7 @@ const EditorTools = (props: EditorToolsProps) => {
                     </Typography>
                     <FormGroup
                         sx={{
-                            margin: '1.5rem 0 0.5rem 0',
+                            m: '1.5rem 0 0.5rem 0',
                         }}
                     >
                         <FormControlLabel
@@ -226,19 +226,11 @@ const EditorTools = (props: EditorToolsProps) => {
                             alignItems: 'center',
                             gap: '1rem',
                             width: '100%',
-                            margin: '1.5rem 0 0.5rem 0',
+                            m: '1.5rem 0 0.5rem 0',
                         }}
                     >
-                        <TimestampInputField
-                            label='Start Time'
-                            value={startTime}
-                            onValidChange={(value) => setStartTime(value)}
-                        />
-                        <TimestampInputField
-                            label='End Time'
-                            value={endTime}
-                            onValidChange={(value) => setEndTime(value)}
-                        />
+                        <TimestampInputField label='Start Time' value={startTime} onChange={setStartTime} />
+                        <TimestampInputField label='End Time' value={endTime} onChange={setEndTime} />
                     </Box>
                     <Box
                         sx={{
@@ -286,7 +278,7 @@ const EditorTools = (props: EditorToolsProps) => {
                             justifyContent: 'flex-start',
                             gap: '1rem',
                             width: '100%',
-                            margin: '1.5rem 0 0.5rem 0',
+                            m: '1.5rem 0 0.5rem 0',
                         }}
                     ></Box>
                     <Slider

@@ -31,11 +31,14 @@ export function isValidPassword(password: string): boolean {
     )
 }
 
+export function getTimestampRegex() {
+    return /^(\d+):([0-5]\d):([0-5]\d)(\.\d{1,3})?$|^(\d+):([0-5]\d)(\.\d{1,3})?$|^(\d+)(\.\d{0,3})?$/
+}
+
 export function validTimestamp(timestamp: string) {
     if (timestamp === '') {
         return true
     }
     // Validate the input to match the format hh:mm:ss.ms
-    const timeRegex = /^(\d+):([0-5]\d):([0-5]\d)(\.\d{1,3})?$|^(\d+):([0-5]\d)(\.\d{1,3})?$|^(\d+)(\.\d{0,3})?$/
-    return timeRegex.test(timestamp)
+    return getTimestampRegex().test(timestamp)
 }
