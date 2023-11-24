@@ -10,12 +10,18 @@ import {
     Button,
     Slider,
 } from '@mui/material'
-import React, { useState } from 'react'
-import { ContentCut, Speed, TuneRounded, VolumeOff, VolumeUp } from '@mui/icons-material'
+import React, { useEffect, useState } from 'react'
+import {
+    ContentCut,
+    Speed,
+    TuneRounded,
+    VolumeOff as VolumeOffIcon,
+    VolumeUp as VolumeUpIcon,
+} from '@mui/icons-material'
 import TimestampInputField from '@/components/TimestampInputField'
 
 export type EditorToolsProps = {
-    handleHaveChangesBeenMade: (haveChangesBeenMade: boolean) => void
+    setIsEditorChanged: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const EditorTools = (props: EditorToolsProps) => {
@@ -83,8 +89,8 @@ const EditorTools = (props: EditorToolsProps) => {
         // TODO: Actually apply changes to video
     }
 
-    const changesMade = () => {
-        return !(
+    useEffect(() => {
+        const changeMade = !(
             isMuted === startingState.isMuted &&
             isBlurred === startingState.isBlurred &&
             isBWVideo === startingState.isBWVideo &&
@@ -93,9 +99,8 @@ const EditorTools = (props: EditorToolsProps) => {
             endTime === startingState.endTime &&
             playbackRate === startingState.playbackRate
         )
-    }
-
-    props.handleHaveChangesBeenMade(changesMade())
+        props.setIsEditorChanged(changeMade)
+    }, [endTime, isBWVideo, isBlurred, isMuted, isOtherOption, playbackRate, props, startTime, startingState])
 
     const modalStyle = {
         position: 'absolute',
@@ -132,7 +137,7 @@ const EditorTools = (props: EditorToolsProps) => {
                 }}
             >
                 <Tooltip title='Mute' placement='right'>
-                    <IconButton onClick={handleMuteClick}>{isMuted ? <VolumeUp /> : <VolumeOff />}</IconButton>
+                    <IconButton onClick={handleMuteClick}>{isMuted ? <VolumeUpIcon /> : <VolumeOffIcon />}</IconButton>
                 </Tooltip>
                 <Tooltip title='Filters' placement='right'>
                     <IconButton
@@ -227,9 +232,13 @@ const EditorTools = (props: EditorToolsProps) => {
                         <TimestampInputField
                             label='Start Time'
                             value={startTime}
-                            onChange={(value) => setStartTime(value)}
+                            onValidChange={(value) => setStartTime(value)}
                         />
-                        <TimestampInputField label='End Time' value={endTime} onChange={(value) => setEndTime(value)} />
+                        <TimestampInputField
+                            label='End Time'
+                            value={endTime}
+                            onValidChange={(value) => setEndTime(value)}
+                        />
                     </Box>
                     <Box
                         sx={{

@@ -17,7 +17,7 @@ export default function VideoPreviewPage() {
     const [changesMade, setChangesMade] = useState(false)
     const [isEditVideoPageVisible, setIsEditVideoPageVisible] = useState(false)
 
-    const resizeNavButtons = () => {
+    function resizeNavButtons() {
         const buttonsDiv = document.getElementById('nav-buttons-div')
         const videoPlayer = document.querySelector('.react-wrapper')
         const parentDiv = buttonsDiv ? buttonsDiv.parentNode : null
@@ -189,11 +189,7 @@ export default function VideoPreviewPage() {
                                     borderRadius: '1rem',
                                 }}
                             >
-                                <EditorTools
-                                    handleHaveChangesBeenMade={(haveChangesBeenMade) =>
-                                        setChangesMade(haveChangesBeenMade)
-                                    }
-                                />
+                                <EditorTools setIsEditorChanged={setChangesMade} />
                             </Box>
                         </Box>
                     </Box>

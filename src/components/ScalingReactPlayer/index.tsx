@@ -39,20 +39,20 @@ const ScalingReactPlayer = (props: ScalingReactPlayerProps) => {
     const keyboardControl = useCallback(
         (evt: KeyboardEvent) => {
             /*
-        Toggle play/pause the video	k or Spacebar
-        Go back 5 seconds	Left arrow
-        Go back 10 seconds	j
-        Go forward 5 seconds	Right arrow
-        Go forward 10 seconds	l
-        Restart video	Home
-        Bring video to the end	End
-        Go to Full Screen mode	f
-        Exit Full Screen mode	Escape
-        Increase volume 5%	Up arrow
-        Decrease volume 5%	Down arrow
-        Increase speed	Shift + >
-        Decrease speed	Shift + <
-         */
+            Toggle play/pause the video	k or Spacebar
+            Go back 5 seconds	Left arrow
+            Go back 10 seconds	j
+            Go forward 5 seconds	Right arrow
+            Go forward 10 seconds	l
+            Restart video	Home
+            Bring video to the end	End
+            Go to Full Screen mode	f
+            Exit Full Screen mode	Escape
+            Increase volume 5%	Up arrow
+            Decrease volume 5%	Down arrow
+            Increase speed	Shift + >
+            Decrease speed	Shift + <
+             */
             const code = evt.code
             if (code === 'KeyK' || code === 'Space') {
                 setIsPlaying(!isPlaying)
