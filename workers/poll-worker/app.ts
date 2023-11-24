@@ -20,7 +20,7 @@ const globalForPrisma = globalThis as unknown as {
 const prisma = globalForPrisma.prisma ?? prismaClientSingleton()
 
 const app = Consumer.create({
-    queueUrl: 'https://sqs.ca-central-1.amazonaws.com/932748244514/video-stream-process',
+    queueUrl: process.env.QUEUE_URL,
     handleMessage: async (message: typeof Message) => {
         const videoMetadata = JSON.parse(message.Body)
         const videoId: number = videoMetadata.videoId
@@ -37,7 +37,7 @@ const app = Consumer.create({
         })
     },
     sqs: new SQSClient({
-        region: 'ca-central-1',
+        region: process.env.AWS_UPLOAD_REGION,
     }),
 })
 
