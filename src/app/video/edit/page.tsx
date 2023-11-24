@@ -190,9 +190,7 @@ export default function VideoPreviewPage() {
                                 }}
                             >
                                 <EditorTools
-                                    handleHaveChangesBeenMade={(haveChangesBeenMade) =>
-                                        setChangesMade(haveChangesBeenMade)
-                                    }
+                                    setIsEditorChanged={(haveChangesBeenMade) => setChangesMade(haveChangesBeenMade)}
                                 />
                             </Box>
                         </Box>
