@@ -8,19 +8,7 @@ import { Upload } from '@aws-sdk/lib-storage'
 import logger from './logger'
 import prisma from '@/lib/prisma'
 import { Readable } from 'stream'
-
-async function makeS3Key(video: Video): Promise<string> {
-    if (!video.ownerId) {
-        // TODO: Remove this when adding anonymized feature
-        throw new Error(`Missing ownerId in video ${ video.id }`)
-    }
-
-    try {
-        return `${ video.title }_${ video.ownerId }_${ video.id }.mp4`
-    } catch (error) {
-        throw new Error(`Unexpected error while fetching owner of video ${ video.id }`)
-    }
-}
+import { makeS3Key } from './s3Key'
 
 function _removeFileExtension(filename: string): string {
     // TODO: Remove this when using title instead of filename

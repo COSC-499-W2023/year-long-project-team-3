@@ -1,5 +1,5 @@
 'use client'
-
+import type { InferGetStaticPropsType, GetStaticProps, GetStaticPaths } from 'next'
 import React, { useEffect, useState } from 'react'
 import Header from '@/components/Header'
 import { SessionContextValue, useSession } from 'next-auth/react'
@@ -9,13 +9,19 @@ import ScalingReactPlayer from '@/components/ScalingReactPlayer'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import EditorTools from '@/components/EditorTools'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 
 export default function VideoPreviewPage() {
     const session: SessionContextValue = useSession()
     const router = useRouter()
+    const pathname = usePathname()
+
     const [changesMade, setChangesMade] = useState(false)
     const [isEditVideoPageVisible, setIsEditVideoPageVisible] = useState(false)
+    const [streamingVideoUrl, setStreamingVideoUrl] = useState<string>('')
+    const [isVideoVisible, setIsVideoVisible] = useState(false)
+
+    const videoId = pathname.split('/').pop()
 
     const resizeNavButtons = () => {
         const buttonsDiv = document.getElementById('nav-buttons-div')
@@ -39,15 +45,37 @@ export default function VideoPreviewPage() {
         }
     }
 
+    useEffect(() => {
+        if (!videoId || !isEditVideoPageVisible) {
+            cleanUpVideoState()
+            return
+        }
+
+        fetch(`/api/video/${ videoId }`)
+            .then(async (res) => {
+                if (res.status !== 200) {
+                    throw new Error('Could not fetch video')
+                }
+                const { videoUrl } = await res.json()
+                setIsVideoVisible(true)
+                setStreamingVideoUrl(videoUrl)
+            })
+            .catch((err) => {
+                console.error(err)
+                cleanUpVideoState()
+                router.push('/dashboard')
+            })
+    }, [router, videoId, isEditVideoPageVisible])
+
     const { status } = session
     useEffect(() => {
         if (status === 'authenticated') {
             setIsEditVideoPageVisible(true)
         } else if (status === 'unauthenticated') {
-            setIsEditVideoPageVisible(false)
+            cleanUpVideoState()
             router.push('/login')
         } else {
-            setIsEditVideoPageVisible(false)
+            cleanUpVideoState()
         }
     }, [router, status])
 
@@ -156,11 +184,7 @@ export default function VideoPreviewPage() {
                                             width: '100%',
                                         }}
                                     >
-                                        <ScalingReactPlayer
-                                            url={
-                                                'https://d29gn7cyj93si1.cloudfront.net/Rick%20Astley%20-%20Never%20Gonna%20Give%20You%20Up%20(Official%20Music%20Video)%20[1%20hour%20loop].mp4'
-                                            }
-                                        />
+                                        {isVideoVisible && <ScalingReactPlayer url={streamingVideoUrl} />}
                                     </Box>
 
                                     {/*The back and continue buttons*/}
@@ -189,11 +213,7 @@ export default function VideoPreviewPage() {
                                     borderRadius: '1rem',
                                 }}
                             >
-                                <EditorTools
-                                    handleHaveChangesBeenMade={(haveChangesBeenMade) =>
-                                        setChangesMade(haveChangesBeenMade)
-                                    }
-                                />
+                                <EditorTools setIsEditorChanged={setChangesMade} />
                             </Box>
                         </Box>
                     </Box>
@@ -201,4 +221,9 @@ export default function VideoPreviewPage() {
             </>
         )
     )
+
+    function cleanUpVideoState() {
+        setStreamingVideoUrl('')
+        setIsVideoVisible(false)
+    }
 }

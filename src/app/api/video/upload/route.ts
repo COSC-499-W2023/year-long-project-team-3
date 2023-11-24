@@ -1,7 +1,7 @@
 import logger from '@/utils/logger'
 import sendVideo from '@/utils/sendVideo'
 import prisma from '@/lib/prisma'
-import { type User } from '@prisma/client'
+import { type User, type Video } from '@prisma/client'
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             },
         })
 
-        const newVideo = await sendVideo(uploadedVideo, user)
+        const newVideo: Video = await sendVideo(uploadedVideo, user)
 
         // Sending this does not mean the video is process successfully.
         return NextResponse.json({ video: newVideo }, { status: 201 })

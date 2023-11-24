@@ -10,12 +10,12 @@ import {
     Button,
     Slider,
 } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ContentCut, Speed, TuneRounded, VolumeOff, VolumeUp } from '@mui/icons-material'
 import TimestampInputField from '@/components/TimestampInputField'
 
 export type EditorToolsProps = {
-    handleHaveChangesBeenMade: (haveChangesBeenMade: boolean) => void
+    setIsEditorChanged: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const EditorTools = (props: EditorToolsProps) => {
@@ -95,7 +95,18 @@ const EditorTools = (props: EditorToolsProps) => {
         )
     }
 
-    props.handleHaveChangesBeenMade(changesMade())
+    useEffect(() => {
+        const changeMade = !(
+            isMuted === startingState.isMuted &&
+            isBlurred === startingState.isBlurred &&
+            isBWVideo === startingState.isBWVideo &&
+            isOtherOption === startingState.isOtherOption &&
+            startTime === startingState.startTime &&
+            endTime === startingState.endTime &&
+            playbackRate === startingState.playbackRate
+        )
+        props.setIsEditorChanged(changeMade)
+    }, [endTime, isBWVideo, isBlurred, isMuted, isOtherOption, playbackRate, props, startTime, startingState])
 
     const modalStyle = {
         position: 'absolute',
