@@ -10,12 +10,12 @@ import {
     Button,
     Slider,
 } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ContentCut, Speed, TuneRounded, VolumeOff, VolumeUp } from '@mui/icons-material'
 import TimestampInputField from '@/components/TimestampInputField'
 
 export type EditorToolsProps = {
-    handleHaveChangesBeenMade: (haveChangesBeenMade: boolean) => void
+    setIsEditorChanged: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const EditorTools = (props: EditorToolsProps) => {
@@ -83,8 +83,8 @@ const EditorTools = (props: EditorToolsProps) => {
         // TODO: Actually apply changes to video
     }
 
-    const changesMade = () => {
-        return !(
+    useEffect(() => {
+        const changeMade = !(
             isMuted === startingState.isMuted &&
             isBlurred === startingState.isBlurred &&
             isBWVideo === startingState.isBWVideo &&
@@ -93,9 +93,8 @@ const EditorTools = (props: EditorToolsProps) => {
             endTime === startingState.endTime &&
             playbackRate === startingState.playbackRate
         )
-    }
-
-    props.handleHaveChangesBeenMade(changesMade())
+        props.setIsEditorChanged(changeMade)
+    }, [endTime, isBWVideo, isBlurred, isMuted, isOtherOption, playbackRate, props, startTime, startingState])
 
     const modalStyle = {
         position: 'absolute',
