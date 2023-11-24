@@ -66,7 +66,7 @@ jobs:
                     npx mochawesome-merge cypress/reports/*.json > cypress/reports/test_results.json
             -   name: Convert report file to markdown
                 run: |
-                    npx mochawesome-json-to-md -p cypress/reports/test_results.json -o cypress/reports/test_results.md --reportTitle="Component Test Results"
+                    npx mochawesome-json-to-md -p cypress/reports/test_results.json -o cypress/reports/test_results.md --title="Component Test Results"
             -   name: Create report and post on PR
                 uses: peter-evans/create-or-update-comment@v3
                 env:
