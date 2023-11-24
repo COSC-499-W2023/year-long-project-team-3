@@ -1,0 +1,22 @@
+FROM node:lts-alpine3.18
+
+# Create app directory
+WORKDIR /usr/src/app
+
+COPY ./workers/poll-worker/package.json ./package.json
+COPY ./workers/poll-worker/package-lock.json ./package-lock.json
+COPY prisma ./prisma
+
+ARG $ARG_DATABASE_URL
+ENV DATABASE_URL $ARG_DATABASE_URL
+
+# Install dependencies
+RUN npm ci
+
+# Get all the code needed to run the app
+COPY . .
+
+RUN prisma generate
+
+# Serve the app
+CMD ["npm", "start"]
