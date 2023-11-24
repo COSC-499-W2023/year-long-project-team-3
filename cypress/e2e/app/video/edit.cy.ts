@@ -1,4 +1,5 @@
 import { describe } from 'mocha'
+import { v4 as uuidv4 } from 'uuid'
 
 describe('Test video editing page', () => {
     context('Not logged in', () => {
@@ -11,12 +12,23 @@ describe('Test video editing page', () => {
         })
     })
 
-    context.only('Logged in', () => {
+    context('Logged in', () => {
         beforeEach(() => {
-            cy.session(['user@example.com', 'Password1'], () => {
-                cy.visit('/login')
-                cy.get('[data-cy=email]').type('justin.schoenit@gmail.com')
-                cy.get('[data-cy=password]').type('Password1')
+            cy.session('testuser', () => {
+                const email = 'user' + uuidv4() + '@example.com'
+                const password = 'Password1'
+
+                // Sign up
+                cy.visit('/signup')
+                cy.get('[data-cy="email"]').type(email)
+                cy.get('[data-cy="password"]').type(password)
+                cy.get('[data-cy="passwordConfirmation"]').type(password)
+                cy.get('[data-cy="submit"]').click()
+                cy.url().should('contain', 'login')
+
+                // Login
+                cy.get('[data-cy=email]').type(email)
+                cy.get('[data-cy=password]').type(password)
                 cy.get('[data-cy=submit]').click()
                 cy.url().should('not.contain', 'login')
             })
