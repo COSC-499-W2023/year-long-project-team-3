@@ -60,8 +60,15 @@ export default function UploadVideoPage() {
             body: videoUploadForm,
         }).then(async (res: Response) => {
             const body = await res.json()
+            if (res.status !== 201) {
+                console.log(body)
+                toast.error(body.error)
+                throw new Error(body.error)
+            }
             const videoId = body.video.id as string
             router.push(`/video/edit/${ videoId }`)
+        }).catch((err) => {
+            router.push('/')
         }).finally(() => {
             setIsUploadingVideo(false)
         })

@@ -36,5 +36,5 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 }
 
 function isVideoValidType(video: FormDataEntryValue | null): video is File {
-    return video !== null && video instanceof globalThis.File
+    return video !== null && video.constructor.name === 'File'
 }
