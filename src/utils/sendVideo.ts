@@ -71,7 +71,7 @@ export default async function sendVideo(rawVideo: File, owner: User): Promise<Vi
         },
     })
 
-    const s3Data = await uploadS3.done()
+    const s3Data: CompleteMultipartUploadCommandOutput | AbortMultipartUploadCommandOutput = await uploadS3.done()
     if (!isCompleteUpload(s3Data) || s3Data.Location === undefined) {
         logger.error(s3Data)
         // TODO: Send email/notify to user there is an issue with uploading video
