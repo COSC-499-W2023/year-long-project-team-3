@@ -3,8 +3,6 @@ import {
     S3Client,
     type CompleteMultipartUploadCommandOutput,
     type AbortMultipartUploadCommandOutput,
-    PutObjectCommand,
-    PutObjectCommandOutput,
 } from '@aws-sdk/client-s3'
 import { Upload } from '@aws-sdk/lib-storage'
 import logger from './logger'
