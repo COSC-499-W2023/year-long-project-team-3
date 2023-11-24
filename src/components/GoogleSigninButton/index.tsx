@@ -3,7 +3,7 @@
 'use client'
 
 import React from 'react'
-import './GoogleSignInButton.css'
+import './GoogleSigninButton.module.css'
 import { signIn } from 'next-auth/react'
 import logger from '@/utils/logger'
 
