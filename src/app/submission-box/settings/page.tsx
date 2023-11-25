@@ -10,6 +10,7 @@ import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
 import logger from '@/utils/logger'
 import { DateTimePicker } from '@mui/x-date-pickers'
+import Button from '@mui/material/Button'
 
 interface FormValues {
     title: string
@@ -108,6 +109,19 @@ export default function SubmissionBoxSettingsPage() {
                                 }}
                             />
                             <DateTimePicker />
+                            <Button
+                                type='submit'
+                                variant='contained'
+                                sx={{ mt: 2, px: 5, fontSize: 15, borderRadius: 28, textTransform: 'capitalize' }}
+                                data-cy='next'
+                            >
+                                Next
+                            </Button>
+                            <Box sx={{ width: '90%' }}>
+                                <Typography sx={{ mt: 2, textAlign: 'center' }}>
+                                    You will be able to add members to your box in the next step!
+                                </Typography>
+                            </Box>
                         </Box>
                     </form>
                 </Box>
