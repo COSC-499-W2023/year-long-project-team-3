@@ -9,14 +9,14 @@ import logger from './logger'
 import prisma from '@/lib/prisma'
 import { Readable } from 'stream'
 
-async function makeS3Key(video: Video): Promise<string> {
+async function makeS3Key(video: Video, fileEnding: string): Promise<string> {
     if (!video.ownerId) {
         // TODO: Remove this when adding anonymized feature
         throw new Error(`Missing ownerId in video ${ video.id }`)
     }
 
     try {
-        return `${ video.title }_${ video.ownerId }_${ video.id }.mp4`
+        return `${ video.title }_${ video.ownerId }_${ video.id }.${ fileEnding }`
     } catch (error) {
         throw new Error(`Unexpected error while fetching owner of video ${ video.id }`)
     }
@@ -26,8 +26,7 @@ export function removeFileExtension(filename: string): string {
     return filename.replace(/\.[^/.]+$/, '')
 }
 
-
-// Fom https://stackoverflow.com/a/76640098/13337984
+// From https://stackoverflow.com/a/76640098/13337984
 function isCompleteUpload(
     output: CompleteMultipartUploadCommandOutput | AbortMultipartUploadCommandOutput
 ): output is CompleteMultipartUploadCommandOutput {
@@ -48,7 +47,7 @@ export default async function sendVideo(rawVideo: File, owner: User): Promise<Vi
         },
     })
 
-    const s3Key = await makeS3Key(newVideo)
+    const s3Key = await makeS3Key(newVideo, 'mp4')
     const rawVideoBuffer = await rawVideo.arrayBuffer()
 
     const client = new S3Client({
@@ -95,7 +94,7 @@ export default async function sendVideo(rawVideo: File, owner: User): Promise<Vi
         },
     })
 
-    return prisma.video.update({
+    await prisma.video.update({
         where: {
             id: newVideo.id,
         },
@@ -104,4 +103,25 @@ export default async function sendVideo(rawVideo: File, owner: User): Promise<Vi
             rawVideoUrl: s3Data.Location,
         },
     })
+
+    const metadataFile: string = JSON.stringify({
+        videoId: newVideo.id,
+        srcVideo: s3Key,
+    })
+    const uploadJson = new Upload({
+        client: client,
+        params: {
+            Bucket: process.env.awsUploadBucket as string,
+            Key: await makeS3Key(newVideo, 'json'),
+            Body: metadataFile,
+        },
+    })
+    const s3JsonData: CompleteMultipartUploadCommandOutput | AbortMultipartUploadCommandOutput = await uploadJson.done()
+    if (!isCompleteUpload(s3JsonData) || s3JsonData.Location === undefined) {
+        logger.error(s3JsonData)
+        // TODO: Send email/notify to user there is an issue with uploading video
+        throw new Error(`Unexpected error while uploading video metadata file for video ${ rawVideo.name } to S3`)
+    }
+
+    return newVideo
 }
