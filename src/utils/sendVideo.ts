@@ -26,7 +26,7 @@ export function removeFileExtension(filename: string): string {
     return filename.replace(/\.[^/.]+$/, '')
 }
 
-// Fom https://stackoverflow.com/a/76640098/13337984
+// From https://stackoverflow.com/a/76640098/13337984
 function isCompleteUpload(
     output: CompleteMultipartUploadCommandOutput | AbortMultipartUploadCommandOutput
 ): output is CompleteMultipartUploadCommandOutput {
