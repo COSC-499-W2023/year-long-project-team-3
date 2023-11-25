@@ -9,6 +9,7 @@ import React from 'react'
 import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
 import logger from '@/utils/logger'
+import { DateTimePicker } from '@mui/x-date-pickers'
 
 interface FormValues {
     title: string
@@ -65,7 +66,7 @@ export default function SubmissionBoxSettingsPage() {
                                 flexDirection: 'column',
                                 alignItems: 'center',
                                 minWidth: 'md',
-                                '& .MuiTextField-root': { my: 1.5, mx: 7, width: '100%' },
+                                '& .MuiTextField-root': { my: 1.5, mx: 12, width: '100%' },
                             }}
                         >
                             <TextField
@@ -106,6 +107,7 @@ export default function SubmissionBoxSettingsPage() {
                                     },
                                 }}
                             />
+                            <DateTimePicker />
                         </Box>
                     </form>
                 </Box>
