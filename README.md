@@ -24,6 +24,7 @@
 - [Local Development Setup](docs/guides/local_development_setup.md)
 - [Local Docker Development Setup](docs/guides/local_docker_development_setup.md)
 - [AWS Authentication Credentials Setup](docs/guides/aws_authentication.md)
+- [Poll Worker Setup](docs/guides/poll_worker_setup.md)
 
 ### Tests
 -  [Manually run E2E tests on PR](docs/guides/run_e2e_github_actions.md)
