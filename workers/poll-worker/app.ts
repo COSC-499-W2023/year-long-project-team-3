@@ -26,7 +26,7 @@ const app = Consumer.create({
         const videoId: number = videoMetadata.videoId
         await prisma.video.update({
             where: {
-                videoId: videoId,
+                id: videoId,
             },
             data: {
                 s3Key: videoMetadata.guid,

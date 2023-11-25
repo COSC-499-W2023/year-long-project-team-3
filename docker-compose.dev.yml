@@ -43,6 +43,8 @@ services:
         env_file: workers/poll-worker/.env
         volumes:
             - .:/worker
+        networks:
+            - internal-dev
         restart: always
 
 
