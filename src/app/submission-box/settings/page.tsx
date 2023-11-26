@@ -13,6 +13,7 @@ import { DateTimePicker } from '@mui/x-date-pickers'
 import Button from '@mui/material/Button'
 import { ObjectSchema } from 'yup'
 import * as yup from 'yup'
+import { useRouter } from 'next/navigation'
 
 interface FormValues {
     title: string
@@ -22,6 +23,7 @@ interface FormValues {
 
 export default function SubmissionBoxSettingsPage() {
     const session = useSession()
+    const router = useRouter()
 
     const formik = useFormik<FormValues>({
         initialValues: {
@@ -69,7 +71,7 @@ export default function SubmissionBoxSettingsPage() {
                                 flexDirection: 'column',
                                 alignItems: 'center',
                                 minWidth: 'md',
-                                '& .MuiTextField-root': { my: 1.5, mx: 12, width: '100%' },
+                                '& .MuiTextField-root': { my: 1.5, mx: 7, width: '80%' },
                             }}
                         >
                             <TextField
@@ -85,7 +87,7 @@ export default function SubmissionBoxSettingsPage() {
                                 // this ensures the layout does not get shifted by the helper text
                                 FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
                                 helperText={formik.touched.title && formik.errors.title}
-                                data-cy='title'
+                                data-cy='submission-box-title'
                             />
                             <TextField
                                 margin='normal'
@@ -103,12 +105,6 @@ export default function SubmissionBoxSettingsPage() {
                                 FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
                                 helperText={formik.touched.description && formik.errors.description}
                                 data-cy='description'
-                                sx={{
-                                    // this ensures the label wraps
-                                    '& .MuiInputLabel-root': {
-                                        whiteSpace: 'pre-wrap',
-                                    },
-                                }}
                             />
                             <DateTimePicker label='Closing Date' />
                             <Button
@@ -134,6 +130,8 @@ export default function SubmissionBoxSettingsPage() {
     async function handleSubmit() {
         try {
             // TODO
+            router.push('/submission-box/add-members')
+            router.refresh()
         } catch (err) {
             const errMessage = JSON.stringify(err, Object.getOwnPropertyNames(err))
             logger.error(errMessage)

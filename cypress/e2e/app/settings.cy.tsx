@@ -1,0 +1,42 @@
+import { TIMEOUT } from '../../utils/constants'
+
+describe('Submission box settings tests', () => {
+    before(() => {
+        cy.task('clearDB')
+    })
+
+    beforeEach(() => {
+        cy.task('clearDB')
+    })
+
+    it('Should not allow the user to go to the next step without entering a title', () => {
+        // Check that submitting with nothing in the fields presents user with prompts and does not let the user move on
+        cy.visit('/submission-box/settings')
+
+        // Check that the errors do not exist
+        cy.get('p.Mui-error').should('have.length', 0)
+
+        cy.get('[data-cy="next"]').click()
+
+        cy.url().should('include', '/submission-box/settings')
+
+        cy.get('p.Mui-error').should('have.length', 1)
+        cy.get('[data-cy="submission-box-title"]')
+            .find('p.Mui-error')
+            .should('be.visible')
+            .and('contain', 'Please enter a title for your submission box')
+    })
+
+    it('Should allow user to move on to the next page', () => {
+        // User data
+        const title = 'My Test Title'
+
+        // Create submission box
+        cy.visit('/submission-box/settings')
+        cy.get('[data-cy="submission-box-title"]').type(title)
+        cy.get('[data-cy="next"]').click()
+
+        // We shouldn't be on the submission-box/settings page anymore
+        cy.url({ timeout: TIMEOUT.LONG }).should('include', '/submission-box/add-members')
+    })
+})
