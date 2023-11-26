@@ -1,5 +1,27 @@
 # Weekly Individual Log - Justin Schoenit
 
+## Week 11/12 (Nov 13 - Nov 26)
+
+### Tasks
+
+![](imgs/week-12-tasks-justin.png)
+
+### Goals
+
+- Get some pages mocked and implemented
+- Get video upload working
+- Get AWS video pipeline working/researched
+
+### My Contributions
+
+- Critiqued mocks (cause I can't actually design it my self)
+- Implemented the video player to scale with the page
+- Created a video preview/edit page
+
+### Additional Context
+
+Turns out web dev is hard? I spent more time than anticipated trying to implement a webpage since I am not experienced in web design
+
 ## Week 10 (Nov 6 - Nov 12)
 
 ### Tasks
