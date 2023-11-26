@@ -11,11 +11,13 @@ import { useFormik } from 'formik'
 import logger from '@/utils/logger'
 import { DateTimePicker } from '@mui/x-date-pickers'
 import Button from '@mui/material/Button'
+import { ObjectSchema } from 'yup'
+import * as yup from 'yup'
 
 interface FormValues {
     title: string
-    description: string
-    closingDate: Date
+    description: string | undefined
+    closingDate: Date | undefined
 }
 
 export default function SubmissionBoxSettingsPage() {
@@ -27,7 +29,7 @@ export default function SubmissionBoxSettingsPage() {
             description: '',
             closingDate: new Date(),
         },
-        // validationSchema: validationSchema,
+        validationSchema: validationSchema,
         // TODO
         onSubmit: () => handleSubmit(),
     })
@@ -74,7 +76,7 @@ export default function SubmissionBoxSettingsPage() {
                                 margin='normal'
                                 variant='outlined'
                                 type='title'
-                                label='Enter a title for your submission box'
+                                label='Title'
                                 name='title'
                                 value={formik.values.title}
                                 onChange={formik.handleChange}
@@ -89,7 +91,7 @@ export default function SubmissionBoxSettingsPage() {
                                 margin='normal'
                                 variant='outlined'
                                 type='description'
-                                label='Enter a description for your submission box (optional)'
+                                label='Description (optional)'
                                 name='description'
                                 multiline
                                 rows={4}
@@ -108,7 +110,7 @@ export default function SubmissionBoxSettingsPage() {
                                     },
                                 }}
                             />
-                            <DateTimePicker />
+                            <DateTimePicker label='Closing Date' />
                             <Button
                                 type='submit'
                                 variant='contained'
@@ -138,3 +140,9 @@ export default function SubmissionBoxSettingsPage() {
         }
     }
 }
+
+const validationSchema: ObjectSchema<FormValues> = yup.object().shape({
+    title: yup.string().required('Please enter a title for your submission box'),
+    description: yup.string(),
+    closingDate: yup.date(),
+})
