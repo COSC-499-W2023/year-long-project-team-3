@@ -9,7 +9,7 @@
     ```
 2. Add the `.env` file from Google Drive to the `workers/poll-worker` directory
 3. Update the poll worker `.env` file with your AWS credentials (see [AWS Authentication](aws_authentication.md))
-4. Start the Docker Container
+4. Start the Docker Container from the root directory
 
 ```bash
    docker-compose -f docker-compose.dev.yml up poll-worker -d 
