@@ -15,5 +15,7 @@ RUN npm ci
 # Get all the code needed to run the app
 COPY ./workers/poll-worker .
 
+RUN npx prisma generate
+
 # Serve the app
 CMD ["npm", "run", "start"]

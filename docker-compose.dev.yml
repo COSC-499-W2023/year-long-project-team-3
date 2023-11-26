@@ -41,8 +41,6 @@ services:
                 - ARG_DATABASE_URL=$DATABASE_URL
         container_name: docker-poll-worker
         env_file: workers/poll-worker/.env
-        volumes:
-            - .:/worker
         networks:
             - internal-dev
         restart: always
