@@ -13,6 +13,8 @@ describe('Submission box settings tests', () => {
         // Check that submitting with nothing in the fields presents user with prompts and does not let the user move on
         cy.visit('/submission-box/settings')
 
+        cy.wait(1000) // this is necessary because the layout shifts slightly due to the multiline text box
+
         // Check that the errors do not exist
         cy.get('p.Mui-error').should('have.length', 0)
 
