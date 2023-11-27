@@ -105,7 +105,7 @@ export default function SubmissionBoxAddMembersPage() {
                                 helperText={formik.touched.email && formik.errors.email}
                                 data-cy='email'
                             />
-                            <IconButton sx={{ backgroundColor: '#F5F5F5' }} type='submit'>
+                            <IconButton sx={{ backgroundColor: '#F5F5F5' }} type='submit' data-cy='add'>
                                 <Icon>
                                     <Add />
                                 </Icon>
@@ -127,6 +127,7 @@ export default function SubmissionBoxAddMembersPage() {
                             <Card // Add new cards for added members and allow removal
                                 key={index}
                                 sx={{ width: '25rem', borderRadius: 12, mb: '1rem' }}
+                                data-cy='member-card'
                             >
                                 <CardContent
                                     sx={{
@@ -144,6 +145,7 @@ export default function SubmissionBoxAddMembersPage() {
                                             textOverflow: 'ellipsis',
                                             whiteSpace: 'nowrap',
                                         }}
+                                        data-cy='member-email'
                                     >
                                         {email}
                                     </Typography>
@@ -154,11 +156,14 @@ export default function SubmissionBoxAddMembersPage() {
                                             alignItems: 'center',
                                         }}
                                     >
-                                        <Typography sx={{ pt: 1, pr: 2 }}>Member</Typography>
+                                        <Typography sx={{ pt: 1, pr: 2 }} data-cy='member-role'>
+                                            Member
+                                        </Typography>
                                         <IconButton
                                             size='small'
                                             sx={{ mt: 1, backgroundColor: '#F5F5F5' }}
                                             onClick={() => removeEmail(email)}
+                                            data-cy='remove'
                                         >
                                             <Remove />
                                         </IconButton>
@@ -170,8 +175,8 @@ export default function SubmissionBoxAddMembersPage() {
                     <Button
                         variant='contained'
                         sx={{ mt: 5, px: 5, fontSize: 15, borderRadius: 28, textTransform: 'capitalize' }}
-                        data-cy='next'
                         onClick={() => handleNext()}
+                        data-cy='next'
                     >
                         Next
                     </Button>
@@ -189,5 +194,6 @@ export default function SubmissionBoxAddMembersPage() {
 
     async function handleSubmit(values: { email: string }) {
         setEmails([...emails, values.email])
+        formik.resetForm()
     }
 }

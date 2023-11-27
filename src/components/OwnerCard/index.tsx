@@ -11,6 +11,7 @@ export default function OwnerCard(props: MemberCardProps) {
     return (
         <Card // This is the owner card, it cannot be removed
             sx={{ width: '25rem', borderRadius: 12, mb: '1rem' }}
+            data-cy='owner-card'
         >
             <CardContent
                 sx={{
