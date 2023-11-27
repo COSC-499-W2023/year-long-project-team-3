@@ -29,7 +29,7 @@ export default function SubmissionBoxSettingsPage() {
         initialValues: {
             title: '',
             description: '',
-            closingDate: new Date(),
+            closingDate: undefined,
         },
         validationSchema: validationSchema,
         // TODO
