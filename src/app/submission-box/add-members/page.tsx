@@ -2,34 +2,48 @@
 
 import { useSession } from 'next-auth/react'
 import Header from '@/components/Header'
-import React from 'react'
+import React, { useState } from 'react'
 import { Box, Icon, IconButton } from '@mui/material'
 import ProgressDots from '@/components/ProgressDots'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
-import Button from '@mui/material/Button'
 import { useFormik } from 'formik'
 import { useRouter } from 'next/navigation'
-import logger from '@/utils/logger'
 import { ObjectSchema } from 'yup'
 import * as yup from 'yup'
 import { getEmailRegex } from '@/utils/verification'
 
 interface FormValues {
-    email: string | undefined
+    email: string
 }
 
 export default function SubmissionBoxAddMembersPage() {
     const session = useSession()
     const router = useRouter()
 
+    const [emails, setEmails] = useState<string[]>([])
+
+    const removeEmail = (emailToRemove: string) => {
+        const updatedEmails = emails.filter((email) => email !== emailToRemove)
+        setEmails(updatedEmails)
+    }
+
+    const validationSchema: ObjectSchema<FormValues> = yup.object().shape({
+        email: yup
+            .string()
+            .matches(getEmailRegex(), 'Enter a valid email')
+            .required('To add a member, enter their email')
+            .test('unique', 'This member has already been added!', function (value) {
+                return !emails.includes(value)
+            }),
+    })
+
     const formik = useFormik<FormValues>({
         initialValues: {
             email: '',
         },
         validationSchema: validationSchema,
-        // TODO
-        onSubmit: () => handleSubmit(),
+        onSubmit: (values: { email: string }) => handleSubmit(values),
     })
 
     return (
@@ -66,7 +80,7 @@ export default function SubmissionBoxAddMembersPage() {
                                 flexDirection: 'row',
                                 alignItems: 'center',
                                 minWidth: 'md',
-                                '& .MuiTextField-root': { my: 1.5, mx: 2, width: '100%' },
+                                '& .MuiTextField-root': { my: 1.5, mx: 2, minWidth: '20rem', width: '100%' },
                             }}
                         >
                             <TextField
@@ -89,28 +103,22 @@ export default function SubmissionBoxAddMembersPage() {
                             </IconButton>
                         </Box>
                     </form>
-                    <Button
-                        variant='contained'
-                        sx={{ mt: 2, px: 5, fontSize: 15, borderRadius: 28, textTransform: 'capitalize' }}
-                        data-cy='next'
-                    >
-                        Next
-                    </Button>
+                    <Box>
+                        {emails.map((email, index) => (
+                            <Box key={index} display='flex' alignItems='center'>
+                                <Typography>{email}</Typography>
+                                <IconButton onClick={() => removeEmail(email)}>
+                                    <Icon>x</Icon>
+                                </IconButton>
+                            </Box>
+                        ))}
+                    </Box>
                 </Box>
             </Box>
         </>
     )
 
-    async function handleSubmit() {
-        try {
-            // TODO: send form data to API and do some error checking here
-        } catch (err) {
-            const errMessage = JSON.stringify(err, Object.getOwnPropertyNames(err))
-            logger.error(errMessage)
-        }
+    async function handleSubmit(values: { email: string }) {
+        setEmails([...emails, values.email])
     }
 }
-
-const validationSchema: ObjectSchema<FormValues> = yup.object().shape({
-    email: yup.string().matches(getEmailRegex(), 'Enter a valid email'),
-})
