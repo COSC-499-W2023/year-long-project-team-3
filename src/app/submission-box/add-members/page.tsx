@@ -107,9 +107,19 @@ export default function SubmissionBoxAddMembersPage() {
                             </IconButton>
                         </Box>
                     </form>
-                    <Paper sx={{ maxHeight: '15rem', overflow: 'auto' }}>
+                    <Paper
+                        sx={{
+                            maxHeight: '17rem',
+                            height: '17rem',
+                            width: '27rem',
+                            overflow: 'auto',
+                            p: 2,
+                            backgroundColor: '#F5F5F5',
+                            borderRadius: 12,
+                        }}
+                    >
                         {emails.map((email, index) => (
-                            <Card key={index} sx={{ width: '25rem' }}>
+                            <Card key={index} sx={{ width: '25rem', borderRadius: 12, marginBottom: '1rem' }}>
                                 <CardContent
                                     sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
                                 >
