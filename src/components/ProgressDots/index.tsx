@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import { Box, Step, StepLabel, Stepper } from '@mui/material'
 
 export type ProgressDotsProps = {
@@ -10,14 +11,14 @@ export type ProgressDotsProps = {
 
 const ProgressDots = (props: ProgressDotsProps) => {
     const { activeStep, numSteps, labels } = props
-    const stepperLabels = labels ? labels : new Array(numSteps).map(() => '')
+    const stepperLabels: string[] = labels ? labels : new Array(numSteps).fill('')
 
     if (stepperLabels.length !== numSteps) {
         throw new Error('The length of labels must be the same as numSteps')
     }
 
     return (
-        <Box sx={{ width: '100%' }}>
+        <Box className='progress-dots' sx={{ width: '100%' }}>
             <Stepper activeStep={activeStep} alternativeLabel={!!labels}>
                 {stepperLabels &&
                     stepperLabels.map((label) => (

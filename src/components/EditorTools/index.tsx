@@ -11,7 +11,13 @@ import {
     Slider,
 } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { ContentCut, Speed, TuneRounded, VolumeOff, VolumeUp } from '@mui/icons-material'
+import {
+    ContentCut,
+    Speed,
+    TuneRounded,
+    VolumeOff as VolumeOffIcon,
+    VolumeUp as VolumeUpIcon,
+} from '@mui/icons-material'
 import TimestampInputField from '@/components/TimestampInputField'
 
 export type EditorToolsProps = {
@@ -83,18 +89,6 @@ const EditorTools = (props: EditorToolsProps) => {
         // TODO: Actually apply changes to video
     }
 
-    const changesMade = () => {
-        return !(
-            isMuted === startingState.isMuted &&
-            isBlurred === startingState.isBlurred &&
-            isBWVideo === startingState.isBWVideo &&
-            isOtherOption === startingState.isOtherOption &&
-            startTime === startingState.startTime &&
-            endTime === startingState.endTime &&
-            playbackRate === startingState.playbackRate
-        )
-    }
-
     useEffect(() => {
         const changeMade = !(
             isMuted === startingState.isMuted &&
@@ -118,7 +112,7 @@ const EditorTools = (props: EditorToolsProps) => {
         backgroundColor: 'background.default',
         borderRadius: '1rem',
         boxShadow: 24,
-        padding: '1rem 2rem',
+        p: '1rem 2rem',
     }
 
     const parseSeconds = (timestamp: string) => {
@@ -143,7 +137,7 @@ const EditorTools = (props: EditorToolsProps) => {
                 }}
             >
                 <Tooltip title='Mute' placement='right'>
-                    <IconButton onClick={handleMuteClick}>{isMuted ? <VolumeUp /> : <VolumeOff />}</IconButton>
+                    <IconButton onClick={handleMuteClick}>{isMuted ? <VolumeUpIcon /> : <VolumeOffIcon />}</IconButton>
                 </Tooltip>
                 <Tooltip title='Filters' placement='right'>
                     <IconButton
@@ -180,7 +174,7 @@ const EditorTools = (props: EditorToolsProps) => {
                     </Typography>
                     <FormGroup
                         sx={{
-                            margin: '1.5rem 0 0.5rem 0',
+                            m: '1.5rem 0 0.5rem 0',
                         }}
                     >
                         <FormControlLabel
@@ -207,7 +201,9 @@ const EditorTools = (props: EditorToolsProps) => {
                             width: '100%',
                         }}
                     >
-                        <Button onClick={handleFilterClose}>Done</Button>
+                        <Button className='modal-close' onClick={handleFilterClose}>
+                            Done
+                        </Button>
                     </Box>
                 </Box>
             </Modal>
@@ -230,15 +226,11 @@ const EditorTools = (props: EditorToolsProps) => {
                             alignItems: 'center',
                             gap: '1rem',
                             width: '100%',
-                            margin: '1.5rem 0 0.5rem 0',
+                            m: '1.5rem 0 0.5rem 0',
                         }}
                     >
-                        <TimestampInputField
-                            label='Start Time'
-                            value={startTime}
-                            onChange={(value) => setStartTime(value)}
-                        />
-                        <TimestampInputField label='End Time' value={endTime} onChange={(value) => setEndTime(value)} />
+                        <TimestampInputField label='Start Time' value={startTime} onChange={setStartTime} />
+                        <TimestampInputField label='End Time' value={endTime} onChange={setEndTime} />
                     </Box>
                     <Box
                         sx={{
@@ -262,7 +254,9 @@ const EditorTools = (props: EditorToolsProps) => {
                         >
                             Start time must be less than end time
                         </Typography>
-                        <Button onClick={handleCutClose}>Done</Button>
+                        <Button className='modal-close' onClick={handleCutClose}>
+                            Done
+                        </Button>
                     </Box>
                 </Box>
             </Modal>
@@ -284,7 +278,7 @@ const EditorTools = (props: EditorToolsProps) => {
                             justifyContent: 'flex-start',
                             gap: '1rem',
                             width: '100%',
-                            margin: '1.5rem 0 0.5rem 0',
+                            m: '1.5rem 0 0.5rem 0',
                         }}
                     ></Box>
                     <Slider
@@ -307,7 +301,9 @@ const EditorTools = (props: EditorToolsProps) => {
                             width: '100%',
                         }}
                     >
-                        <Button onClick={handlePlaybackRateClose}>Done</Button>
+                        <Button className='modal-close' onClick={handlePlaybackRateClose}>
+                            Done
+                        </Button>
                     </Box>
                 </Box>
             </Modal>

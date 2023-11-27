@@ -114,3 +114,26 @@
 ### Additional Context
 
 -   I had 3 midterms this week on wednesday so the beginning of the week I did not complete any capstone work.  I'm not completely pleased with the amount of work I completed though I was more concerned with my exams and getting sufficient mental break afterwards.
+
+## Week 11 and 12 (13/11/2023 - 26/11/2023)
+
+![](imgs/week-12-erin-tasks.png)
+
+### Week Tasks
+
+-   Mock Dashboard for Receiving Videos  #186 (Complete)
+-   User Interface Design  #62 (In Progress)
+-   Dashboard Page for Receiving Videos  #58 (In Progress)
+-   Combine Dashboard Components to Create Dashboard Page  #222 (In Progress)
+-   Video creation  #64 (In Progress)
+
+### Week Goals
+
+-   Begin recording content that will be put into team video
+-   Complete figma mocks for the receiving dashboard page and implement changes requested from team
+-   Brainstorming some combinations of themes for app, specifically colour combinations
+-   Began creating actual dashboard page and stitching together dashboard components
+
+### Additional Context
+
+-   I had a family emergency during the final days of reading week and that has caused me significant stress and mental drain, I am currently on the mend to finish the semester strong but this past week's performance on my end was affected.

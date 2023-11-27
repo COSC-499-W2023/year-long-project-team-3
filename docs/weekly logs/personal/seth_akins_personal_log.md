@@ -169,7 +169,8 @@ will have to reconsider how we do that moving forwards.
 
 - This week I mainly worked on implementing the next part of our aws video pipeline and also on some design tasks
 - I also implemented some unrelated things including a custom domain for the website and emails which use this domain.
-- I also had a PR for picking the colours of our website, but there has been some disagreement over what these colours should be.
+- I also had a PR for picking the colours of our website, but there has been some disagreement over what these colours
+  should be.
 
 ### Tasks
 
@@ -188,3 +189,34 @@ will have to reconsider how we do that moving forwards.
 
 - We have spent a decent amount of time arguing over design this week, so hopefully we can figure that out soon
 
+## Week 11 & 12 (06/11/2023 - 12/11/2023)
+
+### Task Breakdown
+
+![](imgs/week-12-seth-akins-tasks.png)
+
+### Goals
+
+- This week I worked on integrating the video streaming processing pipeline into our application
+- The video is being processed, but we need a way to grab the data that is processed and put it back into our
+  application
+- This involves creating another server which polls the output, and updates the video record in our database with the
+  information
+
+### Tasks
+
+#### Completed Tasks
+
+- [Modify API to Send Video to Generate the JSON file to Upload to AWS for Streaming Processing](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/201)
+
+### In-Progress Tasks
+
+- [Pick Website Colours](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/174)
+- [Create Poll Worker to Update Video with Post Processing Metadata](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/197)
+
+### Additional Context
+
+- We are currently having issues with the client. We wanted to be able to generate additional AWS users so that our
+  deployed app can access AWS, but they will not let us generate more users or give them to us.
+- As a result, our deployment will probably be disabled for now until we can implement a workaround, but that will
+  require a large refactor
