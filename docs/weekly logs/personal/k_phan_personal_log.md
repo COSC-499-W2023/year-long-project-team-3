@@ -1,5 +1,19 @@
 # K Phan
 
+## Term 1 Week 11 and 12 (December 13, 2023 - December 26, 2023)
+
+### Week's Goals
+- Finish uploading video to AWS S3
+- Implement UI for dashboard
+
+### Tasks Worked On
+- Finished uploading video to AWS S3
+- Implemented VideoCard, VideoList, and DashboardSidebar components
+- Fixed some minor bugs
+
+### Teamformation Report
+![](./imgs/week-12-k-phan-tasks.png)
+
 ## Term 1 Week 10 (November 06, 2023 - November 12, 2023)
 
 ### Week's Goals
