@@ -80,7 +80,9 @@ export default function SubmissionBoxAddMembersPage() {
                     <form onSubmit={formik.handleSubmit} noValidate>
                         <Box
                             sx={{
-                                p: 5,
+                                px: 5,
+                                pt: 5,
+                                pb: 3,
                                 display: 'flex',
                                 flexDirection: 'row',
                                 alignItems: 'center',
