@@ -9,6 +9,10 @@ const nextConfig = () => {
             'NEXTAUTH_URL',
             'NEXTAUTH_SECRET',
             'CYPRESS_PROJECT_ID',
+            'AWS_UPLOAD_BUCKET',
+            'AWS_UPLOAD_REGION',
+            'AWS_ACCESS_KEY_ID',
+            'AWS_SECRET_ACCESS_KEY',
         ]
 
         // Check if all environment variables are set
@@ -26,6 +30,11 @@ const nextConfig = () => {
             cypressBaseUrl: process.env.CYPRESS_BASE_URL,
             cypressProjectId: process.env.CYPRESS_PROJECT_ID,
             nextAuthSecret: process.env.NEXTAUTH_SECRET,
+            awsUploadBucket: process.env.AWS_UPLOAD_BUCKET,
+            awsUploadRegion: process.env.AWS_UPLOAD_REGION,
+            awsAccessKeyId: process.env.AWS_ACCESS_KEY_ID,
+            awsSecretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+            awsSessionToken: process.env.AWS_SESSION_TOKEN,
         }
     }
 
