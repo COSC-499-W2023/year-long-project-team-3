@@ -179,6 +179,8 @@ export default function SubmissionBoxAddMembersPage() {
 
     async function handleNext() {
         // TODO: send members data to API and do some error checking here
+        emails.push(ownerEmail)
+        console.log(emails)
         router.push('/submission-box/create')
     }
 
