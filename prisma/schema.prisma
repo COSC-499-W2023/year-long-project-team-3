@@ -89,21 +89,24 @@ model SubmissionBox {
   videoStoreToDate      DateTime?
   maxVideoLength        Int?
   isPublic              Boolean                @default(false)
-  invitedEmails         String[]
   requestedSubmissions  RequestedSubmission[]
   submissionBoxManagers SubmissionBoxManager[]
 }
 
 model RequestedSubmission {
   id              String           @id @default(cuid())
-  userId          String
-  user            User             @relation(fields: [userId], references: [id])
+  email           String
+  userId          String?
+  user            User?            @relation(fields: [userId], references: [id])
   submissionBoxId String
   submissionBox   SubmissionBox    @relation(fields: [submissionBoxId], references: [id])
   requestedAt     DateTime         @default(now())
   submittedAt     DateTime?
   updatedAt       DateTime         @updatedAt
   videoVersions   SubmittedVideo[]
+
+  @@index([email])
+  @@index([userId])
 }
 
 model SubmittedVideo {

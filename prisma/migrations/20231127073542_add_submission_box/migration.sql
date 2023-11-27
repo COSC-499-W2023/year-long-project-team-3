@@ -20,7 +20,6 @@ CREATE TABLE "SubmissionBox" (
     "videoStoreToDate" TIMESTAMP(3),
     "maxVideoLength" INTEGER,
     "isPublic" BOOLEAN NOT NULL DEFAULT false,
-    "invitedEmails" TEXT[],
 
     CONSTRAINT "SubmissionBox_pkey" PRIMARY KEY ("id")
 );
@@ -28,7 +27,8 @@ CREATE TABLE "SubmissionBox" (
 -- CreateTable
 CREATE TABLE "RequestedSubmission" (
     "id" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "userId" TEXT,
     "submissionBoxId" TEXT NOT NULL,
     "requestedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "submittedAt" TIMESTAMP(3),
@@ -55,8 +55,14 @@ CREATE TABLE "SubmissionBoxManager" (
     CONSTRAINT "SubmissionBoxManager_pkey" PRIMARY KEY ("userId","submissionBoxId")
 );
 
+-- CreateIndex
+CREATE INDEX "RequestedSubmission_email_idx" ON "RequestedSubmission"("email");
+
+-- CreateIndex
+CREATE INDEX "RequestedSubmission_userId_idx" ON "RequestedSubmission"("userId");
+
 -- AddForeignKey
-ALTER TABLE "RequestedSubmission" ADD CONSTRAINT "RequestedSubmission_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "RequestedSubmission" ADD CONSTRAINT "RequestedSubmission_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "RequestedSubmission" ADD CONSTRAINT "RequestedSubmission_submissionBoxId_fkey" FOREIGN KEY ("submissionBoxId") REFERENCES "SubmissionBox"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
