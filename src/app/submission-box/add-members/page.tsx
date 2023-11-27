@@ -31,6 +31,7 @@ export default function SubmissionBoxAddMembersPage() {
     const removeEmail = (emailToRemove: string) => {
         const updatedEmails = emails.filter((email) => email !== emailToRemove)
         setEmails(updatedEmails)
+        formik.setTouched({}, false)
     }
 
     const validationSchema: ObjectSchema<FormValues> = yup.object().shape({
@@ -39,7 +40,7 @@ export default function SubmissionBoxAddMembersPage() {
             .matches(getEmailRegex(), 'Enter a valid email')
             .required('To add a member, enter their email')
             .test('unique', 'This member has already been added!', function (value) {
-                return !emails.includes(value)
+                return !emails.includes(value) && value !== ownerEmail
             }),
     })
 
