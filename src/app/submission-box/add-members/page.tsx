@@ -3,7 +3,7 @@
 import { useSession } from 'next-auth/react'
 import Header from '@/components/Header'
 import React, { useState } from 'react'
-import { Box, Card, CardContent, Icon, IconButton, Paper } from '@mui/material'
+import { Box, Card, CardContent, Icon, IconButton } from '@mui/material'
 import ProgressDots from '@/components/ProgressDots'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
@@ -14,6 +14,7 @@ import * as yup from 'yup'
 import { getEmailRegex } from '@/utils/verification'
 import { Add, Remove } from '@mui/icons-material'
 import Button from '@mui/material/Button'
+import OwnerCard from '@/components/OwnerCard'
 
 interface FormValues {
     email: string
@@ -102,14 +103,14 @@ export default function SubmissionBoxAddMembersPage() {
                                 helperText={formik.touched.email && formik.errors.email}
                                 data-cy='email'
                             />
-                            <IconButton type='submit'>
+                            <IconButton sx={{ backgroundColor: '#F5F5F5' }} type='submit'>
                                 <Icon>
                                     <Add />
                                 </Icon>
                             </IconButton>
                         </Box>
                     </form>
-                    <Paper // This is a scrollable container for member cards
+                    <Box // This is a scrollable container for member cards
                         sx={{
                             maxHeight: '17rem',
                             height: '17rem',
@@ -119,35 +120,23 @@ export default function SubmissionBoxAddMembersPage() {
                             borderRadius: 12,
                         }}
                     >
-                        <Card // This is the owner card, it cannot be removed
-                            sx={{ width: '25rem', borderRadius: 12, marginBottom: '1rem' }}
-                        >
-                            <CardContent
-                                sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
-                            >
-                                <Typography
-                                    sx={{
-                                        maxWidth: '70%',
-                                        overflow: 'hidden',
-                                        textOverflow: 'ellipsis',
-                                        whiteSpace: 'nowrap',
-                                    }}
-                                >
-                                    {ownerEmail}
-                                </Typography>
-                                <Typography>Owner</Typography>
-                            </CardContent>
-                        </Card>
+                        <OwnerCard ownerEmail={ownerEmail} />
                         {emails.map((email, index) => (
                             <Card // Add new cards for added members and allow removal
                                 key={index}
-                                sx={{ width: '25rem', borderRadius: 12, marginBottom: '1rem' }}
+                                sx={{ width: '25rem', borderRadius: 12, mb: '1rem' }}
                             >
                                 <CardContent
-                                    sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+                                    sx={{
+                                        px: 3,
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
+                                    }}
                                 >
                                     <Typography
                                         sx={{
+                                            pt: 1,
                                             maxWidth: '70%',
                                             overflow: 'hidden',
                                             textOverflow: 'ellipsis',
@@ -156,18 +145,30 @@ export default function SubmissionBoxAddMembersPage() {
                                     >
                                         {email}
                                     </Typography>
-                                    <Typography>Member</Typography>
-                                    <IconButton onClick={() => removeEmail(email)}>
-                                        <Remove />
-                                    </IconButton>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            flexDirection: 'row',
+                                            alignItems: 'center',
+                                        }}
+                                    >
+                                        <Typography sx={{ pt: 1, pr: 2 }}>Member</Typography>
+                                        <IconButton
+                                            sx={{ mt: 1, backgroundColor: '#F5F5F5' }}
+                                            onClick={() => removeEmail(email)}
+                                        >
+                                            <Remove />
+                                        </IconButton>
+                                    </Box>
                                 </CardContent>
                             </Card>
                         ))}
-                    </Paper>
+                    </Box>
                     <Button
                         variant='contained'
                         sx={{ mt: 5, px: 5, fontSize: 15, borderRadius: 28, textTransform: 'capitalize' }}
                         data-cy='next'
+                        onClick={() => handleNext()}
                     >
                         Next
                     </Button>
@@ -175,6 +176,11 @@ export default function SubmissionBoxAddMembersPage() {
             </Box>
         </>
     )
+
+    async function handleNext() {
+        // TODO: send members data to API and do some error checking here
+        router.push('/submission-box/create')
+    }
 
     async function handleSubmit(values: { email: string }) {
         setEmails([...emails, values.email])
