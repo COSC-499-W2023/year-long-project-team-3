@@ -3,7 +3,7 @@
 import { useSession } from 'next-auth/react'
 import Header from '@/components/Header'
 import React, { useState } from 'react'
-import { Box, Card, CardContent, Icon, IconButton } from '@mui/material'
+import { Box, Card, CardContent, Icon, IconButton, Paper } from '@mui/material'
 import ProgressDots from '@/components/ProgressDots'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
@@ -13,6 +13,7 @@ import { ObjectSchema } from 'yup'
 import * as yup from 'yup'
 import { getEmailRegex } from '@/utils/verification'
 import { Add, Remove } from '@mui/icons-material'
+import Button from '@mui/material/Button'
 
 interface FormValues {
     email: string
@@ -106,7 +107,7 @@ export default function SubmissionBoxAddMembersPage() {
                             </IconButton>
                         </Box>
                     </form>
-                    <Box>
+                    <Paper sx={{ maxHeight: '15rem', overflow: 'auto' }}>
                         {emails.map((email, index) => (
                             <Card key={index} sx={{ width: '25rem' }}>
                                 <CardContent
@@ -128,7 +129,15 @@ export default function SubmissionBoxAddMembersPage() {
                                 </CardContent>
                             </Card>
                         ))}
-                    </Box>
+                    </Paper>
+                    <Button
+                        // type='submit'
+                        variant='contained'
+                        sx={{ mt: 5, px: 5, fontSize: 15, borderRadius: 28, textTransform: 'capitalize' }}
+                        data-cy='next'
+                    >
+                        Next
+                    </Button>
                 </Box>
             </Box>
         </>
