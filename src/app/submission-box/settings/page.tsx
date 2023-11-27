@@ -129,7 +129,7 @@ export default function SubmissionBoxSettingsPage() {
 
     async function handleSubmit() {
         try {
-            // TODO
+            // TODO: send form data to API and do some error checking here
             router.push('/submission-box/add-members')
             router.refresh()
         } catch (err) {
