@@ -55,7 +55,7 @@ describe('Login tests', () => {
         cy.visit('/signup')
         cy.get('[data-cy="email"]').type(userEmail)
         cy.get('[data-cy="password"]').type(password)
-        cy.get('[data-cy="passwordVerification"]').type(password)
+        cy.get('[data-cy="passwordConfirmation"]').type(password)
         cy.get('[data-cy="submit"]').click()
 
         // We shouldn't be on the signup page anymore
