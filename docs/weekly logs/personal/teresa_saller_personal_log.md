@@ -165,7 +165,7 @@ My goal for next week is to finalize the mocks for the video sending process.
 ### Additional Context
 
 
-## Teresa Saller - Week 12 (2023/11/12 - 2023/11/26)
+## Teresa Saller - Week 12 (2023/11/13 - 2023/11/26)
 
 ![teresa-saller-tasks-w12](imgs/teresa-saller-tasks-w12.png)
 
