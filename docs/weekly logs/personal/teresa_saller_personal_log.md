@@ -163,3 +163,38 @@ My goal for this week was to continue working on my mocks while gathering feedba
 My goal for next week is to finalize the mocks for the video sending process.
 
 ### Additional Context
+
+
+## Teresa Saller - Week 12 (2023/11/12 - 2023/11/26)
+
+![teresa-saller-tasks-w12](imgs/teresa-saller-tasks-w12.png)
+
+### Tasks
+
+Completed:
+- [Use sign in with Google branding guidelines #182](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/182)
+- [Make UI Mocks the Process of Sending Videos #165](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/165)
+  - [Mock Dashboard for Sending Videos #177](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/177)
+  - [Mock Recording Page #178](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/178)
+  - [Create mock for video preview page #152](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/152)
+  - [Mock Editing Page #179](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/179)
+  - [Mock Submission Page #180](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/180)
+- [Mocks for creating submission box #213](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/213)
+  - [Mock Create Box Form #216](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/216)
+  - [Mock Add Members Form #215](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/215)
+  - [Mock Add Members Form #215](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/215)
+
+In progress:
+- [Submission Box Settings Form #221](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/221)
+- [Create form to add members to submission box #224](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/224)
+
+These last two weeks, I spent a lot of time finishing mocks for the process of sending videos and for creating submission
+boxes. We also merged my Signin with Google branding guideline PR, and I have now been working on implementing the UI I
+mocked out for the submission box forms.
+
+### Goals
+
+My goal for this week was to finalize the mocks for the video sending process. My goal for next week is to finish
+implementing the forms that I started, and work on the design document for our team.
+
+### Additional Context
