@@ -3,7 +3,7 @@
 import { useSession } from 'next-auth/react'
 import Header from '@/components/Header'
 import React, { useState } from 'react'
-import { Box, Icon, IconButton } from '@mui/material'
+import { Box, Card, CardContent, Icon, IconButton } from '@mui/material'
 import ProgressDots from '@/components/ProgressDots'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation'
 import { ObjectSchema } from 'yup'
 import * as yup from 'yup'
 import { getEmailRegex } from '@/utils/verification'
+import { Add, Remove } from '@mui/icons-material'
 
 interface FormValues {
     email: string
@@ -99,18 +100,33 @@ export default function SubmissionBoxAddMembersPage() {
                                 data-cy='email'
                             />
                             <IconButton type='submit'>
-                                <Icon>+</Icon>
+                                <Icon>
+                                    <Add />
+                                </Icon>
                             </IconButton>
                         </Box>
                     </form>
                     <Box>
                         {emails.map((email, index) => (
-                            <Box key={index} display='flex' alignItems='center'>
-                                <Typography>{email}</Typography>
-                                <IconButton onClick={() => removeEmail(email)}>
-                                    <Icon>x</Icon>
-                                </IconButton>
-                            </Box>
+                            <Card key={index} sx={{ width: '25rem' }}>
+                                <CardContent
+                                    sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+                                >
+                                    <Typography
+                                        sx={{
+                                            maxWidth: '70%',
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis',
+                                            whiteSpace: 'nowrap',
+                                        }}
+                                    >
+                                        {email}
+                                    </Typography>
+                                    <IconButton onClick={() => removeEmail(email)}>
+                                        <Remove />
+                                    </IconButton>
+                                </CardContent>
+                            </Card>
                         ))}
                     </Box>
                 </Box>
