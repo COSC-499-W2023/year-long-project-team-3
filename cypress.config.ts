@@ -1,5 +1,6 @@
 import { defineConfig } from 'cypress'
 import clearDB from './cypress/tasks/clearDB'
+import populateDB from './cypress/tasks/populateDB'
 
 require('dotenv').config()
 
@@ -11,6 +12,7 @@ export default defineConfig({
             // implement node event listeners here
             on('task', {
                 clearDB,
+                populateDB,
             })
         },
         experimentalModifyObstructiveThirdPartyCode: true,

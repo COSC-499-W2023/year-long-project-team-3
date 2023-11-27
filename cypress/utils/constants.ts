@@ -13,3 +13,8 @@ export const DELAY = {
     LONG: 6000,
     EXTRA_LONG: 8000,
 }
+
+export const MOCKUSER = {
+    email: 'test@emial.com',
+    password: 'Password1',
+}

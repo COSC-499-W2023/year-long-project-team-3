@@ -86,7 +86,12 @@ export default function UploadVideoPage() {
                     </Box>
                     <Box display='flex' width='100%' flexDirection='column' alignItems='center'>
                         <h1>Upload Video</h1>
-                        <Button component='label' variant='contained' startIcon={<CloudUploadIcon />}>
+                        <Button
+                            data-cy='upload-button'
+                            component='label'
+                            variant='contained'
+                            startIcon={<CloudUploadIcon />}
+                        >
                             Upload
                             <VisuallyHiddenInput type='file' accept='.mp4' onChange={handleFileChanged} />
                         </Button>
