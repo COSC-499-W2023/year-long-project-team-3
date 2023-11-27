@@ -23,6 +23,8 @@ export default function SubmissionBoxAddMembersPage() {
     const session = useSession()
     const router = useRouter()
 
+    const ownerEmail: string = session.data?.user?.email!
+
     const [emails, setEmails] = useState<string[]>([])
 
     const removeEmail = (emailToRemove: string) => {
@@ -107,19 +109,40 @@ export default function SubmissionBoxAddMembersPage() {
                             </IconButton>
                         </Box>
                     </form>
-                    <Paper
+                    <Paper // This is a scrollable container for member cards
                         sx={{
                             maxHeight: '17rem',
                             height: '17rem',
-                            width: '27rem',
                             overflow: 'auto',
                             p: 2,
                             backgroundColor: '#F5F5F5',
                             borderRadius: 12,
                         }}
                     >
+                        <Card // This is the owner card, it cannot be removed
+                            sx={{ width: '25rem', borderRadius: 12, marginBottom: '1rem' }}
+                        >
+                            <CardContent
+                                sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+                            >
+                                <Typography
+                                    sx={{
+                                        maxWidth: '70%',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                        whiteSpace: 'nowrap',
+                                    }}
+                                >
+                                    {ownerEmail}
+                                </Typography>
+                                <Typography>Owner</Typography>
+                            </CardContent>
+                        </Card>
                         {emails.map((email, index) => (
-                            <Card key={index} sx={{ width: '25rem', borderRadius: 12, marginBottom: '1rem' }}>
+                            <Card // Add new cards for added members and allow removal
+                                key={index}
+                                sx={{ width: '25rem', borderRadius: 12, marginBottom: '1rem' }}
+                            >
                                 <CardContent
                                     sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
                                 >
@@ -133,6 +156,7 @@ export default function SubmissionBoxAddMembersPage() {
                                     >
                                         {email}
                                     </Typography>
+                                    <Typography>Member</Typography>
                                     <IconButton onClick={() => removeEmail(email)}>
                                         <Remove />
                                     </IconButton>
@@ -141,7 +165,6 @@ export default function SubmissionBoxAddMembersPage() {
                         ))}
                     </Paper>
                     <Button
-                        // type='submit'
                         variant='contained'
                         sx={{ mt: 5, px: 5, fontSize: 15, borderRadius: 28, textTransform: 'capitalize' }}
                         data-cy='next'
