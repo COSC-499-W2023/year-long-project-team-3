@@ -156,6 +156,7 @@ export default function SubmissionBoxAddMembersPage() {
                                     >
                                         <Typography sx={{ pt: 1, pr: 2 }}>Member</Typography>
                                         <IconButton
+                                            size='small'
                                             sx={{ mt: 1, backgroundColor: '#F5F5F5' }}
                                             onClick={() => removeEmail(email)}
                                         >
