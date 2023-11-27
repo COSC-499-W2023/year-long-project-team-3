@@ -32,7 +32,7 @@ export default function SubmissionBoxSettingsPage() {
             closingDate: undefined,
         },
         validationSchema: validationSchema,
-        // TODO
+        // TODO: properly implement handleSubmit
         onSubmit: () => handleSubmit(),
     })
 
@@ -60,7 +60,7 @@ export default function SubmissionBoxSettingsPage() {
                 </Box>
                 <Box display='flex' width='100%' flexDirection='column' alignItems='center' sx={{ pt: 3 }}>
                     <Typography data-cy='title' variant='h4' sx={{ fontWeight: 'medium' }}>
-                        Settings
+                        Submission Box Settings
                     </Typography>
                     <form onSubmit={formik.handleSubmit} noValidate>
                         <Box
@@ -96,7 +96,7 @@ export default function SubmissionBoxSettingsPage() {
                                 label='Description (optional)'
                                 name='description'
                                 multiline
-                                rows={4}
+                                rows={4} // There is currently a bug with the multiline TextField which makes the TextField reload, see https://github.com/mui/material-ui/issues/38607
                                 value={formik.values.description}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
@@ -106,7 +106,7 @@ export default function SubmissionBoxSettingsPage() {
                                 helperText={formik.touched.description && formik.errors.description}
                                 data-cy='description'
                             />
-                            <DateTimePicker label='Closing Date' />
+                            <DateTimePicker disablePast label='Closing Date' />
                             <Button
                                 type='submit'
                                 variant='contained'
@@ -142,5 +142,6 @@ export default function SubmissionBoxSettingsPage() {
 const validationSchema: ObjectSchema<FormValues> = yup.object().shape({
     title: yup.string().required('Please enter a title for your submission box'),
     description: yup.string(),
+    // only future dates can be chosen due to disablePast on DateTimePicker
     closingDate: yup.date(),
 })

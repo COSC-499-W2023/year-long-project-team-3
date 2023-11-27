@@ -1,4 +1,4 @@
-import { TIMEOUT } from '../../utils/constants'
+import { TIMEOUT } from '../../../utils/constants'
 
 describe('Submission box settings tests', () => {
     before(() => {
