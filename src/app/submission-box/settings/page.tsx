@@ -3,7 +3,7 @@
 import { useSession } from 'next-auth/react'
 import Header from '@/components/Header'
 import ProgressDots from '@/components/ProgressDots'
-import { Box } from '@mui/material'
+import { Alert, Box } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import React from 'react'
 import TextField from '@mui/material/TextField'
@@ -116,11 +116,19 @@ export default function SubmissionBoxSettingsPage() {
                             >
                                 Next
                             </Button>
-                            <Box sx={{ width: '90%' }}>
-                                <Typography sx={{ mt: 2, textAlign: 'center' }}>
+                            <Alert
+                                severity='info'
+                                sx={{
+                                    mt: 2,
+                                    width: '90%',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <Typography sx={{ textAlign: 'center' }}>
                                     You will be able to add members to your box in the next step!
                                 </Typography>
-                            </Box>
+                            </Alert>
                         </Box>
                     </form>
                 </Box>
