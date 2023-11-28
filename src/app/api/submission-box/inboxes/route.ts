@@ -2,13 +2,13 @@ import { type NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import logger from '@/utils/logger'
 import prisma from '@/lib/prisma'
-import { RequestedSubmission, SubmissionBox } from '@prisma/client'
+import { SubmissionBox } from '@prisma/client'
 
 export async function GET(_: NextRequest): Promise<NextResponse> {
     try {
         const session = await getServerSession()
         if (!session || !session.user?.email) {
-            return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
 
         const userId: string = (
