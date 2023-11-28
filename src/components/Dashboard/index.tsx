@@ -4,16 +4,18 @@ import Box from '@mui/material/Box'
 import Logo from '@/components/Logo'
 import Typography from '@mui/material/Typography'
 import DashboardSidebar from '../DashboardSidebar'
+import { SidebarOption } from '@/types/dashboard/sidebar'
 
 export type DashboardProps = {
     userEmail: string
+    initialSidebarSelectedOption?: SidebarOption
 }
 
 export default function Dashboard(props: DashboardProps) {
     return (
         <>
             <Box display='grid' gridTemplateColumns='1fr' height='100%'>
-                <DashboardSidebar />
+                <DashboardSidebar initialSidebarSelectedOption={props.initialSidebarSelectedOption ?? 'menu_recent'} />
             </Box>
         </>
     )

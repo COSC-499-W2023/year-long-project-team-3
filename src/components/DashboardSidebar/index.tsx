@@ -5,10 +5,12 @@ import { useState } from 'react'
 import { SidebarOption } from '@/types/dashboard/sidebar'
 import { useRouter } from 'next/navigation'
 
-export type DashboardSidePanelProps = {}
+export type DashboardSidePanelProps = {
+    initialSidebarSelectedOption: SidebarOption
+}
 
 export default function DashboardSidePanel(props: DashboardSidePanelProps) {
-    const [sidebarSelectedOption, setSidebarSelectedOption] = useState<SidebarOption>('menu_recent')
+    const [sidebarSelectedOption, setSidebarSelectedOption] = useState<SidebarOption>(props.initialSidebarSelectedOption)
     const router = useRouter()
 
     return (
