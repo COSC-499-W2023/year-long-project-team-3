@@ -28,6 +28,7 @@ export default function BackButton(props: BackButtonProps) {
                 color: '#757575',
             }}
             onClick={handleGoBack}
+            data-cy='back-button'
         >
             <ArrowBack />
             <Typography variant='h6' sx={{ ml: 1 }}>

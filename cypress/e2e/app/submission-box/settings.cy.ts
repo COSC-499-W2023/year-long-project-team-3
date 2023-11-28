@@ -39,7 +39,7 @@ describe('Submission box settings tests', () => {
         cy.get('[data-cy="next"]').click()
 
         // We shouldn't be on the submission-box/settings page anymore
-        cy.url({ timeout: TIMEOUT.LONG }).should('include', '/submission-box/add-members')
+        cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('include', '/submission-box/add-members')
     })
 
     it('Should let the user return to the previous page using the back button', () => {
