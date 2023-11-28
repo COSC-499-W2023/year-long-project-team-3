@@ -115,4 +115,12 @@ describe('Submission box settings tests', () => {
             .should('be.visible')
             .and('contain', 'This member has already been added!')
     })
+
+    it('Should let the user return to the previous page using the back button', () => {
+        cy.visit('/submission-box/add-members')
+
+        cy.get('[data-cy="back-button"]').click()
+
+        cy.url().should('include', '/submission-box/settings')
+    })
 })
