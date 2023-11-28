@@ -1,11 +1,11 @@
 describe('Submission box settings tests', () => {
-    // before(() => {
-    //     cy.task('clearDB')
-    // })
-    //
-    // beforeEach(() => {
-    //     cy.task('clearDB')
-    // })
+    before(() => {
+        cy.task('clearDB')
+    })
+
+    beforeEach(() => {
+        cy.task('clearDB')
+    })
 
     it('Should have the owner as a member', () => {
         cy.visit('/submission-box/add-members')
