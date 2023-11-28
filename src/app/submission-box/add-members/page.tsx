@@ -101,13 +101,7 @@ export default function SubmissionBoxAddMembersPage() {
                                 name='email'
                                 value={formik.values.email}
                                 onChange={formik.handleChange}
-                                onBlur={(e) => {
-                                    formik.handleBlur(e)
-                                    // if the user clicks out of the TextField and the TextField is empty, reset validation
-                                    if (formik.values.email === '') {
-                                        formik.setTouched({}, false)
-                                    }
-                                }}
+                                onBlur={() => handleBlur()}
                                 error={
                                     formik.touched.email &&
                                     Boolean(formik.errors.email) &&
@@ -161,6 +155,14 @@ export default function SubmissionBoxAddMembersPage() {
             </Box>
         </>
     )
+
+    function handleBlur() {
+        formik.handleBlur
+        // if the user clicks out of the TextField and the TextField is empty, reset validation
+        if (formik.values.email === '') {
+            formik.setTouched({}, false)
+        }
+    }
 
     async function handleNext() {
         // TODO: send members data to API and do some error checking here

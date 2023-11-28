@@ -11,6 +11,10 @@ export type SubmissionMemberCardProps = {
 }
 
 export default function SubmissionMemberCard(props: SubmissionMemberCardProps) {
+    const handleClick = (email: string) => {
+        props.removeEmail(email)
+    }
+
     return (
         <Card sx={{ width: '25rem', borderRadius: 12, mb: '1rem' }} data-cy='card'>
             <CardContent
@@ -48,7 +52,7 @@ export default function SubmissionMemberCard(props: SubmissionMemberCardProps) {
                         disabled={!props.isRemovable}
                         size='small'
                         sx={{ mt: 1, backgroundColor: '#F5F5F5' }}
-                        onClick={() => props.removeEmail(props.email)}
+                        onClick={() => handleClick(props.email)}
                         data-cy='remove'
                     >
                         <Remove />
