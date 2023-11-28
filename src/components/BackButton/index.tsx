@@ -1,6 +1,6 @@
 'use client'
 
-import { IconButton } from '@mui/material'
+import { Box } from '@mui/material'
 import { ArrowBack } from '@mui/icons-material'
 import Typography from '@mui/material/Typography'
 import React from 'react'
@@ -18,11 +18,21 @@ export default function BackButton(props: BackButtonProps) {
     }
 
     return (
-        <IconButton onClick={handleGoBack} sx={{ p: 2 }} data-cy='back-button'>
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                m: 2,
+                cursor: 'pointer',
+                color: '#757575',
+            }}
+            onClick={handleGoBack}
+        >
             <ArrowBack />
             <Typography variant='h6' sx={{ ml: 1 }}>
                 Back
             </Typography>
-        </IconButton>
+        </Box>
     )
 }
