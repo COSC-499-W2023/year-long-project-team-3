@@ -18,7 +18,7 @@ export default function BackButton(props: BackButtonProps) {
     }
 
     return (
-        <IconButton onClick={handleGoBack} sx={{ p: 2 }} aria-label='Go back'>
+        <IconButton onClick={handleGoBack} sx={{ p: 2 }} data-cy='back-button'>
             <ArrowBack />
             <Typography variant='h6' sx={{ ml: 1 }}>
                 Back
