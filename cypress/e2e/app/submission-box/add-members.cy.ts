@@ -56,15 +56,15 @@ describe('Submission box settings tests', () => {
         cy.visit('/submission-box/add-members')
 
         // Check that the errors do not exist
-        cy.get('p.Mui-error').should('have.length', 0)
+        cy.get('.MuiFormHelperText-root').should('have.length', 0)
 
         cy.get('[data-cy="add"]').click()
 
         cy.url().should('include', '/submission-box/add-members')
 
-        cy.get('p.Mui-error').should('have.length', 1)
+        cy.get('.MuiFormHelperText-root').should('have.length', 1)
         cy.get('[data-cy="email"]')
-            .find('p.Mui-error')
+            .find('.MuiFormHelperText-root')
             .should('be.visible')
             .and('contain', 'To add a member, enter their email')
     })
