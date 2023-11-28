@@ -3,7 +3,7 @@
 import { useSession } from 'next-auth/react'
 import Header from '@/components/Header'
 import React, { useState } from 'react'
-import { Box, Card, CardContent, Icon, IconButton } from '@mui/material'
+import { Box, Icon, IconButton } from '@mui/material'
 import ProgressDots from '@/components/ProgressDots'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
@@ -12,10 +12,10 @@ import { useRouter } from 'next/navigation'
 import { ObjectSchema } from 'yup'
 import * as yup from 'yup'
 import { getEmailRegex } from '@/utils/verification'
-import { Add, Remove } from '@mui/icons-material'
+import { Add } from '@mui/icons-material'
 import Button from '@mui/material/Button'
-import OwnerCard from '@/components/OwnerCard'
 import BackButton from '@/components/BackButton'
+import MemberCard from '@/components/SubmissionMemberCard'
 
 interface FormValues {
     email: string
@@ -135,54 +135,24 @@ export default function SubmissionBoxAddMembersPage() {
                             borderRadius: 12,
                         }}
                     >
-                        <OwnerCard ownerEmail={ownerEmail} />
+                        {/* This is the owner card, it cannot be removed */}
+                        <MemberCard
+                            email={ownerEmail}
+                            role={'Owner'}
+                            isRemovable={false}
+                            removeEmail={removeEmail}
+                            data-cy='owner-card'
+                        />
+                        {/* Add new cards for added members and allow removal */}
                         {emails.map((email, index) => (
-                            <Card // Add new cards for added members and allow removal
+                            <MemberCard
                                 key={index}
-                                sx={{ width: '25rem', borderRadius: 12, mb: '1rem' }}
+                                email={email}
+                                role={'Member'}
+                                isRemovable={true}
+                                removeEmail={removeEmail}
                                 data-cy='member-card'
-                            >
-                                <CardContent
-                                    sx={{
-                                        px: 3,
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'space-between',
-                                    }}
-                                >
-                                    <Typography
-                                        sx={{
-                                            pt: 1,
-                                            maxWidth: '70%',
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis',
-                                            whiteSpace: 'nowrap',
-                                        }}
-                                        data-cy='member-email'
-                                    >
-                                        {email}
-                                    </Typography>
-                                    <Box
-                                        sx={{
-                                            display: 'flex',
-                                            flexDirection: 'row',
-                                            alignItems: 'center',
-                                        }}
-                                    >
-                                        <Typography sx={{ pt: 1, pr: 2 }} data-cy='member-role'>
-                                            Member
-                                        </Typography>
-                                        <IconButton
-                                            size='small'
-                                            sx={{ mt: 1, backgroundColor: '#F5F5F5' }}
-                                            onClick={() => removeEmail(email)}
-                                            data-cy='remove'
-                                        >
-                                            <Remove />
-                                        </IconButton>
-                                    </Box>
-                                </CardContent>
-                            </Card>
+                            />
                         ))}
                     </Box>
                     <Button

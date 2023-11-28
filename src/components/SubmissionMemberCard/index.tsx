@@ -1,18 +1,18 @@
 import { Box, Card, CardContent, IconButton } from '@mui/material'
 import Typography from '@mui/material/Typography'
-import React from 'react'
 import { Remove } from '@mui/icons-material'
+import React from 'react'
 
-export type MemberCardProps = {
-    ownerEmail: string
+export type SubmissionMemberCardProps = {
+    email: string
+    role: string
+    isRemovable: boolean
+    removeEmail: (email: string) => void
 }
 
-export default function OwnerCard(props: MemberCardProps) {
+export default function SubmissionMemberCard(props: SubmissionMemberCardProps) {
     return (
-        <Card // This is the owner card, it cannot be removed
-            sx={{ width: '25rem', borderRadius: 12, mb: '1rem' }}
-            data-cy='owner-card'
-        >
+        <Card sx={{ width: '25rem', borderRadius: 12, mb: '1rem' }}>
             <CardContent
                 sx={{
                     px: 3,
@@ -29,8 +29,9 @@ export default function OwnerCard(props: MemberCardProps) {
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap',
                     }}
+                    data-cy='email'
                 >
-                    {props.ownerEmail}
+                    {props.email}
                 </Typography>
                 <Box
                     sx={{
@@ -39,8 +40,16 @@ export default function OwnerCard(props: MemberCardProps) {
                         alignItems: 'center',
                     }}
                 >
-                    <Typography sx={{ pt: 1, pr: 2 }}>Owner</Typography>
-                    <IconButton disabled size='small' sx={{ mt: 1, backgroundColor: '#F5F5F5' }}>
+                    <Typography sx={{ pt: 1, pr: 2 }} data-cy='role'>
+                        {props.role}
+                    </Typography>
+                    <IconButton
+                        disabled={props.isRemovable}
+                        size='small'
+                        sx={{ mt: 1, backgroundColor: '#F5F5F5' }}
+                        onClick={() => props.removeEmail(props.email)}
+                        data-cy='remove'
+                    >
                         <Remove />
                     </IconButton>
                 </Box>
