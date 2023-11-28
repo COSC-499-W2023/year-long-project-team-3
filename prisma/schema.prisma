@@ -9,15 +9,17 @@ datasource db {
 }
 
 model User {
-  id                String                 @id @default(cuid())
-  createdAt         DateTime               @default(now())
-  updatedAt         DateTime               @updatedAt
-  email             String                 @unique
-  emailVerified     DateTime?
-  password          String?
-  accounts          Account[]
-  ownedVideos       Video[]
-  whitelistedVideos VideoWhitelistedUser[]
+  id                     String                 @id @default(cuid())
+  createdAt              DateTime               @default(now())
+  updatedAt              DateTime               @updatedAt
+  email                  String                 @unique
+  emailVerified          DateTime?
+  password               String?
+  accounts               Account[]
+  ownedVideos            Video[]
+  whitelistedVideos      VideoWhitelistedUser[]
+  requestedSubmissions   RequestedSubmission[]
+  managedSubmissionBoxes SubmissionBoxManager[]
 }
 
 model Account {
@@ -44,20 +46,20 @@ model Account {
 }
 
 model Video {
-  id                String          @id @default(cuid())
+  id                String           @id @default(cuid())
   title             String
   description       String?
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-  submittedAt       DateTime?
-  owner             User?           @relation(fields: [ownerId], references: [id])
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  owner             User?            @relation(fields: [ownerId], references: [id])
   ownerId           String?
   s3Key             String?
-  isCloudProcessed  Boolean         @default(false)
+  isCloudProcessed  Boolean          @default(false)
   thumbnail         String?
   rawVideoUrl       String?
   processedVideoUrl String?
-  VideoWhitelist    VideoWhitelist?
+  videoWhitelist    VideoWhitelist?
+  submissions       SubmittedVideo[]
 }
 
 model VideoWhitelist {
@@ -76,4 +78,58 @@ model VideoWhitelistedUser {
   whitelistedExpiredAt DateTime?
 
   @@id([whitelistedVideoId, whitelistedUserId])
+}
+
+model SubmissionBox {
+  id                    String                 @id @default(cuid())
+  title                 String
+  description           String?
+  createdAt             DateTime               @default(now())
+  closesAt              DateTime?
+  videoStoreToDate      DateTime?
+  maxVideoLength        Int?
+  isPublic              Boolean                @default(false)
+  requestedSubmissions  RequestedSubmission[]
+  submissionBoxManagers SubmissionBoxManager[]
+}
+
+model RequestedSubmission {
+  id              String           @id @default(cuid())
+  email           String
+  userId          String?
+  user            User?            @relation(fields: [userId], references: [id])
+  submissionBoxId String
+  submissionBox   SubmissionBox    @relation(fields: [submissionBoxId], references: [id])
+  requestedAt     DateTime         @default(now())
+  submittedAt     DateTime?
+  updatedAt       DateTime         @updatedAt
+  videoVersions   SubmittedVideo[]
+
+  @@index([email])
+  @@index([userId])
+}
+
+model SubmittedVideo {
+  videoId               String
+  video                 Video               @relation(fields: [videoId], references: [id])
+  requestedSubmissionId String
+  requestedSubmission   RequestedSubmission @relation(fields: [requestedSubmissionId], references: [id])
+  submittedAt           DateTime            @default(now())
+
+  @@id([videoId, requestedSubmissionId])
+}
+
+enum SubmissionBoxViewPermission {
+  owner
+  admin
+}
+
+model SubmissionBoxManager {
+  userId          String
+  user            User                        @relation(fields: [userId], references: [id])
+  submissionBoxId String
+  submissionBox   SubmissionBox               @relation(fields: [submissionBoxId], references: [id])
+  viewPermission  SubmissionBoxViewPermission
+
+  @@id([userId, submissionBoxId])
 }
