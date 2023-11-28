@@ -1,15 +1,15 @@
 describe('Submission box settings tests', () => {
-    before(() => {
-        cy.task('clearDB')
-    })
-
-    beforeEach(() => {
-        cy.task('clearDB')
-    })
+    // before(() => {
+    //     cy.task('clearDB')
+    // })
+    //
+    // beforeEach(() => {
+    //     cy.task('clearDB')
+    // })
 
     it('Should have the owner as a member', () => {
         cy.visit('/submission-box/add-members')
-        cy.get('[data-cy="owner-card"]').contains('Owner')
+        cy.get('[data-cy="card"]').find('[data-cy="card-content"]').find('[data-cy="member-role"]').contains('Owner')
     })
 
     it('Should allow user to click next', () => {
@@ -29,8 +29,8 @@ describe('Submission box settings tests', () => {
         cy.get('[data-cy="email"]').type(memberEmail)
         cy.get('[data-cy="add"]').click()
 
-        cy.get('[data-cy="member-email"]').should('contain', memberEmail)
-        cy.get('[data-cy="member-role"]').should('contain', memberRole)
+        cy.get('[data-cy="member-email"]').eq(1).should('contain', memberEmail)
+        cy.get('[data-cy="member-role"]').eq(1).should('contain', memberRole)
     })
 
     it('Should let user remove members', () => {
@@ -42,13 +42,13 @@ describe('Submission box settings tests', () => {
         cy.get('[data-cy="email"]').type(memberEmail)
         cy.get('[data-cy="add"]').click()
 
-        cy.get('[data-cy="member-email"]').should('contain', memberEmail)
-        cy.get('[data-cy="member-role"]').should('contain', memberRole)
+        cy.get('[data-cy="member-email"]').eq(1).should('contain', memberEmail)
+        cy.get('[data-cy="member-role"]').eq(1).should('contain', memberRole)
 
-        cy.get('[data-cy="remove"]').click()
+        cy.get('[data-cy="remove"]').eq(1).click()
 
-        cy.get('[data-cy="member-email"]').should('not.exist')
-        cy.get('[data-cy="member-role"]').should('not.exist')
+        cy.get('[data-cy="member-email"]').eq(1).should('not.exist')
+        cy.get('[data-cy="member-role"]').eq(1).should('not.exist')
     })
 
     it('Should not allow the user to add an empty email', () => {

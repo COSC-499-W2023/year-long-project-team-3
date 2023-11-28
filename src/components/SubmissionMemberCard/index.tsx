@@ -12,7 +12,7 @@ export type SubmissionMemberCardProps = {
 
 export default function SubmissionMemberCard(props: SubmissionMemberCardProps) {
     return (
-        <Card sx={{ width: '25rem', borderRadius: 12, mb: '1rem' }}>
+        <Card sx={{ width: '25rem', borderRadius: 12, mb: '1rem' }} data-cy='card'>
             <CardContent
                 sx={{
                     px: 3,
@@ -20,6 +20,7 @@ export default function SubmissionMemberCard(props: SubmissionMemberCardProps) {
                     alignItems: 'center',
                     justifyContent: 'space-between',
                 }}
+                data-cy='card-content'
             >
                 <Typography
                     sx={{
@@ -29,7 +30,7 @@ export default function SubmissionMemberCard(props: SubmissionMemberCardProps) {
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap',
                     }}
-                    data-cy='email'
+                    data-cy='member-email'
                 >
                     {props.email}
                 </Typography>
@@ -40,11 +41,11 @@ export default function SubmissionMemberCard(props: SubmissionMemberCardProps) {
                         alignItems: 'center',
                     }}
                 >
-                    <Typography sx={{ pt: 1, pr: 2 }} data-cy='role'>
+                    <Typography sx={{ pt: 1, pr: 2 }} data-cy='member-role'>
                         {props.role}
                     </Typography>
                     <IconButton
-                        disabled={props.isRemovable}
+                        disabled={!props.isRemovable}
                         size='small'
                         sx={{ mt: 1, backgroundColor: '#F5F5F5' }}
                         onClick={() => props.removeEmail(props.email)}

@@ -125,7 +125,8 @@ export default function SubmissionBoxAddMembersPage() {
                             </IconButton>
                         </Box>
                     </form>
-                    <Box // This is a scrollable container for member cards
+                    {/* This is a scrollable container for member cards */}
+                    <Box
                         sx={{
                             maxHeight: '17rem',
                             height: '17rem',
@@ -136,13 +137,7 @@ export default function SubmissionBoxAddMembersPage() {
                         }}
                     >
                         {/* This is the owner card, it cannot be removed */}
-                        <MemberCard
-                            email={ownerEmail}
-                            role={'Owner'}
-                            isRemovable={false}
-                            removeEmail={removeEmail}
-                            data-cy='owner-card'
-                        />
+                        <MemberCard email={ownerEmail} role={'Owner'} isRemovable={false} removeEmail={removeEmail} />
                         {/* Add new cards for added members and allow removal */}
                         {emails.map((email, index) => (
                             <MemberCard
@@ -151,7 +146,6 @@ export default function SubmissionBoxAddMembersPage() {
                                 role={'Member'}
                                 isRemovable={true}
                                 removeEmail={removeEmail}
-                                data-cy='member-card'
                             />
                         ))}
                     </Box>
