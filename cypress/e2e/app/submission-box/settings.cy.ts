@@ -36,7 +36,7 @@ describe('Submission box settings tests', () => {
         // Create submission box
         cy.visit('/submission-box/settings')
         cy.get('[data-cy="submission-box-title"]').type(title)
-        cy.get('[data-cy="next"]').click()
+        cy.get('[data-cy="next"]').click().click()
 
         // We shouldn't be on the submission-box/settings page anymore
         cy.get('[data-cy="title"]', { timeout: 3*TIMEOUT.EXTRA_LONG }).contains('Add Members')
