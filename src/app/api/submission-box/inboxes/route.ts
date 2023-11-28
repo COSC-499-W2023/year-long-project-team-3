@@ -8,7 +8,7 @@ export async function GET(_: NextRequest): Promise<NextResponse> {
     try {
         const session = await getServerSession()
         if (!session || !session.user?.email) {
-            return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
 
         const userId: string = (
