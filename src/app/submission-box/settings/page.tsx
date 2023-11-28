@@ -14,6 +14,7 @@ import Button from '@mui/material/Button'
 import { ObjectSchema } from 'yup'
 import * as yup from 'yup'
 import { useRouter } from 'next/navigation'
+import BackButton from '@/components/BackButton'
 
 interface FormValues {
     title: string
@@ -39,6 +40,7 @@ export default function SubmissionBoxSettingsPage() {
     return (
         <>
             <Header {...session} />
+            <BackButton route={'/dashboard '} /> {/* TODO: make this route to correct page */}
             <Box
                 sx={{
                     display: 'flex',
@@ -47,7 +49,6 @@ export default function SubmissionBoxSettingsPage() {
                     gap: '1rem',
                     width: '100%',
                     height: '100%',
-                    padding: '2rem',
                 }}
             >
                 <Box
