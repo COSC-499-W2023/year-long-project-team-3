@@ -1,13 +1,13 @@
 import { TIMEOUT } from '../../../utils/constants'
 
 describe('Submission box settings tests', () => {
-    // before(() => {
-    //     cy.task('clearDB')
-    // })
-    //
-    // beforeEach(() => {
-    //     cy.task('clearDB')
-    // })
+    before(() => {
+        cy.task('clearDB')
+    })
+
+    beforeEach(() => {
+        cy.task('clearDB')
+    })
 
     it('Should not allow the user to go to the next step without entering a title', () => {
         // Check that submitting with nothing in the fields presents user with prompts and does not let the user move on
