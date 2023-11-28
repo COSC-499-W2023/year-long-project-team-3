@@ -82,7 +82,7 @@ model VideoWhitelistedUser {
 
 model SubmissionBox {
   id                    String                 @id @default(cuid())
-  name                  String
+  title                 String
   description           String?
   createdAt             DateTime               @default(now())
   closesAt              DateTime?
@@ -119,17 +119,17 @@ model SubmittedVideo {
   @@id([videoId, requestedSubmissionId])
 }
 
-enum PrivilegeLevel {
+enum SubmissionBoxViewPermission {
   owner
   admin
 }
 
 model SubmissionBoxManager {
   userId          String
-  user            User           @relation(fields: [userId], references: [id])
+  user            User                        @relation(fields: [userId], references: [id])
   submissionBoxId String
-  submissionBox   SubmissionBox  @relation(fields: [submissionBoxId], references: [id])
-  privilegeLevel  PrivilegeLevel
+  submissionBox   SubmissionBox               @relation(fields: [submissionBoxId], references: [id])
+  viewPermission  SubmissionBoxViewPermission
 
   @@id([userId, submissionBoxId])
 }

@@ -5,7 +5,7 @@
 
 */
 -- CreateEnum
-CREATE TYPE "PrivilegeLevel" AS ENUM ('owner', 'admin');
+CREATE TYPE "SubmissionBoxViewPermission" AS ENUM ('owner', 'admin');
 
 -- AlterTable
 ALTER TABLE "Video" DROP COLUMN "submittedAt";
@@ -13,7 +13,7 @@ ALTER TABLE "Video" DROP COLUMN "submittedAt";
 -- CreateTable
 CREATE TABLE "SubmissionBox" (
     "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
     "description" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "closesAt" TIMESTAMP(3),
@@ -50,7 +50,7 @@ CREATE TABLE "SubmittedVideo" (
 CREATE TABLE "SubmissionBoxManager" (
     "userId" TEXT NOT NULL,
     "submissionBoxId" TEXT NOT NULL,
-    "privilegeLevel" "PrivilegeLevel" NOT NULL,
+    "viewPermission" "SubmissionBoxViewPermission" NOT NULL,
 
     CONSTRAINT "SubmissionBoxManager_pkey" PRIMARY KEY ("userId","submissionBoxId")
 );
