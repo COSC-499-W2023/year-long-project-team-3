@@ -15,6 +15,7 @@ import { getEmailRegex } from '@/utils/verification'
 import { Add, Remove } from '@mui/icons-material'
 import Button from '@mui/material/Button'
 import OwnerCard from '@/components/OwnerCard'
+import BackButton from '@/components/BackButton'
 
 interface FormValues {
     email: string
@@ -56,6 +57,7 @@ export default function SubmissionBoxAddMembersPage() {
     return (
         <>
             <Header {...session} />
+            <BackButton route={'/submission-box/settings'} />
             <Box
                 sx={{
                     display: 'flex',
@@ -64,7 +66,6 @@ export default function SubmissionBoxAddMembersPage() {
                     gap: '1rem',
                     width: '100%',
                     height: '100%',
-                    padding: '2rem',
                 }}
             >
                 <Box
