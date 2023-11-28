@@ -37,8 +37,9 @@ export default function SubmissionBoxAddMembersPage() {
     const validationSchema: ObjectSchema<FormValues> = yup.object().shape({
         email: yup
             .string()
+            .default('') // set default for checking inside onBlur and errors
+            .required('To add a member, enter their email') // this will show up as a help text, not an error
             .matches(getEmailRegex(), 'Enter a valid email')
-            .required('To add a member, enter their email')
             .test('unique', 'This member has already been added!', function (value) {
                 return !emails.includes(value) && value !== ownerEmail
             }),
@@ -99,8 +100,18 @@ export default function SubmissionBoxAddMembersPage() {
                                 name='email'
                                 value={formik.values.email}
                                 onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                error={formik.touched.email && Boolean(formik.errors.email)}
+                                onBlur={(e) => {
+                                    formik.handleBlur(e)
+                                    // if the user clicks out of the TextField and the TextField is empty, reset validation
+                                    if (formik.values.email === '') {
+                                        formik.setTouched({}, false)
+                                    }
+                                }}
+                                error={
+                                    formik.touched.email &&
+                                    Boolean(formik.errors.email) &&
+                                    Boolean(formik.values.email !== '') // error only when email not empty
+                                }
                                 // this ensures the layout does not get shifted by the helper text
                                 FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
                                 helperText={formik.touched.email && formik.errors.email}
