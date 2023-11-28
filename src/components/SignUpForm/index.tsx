@@ -135,7 +135,7 @@ export default function SignUpForm() {
                             // this ensures the layout does not get shifted by the helper text
                             FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
                             helperText={formik.touched.passwordConfirmation && formik.errors.passwordConfirmation}
-                            data-cy='passwordConfirmation'
+                            data-cy='passwordVerification'
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position='end'>
