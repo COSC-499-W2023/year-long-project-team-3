@@ -93,7 +93,12 @@ export default function UploadVideoPage() {
                             startIcon={<CloudUploadIcon />}
                         >
                             Upload
-                            <VisuallyHiddenInput type='file' accept='.mp4' onChange={handleFileChanged} />
+                            <VisuallyHiddenInput
+                                data-cy='test-input'
+                                type='file'
+                                accept='.mp4'
+                                onChange={handleFileChanged}
+                            />
                         </Button>
                     </Box>
                 </Box>
