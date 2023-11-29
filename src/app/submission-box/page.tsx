@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { ReactElement, useState } from 'react'
 import { useMultiStepForm } from '@/utils/useMultiStepForm'
 import Settings from '@/components/SubmissionBoxComponents/Settings'
 import RequestSubmission from '@/components/SubmissionBoxComponents/RequestSubmission'
@@ -36,17 +36,15 @@ export default function SubmissionBox() {
         })
     }
 
-    const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next } = useMultiStepForm([
-        <Settings key='step1' {...data} updateFields={updateFields} />,
-        <RequestSubmission key='step2' {...data} updateFields={updateFields} />,
-        <ReviewAndCreate key='step3' {...data} />,
-    ])
-
-    function getTitle() {
-        if (currentStepIndex == 0) {return 'Settings'}
-        if (currentStepIndex == 1) {return 'Request Submission'}
-        if (currentStepIndex == 2) {return 'Review & Create'}
-    }
+    const { steps, currentStepIndex, step, stepTitles, currentStepTitle, isFirstStep, isLastStep, back, next } =
+        useMultiStepForm(
+            [
+                <Settings key='step1' {...data} updateFields={updateFields} />,
+                <RequestSubmission key='step2' {...data} updateFields={updateFields} />,
+                <ReviewAndCreate key='step3' {...data} />,
+            ],
+            ['Settings', 'Request Submissions', 'Review & Create']
+        )
 
     return (
         <>
@@ -68,15 +66,11 @@ export default function SubmissionBox() {
                         width: '50%',
                     }}
                 >
-                    <ProgressDots
-                        activeStep={currentStepIndex}
-                        numSteps={steps.length}
-                        labels={['Settings', 'Request Submissions', 'Review & Create']}
-                    />
+                    <ProgressDots activeStep={currentStepIndex} numSteps={steps.length} labels={stepTitles} />
                 </Box>
                 <Box display='flex' width='100%' flexDirection='column' alignItems='center' sx={{ pt: 3 }}>
                     <Typography data-cy='title' variant='h4' sx={{ fontWeight: 'medium' }}>
-                        {getTitle()}
+                        {currentStepTitle}
                     </Typography>
                 </Box>
                 {step}
