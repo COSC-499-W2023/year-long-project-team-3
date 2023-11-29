@@ -12,7 +12,7 @@ describe('Submission box request submissions tests', () => {
 
         cy.get('[data-cy="next"]').click()
 
-        cy.url().should('include', '/submission-box/create')
+        cy.url().should('include', '/submission-box/review-and-create')
     })
 
     it('Should let user add submission requests', () => {

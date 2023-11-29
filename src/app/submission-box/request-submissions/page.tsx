@@ -167,7 +167,7 @@ export default function SubmissionBoxRequestSubmissionsPage() {
     async function handleNext() {
         // TODO: send emails for submission requests to API and do some error checking here
         console.log(emails)
-        router.push('/submission-box/create')
+        router.push('/submission-box/review-and-create')
     }
 
     async function handleSubmit(values: { email: string }) {
