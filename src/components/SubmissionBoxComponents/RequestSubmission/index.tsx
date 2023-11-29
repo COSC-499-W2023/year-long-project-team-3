@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField'
 import { Add } from '@mui/icons-material'
 import SubmissionRequestedCard from '@/components/SubmissionRequestedCard'
 import Button from '@mui/material/Button'
-import React, { useState } from 'react'
+import React from 'react'
 import { ObjectSchema } from 'yup'
 import * as yup from 'yup'
 import { getEmailRegex } from '@/utils/verification'
@@ -16,16 +16,24 @@ interface FormValues {
     email: string
 }
 
-const RequestSubmission = () => {
+type RequestSubmissionData = {
+    emails: string[]
+}
+
+type RequestSubmissionProps = RequestSubmissionData & {
+    updateFields: (fields: Partial<RequestSubmissionData>) => void
+}
+
+export default function RequestSubmission({ emails, updateFields }: RequestSubmissionProps) {
     const session = useSession()
 
     const ownerEmail: string = session.data?.user?.email!
 
-    const [emails, setEmails] = useState<string[]>([])
+    // const [emails, setEmails] = useState<string[]>([])
 
     const removeEmail = (emailToRemove: string) => {
         const updatedEmails = emails.filter((email) => email !== emailToRemove)
-        setEmails(updatedEmails)
+        // setEmails(updatedEmails)
         formik.setTouched({}, false)
     }
 
@@ -151,7 +159,7 @@ const RequestSubmission = () => {
     }
 
     async function handleSubmit(values: { email: string }) {
-        setEmails([...emails, values.email])
+        // setEmails([...emails, values.email])
         formik.resetForm()
     }
 }

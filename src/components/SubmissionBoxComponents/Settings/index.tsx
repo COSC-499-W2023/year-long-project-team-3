@@ -10,22 +10,26 @@ import { ObjectSchema } from 'yup'
 import * as yup from 'yup'
 import { useFormik } from 'formik'
 
-interface FormValues {
+type SettingsData = {
     title: string
     description: string | undefined
     closingDate: Date | undefined
 }
 
-const Settings = () => {
-    const formik = useFormik<FormValues>({
+type SettingsFormProps = SettingsData & {
+    updateFields: (fields: Partial<SettingsData>) => void
+}
+
+export default function Settings({ title, description, closingDate, updateFields }: SettingsFormProps) {
+    const formik = useFormik<SettingsData>({
         initialValues: {
-            title: '',
-            description: '',
-            closingDate: undefined,
+            title: title,
+            description: description,
+            closingDate: closingDate,
         },
         validationSchema: validationSchema,
         // TODO: properly implement handleSubmit
-        onSubmit: () => handleSubmit(),
+        onSubmit: (values: SettingsData) => handleSubmit(values),
     })
 
     return (
@@ -118,7 +122,7 @@ const Settings = () => {
         </>
     )
 
-    async function handleSubmit() {
+    async function handleSubmit(values: SettingsData) {
         try {
             // TODO: send form data to API and do some error checking here
         } catch (err) {
@@ -128,7 +132,7 @@ const Settings = () => {
     }
 }
 
-const validationSchema: ObjectSchema<FormValues> = yup.object().shape({
+const validationSchema: ObjectSchema<SettingsData> = yup.object().shape({
     title: yup.string().required('Please enter a title for your submission box'),
     description: yup.string(),
     // only future dates can be chosen due to disablePast on DateTimePicker
