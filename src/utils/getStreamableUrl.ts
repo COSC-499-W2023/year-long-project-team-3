@@ -19,7 +19,7 @@ export default async function getStreamableUrl(s3Key: string): Promise<string> {
     })
 
     const command = new GetDistributionCommand({
-        Id: 'E121SK67BWE3YA',
+        Id: process.env.cloudfrontDistributionId as string,
     })
 
     const result = await client.send(command)
