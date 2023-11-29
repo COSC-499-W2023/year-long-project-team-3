@@ -7,6 +7,8 @@ import logger from '@/utils/logger'
 import Button from '@mui/material/Button'
 import { Box } from '@mui/material'
 import Typography from '@mui/material/Typography'
+import { toast } from 'react-toastify'
+import { useRouter } from 'next/navigation'
 
 // TODO: Implement this page (right now it's only a bare bones version for testing)
 
@@ -14,11 +16,12 @@ interface FormValues {
     title: string
     description: string | undefined
     closingDate: Date | undefined
-    emails: string[]
+    requestedEmails: string[]
 }
 
 export default function SubmissionBoxReviewAndCreatePage() {
     const session = useSession()
+    const router = useRouter()
 
     const dummyFormData: FormValues = generateDummyFormData()
 
@@ -57,6 +60,24 @@ export default function SubmissionBoxReviewAndCreatePage() {
         try {
             // TODO: send form data to API and do some error checking here
             console.log(values)
+            const response = await fetch('api/submission-box/create', {
+                method: 'POST',
+                body: JSON.stringify({
+                    title: values.title,
+                    description: values.description,
+                    closingDate: values.closingDate,
+                    requestedEmails: values.requestedEmails,
+                }),
+            })
+
+            const submissionBoxInfo = await response.json()
+            if (response.status == 201) {
+                logger.info(`Submission box with title ${ submissionBoxInfo.title } successfully created`)
+                router.push('/dashboard')
+                router.refresh()
+            } else {
+                toast.error(submissionBoxInfo.error)
+            }
         } catch (err) {
             const errMessage = JSON.stringify(err, Object.getOwnPropertyNames(err))
             logger.error(errMessage)
@@ -69,6 +90,6 @@ function generateDummyFormData(): FormValues {
         title: 'Sample Title',
         description: 'Sample Description',
         closingDate: new Date('11/30/2023 06:30 AM'),
-        emails: ['email1@example.com', 'email2@example.com'],
+        requestedEmails: ['email1@example.com', 'email2@example.com'],
     }
 }
