@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography'
 import React, { useEffect } from 'react'
 import logger from '@/utils/logger'
 
-export default function SubmissionOutBoxPage() {
+export default function SubmissionOutboxPage() {
     const session = useSession()
 
     useEffect(() => {
@@ -29,15 +29,15 @@ export default function SubmissionOutBoxPage() {
     return (
         <>
             <Header {...session} />
-            <Box sx={{ display: 'fixed', flexDirection: 'row' }}>
+            <Box display='grid' gridTemplateColumns='1fr 4fr' height='100%'>
                 <Dashboard userEmail={'test'} initialSidebarSelectedOption={'submission_boxes_outbox'} />
-                <Box sx={{ display: 'flex', flexDirection: 'column', minWidth: { md: '60%', lg: '70%', xl: '75%' } }}>
+                <Box >
                     <Typography data-cy='title' variant='h5' color={'textSecondary'} sx={{ m: 2, fontWeight: 'bold' }}>
                         Submission Out-Box
                     </Typography>
                     <Box
                         component='section'
-                        sx={{ p: 2, borderRadius: 0.5, height: 1 }}
+                        sx={{ p: 2, borderTopLeftRadius: 25, borderBottomLeftRadius: 25, height: 1 }}
                         border={1}
                         borderColor={'textSecondary'}
                     />

@@ -16,18 +16,30 @@ export default function DashboardSidePanel(props: DashboardSidePanelProps) {
     return (
         <Box display='flex' flexDirection='column' margin={'0 2rem'}>
             <DashboardSidebarMenu
-                onRecentClick={() => {router.push('/dashboard')}}
+                onRecentClick={() => {
+                    router.push('/dashboard/placeholder')
+                }}
                 onRecordNewClick={() => {}}
-                onStarredClick={() => {router.push('/dashboard')}}
-                onSubmittedVideosClick={() => {router.push('/dashboard')}}
-                onTrashClick={() => {router.push('/dashboard')}}
+                onStarredClick={() => {
+                    router.push('/dashboard/placeholder')
+                }}
+                onSubmittedVideosClick={() => {
+                    router.push('/dashboard/placeholder')
+                }}
+                onTrashClick={() => {
+                    router.push('/dashboard/placeholder')
+                }}
                 sidebarSelectedOption={sidebarSelectedOption}
                 setSidebarSelectedOption={setSidebarSelectedOption}
             />
             <DashboardSidebarSubmissionBoxes
                 onCreateNewClick={() => {}}
-                onSubmissionInboxClick={() => {router.push('/dashboard/in-box')}}
-                onSubmissionOutboxClick={() => {router.push('/dashboard/out-box')}}
+                onSubmissionInboxClick={() => {
+                    router.push('/dashboard/inbox')
+                }}
+                onSubmissionOutboxClick={() => {
+                    router.push('/dashboard/outbox')
+                }}
                 sidebarSelectedOption={sidebarSelectedOption}
                 setSidebarSelectedOption={setSidebarSelectedOption}
             />
