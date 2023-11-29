@@ -9,8 +9,8 @@ export type SubmissionRequestedCardProps = {
 }
 
 export default function SubmissionRequestedCard(props: SubmissionRequestedCardProps) {
-    const handleClick = (email: string) => {
-        props.removeEmail(email)
+    function handleClickRemoveButton() {
+        props.removeEmail(props.email)
     }
 
     return (
@@ -46,7 +46,7 @@ export default function SubmissionRequestedCard(props: SubmissionRequestedCardPr
                     <IconButton
                         size='small'
                         sx={{ mt: 1, backgroundColor: '#F5F5F5' }}
-                        onClick={() => handleClick(props.email)}
+                        onClick={handleClickRemoveButton}
                         data-cy='remove'
                     >
                         <Remove />
