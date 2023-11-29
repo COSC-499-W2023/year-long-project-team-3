@@ -1,4 +1,5 @@
 import { MOCKUSER } from '../../../utils/constants'
+import { Video } from '@prisma/client'
 
 describe('Test Poll Worker Updates Database with Video Metadata', () => {
     before(() => {
@@ -16,8 +17,11 @@ describe('Test Poll Worker Updates Database with Video Metadata', () => {
 
     it('should upload video and redirect ', () => {
         cy.visit('/video/upload')
-        cy.get('[data-cy=upload-button]').selectFile('public/videos/westminster.mp4')
-        // .selectFile('public/videos/westminster.mp4', { action: 'drag-drop' })
-        // cy.document().selectFile('public/videos/westminster.mp4', { action: 'drag-drop' })
+        cy.get('[data-cy=test-input]').selectFile('cypress/data/lemons.mp4', { force: true })
+        cy.url().should('contain', 'video/edit/')
+
+        cy.task('getLatestVideo').then((response) => {
+            cy.url().should('contain', `video/edit/${ (<Video>response).id }`)
+        })
     })
 })

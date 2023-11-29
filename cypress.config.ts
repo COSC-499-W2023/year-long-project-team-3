@@ -1,6 +1,7 @@
 import { defineConfig } from 'cypress'
 import clearDB from './cypress/tasks/clearDB'
 import populateDB from './cypress/tasks/populateDB'
+import getLatestVideo from './cypress/tasks/getLatestVideo'
 
 require('dotenv').config()
 
@@ -13,6 +14,7 @@ export default defineConfig({
             on('task', {
                 clearDB,
                 populateDB,
+                getLatestVideo,
             })
         },
         experimentalModifyObstructiveThirdPartyCode: true,
