@@ -34,52 +34,47 @@ export default function Settings({ title, description, closingDate, updateFields
 
     return (
         <>
-            <form onSubmit={formik.handleSubmit} noValidate>
-                <Box
-                    gap={1}
-                    sx={{
-                        p: 5,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        minWidth: 'md',
-                        '& .MuiTextField-root': { my: 1.5, mx: 7, width: '80%' },
-                    }}
-                >
-                    <TextField
-                        margin='normal'
-                        variant='outlined'
-                        type='title'
-                        label='Title'
-                        name='title'
-                        value={formik.values.title}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        error={formik.touched.title && Boolean(formik.errors.title)}
-                        // this ensures the layout does not get shifted by the helper text
-                        FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
-                        helperText={formik.touched.title && formik.errors.title}
-                        data-cy='submission-box-title'
-                    />
-                    <TextField
-                        margin='normal'
-                        variant='outlined'
-                        type='description'
-                        label='Description (optional)'
-                        name='description'
-                        multiline
-                        rows={4} // There is currently a bug with the multiline TextField which makes the TextField reload, see https://github.com/mui/material-ui/issues/38607
-                        value={formik.values.description}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        error={formik.touched.description && Boolean(formik.errors.description)}
-                        // this ensures the layout does not get shifted by the helper text
-                        FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
-                        helperText={formik.touched.description && formik.errors.description}
-                        data-cy='description'
-                    />
-                    <DateTimePicker disablePast label='Closing Date' />
-                    <Button
+            {/*            <form onSubmit={formik.handleSubmit} noValidate>*/}
+            <TextField
+                margin='normal'
+                variant='outlined'
+                type='title'
+                label='Title'
+                name='title'
+                value={formik.values.title}
+                onChange={(e) => {
+                    formik.handleChange(e)
+                    updateFields({ title: e.target.value })
+                }}
+                onBlur={formik.handleBlur}
+                error={formik.touched.title && Boolean(formik.errors.title)}
+                // this ensures the layout does not get shifted by the helper text
+                FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
+                helperText={formik.touched.title && formik.errors.title}
+                data-cy='submission-box-title'
+            />
+            <TextField
+                margin='normal'
+                variant='outlined'
+                type='description'
+                label='Description (optional)'
+                name='description'
+                multiline
+                rows={4} // There is currently a bug with the multiline TextField which makes the TextField reload, see https://github.com/mui/material-ui/issues/38607
+                value={formik.values.description}
+                onChange={(e) => {
+                    formik.handleChange(e)
+                    updateFields({ description: e.target.value })
+                }}
+                onBlur={formik.handleBlur}
+                error={formik.touched.description && Boolean(formik.errors.description)}
+                // this ensures the layout does not get shifted by the helper text
+                FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
+                helperText={formik.touched.description && formik.errors.description}
+                data-cy='description'
+            />
+            <DateTimePicker disablePast label='Closing Date' />
+            {/*                    <Button
                         type='submit'
                         variant='contained'
                         sx={{ mt: 2, px: 5, fontSize: 15, borderRadius: 28, textTransform: 'capitalize' }}
@@ -99,9 +94,8 @@ export default function Settings({ title, description, closingDate, updateFields
                         <Typography sx={{ textAlign: 'center' }}>
                             You will be able to request submissions to your box in the next step!
                         </Typography>
-                    </Alert>
-                </Box>
-            </form>
+                    </Alert>*/}
+            {/*            </form>*/}
         </>
     )
 

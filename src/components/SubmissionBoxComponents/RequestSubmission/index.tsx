@@ -61,43 +61,43 @@ export default function RequestSubmission({ emails, updateFields }: RequestSubmi
 
     return (
         <>
-            <form onSubmit={formik.handleSubmit} noValidate>
-                <Box
-                    sx={{
-                        px: 5,
-                        pt: 5,
-                        pb: 3,
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        minWidth: 'md',
-                        '& .MuiTextField-root': { my: 1.5, mx: 2, minWidth: '22rem', width: '100%' },
-                    }}
-                >
-                    <TextField
-                        margin='normal'
-                        variant='outlined'
-                        type='email'
-                        label='Email Address'
-                        name='email'
-                        value={formik.values.email}
-                        onChange={formik.handleChange}
-                        onBlur={() => handleBlur()}
-                        error={
-                            formik.touched.email && Boolean(formik.errors.email) && Boolean(formik.values.email !== '') // error only when email not empty
-                        }
-                        // this ensures the layout does not get shifted by the helper text
-                        FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
-                        helperText={formik.touched.email && formik.errors.email}
-                        data-cy='email'
-                    />
-                    <IconButton sx={{ backgroundColor: '#F5F5F5' }} type='submit' data-cy='add'>
-                        <Icon>
-                            <Add />
-                        </Icon>
-                    </IconButton>
-                </Box>
-            </form>
+            {/*<form onSubmit={formik.handleSubmit} noValidate>*/}
+            {/*    <Box*/}
+            {/*        sx={{*/}
+            {/*            px: 5,*/}
+            {/*            pt: 5,*/}
+            {/*            pb: 3,*/}
+            {/*            display: 'flex',*/}
+            {/*            flexDirection: 'row',*/}
+            {/*            alignItems: 'center',*/}
+            {/*            minWidth: 'md',*/}
+            {/*            '& .MuiTextField-root': { my: 1.5, mx: 2, minWidth: '22rem', width: '100%' },*/}
+            {/*        }}*/}
+            {/*    >*/}
+            <TextField
+                margin='normal'
+                variant='outlined'
+                type='email'
+                label='Email Address'
+                name='email'
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                onBlur={() => handleBlur()}
+                error={
+                    formik.touched.email && Boolean(formik.errors.email) && Boolean(formik.values.email !== '') // error only when email not empty
+                }
+                // this ensures the layout does not get shifted by the helper text
+                FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
+                helperText={formik.touched.email && formik.errors.email}
+                data-cy='email'
+            />
+            <IconButton sx={{ backgroundColor: '#F5F5F5' }} type='submit' data-cy='add'>
+                <Icon>
+                    <Add />
+                </Icon>
+            </IconButton>
+            {/*</Box>*/}
+            {/*</form>*/}
             {/* This is a scrollable container for submission request cards */}
             <Box
                 sx={{
@@ -115,14 +115,14 @@ export default function RequestSubmission({ emails, updateFields }: RequestSubmi
                     <SubmissionRequestedCard key={index} email={email} removeEmail={removeEmail} />
                 ))}
             </Box>
-            <Button
+            {/*            <Button
                 variant='contained'
                 sx={{ mt: 5, px: 5, fontSize: 15, borderRadius: 28, textTransform: 'capitalize' }}
                 onClick={() => handleNext()}
                 data-cy='next'
             >
                 Next
-            </Button>
+            </Button>*/}
         </>
     )
 

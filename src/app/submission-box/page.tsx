@@ -1,13 +1,13 @@
 'use client'
 
-import React, { ReactElement, useState } from 'react'
+import React, { FormEvent, ReactElement, useState } from 'react'
 import { useMultiStepForm } from '@/utils/useMultiStepForm'
 import Settings from '@/components/SubmissionBoxComponents/Settings'
 import RequestSubmission from '@/components/SubmissionBoxComponents/RequestSubmission'
 import ReviewAndCreate from '@/components/SubmissionBoxComponents/ReviewAndCreate'
 import Header from '@/components/Header'
 import BackButton from '@/components/BackButton'
-import { Box } from '@mui/material'
+import { Box, Button } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import ProgressDots from '@/components/ProgressDots'
 import Typography from '@mui/material/Typography'
@@ -73,8 +73,47 @@ export default function SubmissionBox() {
                         {currentStepTitle}
                     </Typography>
                 </Box>
-                {step}
+                <form noValidate onSubmit={onSubmit}>
+                    <Box
+                        gap={1}
+                        sx={{
+                            p: 5,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            minWidth: 'md',
+                            '& .MuiTextField-root': { my: 1.5, mx: 7, width: '80%' },
+                        }}
+                    >
+                        {step}
+                        {!isFirstStep && (
+                            <Button
+                                type='button'
+                                variant='contained'
+                                sx={{ mt: 2, px: 5, fontSize: 15, borderRadius: 28, textTransform: 'capitalize' }}
+                                data-cy='back'
+                                onClick={back}
+                            >
+                                Back
+                            </Button>
+                        )}
+                        <Button
+                            type='submit'
+                            variant='contained'
+                            sx={{ mt: 2, px: 5, fontSize: 15, borderRadius: 28, textTransform: 'capitalize' }}
+                            data-cy='next'
+                        >
+                            {isLastStep ? 'Create' : 'Next'}
+                        </Button>
+                    </Box>
+                </form>
             </Box>
         </>
     )
+
+    function onSubmit(e: FormEvent) {
+        e.preventDefault() // default is refreshing
+        if (!isLastStep) {return next()}
+        alert('Successful Account Creation')
+    }
 }
