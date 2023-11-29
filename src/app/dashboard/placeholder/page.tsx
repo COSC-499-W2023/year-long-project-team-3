@@ -13,7 +13,7 @@ export default function SubmissionOutBoxPage() {
     return (
         <>
             <Header {...session} />
-            <Box sx={{ display: 'fixed', flexDirection: 'row' }}>
+            <Box display='grid' gridTemplateColumns='1fr 4fr' height='100%'>
                 <Dashboard userEmail={'test'} />
                 <Box
                     sx={{
