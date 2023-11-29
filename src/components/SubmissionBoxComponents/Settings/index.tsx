@@ -34,91 +34,74 @@ export default function Settings({ title, description, closingDate, updateFields
 
     return (
         <>
-            <Box
-                sx={{
-                    minWidth: '16rem',
-                    width: '50%',
-                }}
-            >
-                <ProgressDots
-                    activeStep={0}
-                    numSteps={3}
-                    labels={['Settings', 'Request Submissions', 'Review & Create']}
-                />
-            </Box>
-            <Box display='flex' width='100%' flexDirection='column' alignItems='center' sx={{ pt: 3 }}>
-                <Typography data-cy='title' variant='h4' sx={{ fontWeight: 'medium' }}>
-                    Submission Box Settings
-                </Typography>
-                <form onSubmit={formik.handleSubmit} noValidate>
-                    <Box
-                        gap={1}
+            <form onSubmit={formik.handleSubmit} noValidate>
+                <Box
+                    gap={1}
+                    sx={{
+                        p: 5,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        minWidth: 'md',
+                        '& .MuiTextField-root': { my: 1.5, mx: 7, width: '80%' },
+                    }}
+                >
+                    <TextField
+                        margin='normal'
+                        variant='outlined'
+                        type='title'
+                        label='Title'
+                        name='title'
+                        value={formik.values.title}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        error={formik.touched.title && Boolean(formik.errors.title)}
+                        // this ensures the layout does not get shifted by the helper text
+                        FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
+                        helperText={formik.touched.title && formik.errors.title}
+                        data-cy='submission-box-title'
+                    />
+                    <TextField
+                        margin='normal'
+                        variant='outlined'
+                        type='description'
+                        label='Description (optional)'
+                        name='description'
+                        multiline
+                        rows={4} // There is currently a bug with the multiline TextField which makes the TextField reload, see https://github.com/mui/material-ui/issues/38607
+                        value={formik.values.description}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        error={formik.touched.description && Boolean(formik.errors.description)}
+                        // this ensures the layout does not get shifted by the helper text
+                        FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
+                        helperText={formik.touched.description && formik.errors.description}
+                        data-cy='description'
+                    />
+                    <DateTimePicker disablePast label='Closing Date' />
+                    <Button
+                        type='submit'
+                        variant='contained'
+                        sx={{ mt: 2, px: 5, fontSize: 15, borderRadius: 28, textTransform: 'capitalize' }}
+                        data-cy='next'
+                    >
+                        Next
+                    </Button>
+                    <Alert
+                        severity='info'
                         sx={{
-                            p: 5,
+                            mt: 2,
+                            width: '90%',
                             display: 'flex',
-                            flexDirection: 'column',
                             alignItems: 'center',
-                            minWidth: 'md',
-                            '& .MuiTextField-root': { my: 1.5, mx: 7, width: '80%' },
                         }}
                     >
-                        <TextField
-                            margin='normal'
-                            variant='outlined'
-                            type='title'
-                            label='Title'
-                            name='title'
-                            value={formik.values.title}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            error={formik.touched.title && Boolean(formik.errors.title)}
-                            // this ensures the layout does not get shifted by the helper text
-                            FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
-                            helperText={formik.touched.title && formik.errors.title}
-                            data-cy='submission-box-title'
-                        />
-                        <TextField
-                            margin='normal'
-                            variant='outlined'
-                            type='description'
-                            label='Description (optional)'
-                            name='description'
-                            multiline
-                            rows={4} // There is currently a bug with the multiline TextField which makes the TextField reload, see https://github.com/mui/material-ui/issues/38607
-                            value={formik.values.description}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            error={formik.touched.description && Boolean(formik.errors.description)}
-                            // this ensures the layout does not get shifted by the helper text
-                            FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
-                            helperText={formik.touched.description && formik.errors.description}
-                            data-cy='description'
-                        />
-                        <DateTimePicker disablePast label='Closing Date' />
-                        <Button
-                            type='submit'
-                            variant='contained'
-                            sx={{ mt: 2, px: 5, fontSize: 15, borderRadius: 28, textTransform: 'capitalize' }}
-                            data-cy='next'
-                        >
-                            Next
-                        </Button>
-                        <Alert
-                            severity='info'
-                            sx={{
-                                mt: 2,
-                                width: '90%',
-                                display: 'flex',
-                                alignItems: 'center',
-                            }}
-                        >
-                            <Typography sx={{ textAlign: 'center' }}>
-                                You will be able to request submissions to your box in the next step!
-                            </Typography>
-                        </Alert>
-                    </Box>
-                </form>
-            </Box>
+                        <Typography sx={{ textAlign: 'center' }}>
+                            You will be able to request submissions to your box in the next step!
+                        </Typography>
+                    </Alert>
+                </Box>
+            </form>
         </>
     )
 

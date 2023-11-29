@@ -15,31 +15,14 @@ type ReviewAndCreateData = {
 export default function ReviewAndCreate({ title, description, closingDate, emails }: ReviewAndCreateData) {
     return (
         <>
-            <Box
-                sx={{
-                    minWidth: '16rem',
-                    width: '50%',
-                }}
-            >
-                <ProgressDots
-                    activeStep={2}
-                    numSteps={3}
-                    labels={['Settings', 'Request Submissions', 'Review & Create']}
-                />
-            </Box>
-            <Box display='flex' width='100%' flexDirection='column' alignItems='center' sx={{ pt: 3 }}>
-                <Typography data-cy='title' variant='h4' sx={{ fontWeight: 'medium' }}>
-                    Review & Create
+            <Typography>{title}</Typography>
+            <Typography>{description}</Typography>
+            <Typography>{JSON.stringify(closingDate)}</Typography>
+            {emails.map((email, index) => (
+                <Typography key={index} variant='body1'>
+                    {email}
                 </Typography>
-                <Typography>{title}</Typography>
-                <Typography>{description}</Typography>
-                <Typography>{JSON.stringify(closingDate)}</Typography>
-                {emails.map((email, index) => (
-                    <Typography key={index} variant='body1'>
-                        {email}
-                    </Typography>
-                ))}
-            </Box>
+            ))}
         </>
     )
 }

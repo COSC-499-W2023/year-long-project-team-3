@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useMultiStepForm } from '@/utils/useMultiStepForm'
 import Settings from '@/components/SubmissionBoxComponents/Settings'
 import RequestSubmission from '@/components/SubmissionBoxComponents/RequestSubmission'
@@ -9,6 +9,8 @@ import Header from '@/components/Header'
 import BackButton from '@/components/BackButton'
 import { Box } from '@mui/material'
 import { useSession } from 'next-auth/react'
+import ProgressDots from '@/components/ProgressDots'
+import Typography from '@mui/material/Typography'
 
 type FormData = {
     title: string
@@ -40,6 +42,12 @@ export default function SubmissionBox() {
         <ReviewAndCreate key='step3' {...data} />,
     ])
 
+    function getTitle() {
+        if (currentStepIndex == 0) {return 'Settings'}
+        if (currentStepIndex == 1) {return 'Request Submission'}
+        if (currentStepIndex == 2) {return 'Review & Create'}
+    }
+
     return (
         <>
             <Header {...session} />
@@ -53,8 +61,26 @@ export default function SubmissionBox() {
                     width: '100%',
                     height: '100%',
                 }}
-            ></Box>
-            {step}
+            >
+                <Box
+                    sx={{
+                        minWidth: '16rem',
+                        width: '50%',
+                    }}
+                >
+                    <ProgressDots
+                        activeStep={currentStepIndex}
+                        numSteps={steps.length}
+                        labels={['Settings', 'Request Submissions', 'Review & Create']}
+                    />
+                </Box>
+                <Box display='flex' width='100%' flexDirection='column' alignItems='center' sx={{ pt: 3 }}>
+                    <Typography data-cy='title' variant='h4' sx={{ fontWeight: 'medium' }}>
+                        {getTitle()}
+                    </Typography>
+                </Box>
+                {step}
+            </Box>
         </>
     )
 }

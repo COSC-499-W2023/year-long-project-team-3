@@ -61,87 +61,68 @@ export default function RequestSubmission({ emails, updateFields }: RequestSubmi
 
     return (
         <>
-            <Box
-                sx={{
-                    minWidth: '16rem',
-                    width: '50%',
-                }}
-            >
-                <ProgressDots
-                    activeStep={1}
-                    numSteps={3}
-                    labels={['Settings', 'Request Submissions', 'Review & Create']}
-                />
-            </Box>
-            <Box display='flex' width='100%' flexDirection='column' alignItems='center' sx={{ pt: 3 }}>
-                <Typography data-cy='title' variant='h4' sx={{ fontWeight: 'medium' }}>
-                    Request Submissions
-                </Typography>
-                <form onSubmit={formik.handleSubmit} noValidate>
-                    <Box
-                        sx={{
-                            px: 5,
-                            pt: 5,
-                            pb: 3,
-                            display: 'flex',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            minWidth: 'md',
-                            '& .MuiTextField-root': { my: 1.5, mx: 2, minWidth: '22rem', width: '100%' },
-                        }}
-                    >
-                        <TextField
-                            margin='normal'
-                            variant='outlined'
-                            type='email'
-                            label='Email Address'
-                            name='email'
-                            value={formik.values.email}
-                            onChange={formik.handleChange}
-                            onBlur={() => handleBlur()}
-                            error={
-                                formik.touched.email &&
-                                Boolean(formik.errors.email) &&
-                                Boolean(formik.values.email !== '') // error only when email not empty
-                            }
-                            // this ensures the layout does not get shifted by the helper text
-                            FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
-                            helperText={formik.touched.email && formik.errors.email}
-                            data-cy='email'
-                        />
-                        <IconButton sx={{ backgroundColor: '#F5F5F5' }} type='submit' data-cy='add'>
-                            <Icon>
-                                <Add />
-                            </Icon>
-                        </IconButton>
-                    </Box>
-                </form>
-                {/* This is a scrollable container for submission request cards */}
+            <form onSubmit={formik.handleSubmit} noValidate>
                 <Box
                     sx={{
-                        maxHeight: '17rem',
-                        height: '17rem',
-                        width: '27rem',
-                        overflow: 'auto',
-                        p: 2,
-                        backgroundColor: '#F5F5F5',
-                        borderRadius: 12,
+                        px: 5,
+                        pt: 5,
+                        pb: 3,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        minWidth: 'md',
+                        '& .MuiTextField-root': { my: 1.5, mx: 2, minWidth: '22rem', width: '100%' },
                     }}
                 >
-                    {/* Add new cards for added submission requests and allow removal */}
-                    {emails.map((email, index) => (
-                        <SubmissionRequestedCard key={index} email={email} removeEmail={removeEmail} />
-                    ))}
+                    <TextField
+                        margin='normal'
+                        variant='outlined'
+                        type='email'
+                        label='Email Address'
+                        name='email'
+                        value={formik.values.email}
+                        onChange={formik.handleChange}
+                        onBlur={() => handleBlur()}
+                        error={
+                            formik.touched.email && Boolean(formik.errors.email) && Boolean(formik.values.email !== '') // error only when email not empty
+                        }
+                        // this ensures the layout does not get shifted by the helper text
+                        FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
+                        helperText={formik.touched.email && formik.errors.email}
+                        data-cy='email'
+                    />
+                    <IconButton sx={{ backgroundColor: '#F5F5F5' }} type='submit' data-cy='add'>
+                        <Icon>
+                            <Add />
+                        </Icon>
+                    </IconButton>
                 </Box>
-                <Button
-                    variant='contained'
-                    sx={{ mt: 5, px: 5, fontSize: 15, borderRadius: 28, textTransform: 'capitalize' }}
-                    onClick={() => handleNext()}
-                    data-cy='next'
-                >
-                    Next
-                </Button>
+            </form>
+            {/* This is a scrollable container for submission request cards */}
+            <Box
+                sx={{
+                    maxHeight: '17rem',
+                    height: '17rem',
+                    width: '27rem',
+                    overflow: 'auto',
+                    p: 2,
+                    backgroundColor: '#F5F5F5',
+                    borderRadius: 12,
+                }}
+            >
+                {/* Add new cards for added submission requests and allow removal */}
+                {emails.map((email, index) => (
+                    <SubmissionRequestedCard key={index} email={email} removeEmail={removeEmail} />
+                ))}
             </Box>
+            <Button
+                variant='contained'
+                sx={{ mt: 5, px: 5, fontSize: 15, borderRadius: 28, textTransform: 'capitalize' }}
+                onClick={() => handleNext()}
+                data-cy='next'
+            >
+                Next
+            </Button>
         </>
     )
 
