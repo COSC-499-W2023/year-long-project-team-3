@@ -45,7 +45,7 @@ jobs:
                 run: |
                     echo "${{ secrets.ENV_PREVIEW }}" > .env
             -   name: Migrate Database
-                run: npx prisma migrate dev &> prisma_migrate.log
+                run: npx prisma migrate deploy &> prisma_migrate.log
 
 
 
