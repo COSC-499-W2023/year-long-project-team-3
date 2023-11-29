@@ -7,6 +7,8 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import React, { useEffect, useState } from 'react'
 import logger from '@/utils/logger'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
 
 export default function SubmissionInboxPage() {
     const session = useSession()
@@ -17,6 +19,16 @@ export default function SubmissionInboxPage() {
             description: null,
             createdAt: null,
             closesAt: null,
+            videoStoreToDate: null,
+            maxVideoLength: null,
+            isPublic: false,
+        },
+        {
+            id: 1234,
+            title: 'This is cool',
+            description: null,
+            createdAt: null,
+            closesAt: 'Jan 18th 2023',
             videoStoreToDate: null,
             maxVideoLength: null,
             isPublic: false,
@@ -54,19 +66,20 @@ export default function SubmissionInboxPage() {
                     </Typography>
                     <Box
                         component='section'
-                        sx={{ p: 2, borderTopLeftRadius: 25, borderBottomLeftRadius: 25, height: 1 }}
+                        sx={{ borderTopLeftRadius: 25, borderBottomLeftRadius: 25, height: 602 }}
                         border={1}
                         borderColor={'textSecondary'}
                     >
-                        <ul>
+                        <List sx={{maxHeight: 600, overflow: 'auto', position: 'relative', pl: 1, pr: 1 }}>
                             {submissionInboxes.map((submissionBox, id: React.Key) => (
-                                <li key={id}>
-                                    <Box border={1} borderColor={'textSecondary'}>
-                                        <Typography>{submissionBox.title}</Typography>
+                                <ListItem key={id}>
+                                    <Box sx = {{ p: 1,  background: 'grey', borderRadius: 1, width: '100%' }} borderColor={'textSecondary'} display='grid' gridTemplateColumns='3fr 1fr' alignItems='center'>
+                                        <Typography sx = {{ p: 1, color: 'textSecondary', fontWeight: 'bold' }}>{submissionBox.title}</Typography>
+                                        <Typography sx = {{ p: 1, color: 'textSecondary' }}>Close Date: {submissionBox.closesAt}</Typography>
                                     </Box>
-                                </li>
+                                </ListItem>
                             ))}
-                        </ul>
+                        </List>
                     </Box>
                 </Box>
             </Box>
