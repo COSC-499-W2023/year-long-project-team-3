@@ -3,14 +3,12 @@ import Typography from '@mui/material/Typography'
 import { Remove } from '@mui/icons-material'
 import React from 'react'
 
-export type SubmissionMemberCardProps = {
+export type SubmissionRequestedCardProps = {
     email: string
-    role: string
-    isRemovable: boolean
     removeEmail: (email: string) => void
 }
 
-export default function SubmissionMemberCard(props: SubmissionMemberCardProps) {
+export default function SubmissionRequestedCard(props: SubmissionRequestedCardProps) {
     const handleClick = (email: string) => {
         props.removeEmail(email)
     }
@@ -34,7 +32,7 @@ export default function SubmissionMemberCard(props: SubmissionMemberCardProps) {
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap',
                     }}
-                    data-cy='member-email'
+                    data-cy='requested-email'
                 >
                     {props.email}
                 </Typography>
@@ -45,11 +43,7 @@ export default function SubmissionMemberCard(props: SubmissionMemberCardProps) {
                         alignItems: 'center',
                     }}
                 >
-                    <Typography sx={{ pt: 1, pr: 2 }} data-cy='member-role'>
-                        {props.role}
-                    </Typography>
                     <IconButton
-                        disabled={!props.isRemovable}
                         size='small'
                         sx={{ mt: 1, backgroundColor: '#F5F5F5' }}
                         onClick={() => handleClick(props.email)}

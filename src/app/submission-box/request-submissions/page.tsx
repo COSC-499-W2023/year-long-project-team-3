@@ -15,13 +15,13 @@ import { getEmailRegex } from '@/utils/verification'
 import { Add } from '@mui/icons-material'
 import Button from '@mui/material/Button'
 import BackButton from '@/components/BackButton'
-import MemberCard from '@/components/SubmissionMemberCard'
+import SubmissionRequestedCard from 'src/components/SubmissionRequestedCard'
 
 interface FormValues {
     email: string
 }
 
-export default function SubmissionBoxAddMembersPage() {
+export default function SubmissionBoxRequestSubmissionsPage() {
     const session = useSession()
     const router = useRouter()
 
@@ -39,10 +39,13 @@ export default function SubmissionBoxAddMembersPage() {
         email: yup
             .string()
             .default('') // set default for checking inside onBlur and errors
-            .required('To add a member, enter their email') // this will show up as a help text, not an error
+            .required('To request a submission from someone, enter their email') // this will show up as a help text, not an error
             .matches(getEmailRegex(), 'Enter a valid email')
-            .test('unique', 'This member has already been added!', function (value) {
-                return !emails.includes(value) && value !== ownerEmail
+            .test('not-own-email', 'You cannot add your own email!', function (value) {
+                return value !== ownerEmail
+            })
+            .test('unique', 'This email has already been added!', function (value) {
+                return !emails.includes(value)
             }),
     })
 
@@ -74,11 +77,15 @@ export default function SubmissionBoxAddMembersPage() {
                         width: '50%',
                     }}
                 >
-                    <ProgressDots activeStep={1} numSteps={3} labels={['Settings', 'Add Members', 'Create']} />
+                    <ProgressDots
+                        activeStep={1}
+                        numSteps={3}
+                        labels={['Settings', 'Request Submissions', 'Review & Create']}
+                    />
                 </Box>
                 <Box display='flex' width='100%' flexDirection='column' alignItems='center' sx={{ pt: 3 }}>
                     <Typography data-cy='title' variant='h4' sx={{ fontWeight: 'medium' }}>
-                        Add Members
+                        Request Submissions
                     </Typography>
                     <form onSubmit={formik.handleSubmit} noValidate>
                         <Box
@@ -90,7 +97,7 @@ export default function SubmissionBoxAddMembersPage() {
                                 flexDirection: 'row',
                                 alignItems: 'center',
                                 minWidth: 'md',
-                                '& .MuiTextField-root': { my: 1.5, mx: 2, minWidth: '20rem', width: '100%' },
+                                '& .MuiTextField-root': { my: 1.5, mx: 2, minWidth: '22rem', width: '100%' },
                             }}
                         >
                             <TextField
@@ -119,28 +126,21 @@ export default function SubmissionBoxAddMembersPage() {
                             </IconButton>
                         </Box>
                     </form>
-                    {/* This is a scrollable container for member cards */}
+                    {/* This is a scrollable container for submission request cards */}
                     <Box
                         sx={{
                             maxHeight: '17rem',
                             height: '17rem',
+                            width: '27rem',
                             overflow: 'auto',
                             p: 2,
                             backgroundColor: '#F5F5F5',
                             borderRadius: 12,
                         }}
                     >
-                        {/* This is the owner card, it cannot be removed */}
-                        <MemberCard email={ownerEmail} role={'Owner'} isRemovable={false} removeEmail={removeEmail} />
-                        {/* Add new cards for added members and allow removal */}
+                        {/* Add new cards for added submission requests and allow removal */}
                         {emails.map((email, index) => (
-                            <MemberCard
-                                key={index}
-                                email={email}
-                                role={'Member'}
-                                isRemovable={true}
-                                removeEmail={removeEmail}
-                            />
+                            <SubmissionRequestedCard key={index} email={email} removeEmail={removeEmail} />
                         ))}
                     </Box>
                     <Button
@@ -165,8 +165,7 @@ export default function SubmissionBoxAddMembersPage() {
     }
 
     async function handleNext() {
-        // TODO: send members data to API and do some error checking here
-        emails.push(ownerEmail)
+        // TODO: send emails for submission requests to API and do some error checking here
         console.log(emails)
         router.push('/submission-box/create')
     }

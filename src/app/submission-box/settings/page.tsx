@@ -57,7 +57,11 @@ export default function SubmissionBoxSettingsPage() {
                         width: '50%',
                     }}
                 >
-                    <ProgressDots activeStep={0} numSteps={3} labels={['Settings', 'Add Members', 'Create']} />
+                    <ProgressDots
+                        activeStep={0}
+                        numSteps={3}
+                        labels={['Settings', 'Request Submissions', 'Review & Create']}
+                    />
                 </Box>
                 <Box display='flex' width='100%' flexDirection='column' alignItems='center' sx={{ pt: 3 }}>
                     <Typography data-cy='title' variant='h4' sx={{ fontWeight: 'medium' }}>
@@ -126,7 +130,7 @@ export default function SubmissionBoxSettingsPage() {
                                 }}
                             >
                                 <Typography sx={{ textAlign: 'center' }}>
-                                    You will be able to add members to your box in the next step!
+                                    You will be able to request submissions to your box in the next step!
                                 </Typography>
                             </Alert>
                         </Box>
@@ -139,7 +143,7 @@ export default function SubmissionBoxSettingsPage() {
     async function handleSubmit() {
         try {
             // TODO: send form data to API and do some error checking here
-            router.push('/submission-box/add-members')
+            router.push('/submission-box/request-submissions')
             router.refresh()
         } catch (err) {
             const errMessage = JSON.stringify(err, Object.getOwnPropertyNames(err))
