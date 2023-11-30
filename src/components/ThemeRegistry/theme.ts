@@ -43,7 +43,7 @@ export const theme: Theme = createTheme({
             textTransform: 'none',
         },
     },
-    shape: {
-        borderRadius: 100,
-    },
+    // shape: {
+    //     borderRadius: 100,
+    // },
 })
