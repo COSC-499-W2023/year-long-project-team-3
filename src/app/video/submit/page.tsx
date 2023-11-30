@@ -14,18 +14,7 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff'
 import { useFormik } from 'formik'
 import { ObjectSchema } from 'yup'
 import * as yup from 'yup'
-
-const ITEM_HEIGHT = 48
-const ITEM_PADDING_TOP = 8
-const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250,
-            borderRadius: '0 0 8px 8px',
-        },
-    },
-}
+import { toast } from 'react-toastify'
 
 type FormValues = {
     videoTitle: string
@@ -54,36 +43,28 @@ export default function SubmitVideoPage() {
     })
 
     const [isSubmitVideoPageVisible, setIsSubmitVideoPageVisible] = useState(false)
-    const [isUploadingVideo, setIsUploadingVideo] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     // Submission boxes
     const [selectedSubmissionBoxes, setSelectedSubmissionBoxes] = useState<SubmissionBox[]>([])
-    const [unSelectedSubmissionBoxes, setUnSelectedSubmissionBoxes] = useState<SubmissionBox[]>([
-        {
-            id: '123',
-            title: 'Lmao lmao',
-            createdAt: new Date(),
-            description: 'Lmao lmao desc',
-            closesAt: new Date(),
-            isPublic: true,
-            videoStoreToDate: new Date(),
-            maxVideoLength: 1000,
-        },
-        {
-            id: '1234',
-            title: 'Lmao lmao 123',
-            createdAt: new Date(),
-            description: 'Lmao lmao desc',
-            closesAt: new Date(),
-            isPublic: true,
-            videoStoreToDate: new Date(),
-            maxVideoLength: 1000,
-        },
-    ])
+    const [unSelectedSubmissionBoxes, setUnSelectedSubmissionBoxes] = useState<SubmissionBox[]>([])
 
     useEffect(() => {
         if (status === 'authenticated') {
             setIsSubmitVideoPageVisible(true)
+
+            setIsLoading(true)
+            fetchSubmissionInbox()
+                .then((submissionBoxes: SubmissionBox[]) => {
+                    setUnSelectedSubmissionBoxes(submissionBoxes)
+                })
+                .catch((err) => {
+                    toast(err)
+                })
+                .finally(() => {
+                    setIsLoading(false)
+                })
+
         } else if (status === 'unauthenticated') {
             cleanPageState()
             router.push('/login')
@@ -108,7 +89,7 @@ export default function SubmitVideoPage() {
 
     return (
         <>
-            <PageLoadProgress show={isUploadingVideo} />
+            <PageLoadProgress show={isLoading} />
             {isSubmitVideoPageVisible && (
                 <>
                     <Header {...session} />
@@ -264,15 +245,16 @@ export default function SubmitVideoPage() {
                                     )}
                                     MenuProps={MenuProps}
                                 >
-                                    {unSelectedSubmissionBoxes.map((submissionBox) => (
-                                        <MenuItem
-                                            key={submissionBox.id}
-                                            value={submissionBox.title}
-                                            onClick={() => handleClickSubmissionBoxListItem(submissionBox.id)}
-                                        >
-                                            {submissionBox.title}
-                                        </MenuItem>
-                                    ))}
+                                    {unSelectedSubmissionBoxes?.length > 0 &&
+                                        unSelectedSubmissionBoxes.map((submissionBox) => (
+                                            <MenuItem
+                                                key={submissionBox.id}
+                                                value={submissionBox.title}
+                                                onClick={() => handleClickSubmissionBoxListItem(submissionBox.id)}
+                                            >
+                                                {submissionBox.title}
+                                            </MenuItem>
+                                        ))}
                                 </Select>
                             </Box>
                         </Box>
@@ -283,7 +265,7 @@ export default function SubmitVideoPage() {
     )
 
     function cleanPageState() {
-        setIsUploadingVideo(false)
+        setIsLoading(false)
     }
 
     function handleClickSubmissionBoxListItem(submissionBoxId: string) {
@@ -319,4 +301,25 @@ export default function SubmitVideoPage() {
     function handleSubmitVideo(values: FormValues) {
         console.log(values)
     }
+
+    async function fetchSubmissionInbox(): Promise<SubmissionBox[]> {
+        const res = await fetch('/api/submission-box/inboxes')
+        if (res.status !== 200) {
+            throw new Error('Failed to fetch submission boxes')
+        }
+        const { submissionBoxes } = await res.json()
+        return submissionBoxes
+    }
+}
+
+const ITEM_HEIGHT = 48
+const ITEM_PADDING_TOP = 8
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+            borderRadius: '0 0 8px 8px',
+        },
+    },
 }
