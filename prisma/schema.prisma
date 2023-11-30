@@ -20,6 +20,8 @@ model User {
   whitelistedVideos      VideoWhitelistedUser[]
   requestedSubmissions   RequestedSubmission[]
   managedSubmissionBoxes SubmissionBoxManager[]
+
+  @@index([email])
 }
 
 model Account {
