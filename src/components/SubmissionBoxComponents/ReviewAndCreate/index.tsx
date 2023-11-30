@@ -2,13 +2,14 @@ import { Box, Chip } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import React from 'react'
 import TextField from '@mui/material/TextField'
+import dayjs from 'dayjs'
 
 // TODO: Implement this component (right now it's only a bare bones version for testing)
 
 type ReviewAndCreateData = {
     title: string
     description: string | undefined
-    closingDate: Date | undefined
+    closingDate: string
     emails: string[]
 }
 
@@ -58,7 +59,7 @@ export default function ReviewAndCreate({ title, description, closingDate, email
                         type='date'
                         label='Closing Date'
                         name='closingDate'
-                        value={closingDate}
+                        value={dayjs(closingDate)}
                         data-cy='closing-date'
                     />
                 )}

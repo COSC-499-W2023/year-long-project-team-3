@@ -1,6 +1,6 @@
 'use client'
 
-import React, { FormEvent, useState } from 'react'
+import React, { useState } from 'react'
 import { useMultiStepForm } from '@/utils/useMultiStepForm'
 import Settings from '@/components/SubmissionBoxComponents/Settings'
 import RequestSubmission from '@/components/SubmissionBoxComponents/RequestSubmission'
@@ -18,14 +18,14 @@ import { useRouter } from 'next/navigation'
 type FormData = {
     title: string
     description: string | undefined
-    closingDate: Date | undefined
+    closingDate: string
     emails: string[]
 }
 
 const INITIAL_DATA: FormData = {
     title: '',
     description: '',
-    closingDate: undefined,
+    closingDate: '',
     emails: [],
 }
 
