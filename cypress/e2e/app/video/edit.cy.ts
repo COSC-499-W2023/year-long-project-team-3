@@ -1,12 +1,10 @@
 import { describe } from 'mocha'
 import { v4 as uuidv4 } from 'uuid'
 
-describe.skip('Test video editing page', () => {
-    // Skipping this test because we need video id for this
-
+describe('Test video editing page', () => {
     context('Not logged in', () => {
         beforeEach(() => {
-            cy.visit('/video/edit')
+            cy.visit('/video/edit/randomVideoId')
         })
 
         it('should redirect to login', () => {
@@ -14,7 +12,9 @@ describe.skip('Test video editing page', () => {
         })
     })
 
-    context('Logged in', () => {
+
+    // Skip this because there is no way to retrieve the video ID from the DB
+    context.skip('Logged in', () => {
         beforeEach(() => {
             cy.session('testuser', () => {
                 const email = 'user' + uuidv4() + '@example.com'
