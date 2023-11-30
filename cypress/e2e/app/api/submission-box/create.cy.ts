@@ -56,7 +56,7 @@ describe('Test submission box creation API', () => {
             const title = 'Test title ' + uuidv4()
             const requestedEmails = ['example@test.com', 'example99@test.com']
             const description = 'this is a test-generated submission box'
-            const closingDate = new Date()
+            const closesAt = new Date()
 
             cy.request({
                 method: 'POST',
@@ -64,7 +64,7 @@ describe('Test submission box creation API', () => {
                 body: {
                     title,
                     description,
-                    closingDate,
+                    closesAt,
                     requestedEmails,
                 },
             }).then((response) => {
@@ -73,7 +73,7 @@ describe('Test submission box creation API', () => {
                 expect(data).to.exist
                 expect(data.title).to.eq(title)
                 expect(data.description).to.eq(description)
-                expect(JSON.stringify(data.closesAt)).to.eq(JSON.stringify(closingDate))
+                expect(JSON.stringify(data.closesAt)).to.eq(JSON.stringify(closesAt))
             })
         })
 

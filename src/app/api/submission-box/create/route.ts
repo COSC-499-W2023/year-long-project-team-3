@@ -6,7 +6,7 @@ import { getEmailRegex } from '@/utils/verification'
 interface FormValues {
     title: string
     description?: string | undefined
-    closingDate?: Date | undefined
+    closesAt?: Date | undefined
     requestedEmails: string[]
 }
 
@@ -33,7 +33,7 @@ function validateRequest(data: any): data is FormValues {
     if (data.description && typeof data.description != 'string') {
         return false
     }
-    return !(data.closingDate && isNaN(Date.parse(data.closingDate)))
+    return !(data.closesAt && isNaN(Date.parse(data.closesAt)))
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
@@ -51,8 +51,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         }
 
         // Make the date field an actual date
-        if (reqData.closingDate) {
-            reqData.closingDate = new Date(reqData.closingDate)
+        if (reqData.closesAt) {
+            reqData.closesAt = new Date(reqData.closesAt)
         }
 
         // Create submission box
@@ -60,7 +60,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             data: {
                 title: reqData.title,
                 description: reqData.description ?? null,
-                closesAt: reqData.closingDate ?? null,
+                closesAt: reqData.closesAt ?? null,
             },
         })
         const submissionBoxId = newSubmissionBox.id
