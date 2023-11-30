@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { FormEvent, useState } from 'react'
 import { useMultiStepForm } from '@/utils/useMultiStepForm'
 import Settings from '@/components/SubmissionBoxComponents/Settings'
 import RequestSubmission from '@/components/SubmissionBoxComponents/RequestSubmission'
@@ -97,7 +97,7 @@ export default function SubmissionBox() {
                             variant='contained'
                             sx={{ mt: 2, px: 5, fontSize: 15, borderRadius: 28, textTransform: 'capitalize' }}
                             data-cy='next'
-                            onClick={next}
+                            onClick={handleNext}
                         >
                             {isLastStep ? 'Create' : 'Next'}
                         </Button>
@@ -107,11 +107,11 @@ export default function SubmissionBox() {
         </>
     )
 
-    // function onSubmit(e: FormEvent) {
-    //     e.preventDefault() // default is refreshing
-    //     if (!isLastStep) {
-    //         return next()
-    //     }
-    //     alert('Successful Account Creation')
-    // }
+    function handleNext() {
+        if (!isLastStep) {
+            return next()
+        }
+        // TODO: call the api to create a submission box
+        console.log(data)
+    }
 }
