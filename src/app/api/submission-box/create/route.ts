@@ -8,6 +8,9 @@ interface FormValues {
     description?: string | undefined
     closesAt?: Date | undefined
     requestedEmails: string[]
+    videoStoreToDate?: Date | undefined
+    maxVideoLength?: number | undefined
+    isPublic?: boolean | undefined
 }
 
 function validateRequest(data: any): data is FormValues {
@@ -33,7 +36,18 @@ function validateRequest(data: any): data is FormValues {
     if (data.description && typeof data.description != 'string') {
         return false
     }
-    return !(data.closesAt && isNaN(Date.parse(data.closesAt)))
+    if (data.closesAt && isNaN(Date.parse(data.closesAt))) {
+        return false
+    }
+    if (data.videoStoreToDate && isNaN(Date.parse(data.closesAt))) {
+        return false
+    }
+    if (data.maxVideoLength && isNaN(parseFloat(data.maxVideoLength))) {
+        return false
+    }
+    return !(
+        data.isPublic && !(typeof data.isPublic == 'boolean' || data.isPublic == 'true' || data.isPublic == 'false')
+    )
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
@@ -61,6 +75,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
                 title: reqData.title,
                 description: reqData.description ?? null,
                 closesAt: reqData.closesAt ?? null,
+                videoStoreToDate: reqData.videoStoreToDate ?? null,
+                maxVideoLength: reqData.maxVideoLength ?? null,
+                isPublic: reqData.isPublic,
             },
         })
         const submissionBoxId = newSubmissionBox.id
