@@ -3,6 +3,7 @@ import Typography from '@mui/material/Typography'
 import React from 'react'
 import TextField from '@mui/material/TextField'
 import dayjs from 'dayjs'
+import { DateTimePicker } from '@mui/x-date-pickers'
 
 // TODO: Implement this component (right now it's only a bare bones version for testing)
 
@@ -51,25 +52,16 @@ export default function ReviewAndCreate({ title, description, closingDate, email
                         data-cy='description'
                     />
                 )}
-                {closingDate && (
-                    <TextField
-                        disabled
-                        margin='normal'
-                        variant='outlined'
-                        type='date'
-                        label='Closing Date'
-                        name='closingDate'
-                        value={dayjs(closingDate)}
-                        data-cy='closing-date'
-                    />
-                )}
+                {closingDate && <DateTimePicker disabled label='Closing Date' value={dayjs(closingDate)} />}
 
-                <Box sx={{ width: '27rem' }}>
-                    <Typography>Requested Emails:</Typography>
-                    {emails.map((email, index) => (
-                        <Chip key={index} label={email} sx={{ m: 0.5, ml: 0 }} />
-                    ))}
-                </Box>
+                {emails.length > 0 && (
+                    <Box sx={{ width: '27rem' }}>
+                        <Typography>Requested Emails:</Typography>
+                        {emails.map((email, index) => (
+                            <Chip key={index} label={email} sx={{ m: 0.5, ml: 0 }} />
+                        ))}
+                    </Box>
+                )}
             </Box>
         </>
     )
