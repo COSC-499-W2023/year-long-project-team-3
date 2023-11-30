@@ -44,4 +44,6 @@ export default defineConfig({
             reportTitle: 'Component Tests',
         },
     },
+    video: true,
+    screenshotOnRunFailure: true,
 })

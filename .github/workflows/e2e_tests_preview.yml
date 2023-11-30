@@ -45,7 +45,7 @@ jobs:
                 run: |
                     echo "${{ secrets.ENV_PREVIEW }}" > .env
             -   name: Migrate Database
-                run: npx prisma migrate dev &> prisma_migrate.log
+                run: npx prisma migrate deploy &> prisma_migrate.log
 
 
 
@@ -63,18 +63,33 @@ jobs:
                     echo "${{ secrets.ENV_PREVIEW }}" > .env
             -   name: Cypress Run E2E Tests
                 uses: cypress-io/github-action@v6
-                continue-on-error: true
                 env:
                     GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
                 with:
                     wait-on: ${{ secrets.CYPRESS_BASE_URL }}
                     browser: chrome
                     config: baseUrl=${{ secrets.CYPRESS_BASE_URL }}
+            -   name: Upload screenshots
+                uses: actions/upload-artifact@v3
+                if: failure()
+                with:
+                    name: cypress-screenshots
+                    path: cypress/screenshots
+                    if-no-files-found: ignore
+            -   name: Upload videos
+                uses: actions/upload-artifact@v3
+                if: failure()
+                with:
+                    name: cypress-videos
+                    path: cypress/videos
+                    if-no-files-found: ignore
             -   name: Save cypress outputs
+                if: always()
                 id: save-cypress-outputs
                 run: |
                     echo "PR_ID=$CYPRESS_PULL_REQUEST_ID" >> $GITHUB_OUTPUT
             -   name: Upload test results
+                if: always()
                 uses: actions/upload-artifact@v3
                 with:
                     name: e2e-test-results

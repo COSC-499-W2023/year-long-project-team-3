@@ -35,6 +35,7 @@ const nextConfig = () => {
             awsAccessKeyId: process.env.AWS_ACCESS_KEY_ID,
             awsSecretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
             awsSessionToken: process.env.AWS_SESSION_TOKEN,
+            cloudfrontDistributionId: process.env.CLOUDFRONT_DISTRUBUTION_ID,
         }
     }
 
