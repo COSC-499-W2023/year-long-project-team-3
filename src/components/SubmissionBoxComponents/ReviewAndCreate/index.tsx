@@ -62,7 +62,7 @@ export default function ReviewAndCreate({ title, description, closingDate, email
                 )}
 
                 {emails.length > 0 && (
-                    <Box sx={{ width: '27rem' }}>
+                    <Box sx={{ width: '20rem' }}>
                         <Typography>Requested Emails:</Typography>
                         {emails.map((email, index) => (
                             <Chip key={index} label={email} sx={{ m: 0.5, ml: 0 }} />
