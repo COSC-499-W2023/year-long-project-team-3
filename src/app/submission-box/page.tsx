@@ -18,14 +18,14 @@ import { useRouter } from 'next/navigation'
 type FormData = {
     title: string
     description: string | undefined
-    closingDate: string
+    closingDate: Date | null | undefined
     emails: string[]
 }
 
 const INITIAL_DATA: FormData = {
     title: '',
     description: '',
-    closingDate: '',
+    closingDate: null,
     emails: [],
 }
 

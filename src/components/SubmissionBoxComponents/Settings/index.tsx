@@ -11,7 +11,7 @@ import dayjs from 'dayjs'
 type SettingsData = {
     title: string
     description: string | undefined
-    closingDate: string
+    closingDate: Date | null | undefined
 }
 
 type SettingsFormProps = SettingsData & {
@@ -84,10 +84,10 @@ export default function Settings({ title, description, closingDate, updateFields
                 <DateTimePicker
                     disablePast
                     label='Closing Date'
-                    value={dayjs(formik.values.closingDate)}
+                    value={formik.values.closingDate ? dayjs(formik.values.closingDate) : null}
                     onChange={(newDate) => {
                         formik.handleChange
-                        updateFields({ closingDate: newDate ? newDate.toString() : '' })
+                        updateFields({ closingDate: newDate ? newDate.toDate() : null })
                     }}
                 />
             </Box>
@@ -108,5 +108,5 @@ const validationSchema: ObjectSchema<SettingsData> = yup.object().shape({
     title: yup.string().required('Please enter a title for your submission box'),
     description: yup.string(),
     // only future dates can be chosen due to disablePast on DateTimePicker
-    closingDate: yup.string().default(''),
+    closingDate: yup.date().nullable(),
 })

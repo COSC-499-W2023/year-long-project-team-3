@@ -9,7 +9,7 @@ import dayjs from 'dayjs'
 type ReviewAndCreateData = {
     title: string
     description: string | undefined
-    closingDate: string
+    closingDate: Date | null | undefined
     emails: string[]
 }
 
