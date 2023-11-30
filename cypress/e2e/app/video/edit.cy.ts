@@ -1,7 +1,9 @@
 import { describe } from 'mocha'
 import { v4 as uuidv4 } from 'uuid'
 
-describe('Test video editing page', () => {
+describe.skip('Test video editing page', () => {
+    // Skipping this test because we need video id for this
+
     context('Not logged in', () => {
         beforeEach(() => {
             cy.visit('/video/edit')

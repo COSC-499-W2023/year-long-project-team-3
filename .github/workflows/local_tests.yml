@@ -1,4 +1,4 @@
-name: Cypress Component Tests
+name: Cypress Local Tests
 
 on:
     push:
@@ -61,7 +61,7 @@ jobs:
                     name: component-test-results
                     path: cypress/reports/components/components*.json
 
-    results-report:
+    component-results-report:
         name: Report component test results
         runs-on: ubuntu-latest
         if: always()
@@ -84,6 +84,80 @@ jobs:
                 continue-on-error: true
                 env:
                     PR_ID: ${{ needs.cypress-component.outputs.PR_ID || github.event.number }}
+                with:
+                    issue-number: ${{ env.PR_ID }}
+                    body-path: cypress/reports/test_results.md
+                    token: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
+
+    cypress-e2e:
+        name: Cypress Run E2E Tests on GitHub machine
+        runs-on: ubuntu-latest
+        needs: [ run-lint ]
+        steps:
+            -   uses: actions/checkout@v4
+            -   uses: actions/setup-node@v3
+                with:
+                    node-version: '18.18.0'
+            -   name: Write environment variables
+                run: |
+                    echo "${{ secrets.ENV_TEST_LOCAL }}" > .env
+                    echo "" > cypress.config.json
+            -   name: Run E2E Tests
+                uses: cypress-io/github-action@v6
+                env:
+                    CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+                    GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
+                with:
+                    build: npm run build
+                    start: npm run start
+                    install: false
+                    browser: chrome
+                    wait-on: ${{ secrets.CYPRESS_BASE_URL }}
+                    config: baseUrl=${{ secrets.CYPRESS_BASE_URL }}
+            -   name: Save cypress video
+                if: failure()
+                uses: actions/upload-artifact@v3
+                with:
+                    name: cypress-videos
+                    path: cypress/videos
+                    if-no-files-found: ignore
+            -   name: Save cypress screenshots
+                if: failure()
+                uses: actions/upload-artifact@v3
+                with:
+                    name: cypress-screenshots
+                    path: cypress/screenshots
+                    if-no-files-found: ignore
+            -   name: Upload test results
+                if: always()
+                uses: actions/upload-artifact@v3
+                with:
+                    name: e2e-test-results
+                    path: cypress/reports/e2e/e2e*.json
+
+    e2e-results-report:
+        name: Report E2E test results
+        runs-on: ubuntu-latest
+        if: always()
+        needs: [ cypress-e2e ]
+        steps:
+            -   uses: actions/checkout@v4
+            -   name: Download test results
+                uses: actions/download-artifact@v3
+                with:
+                    name: e2e-test-results
+                    path: cypress/reports
+            -   name: Merge reports to 1 report file
+                run: |
+                    npx mochawesome-merge cypress/reports/*.json > cypress/reports/test_results.json
+            -   name: Convert report file to markdown
+                run: |
+                    npx mochawesome-json-to-md@0.7.2 -p cypress/reports/test_results.json -o cypress/reports/test_results.md --reportTitle="E2E Test Results (Local)"
+            -   name: Create report and post on PR
+                uses: peter-evans/create-or-update-comment@v3
+                continue-on-error: true
+                env:
+                    PR_ID: ${{ needs.cypress-e2e.outputs.PR_ID }}
                 with:
                     issue-number: ${{ env.PR_ID }}
                     body-path: cypress/reports/test_results.md
