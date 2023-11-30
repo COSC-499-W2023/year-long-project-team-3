@@ -73,7 +73,7 @@ export default function SubmissionBox() {
                 >
                     <ProgressDots activeStep={currentStepIndex} numSteps={steps.length} labels={stepTitles} />
                 </Box>
-                <Box display='flex' width='100%' flexDirection='column' alignItems='center' sx={{ pt: 3 }}>
+                <Box display='flex' width='100%' flexDirection='column' alignItems='center'>
                     <Typography data-cy='title' variant='h4' sx={{ fontWeight: 'medium' }}>
                         {currentStepTitle}
                     </Typography>

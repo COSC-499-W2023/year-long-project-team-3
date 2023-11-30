@@ -20,7 +20,8 @@ export default function ReviewAndCreate({ title, description, closingDate, email
             <Box
                 gap={1}
                 sx={{
-                    p: 5,
+                    pt: 5,
+                    pb: 2,
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
@@ -32,7 +33,7 @@ export default function ReviewAndCreate({ title, description, closingDate, email
                     disabled
                     margin='normal'
                     variant='outlined'
-                    type='title'
+                    type='text'
                     label='Title'
                     name='title'
                     value={title}
@@ -43,13 +44,14 @@ export default function ReviewAndCreate({ title, description, closingDate, email
                         disabled
                         margin='normal'
                         variant='outlined'
-                        type='description'
+                        type='text'
                         label='Description'
                         name='description'
                         multiline
                         rows={4}
                         value={description}
                         data-cy='description'
+                        sx={{ '& .MuiOutlinedInput-root': { borderRadius: 0.3 } }} // this is needed to override the borderRadius: 100 in the theme
                     />
                 )}
                 {closingDate && (

@@ -104,7 +104,8 @@ export default function RequestSubmission({ emails, updateFields }: RequestSubmi
                     overflow: 'auto',
                     p: 2,
                     backgroundColor: '#F5F5F5',
-                    borderRadius: 12,
+                    borderRadius: 0.3, // this is needed to override the borderRadius: 100 in the theme
+                    mb: 5,
                 }}
             >
                 {/* Add new cards for added submission requests and allow removal */}

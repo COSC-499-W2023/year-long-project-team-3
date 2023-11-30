@@ -1,7 +1,6 @@
 import TextField from '@mui/material/TextField'
 import { DateTimePicker } from '@mui/x-date-pickers'
 import React from 'react'
-import logger from '@/utils/logger'
 import { ObjectSchema } from 'yup'
 import * as yup from 'yup'
 import { useFormik } from 'formik'
@@ -27,7 +26,7 @@ export default function Settings({ title, description, closingDate, updateFields
         },
         validationSchema: validationSchema,
         // TODO: properly implement handleSubmit
-        onSubmit: (values: SettingsData) => handleSubmit(values),
+        onSubmit: () => {},
     })
 
     return (
@@ -46,7 +45,7 @@ export default function Settings({ title, description, closingDate, updateFields
                 <TextField
                     margin='normal'
                     variant='outlined'
-                    type='title'
+                    type='text'
                     label='Title'
                     name='title'
                     value={formik.values.title}
@@ -64,7 +63,7 @@ export default function Settings({ title, description, closingDate, updateFields
                 <TextField
                     margin='normal'
                     variant='outlined'
-                    type='description'
+                    type='text'
                     label='Description (optional)'
                     name='description'
                     multiline
@@ -80,6 +79,7 @@ export default function Settings({ title, description, closingDate, updateFields
                     FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
                     helperText={formik.touched.description && formik.errors.description}
                     data-cy='description'
+                    sx={{ '& .MuiOutlinedInput-root': { borderRadius: 0.3 } }} // this is needed to override the borderRadius: 100 in the theme
                 />
                 <DateTimePicker
                     disablePast
@@ -93,15 +93,6 @@ export default function Settings({ title, description, closingDate, updateFields
             </Box>
         </>
     )
-
-    async function handleSubmit(values: SettingsData) {
-        try {
-            // TODO: send form data to API and do some error checking here
-        } catch (err) {
-            const errMessage = JSON.stringify(err, Object.getOwnPropertyNames(err))
-            logger.error(errMessage)
-        }
-    }
 }
 
 const validationSchema: ObjectSchema<SettingsData> = yup.object().shape({
