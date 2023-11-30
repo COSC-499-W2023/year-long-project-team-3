@@ -7,43 +7,21 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import React, { useEffect, useState } from 'react'
 import logger from '@/utils/logger'
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
+import SubmissionBoxList from '@/components/SubmissionBoxList'
 
 export default function SubmissionInboxPage() {
     const session = useSession()
-    const [submissionInboxes, setSubmissionInboxes] = useState([
-        {
-            id: 123,
-            title: 'null',
-            description: null,
-            createdAt: null,
-            closesAt: null,
-            videoStoreToDate: null,
-            maxVideoLength: null,
-            isPublic: false,
-        },
-        {
-            id: 1234,
-            title: 'This is cool',
-            description: null,
-            createdAt: null,
-            closesAt: 'Jan 18th 2023',
-            videoStoreToDate: null,
-            maxVideoLength: null,
-            isPublic: false,
-        },
-    ])
+    const [submissionInboxes, setSubmissionInboxes] = useState([])
     const [hasSubmissions, setHasSubmissions] = useState(false)
 
     useEffect(() => {
         async function fetchSubmissionInboxes() {
             const response = await fetch('/api/submission-box/inboxes')
             const submissionInboxes = await response.json()
-            if (submissionInboxes.length > 0) {
-                setSubmissionInboxes(submissionInboxes)
+            if (submissionInboxes.length < 0) {
                 setHasSubmissions(true)
             }
+            setSubmissionInboxes(submissionInboxes)
             // TODO: Handle retrieved submission inboxes
         }
 
@@ -70,16 +48,8 @@ export default function SubmissionInboxPage() {
                         border={1}
                         borderColor={'textSecondary'}
                     >
-                        <List sx={{maxHeight: 600, overflow: 'auto', position: 'relative', pl: 1, pr: 1 }}>
-                            {submissionInboxes.map((submissionBox, id: React.Key) => (
-                                <ListItem key={id}>
-                                    <Box sx = {{ p: 1,  background: 'grey', borderRadius: 1, width: '100%' }} borderColor={'textSecondary'} display='grid' gridTemplateColumns='3fr 1fr' alignItems='center'>
-                                        <Typography sx = {{ p: 1, color: 'textSecondary', fontWeight: 'bold' }}>{submissionBox.title}</Typography>
-                                        <Typography sx = {{ p: 1, color: 'textSecondary' }}>Close Date: {submissionBox.closesAt}</Typography>
-                                    </Box>
-                                </ListItem>
-                            ))}
-                        </List>
+                        {!hasSubmissions && <Typography>No submissions</Typography>}
+                        {hasSubmissions && <SubmissionBoxList submissionBoxes={submissionInboxes} />}
                     </Box>
                 </Box>
             </Box>
