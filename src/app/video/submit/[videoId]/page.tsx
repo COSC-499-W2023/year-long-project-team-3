@@ -1,11 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
 import PageLoadProgress from '@/components/PageLoadProgress'
 import Header from '@/components/Header'
-import { Box, Select, Typography, Chip, MenuItem } from '@mui/material'
+import { Box, Select, Typography, Chip, MenuItem, Button } from '@mui/material'
 import ProgressDots from '@/components/ProgressDots'
 import { SubmissionBox, Video } from '@prisma/client'
 import Image from 'next/image'
@@ -16,6 +16,8 @@ import { ObjectSchema } from 'yup'
 import * as yup from 'yup'
 import { toast } from 'react-toastify'
 import logger from '@/utils/logger'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 
 type FormValues = {
     videoTitle: string
@@ -41,7 +43,7 @@ export default function SubmitVideoPage() {
             videoDescription: '',
         },
         validationSchema: validationSchema,
-        onSubmit: (values: FormValues) => handleSubmitVideo(values),
+        onSubmit: () => handleSubmitVideo(),
         validateOnChange: false,
         validateOnBlur: true,
     })
@@ -86,7 +88,7 @@ export default function SubmitVideoPage() {
             .finally(() => {
                 setIsLoading(false)
             })
-    }, [videoId, isSubmitVideoPageVisible])
+    }, [videoId, isSubmitVideoPageVisible, router])
 
     return (
         <>
@@ -259,6 +261,24 @@ export default function SubmitVideoPage() {
                                 </Select>
                             </Box>
                         </Box>
+                        <Box
+                            display='flex'
+                            justifyContent='space-between'
+                            width='50vw'
+                            position='absolute'
+                            bottom='6rem'
+                        >
+                            <Button variant={'contained'} startIcon={<ArrowBackIcon />} onClick={handleClickBackButton}>
+                                Back
+                            </Button>
+                            <Button
+                                variant={'contained'}
+                                startIcon={<ArrowForwardIcon />}
+                                onClick={() => formik.handleSubmit()}
+                            >
+                                Submit
+                            </Button>
+                        </Box>
                     </Box>
                 </>
             )}
@@ -299,8 +319,45 @@ export default function SubmitVideoPage() {
         }
     }
 
-    function handleSubmitVideo(values: FormValues) {
-        console.log(values)
+    function handleSubmitVideo() {
+        if (selectedSubmissionBoxes.length === 0) {
+            toast.warn('Please select at least one submission box')
+            return
+        }
+
+        const { videoTitle, videoDescription } = formik.values
+        const submissionBoxIds = selectedSubmissionBoxes.map((sb) => sb.id)
+
+        const body = {
+            videoTitle,
+            videoDescription,
+            submissionBoxIds,
+            videoId: video?.id,
+        }
+
+        setIsLoading(true)
+        fetch('/api/video/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+        })
+            .then(async (res) => {
+                if (res.status !== 201) {
+                    throw new Error('Failed to submit the video')
+                }
+                const body = await res.json()
+                setIsLoading(false)
+                toast.success(body.message)
+                router.push('/dashboard')
+            })
+            .catch((err) => {
+                logger.error(err)
+                toast.error('Unexpected error occurred while submitting the video')
+            }).finally(() => {
+                setIsLoading(false)
+            })
     }
 
     async function fetchSubmissionInbox(): Promise<SubmissionBox[]> {
@@ -319,6 +376,10 @@ export default function SubmitVideoPage() {
         }
         const { video } = await res.json()
         return video
+    }
+
+    function handleClickBackButton() {
+        router.back()
     }
 }
 
