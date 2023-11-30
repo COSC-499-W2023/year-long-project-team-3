@@ -11,6 +11,9 @@ import { SubmissionBox, Video } from '@prisma/client'
 import Image from 'next/image'
 import TextField from '@mui/material/TextField'
 import HighlightOffIcon from '@mui/icons-material/HighlightOff'
+import { useFormik } from 'formik'
+import { ObjectSchema } from 'yup'
+import * as yup from 'yup'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -23,10 +26,32 @@ const MenuProps = {
         },
     },
 }
+
+type FormValues = {
+    videoTitle: string
+    videoDescription?: string
+}
+
 export default function SubmitVideoPage() {
     const session = useSession()
     const { status } = session
     const router = useRouter()
+
+    const validationSchema: ObjectSchema<FormValues> = yup.object().shape({
+        videoTitle: yup.string().required('Title required'),
+        videoDescription: yup.string().default(''),
+    })
+
+    const formik = useFormik<FormValues>({
+        initialValues: {
+            videoTitle: '',
+            videoDescription: '',
+        },
+        validationSchema: validationSchema,
+        onSubmit: (values: FormValues) => handleSubmitVideo(values),
+        validateOnChange: false,
+        validateOnBlur: true,
+    })
 
     const [isSubmitVideoPageVisible, setIsSubmitVideoPageVisible] = useState(false)
     const [isUploadingVideo, setIsUploadingVideo] = useState(false)
@@ -109,21 +134,35 @@ export default function SubmitVideoPage() {
                         <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
                             <Box display='flex'>
                                 <Box width={300} height={200} display='flex' alignItems='start' justifyContent='end'>
-                                    <Image
-                                        src={video.thumbnail as string}
-                                        alt={video.title}
-                                        width={0}
-                                        height={0}
-                                        objectPosition={'100% 0'}
-                                        objectFit={'cover'}
-                                        style={{
-                                            borderRadius: 20,
-                                            maxWidth: '21vw',
-                                            maxHeight: '14vw',
-                                            width: '100%',
-                                            height: '100%',
-                                        }}
-                                    />
+                                    {!!video.thumbnail ? (
+                                        <Image
+                                            src={video.thumbnail}
+                                            alt={video.title}
+                                            width={0}
+                                            height={0}
+                                            objectPosition={'100% 0'}
+                                            objectFit={'cover'}
+                                            style={{
+                                                borderRadius: 20,
+                                                maxWidth: '21vw',
+                                                maxHeight: '14vw',
+                                                width: '100%',
+                                                height: '100%',
+                                            }}
+                                        />
+                                    ) : (
+                                        <Box
+                                            component='span'
+                                            sx={{
+                                                borderRadius: '20px',
+                                                maxWidth: '21vw',
+                                                maxHeight: '14vw',
+                                                width: '100%',
+                                                height: '100%',
+                                                backgroundColor: 'grey',
+                                            }}
+                                        />
+                                    )}
                                 </Box>
                                 <Box
                                     display='flex'
@@ -134,7 +173,7 @@ export default function SubmitVideoPage() {
                                 >
                                     <Box>
                                         <TextField
-                                            id='video-title'
+                                            id='videoTitle'
                                             label='Title'
                                             placeholder='Your video title'
                                             variant='standard'
@@ -142,11 +181,16 @@ export default function SubmitVideoPage() {
                                                 minWidth: '16rem',
                                             }}
                                             InputLabelProps={{ shrink: true }}
+                                            value={formik.values.videoTitle}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            error={formik.touched.videoTitle && Boolean(formik.errors.videoTitle)}
+                                            helperText={formik.touched.videoTitle && formik.errors.videoTitle}
                                         />
                                     </Box>
                                     <Box>
                                         <TextField
-                                            id='video-description'
+                                            id='videoDescription'
                                             label='Description'
                                             placeholder='Your video description (optional)'
                                             variant='standard'
@@ -166,6 +210,16 @@ export default function SubmitVideoPage() {
                                             multiline
                                             rows={6}
                                             InputLabelProps={{ shrink: true }}
+                                            value={formik.values.videoDescription}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            error={
+                                                formik.touched.videoDescription &&
+                                                Boolean(formik.errors.videoDescription)
+                                            }
+                                            helperText={
+                                                formik.touched.videoDescription && formik.errors.videoDescription
+                                            }
                                         />
                                     </Box>
                                 </Box>
@@ -260,5 +314,9 @@ export default function SubmitVideoPage() {
             newUnSelectedSubmissionBoxes.push(selectedSubmissionBoxes[submissionBoxIdx])
             setUnSelectedSubmissionBoxes(newUnSelectedSubmissionBoxes)
         }
+    }
+
+    function handleSubmitVideo(values: FormValues) {
+        console.log(values)
     }
 }

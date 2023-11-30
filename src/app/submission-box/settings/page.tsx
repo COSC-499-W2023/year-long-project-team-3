@@ -16,7 +16,7 @@ import * as yup from 'yup'
 import { useRouter } from 'next/navigation'
 import BackButton from '@/components/BackButton'
 
-interface FormValues {
+type FormValues = {
     title: string
     description: string | undefined
     closingDate: Date | undefined

@@ -17,7 +17,7 @@ import Button from '@mui/material/Button'
 import BackButton from '@/components/BackButton'
 import SubmissionRequestedCard from 'src/components/SubmissionRequestedCard'
 
-interface FormValues {
+type FormValues = {
     email: string
 }
 
@@ -54,7 +54,7 @@ export default function SubmissionBoxRequestSubmissionsPage() {
             email: '',
         },
         validationSchema: validationSchema,
-        onSubmit: (values: { email: string }) => handleSubmit(values),
+        onSubmit: (values: FormValues) => handleSubmit(values),
     })
 
     return (
@@ -170,7 +170,7 @@ export default function SubmissionBoxRequestSubmissionsPage() {
         router.push('/submission-box/review-and-create')
     }
 
-    async function handleSubmit(values: { email: string }) {
+    async function handleSubmit(values: FormValues) {
         setEmails([...emails, values.email])
         formik.resetForm()
     }
