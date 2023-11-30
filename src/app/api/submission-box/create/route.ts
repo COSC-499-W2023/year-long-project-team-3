@@ -43,7 +43,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
 
-        const reqData = await req.json()
+        const reqData = await req.json().catch(() => {
+            return NextResponse.json({ error: 'Invalid Request' }, { status: 400 })
+        })
         if (!validateRequest(reqData)) {
             return NextResponse.json({ error: 'Invalid Request' }, { status: 400 })
         }
