@@ -1,6 +1,40 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import prisma from '@/lib/prisma'
+import { getEmailRegex } from '@/utils/verification'
+
+interface FormValues {
+    title: string
+    description?: string | undefined
+    closingDate?: Date | undefined
+    requestedEmails: string[]
+}
+
+function validateRequest(data: any): data is FormValues {
+    if (!data) {
+        return false
+    }
+    if (!data.title || typeof data.title != 'string') {
+        return false
+    }
+    if (!data.requestedEmails) {
+        return false
+    } else {
+        try {
+            const emailRegex = getEmailRegex()
+            const hasNonStringEmail = data.requestedEmails.some((x: any) => !emailRegex.test(x))
+            if (hasNonStringEmail) {
+                return false
+            }
+        } catch (err) {
+            return false
+        }
+    }
+    if (data.description && typeof data.description != 'string') {
+        return false
+    }
+    return !(data.closingDate && isNaN(Date.parse(data.closingDate)))
+}
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
@@ -9,52 +43,76 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
 
-        // Get request data
-        const formData = await req.formData()
-        let data = Object.fromEntries(formData.entries())
-
-        // Validate request fields
-        if (!data || !data.title || typeof data.title !== 'string') {
+        const reqData = await req.json()
+        if (!validateRequest(reqData)) {
             return NextResponse.json({ error: 'Invalid Request' }, { status: 400 })
         }
 
-        if (!data.invites) {
-            return NextResponse.json({ error: 'Invalid Request' }, { status: 400 })
+        // Make the date field an actual date
+        if (reqData.closingDate) {
+            reqData.closingDate = new Date(reqData.closingDate)
         }
 
-        if (data.description && typeof data.desciption !== 'string') {
-            return NextResponse.json({ error: 'Invalid Request' }, { status: 400 })
-        }
-
-        if (data.closingDate && typeof data.closingDate !== 'string') {
-            return NextResponse.json({ error: 'Invalid Request' }, { status: 400 })
-        }
-
-        // Create submusion box
+        // Create submission box
         const newSubmissionBox = await prisma.submissionBox.create({
             data: {
-                title: data.title,
-                ...data,
+                title: reqData.title,
+                description: reqData.description ?? null,
+                closesAt: reqData.closingDate ?? null,
             },
         })
         const submissionBoxId = newSubmissionBox.id
 
+        // Get any users that already exist
+        let existingUsers: Record<string, string> = {}
+        if (reqData.requestedEmails.length > 0) {
+            const users = await prisma.user.findMany({
+                select: {
+                    id: true,
+                    email: true,
+                },
+                where: {
+                    email: {
+                        in: reqData.requestedEmails,
+                    },
+                },
+            })
+
+            // Convert the array of users to an object for faster lookups
+            existingUsers = users.reduce((dict: Record<string, string>, user) => {
+                dict[user.email] = user.id
+                return dict
+            }, {})
+        }
+
         // Create submission requests
-        const requests = await prisma.requestedSubmission.createMany({
-            data: (data.invites as string[]).map((email) => {
-                return { email: email, submissionBoxId: submissionBoxId }
+        await prisma.requestedSubmission.createMany({
+            data: reqData.requestedEmails.map((email) => {
+                return {
+                    email: email,
+                    userId: existingUsers[email] ?? null,
+                    submissionBoxId: submissionBoxId,
+                }
             }),
         })
 
         // Add logged-in user as manager
-        const ownerUserId = prisma.user.findUniqueOrThrow({
+        const owner = await prisma.user.findUniqueOrThrow({
             where: {
                 email: session.user?.email!,
             },
         })
 
-        return NextResponse.json({ data: data }, { status: 201 })
+        await prisma.submissionBoxManager.create({
+            data: {
+                userId: owner.id,
+                viewPermission: 'owner',
+                submissionBoxId: submissionBoxId,
+            },
+        })
+
+        return NextResponse.json(newSubmissionBox, { status: 201 })
     } catch (err) {
-        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+        return NextResponse.json({ error: 'Internal Server Error' + err }, { status: 500 })
     }
 }
