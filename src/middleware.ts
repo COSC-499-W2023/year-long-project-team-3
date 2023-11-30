@@ -4,7 +4,7 @@ import logger from '@/utils/logger'
 import { getServerSession } from 'next-auth'
 
 export default withAuth(
-    async function middleware(request: NextRequest) {
+    function middleware(request: NextRequest) {
         if (request.nextUrl.pathname.startsWith('/api')) {
             logger.info(`API request: ${ request.nextUrl.pathname }`)
             return NextResponse.next()

@@ -264,9 +264,9 @@ export default function SubmitVideoPage() {
                         <Box
                             display='flex'
                             justifyContent='space-between'
-                            width='50vw'
+                            width='70vw'
                             position='absolute'
-                            bottom='6rem'
+                            bottom='4rem'
                         >
                             <Button variant={'contained'} startIcon={<ArrowBackIcon />} onClick={handleClickBackButton}>
                                 Back
@@ -348,9 +348,8 @@ export default function SubmitVideoPage() {
                     throw new Error('Failed to submit the video')
                 }
                 const body = await res.json()
-                setIsLoading(false)
-                toast.success(body.message)
                 router.push('/dashboard')
+                toast.success(body.message)
             })
             .catch((err) => {
                 logger.error(err)
