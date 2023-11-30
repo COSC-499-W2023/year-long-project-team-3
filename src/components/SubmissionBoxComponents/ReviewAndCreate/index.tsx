@@ -52,7 +52,14 @@ export default function ReviewAndCreate({ title, description, closingDate, email
                         data-cy='description'
                     />
                 )}
-                {closingDate && <DateTimePicker disabled label='Closing Date' value={dayjs(closingDate)} />}
+                {closingDate && (
+                    <DateTimePicker
+                        disabled
+                        label='Closing Date'
+                        value={dayjs(closingDate)}
+                        asp-format='{0:yyyy-MM-dd}' // DOM error without this
+                    />
+                )}
 
                 {emails.length > 0 && (
                     <Box sx={{ width: '27rem' }}>
