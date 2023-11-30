@@ -11,6 +11,9 @@ import { Box, Button } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import ProgressDots from '@/components/ProgressDots'
 import Typography from '@mui/material/Typography'
+import logger from '@/utils/logger'
+import { toast } from 'react-toastify'
+import { useRouter } from 'next/navigation'
 
 type FormData = {
     title: string
@@ -28,6 +31,8 @@ const INITIAL_DATA: FormData = {
 
 export default function SubmissionBox() {
     const session = useSession()
+    const router = useRouter()
+
     const [data, setData] = useState(INITIAL_DATA)
 
     function updateFields(fields: Partial<FormData>) {
@@ -111,7 +116,33 @@ export default function SubmissionBox() {
         if (!isLastStep) {
             return next()
         }
-        // TODO: call the api to create a submission box
-        console.log(data)
+        handleCreate().then()
+    }
+
+    // TODO: adapt once api has been implemented
+    async function handleCreate() {
+        try {
+            const response = await fetch('api/submission-box/create', {
+                method: 'POST',
+                body: JSON.stringify({
+                    title: data.title,
+                    description: data.description,
+                    closingDate: data.closingDate,
+                    requestedEmails: data.emails,
+                }),
+            })
+
+            const submissionBoxInfo = await response.json()
+            if (response.status == 201) {
+                logger.info(`Submission box with title ${ submissionBoxInfo.title } successfully created`)
+                router.push('/dashboard')
+                router.refresh()
+            } else {
+                toast.error(submissionBoxInfo.error)
+            }
+        } catch (err) {
+            const errMessage = JSON.stringify(err, Object.getOwnPropertyNames(err))
+            logger.error(errMessage)
+        }
     }
 }
