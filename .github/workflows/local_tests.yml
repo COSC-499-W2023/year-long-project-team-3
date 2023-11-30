@@ -110,7 +110,7 @@ jobs:
                 with:
                     build: npm run build
                     start: npm run start
-                    install: false
+                    install: true
                     browser: chrome
                     wait-on: ${{ secrets.CYPRESS_BASE_URL }}
                     config: baseUrl=${{ secrets.CYPRESS_BASE_URL }}
