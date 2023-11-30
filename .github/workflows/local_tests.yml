@@ -81,6 +81,7 @@ jobs:
                     npx mochawesome-json-to-md@0.7.2 -p cypress/reports/test_results.json -o cypress/reports/test_results.md --reportTitle="Component Test Results"
             -   name: Create report and post on PR
                 uses: peter-evans/create-or-update-comment@v3
+                continue-on-error: true
                 env:
                     PR_ID: ${{ needs.cypress-component.outputs.PR_ID || github.event.number }}
                 with:
@@ -150,6 +151,7 @@ jobs:
                     npx mochawesome-json-to-md@0.7.2 -p cypress/reports/test_results.json -o cypress/reports/test_results.md --reportTitle="E2E Test Results"
             -   name: Create report and post on PR
                 uses: peter-evans/create-or-update-comment@v3
+                continue-on-error: true
                 env:
                     PR_ID: ${{ needs.cypress-e2e.outputs.PR_ID }}
                 with:
