@@ -1,10 +1,7 @@
 import { Box, Icon, IconButton } from '@mui/material'
-import ProgressDots from '@/components/ProgressDots'
-import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
 import { Add } from '@mui/icons-material'
 import SubmissionRequestedCard from '@/components/SubmissionRequestedCard'
-import Button from '@mui/material/Button'
 import React from 'react'
 import { ObjectSchema } from 'yup'
 import * as yup from 'yup'
@@ -29,11 +26,9 @@ export default function RequestSubmission({ emails, updateFields }: RequestSubmi
 
     const ownerEmail: string = session.data?.user?.email!
 
-    // const [emails, setEmails] = useState<string[]>([])
-
     const removeEmail = (emailToRemove: string) => {
         const updatedEmails = emails.filter((email) => email !== emailToRemove)
-        // setEmails(updatedEmails)
+        updateFields({ emails: updatedEmails })
         formik.setTouched({}, false)
     }
 
@@ -81,7 +76,9 @@ export default function RequestSubmission({ emails, updateFields }: RequestSubmi
                         label='Email Address'
                         name='email'
                         value={formik.values.email}
-                        onChange={formik.handleChange}
+                        onChange={(e) => {
+                            formik.handleChange(e)
+                        }}
                         onBlur={() => handleBlur()}
                         error={
                             formik.touched.email && Boolean(formik.errors.email) && Boolean(formik.values.email !== '') // error only when email not empty
@@ -115,14 +112,6 @@ export default function RequestSubmission({ emails, updateFields }: RequestSubmi
                     <SubmissionRequestedCard key={index} email={email} removeEmail={removeEmail} />
                 ))}
             </Box>
-            {/*<Button*/}
-            {/*    variant='contained'*/}
-            {/*    sx={{ mt: 5, px: 5, fontSize: 15, borderRadius: 28, textTransform: 'capitalize' }}*/}
-            {/*    onClick={() => handleNext()}*/}
-            {/*    data-cy='next'*/}
-            {/*>*/}
-            {/*    Next*/}
-            {/*</Button>*/}
         </>
     )
 
@@ -134,13 +123,8 @@ export default function RequestSubmission({ emails, updateFields }: RequestSubmi
         }
     }
 
-    async function handleNext() {
-        // TODO: send emails for submission requests to API and do some error checking here
-        console.log(emails)
-    }
-
     async function handleSubmit(values: { email: string }) {
-        // setEmails([...emails, values.email])
+        updateFields({ emails: [...emails, values.email] })
         formik.resetForm()
     }
 }
