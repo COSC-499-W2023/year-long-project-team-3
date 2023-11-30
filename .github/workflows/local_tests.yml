@@ -88,6 +88,8 @@ jobs:
                     issue-number: ${{ env.PR_ID }}
                     body-path: cypress/reports/test_results.md
                     token: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
+                    wait-on: ${{ secrets.CYPRESS_BASE_URL }}
+                    config: baseUrl=${{ secrets.CYPRESS_BASE_URL }}
 
     cypress-e2e:
         name: Cypress Run E2E Tests on GitHub machine
@@ -110,6 +112,8 @@ jobs:
                 with:
                     install: true
                     browser: chrome
+                    wait-on: ${{ secrets.CYPRESS_BASE_URL }}
+                    config: baseUrl=${{ secrets.CYPRESS_BASE_URL }}
             -   name: Save cypress video
                 if: failure()
                 uses: actions/upload-artifact@v3
@@ -148,7 +152,7 @@ jobs:
                     npx mochawesome-merge cypress/reports/*.json > cypress/reports/test_results.json
             -   name: Convert report file to markdown
                 run: |
-                    npx mochawesome-json-to-md@0.7.2 -p cypress/reports/test_results.json -o cypress/reports/test_results.md --reportTitle="E2E Test Results"
+                    npx mochawesome-json-to-md@0.7.2 -p cypress/reports/test_results.json -o cypress/reports/test_results.md --reportTitle="E2E Test Results (Local)"
             -   name: Create report and post on PR
                 uses: peter-evans/create-or-update-comment@v3
                 continue-on-error: true
