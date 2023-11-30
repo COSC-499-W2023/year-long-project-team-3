@@ -1,5 +1,4 @@
 'use client'
-import type { InferGetStaticPropsType, GetStaticProps, GetStaticPaths } from 'next'
 import React, { useEffect, useState } from 'react'
 import Header from '@/components/Header'
 import { SessionContextValue, useSession } from 'next-auth/react'
@@ -10,9 +9,11 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import EditorTools from '@/components/EditorTools'
 import { useRouter, usePathname } from 'next/navigation'
+import PageLoadProgress from '@/components/PageLoadProgress'
 
 export default function VideoPreviewPage() {
     const session: SessionContextValue = useSession()
+    const { status } = session
     const router = useRouter()
     const pathname = usePathname()
 
@@ -20,6 +21,7 @@ export default function VideoPreviewPage() {
     const [isEditVideoPageVisible, setIsEditVideoPageVisible] = useState(false)
     const [streamingVideoUrl, setStreamingVideoUrl] = useState<string>('')
     const [isVideoVisible, setIsVideoVisible] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     const videoId = pathname.split('/').pop()
 
@@ -51,7 +53,8 @@ export default function VideoPreviewPage() {
             return
         }
 
-        fetch(`/api/video/${ videoId }`)
+        setIsLoading(true)
+        fetch(`/api/video/streamable/${ videoId }`)
             .then(async (res) => {
                 if (res.status !== 200) {
                     throw new Error('Could not fetch video')
@@ -65,9 +68,11 @@ export default function VideoPreviewPage() {
                 cleanUpVideoState()
                 router.push('/dashboard')
             })
+            .finally(() => {
+                setIsLoading(false)
+            })
     }, [router, videoId, isEditVideoPageVisible])
 
-    const { status } = session
     useEffect(() => {
         if (status === 'authenticated') {
             setIsEditVideoPageVisible(true)
@@ -89,7 +94,9 @@ export default function VideoPreviewPage() {
     }, [])
 
     return (
-        isEditVideoPageVisible && (
+        <>
+            <PageLoadProgress show={isLoading} />
+            isEditVideoPageVisible && (
             <>
                 <Box
                     sx={{
@@ -196,10 +203,10 @@ export default function VideoPreviewPage() {
                                             width: '100%',
                                         }}
                                     >
-                                        <Button variant={'contained'} startIcon={<ArrowBackIcon />}>
+                                        <Button variant={'contained'} startIcon={<ArrowBackIcon />} onClick={handleClickBackButton}>
                                             Back
                                         </Button>
-                                        <Button variant={'contained'} endIcon={<ArrowForwardIcon />}>
+                                        <Button variant={'contained'} endIcon={<ArrowForwardIcon />} onClick={handleClickContinueButton}>
                                             Continue
                                         </Button>
                                     </Box>
@@ -219,11 +226,20 @@ export default function VideoPreviewPage() {
                     </Box>
                 </Box>
             </>
-        )
+            )
+        </>
     )
 
     function cleanUpVideoState() {
         setStreamingVideoUrl('')
         setIsVideoVisible(false)
+    }
+
+    function handleClickContinueButton() {
+        router.push(`/video/submit/${ videoId }`)
+    }
+
+    function handleClickBackButton() {
+        router.back()
     }
 }

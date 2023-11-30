@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import PageLoadProgress from '@/components/PageLoadProgress'
 import Header from '@/components/Header'
 import { Box, Select, Typography, Chip, MenuItem } from '@mui/material'
@@ -15,6 +15,7 @@ import { useFormik } from 'formik'
 import { ObjectSchema } from 'yup'
 import * as yup from 'yup'
 import { toast } from 'react-toastify'
+import logger from '@/utils/logger'
 
 type FormValues = {
     videoTitle: string
@@ -25,6 +26,9 @@ export default function SubmitVideoPage() {
     const session = useSession()
     const { status } = session
     const router = useRouter()
+    const pathname = usePathname()
+
+    const videoId = pathname.split('/').pop()
 
     const validationSchema: ObjectSchema<FormValues> = yup.object().shape({
         videoTitle: yup.string().required('Title required'),
@@ -44,6 +48,7 @@ export default function SubmitVideoPage() {
 
     const [isSubmitVideoPageVisible, setIsSubmitVideoPageVisible] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
+    const [video, setVideo] = useState<Video>()
 
     // Submission boxes
     const [selectedSubmissionBoxes, setSelectedSubmissionBoxes] = useState<SubmissionBox[]>([])
@@ -52,19 +57,6 @@ export default function SubmitVideoPage() {
     useEffect(() => {
         if (status === 'authenticated') {
             setIsSubmitVideoPageVisible(true)
-
-            setIsLoading(true)
-            fetchSubmissionInbox()
-                .then((submissionBoxes: SubmissionBox[]) => {
-                    setUnSelectedSubmissionBoxes(submissionBoxes)
-                })
-                .catch((err) => {
-                    toast(err)
-                })
-                .finally(() => {
-                    setIsLoading(false)
-                })
-
         } else if (status === 'unauthenticated') {
             cleanPageState()
             router.push('/login')
@@ -73,24 +65,33 @@ export default function SubmitVideoPage() {
         }
     }, [router, status])
 
-    const video: Video = {
-        id: '123',
-        title: 'Mock Video',
-        description: 'This is a mock video',
-        thumbnail: 'https://via.placeholder.com/640x360',
-        rawVideoUrl: 'https://via.placeholder.com/640x360',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        processedVideoUrl: 'https://via.placeholder.com/640x360',
-        isCloudProcessed: true,
-        s3Key: '123',
-        ownerId: '123',
-    }
+    useEffect(() => {
+        if (!videoId || !isSubmitVideoPageVisible) {
+            cleanPageState()
+            return
+        }
+
+        setIsLoading(true)
+        Promise.all([fetchSubmissionInbox(), fetchVideo(videoId)])
+            .then(([submissionBoxes, video]: [SubmissionBox[], Video]) => {
+                setUnSelectedSubmissionBoxes(submissionBoxes)
+                setVideo(video)
+            })
+            .catch((err) => {
+                logger.error(err)
+                toast.error('There is an unexpected error occurred!')
+                cleanPageState()
+                router.push('/dashboard')
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
+    }, [videoId, isSubmitVideoPageVisible])
 
     return (
         <>
             <PageLoadProgress show={isLoading} />
-            {isSubmitVideoPageVisible && (
+            {isSubmitVideoPageVisible && !!video && (
                 <>
                     <Header {...session} />
                     <Box
@@ -309,6 +310,15 @@ export default function SubmitVideoPage() {
         }
         const { submissionBoxes } = await res.json()
         return submissionBoxes
+    }
+
+    async function fetchVideo(videoId: string): Promise<Video> {
+        const res = await fetch(`/api/video/${ videoId }`)
+        if (res.status !== 200) {
+            throw new Error('Failed to fetch video')
+        }
+        const { video } = await res.json()
+        return video
     }
 }
 
