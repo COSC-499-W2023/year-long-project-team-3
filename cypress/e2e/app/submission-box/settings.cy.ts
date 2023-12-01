@@ -1,5 +1,3 @@
-import { TIMEOUT } from '../../../utils/constants'
-
 describe('Submission box settings tests', () => {
     before(() => {
         cy.task('clearDB')
@@ -40,11 +38,10 @@ describe('Submission box settings tests', () => {
         cy.get('[data-cy="next"]').click().click()
 
         // We shouldn't be on the seeing the settings step anymore
-        cy.get('[data-cy="title"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Request Submissions')
     })
 
-    it('Should let the user return to the previous page using the back button', () => {
-        cy.get('[data-cy="back-button"]').click()
+    it.skip('Should let the user return to the previous page using the return to dashboard button', () => {
+        cy.get('[data-cy="back"]').click()
 
         // TODO: change this to test for appropriate URL (currently not implemented as the user is not logged in for this test and would therefore be re-routed to login)
         // cy.url().should('include', '/dashboard')

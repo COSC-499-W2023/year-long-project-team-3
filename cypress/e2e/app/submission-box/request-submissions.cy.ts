@@ -114,9 +114,18 @@ describe('Submission box request submissions tests', () => {
             .and('contain', 'This email has already been added!')
     })
 
-    it('Should let the user return to the previous page using the back button', () => {
+    it.skip('Should let the user return to the previous page using the return to dashboard button', () => {
         cy.get('[data-cy="back-button"]').click()
 
-        cy.url().should('include', '/submission-box/settings')
+        // TODO: change this to test for appropriate URL (currently not implemented as the user is not logged in for this test and would therefore be re-routed to login)
+        // cy.url().should('include', '/dashboard')
+    })
+
+    it('Should let the user return to the previous step using the back button', () => {
+        cy.get('[data-cy="back"]').click()
+
+        cy.url().should('include', '/submission-box')
+
+        cy.get('[data-cy="title"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Box Settings')
     })
 })

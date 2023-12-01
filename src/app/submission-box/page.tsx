@@ -56,7 +56,8 @@ export default function SubmissionBox() {
     return (
         <>
             <Header {...session} />
-            <BackButton route={'/dashboard '} /> {/* TODO: make this route to correct page */}
+            <BackButton route={'/dashboard '} title={'Return to Dashboard'} />{' '}
+            {/* TODO: make this route to correct page */}
             <Box
                 sx={{
                     display: 'flex',
