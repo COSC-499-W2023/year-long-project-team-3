@@ -2,9 +2,9 @@
 
 import React, { useState } from 'react'
 import { useMultiStepForm } from '@/utils/useMultiStepForm'
-import Settings, { validationSchema as settingsValidationSchema } from '@/components/SubmissionBoxComponents/Settings'
-import RequestSubmission from '@/components/SubmissionBoxComponents/RequestSubmission'
-import ReviewAndCreate from '@/components/SubmissionBoxComponents/ReviewAndCreate'
+import SubmissionBoxSettings, { validationSchema as settingsValidationSchema } from 'src/components/SubmissionBoxSettings'
+import SubmissionBoxRequestSubmission from 'src/components/SubmissionBoxRequestSubmission'
+import SubmissionBoxReviewAndCreate from 'src/components/SubmissionBoxReviewAndCreate'
 import Header from '@/components/Header'
 import BackButton from '@/components/BackButton'
 import { Box, Button } from '@mui/material'
@@ -28,7 +28,7 @@ export default function SubmissionBox() {
     const { steps, currentStepIndex, step, stepTitles, currentStepTitle, isFirstStep, isLastStep, back, next } =
         useMultiStepForm(
             [
-                <Settings
+                <SubmissionBoxSettings
                     key='step1'
                     title={title}
                     setTitle={setTitle}
@@ -39,8 +39,8 @@ export default function SubmissionBox() {
                     isTitleError={isTitleError}
                     setIsTitleError={setIsTitleError}
                 />,
-                <RequestSubmission key='step2' emails={emails} setEmails={setEmails} />,
-                <ReviewAndCreate
+                <SubmissionBoxRequestSubmission key='step2' emails={emails} setEmails={setEmails} />,
+                <SubmissionBoxReviewAndCreate
                     key='step3'
                     title={title}
                     description={description}
@@ -48,7 +48,7 @@ export default function SubmissionBox() {
                     emails={emails}
                 />,
             ],
-            ['Settings', 'Request Submissions', 'Review & Create']
+            ['SubmissionBoxSettings', 'Request Submissions', 'Review & Create']
         )
 
     return (

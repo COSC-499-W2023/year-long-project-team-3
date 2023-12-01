@@ -14,7 +14,7 @@ type ReviewAndCreateData = {
     emails: string[]
 }
 
-export default function ReviewAndCreate({ title, description, closingDate, emails }: ReviewAndCreateData) {
+export default function SubmissionBoxReviewAndCreate({ title, description, closingDate, emails }: ReviewAndCreateData) {
     return (
         <>
             <Box

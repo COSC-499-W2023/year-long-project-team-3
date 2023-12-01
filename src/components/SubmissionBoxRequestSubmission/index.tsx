@@ -18,7 +18,7 @@ type RequestSubmissionProps = {
     setEmails: React.Dispatch<React.SetStateAction<string[]>>
 }
 
-export default function RequestSubmission({ emails, setEmails }: RequestSubmissionProps) {
+export default function SubmissionBoxRequestSubmission({ emails, setEmails }: RequestSubmissionProps) {
     const session = useSession()
 
     const ownerEmail: string = session.data?.user?.email!
