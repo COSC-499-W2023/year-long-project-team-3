@@ -93,6 +93,8 @@ jobs:
         name: Cypress Run E2E Tests on GitHub machine
         runs-on: ubuntu-latest
         needs: [ run-lint ]
+        outputs:
+            PR_ID: ${{ steps.save-cypress-outputs.outputs.PR_ID }}
         steps:
             -   uses: actions/checkout@v4
             -   uses: actions/setup-node@v3
