@@ -5,18 +5,23 @@ import { useSession } from 'next-auth/react'
 import Header from '@/components/Header'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import logger from '@/utils/logger'
+import SubmissionBoxList from '@/components/SubmissionBoxList'
 
 export default function SubmissionOutboxPage() {
     const session = useSession()
+    const [submissionOutboxes, setSubmissionOutboxes] = useState([])
+    const [hasSubmissions, setHasSubmissions] = useState(false)
 
     useEffect(() => {
         async function fetchSubmissionOutboxes() {
             const response = await fetch('/api/submission-box/outboxes')
             const submissionOutboxes = await response.json()
-            console.log(submissionOutboxes)
-            // TODO: Handle retrieved submission outboxes
+            if (submissionOutboxes.length > 0) {
+                setHasSubmissions(true)
+            }
+            setSubmissionOutboxes(submissionOutboxes)
         }
 
         fetchSubmissionOutboxes()
@@ -37,10 +42,13 @@ export default function SubmissionOutboxPage() {
                     </Typography>
                     <Box
                         component='section'
-                        sx={{ p: 2, borderTopLeftRadius: 25, borderBottomLeftRadius: 25, height: 1 }}
+                        sx={{ borderTopLeftRadius: 25, borderBottomLeftRadius: 25, height: 602 }}
                         border={1}
                         borderColor={'textSecondary'}
-                    />
+                    >
+                        {!hasSubmissions && <Typography variant='h5' align='center' color={'textSecondary'} sx={{mt: 20}}>You Have Not Submitted To Any Active Submission Boxes</Typography>}
+                        {hasSubmissions && <SubmissionBoxList submissionBoxes={submissionOutboxes} />}
+                    </Box>
                 </Box>
             </Box>
         </>

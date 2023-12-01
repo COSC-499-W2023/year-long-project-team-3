@@ -18,11 +18,10 @@ export default function SubmissionInboxPage() {
         async function fetchSubmissionInboxes() {
             const response = await fetch('/api/submission-box/inboxes')
             const submissionInboxes = await response.json()
-            if (submissionInboxes.length < 0) {
+            if (submissionInboxes.length > 0) {
                 setHasSubmissions(true)
             }
             setSubmissionInboxes(submissionInboxes)
-            // TODO: Handle retrieved submission inboxes
         }
 
         fetchSubmissionInboxes()
@@ -32,7 +31,6 @@ export default function SubmissionInboxPage() {
             })
     }, [])
 
-    console.log(submissionInboxes)
     return (
         <>
             <Header {...session} />
@@ -48,7 +46,7 @@ export default function SubmissionInboxPage() {
                         border={1}
                         borderColor={'textSecondary'}
                     >
-                        {!hasSubmissions && <Typography>No submissions</Typography>}
+                        {!hasSubmissions && <Typography variant='h5' align='center' color={'textSecondary'} sx={{mt: 20}}>You Do Not Have Any Active Submission Boxes</Typography>}
                         {hasSubmissions && <SubmissionBoxList submissionBoxes={submissionInboxes} />}
                     </Box>
                 </Box>
