@@ -2,8 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import prisma from '@/lib/prisma'
 import { getEmailRegex } from '@/utils/verification'
+import logger from '@/utils/logger'
 
-interface FormValues {
+type SubmissionBoxCreateData = {
     title: string
     description?: string | undefined
     closesAt?: Date | undefined
@@ -13,7 +14,7 @@ interface FormValues {
     isPublic?: boolean | undefined
 }
 
-function validateRequest(data: any): data is FormValues {
+function validateRequest(data: any): data is SubmissionBoxCreateData {
     if (!data) {
         return false
     }
@@ -25,7 +26,9 @@ function validateRequest(data: any): data is FormValues {
     } else {
         try {
             const emailRegex = getEmailRegex()
-            const hasNonStringEmail = data.requestedEmails.some((x: any) => !emailRegex.test(x))
+            const hasNonStringEmail = data.requestedEmails.some(
+                (x: any) => typeof x !== 'string' || !emailRegex.test(x)
+            )
             if (hasNonStringEmail) {
                 return false
             }
@@ -33,7 +36,7 @@ function validateRequest(data: any): data is FormValues {
             return false
         }
     }
-    if (data.description && typeof data.description != 'string') {
+    if (data.description && typeof data.description !== 'string') {
         return false
     }
     if (data.closesAt && isNaN(Date.parse(data.closesAt))) {
@@ -45,9 +48,14 @@ function validateRequest(data: any): data is FormValues {
     if (data.maxVideoLength && isNaN(parseFloat(data.maxVideoLength))) {
         return false
     }
-    return !(
-        data.isPublic && !(typeof data.isPublic == 'boolean' || data.isPublic == 'true' || data.isPublic == 'false')
-    )
+    // noinspection RedundantIfStatementJS
+    if (
+        data.isPublic &&
+        !(typeof data.isPublic === 'boolean' || data.isPublic === 'true' || data.isPublic === 'false')
+    ) {
+        return false
+    }
+    return true
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
@@ -73,17 +81,17 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         const newSubmissionBox = await prisma.submissionBox.create({
             data: {
                 title: reqData.title,
-                description: reqData.description ?? null,
-                closesAt: reqData.closesAt ?? null,
-                videoStoreToDate: reqData.videoStoreToDate ?? null,
-                maxVideoLength: reqData.maxVideoLength ?? null,
+                description: reqData.description,
+                closesAt: reqData.closesAt,
+                videoStoreToDate: reqData.videoStoreToDate,
+                maxVideoLength: reqData.maxVideoLength,
                 isPublic: reqData.isPublic,
             },
         })
         const submissionBoxId = newSubmissionBox.id
 
         // Get any users that already exist
-        let existingUsers: Record<string, string> = {}
+        let existingUsers: Record<string, string>
         if (reqData.requestedEmails.length > 0) {
             const users = await prisma.user.findMany({
                 select: {
@@ -98,9 +106,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             })
 
             // Convert the array of users to an object for faster lookups
-            existingUsers = users.reduce((dict: Record<string, string>, user) => {
-                dict[user.email] = user.id
-                return dict
+            existingUsers = users.reduce((userRecord: Record<string, string>, user) => {
+                userRecord[user.email] = user.id
+                return userRecord
             }, {})
         }
 
@@ -132,6 +140,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
         return NextResponse.json(newSubmissionBox, { status: 201 })
     } catch (err) {
-        return NextResponse.json({ error: 'Internal Server Error' + err }, { status: 500 })
+        logger.error(err)
+        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }
 }
