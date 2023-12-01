@@ -1,11 +1,11 @@
 import TextField from '@mui/material/TextField'
 import { DateTimePicker } from '@mui/x-date-pickers'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { ObjectSchema } from 'yup'
 import * as yup from 'yup'
 import { useFormik } from 'formik'
 import { Box } from '@mui/material'
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 
 type SettingsData = {
     title: string
@@ -14,10 +14,23 @@ type SettingsData = {
 }
 
 type SettingsFormProps = SettingsData & {
-    updateFields: (fields: Partial<SettingsData>) => void
+    setTitle: React.Dispatch<React.SetStateAction<string>>
+    setDescription: React.Dispatch<React.SetStateAction<string | undefined>>
+    setClosingDate: React.Dispatch<React.SetStateAction<Date | null | undefined>>
+    isTitleError: boolean
+    setIsTitleError: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function Settings({ title, description, closingDate, updateFields }: SettingsFormProps) {
+export default function Settings({
+    title,
+    setTitle,
+    description,
+    setDescription,
+    closingDate,
+    setClosingDate,
+    isTitleError,
+    setIsTitleError,
+}: SettingsFormProps) {
     const formik = useFormik<SettingsData>({
         initialValues: {
             title: title,
@@ -28,6 +41,30 @@ export default function Settings({ title, description, closingDate, updateFields
         // TODO: properly implement handleSubmit
         onSubmit: () => {},
     })
+
+    useEffect(() => {
+        if (!isTitleError || formik.touched.title) {
+            return
+        }
+        formik.setFieldTouched('title', true)
+        formik.setFieldError('title', isTitleError ? formik.errors.title : undefined)
+    }, [formik, isTitleError])
+
+    useEffect(() => {
+        if (!formik.touched.title) {
+            return
+        }
+        setTitle(formik.values.title)
+        setIsTitleError(formik.values.title?.length === 0)
+    }, [formik.touched.title, formik.values.title, setIsTitleError, setTitle])
+
+    useEffect(() => {
+        setDescription(formik.values.description)
+    }, [formik.values.description, setDescription])
+
+    useEffect(() => {
+        setClosingDate(formik.values.closingDate)
+    }, [formik.values.closingDate, setClosingDate])
 
     return (
         <>
@@ -49,10 +86,7 @@ export default function Settings({ title, description, closingDate, updateFields
                     label='Title'
                     name='title'
                     value={formik.values.title}
-                    onChange={(e) => {
-                        formik.handleChange(e)
-                        updateFields({ title: e.target.value })
-                    }}
+                    onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     error={formik.touched.title && Boolean(formik.errors.title)}
                     // this ensures the layout does not get shifted by the helper text
@@ -69,10 +103,7 @@ export default function Settings({ title, description, closingDate, updateFields
                     multiline
                     rows={4} // There is currently a bug with the multiline TextField which makes the TextField reload, see https://github.com/mui/material-ui/issues/38607
                     value={formik.values.description}
-                    onChange={(e) => {
-                        formik.handleChange(e)
-                        updateFields({ description: e.target.value })
-                    }}
+                    onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     error={formik.touched.description && Boolean(formik.errors.description)}
                     // this ensures the layout does not get shifted by the helper text
@@ -85,17 +116,14 @@ export default function Settings({ title, description, closingDate, updateFields
                     disablePast
                     label='Closing Date'
                     value={formik.values.closingDate ? dayjs(formik.values.closingDate) : null}
-                    onChange={(newDate) => {
-                        formik.handleChange
-                        updateFields({ closingDate: newDate ? newDate.toDate() : null })
-                    }}
+                    onChange={formik.handleChange}
                 />
             </Box>
         </>
     )
 }
 
-const validationSchema: ObjectSchema<SettingsData> = yup.object().shape({
+export const validationSchema: ObjectSchema<SettingsData> = yup.object().shape({
     title: yup.string().required('Please enter a title for your submission box'),
     description: yup.string(),
     // only future dates can be chosen due to disablePast on DateTimePicker

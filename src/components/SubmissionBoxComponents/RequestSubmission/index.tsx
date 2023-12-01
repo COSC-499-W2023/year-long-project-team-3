@@ -13,22 +13,19 @@ interface FormValues {
     email: string
 }
 
-type RequestSubmissionData = {
+type RequestSubmissionProps = {
     emails: string[]
+    setEmails: React.Dispatch<React.SetStateAction<string[]>>
 }
 
-type RequestSubmissionProps = RequestSubmissionData & {
-    updateFields: (fields: Partial<RequestSubmissionData>) => void
-}
-
-export default function RequestSubmission({ emails, updateFields }: RequestSubmissionProps) {
+export default function RequestSubmission({ emails, setEmails }: RequestSubmissionProps) {
     const session = useSession()
 
     const ownerEmail: string = session.data?.user?.email!
 
     const removeEmail = (emailToRemove: string) => {
         const updatedEmails = emails.filter((email) => email !== emailToRemove)
-        updateFields({ emails: updatedEmails })
+        setEmails(updatedEmails)
         formik.setTouched({}, false)
     }
 
@@ -51,7 +48,7 @@ export default function RequestSubmission({ emails, updateFields }: RequestSubmi
             email: '',
         },
         validationSchema: validationSchema,
-        onSubmit: (values: { email: string }) => handleSubmit(values),
+        onSubmit: (values: FormValues) => handleSubmit(values),
     })
 
     return (
@@ -124,8 +121,8 @@ export default function RequestSubmission({ emails, updateFields }: RequestSubmi
         }
     }
 
-    async function handleSubmit(values: { email: string }) {
-        updateFields({ emails: [...emails, values.email] })
+    async function handleSubmit(values: FormValues) {
+        setEmails([...emails, values.email])
         formik.resetForm()
     }
 }

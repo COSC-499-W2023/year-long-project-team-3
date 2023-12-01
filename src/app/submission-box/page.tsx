@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import { useMultiStepForm } from '@/utils/useMultiStepForm'
-import Settings from '@/components/SubmissionBoxComponents/Settings'
+import Settings, { validationSchema as settingsValidationSchema } from '@/components/SubmissionBoxComponents/Settings'
 import RequestSubmission from '@/components/SubmissionBoxComponents/RequestSubmission'
 import ReviewAndCreate from '@/components/SubmissionBoxComponents/ReviewAndCreate'
 import Header from '@/components/Header'
@@ -15,38 +15,38 @@ import logger from '@/utils/logger'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
 
-type FormData = {
-    title: string
-    description: string | undefined
-    closingDate: Date | null | undefined
-    emails: string[]
-}
-
-const INITIAL_DATA: FormData = {
-    title: '',
-    description: '',
-    closingDate: null,
-    emails: [],
-}
-
 export default function SubmissionBox() {
     const session = useSession()
     const router = useRouter()
 
-    const [data, setData] = useState(INITIAL_DATA)
-
-    function updateFields(fields: Partial<FormData>) {
-        setData((prev) => {
-            return { ...prev, ...fields }
-        })
-    }
+    const [title, setTitle] = useState('')
+    const [isTitleError, setIsTitleError] = useState(false)
+    const [description, setDescription] = useState<string | undefined>()
+    const [closingDate, setClosingDate] = useState<Date | null | undefined>()
+    const [emails, setEmails] = useState<string[]>([])
 
     const { steps, currentStepIndex, step, stepTitles, currentStepTitle, isFirstStep, isLastStep, back, next } =
         useMultiStepForm(
             [
-                <Settings key='step1' {...data} updateFields={updateFields} />,
-                <RequestSubmission key='step2' {...data} updateFields={updateFields} />,
-                <ReviewAndCreate key='step3' {...data} />,
+                <Settings
+                    key='step1'
+                    title={title}
+                    setTitle={setTitle}
+                    description={description}
+                    setDescription={setDescription}
+                    closingDate={closingDate}
+                    setClosingDate={setClosingDate}
+                    isTitleError={isTitleError}
+                    setIsTitleError={setIsTitleError}
+                />,
+                <RequestSubmission key='step2' emails={emails} setEmails={setEmails} />,
+                <ReviewAndCreate
+                    key='step3'
+                    title={title}
+                    description={description}
+                    closingDate={closingDate}
+                    emails={emails}
+                />,
             ],
             ['Settings', 'Request Submissions', 'Review & Create']
         )
@@ -112,9 +112,16 @@ export default function SubmissionBox() {
         </>
     )
 
-    function handleNext() {
+    async function handleNext() {
         if (!isLastStep) {
-            return next()
+            if (currentStepIndex === 0) {
+                const validationResult = await validateFormData()
+                setIsTitleError(!validationResult)
+                return next(validationResult)
+            }
+
+            // TODO: Handle other steps
+            return next(true)
         }
         handleCreate().then()
     }
@@ -125,10 +132,10 @@ export default function SubmissionBox() {
             const response = await fetch('api/submission-box/create', {
                 method: 'POST',
                 body: JSON.stringify({
-                    title: data.title,
-                    description: data.description,
-                    closingDate: data.closingDate,
-                    requestedEmails: data.emails,
+                    title: title,
+                    description: description,
+                    closingDate: closingDate,
+                    requestedEmails: emails,
                 }),
             })
 
@@ -144,5 +151,16 @@ export default function SubmissionBox() {
             const errMessage = JSON.stringify(err, Object.getOwnPropertyNames(err))
             logger.error(errMessage)
         }
+    }
+
+    function validateFormData() {
+        const formData = {
+            title,
+            description,
+            closingDate,
+            emails,
+        }
+
+        return settingsValidationSchema.isValid(formData)
     }
 }

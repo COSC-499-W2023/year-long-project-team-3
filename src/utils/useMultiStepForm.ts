@@ -1,9 +1,13 @@
 import { ReactElement, useState } from 'react'
+import { toast } from 'react-toastify'
 
 export function useMultiStepForm(steps: ReactElement[], stepTitles: string[]) {
     const [currentStepIndex, setCurrentStepIndex] = useState(0)
 
-    function next() {
+    function next(isStepValid: boolean) {
+        if (!isStepValid) {
+            return
+        }
         setCurrentStepIndex((i) => {
             if (i >= steps.length - 1) {
                 return i
@@ -21,7 +25,10 @@ export function useMultiStepForm(steps: ReactElement[], stepTitles: string[]) {
         })
     }
 
-    function goTo(index: number) {
+    function goTo(index: number, isStepValid: boolean) {
+        if (!isStepValid) {
+            return
+        }
         setCurrentStepIndex(index)
     }
 
