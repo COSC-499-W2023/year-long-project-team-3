@@ -20,7 +20,7 @@ export default function SubmissionBoxReviewAndCreate({ title, description, closi
             <Box
                 gap={1}
                 sx={{
-                    pt: 5,
+                    pt: 3,
                     pb: 2,
                     display: 'flex',
                     flexDirection: 'column',

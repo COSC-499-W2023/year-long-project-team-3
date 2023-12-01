@@ -50,7 +50,7 @@ export default function SubmissionBox() {
                     emails={emails}
                 />,
             ],
-            ['SubmissionBoxSettings', 'Request Submissions', 'Review & Create']
+            ['Box Settings', 'Request Submissions', 'Review & Create']
         )
 
     return (
@@ -75,7 +75,7 @@ export default function SubmissionBox() {
                 >
                     <ProgressDots activeStep={currentStepIndex} numSteps={steps.length} labels={stepTitles} />
                 </Box>
-                <Box display='flex' width='100%' flexDirection='column' alignItems='center'>
+                <Box sx={{ display: 'flex', width: '100%', flexDirection: 'column', alignItems: 'center', mt: 5 }}>
                     <Typography data-cy='title' variant='h4' sx={{ fontWeight: 'medium' }}>
                         {currentStepTitle}
                     </Typography>

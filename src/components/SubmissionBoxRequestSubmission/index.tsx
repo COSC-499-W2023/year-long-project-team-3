@@ -57,7 +57,7 @@ export default function SubmissionBoxRequestSubmission({ emails, setEmails }: Re
                 <Box
                     sx={{
                         px: 5,
-                        pt: 5,
+                        pt: 3,
                         pb: 3,
                         display: 'flex',
                         flexDirection: 'row',

@@ -70,7 +70,7 @@ export default function SubmissionBoxSettings({
             <Box
                 gap={1}
                 sx={{
-                    p: 5,
+                    p: 3,
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
