@@ -1,3 +1,5 @@
+import { TIMEOUT } from '../../../utils/constants'
+
 describe('Submission box request submissions tests', () => {
     before(() => {
         cy.task('clearDB')
@@ -5,20 +7,28 @@ describe('Submission box request submissions tests', () => {
 
     beforeEach(() => {
         cy.task('clearDB')
+        cy.visit('/submission-box')
+
+        const title = 'My Test Title'
+
+        // Create submission box
+        cy.get('[data-cy="submission-box-title"]').type(title)
+
+        // Double click is a known issue, cypress is not acting correctly on browser preview deployment
+        cy.get('[data-cy="next"]').click().click()
+
+        // We should be on the request submission step
+        cy.get('[data-cy="title"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Request Submissions')
     })
 
     it('Should allow user to click next', () => {
-        cy.visit('/submission-box/request-submissions')
-
         cy.get('[data-cy="next"]').click()
 
-        cy.url().should('include', '/submission-box/review-and-create')
+        cy.url().should('include', '/submission-box')
     })
 
     it('Should let user add submission requests', () => {
         const requestedEmail = 'requested@mail.com'
-
-        cy.visit('/submission-box/request-submissions')
 
         cy.get('[data-cy="email"]').type(requestedEmail)
         cy.get('[data-cy="add"]').click()
@@ -28,8 +38,6 @@ describe('Submission box request submissions tests', () => {
 
     it('Should let user remove submission requests', () => {
         const requestedEmail = 'requested@mail.com'
-
-        cy.visit('/submission-box/request-submissions')
 
         cy.get('[data-cy="email"]').type(requestedEmail)
         cy.get('[data-cy="add"]').click()
@@ -43,14 +51,13 @@ describe('Submission box request submissions tests', () => {
 
     it('Should not allow the user to add an empty email', () => {
         // Check that submitting with nothing in the field presents user with prompt and does not create a submission request card
-        cy.visit('/submission-box/request-submissions')
 
         // Check that the errors do not exist
         cy.get('.MuiFormHelperText-root').should('have.length', 0)
 
         cy.get('[data-cy="add"]').click()
 
-        cy.url().should('include', '/submission-box/request-submissions')
+        cy.url().should('include', '/submission-box')
 
         cy.get('.MuiFormHelperText-root').should('have.length', 1)
         cy.get('[data-cy="email"]')
@@ -60,9 +67,7 @@ describe('Submission box request submissions tests', () => {
     })
 
     // TODO: test this. Cannot be tested currently as tests are run without user being logged in
-    it.skip('Should not allow the user to add their own email', () => {
-        cy.visit('/submission-box/request-submissions')
-    })
+    it.skip('Should not allow the user to add their own email', () => {})
 
     it('Should give the user error feedback for an invalid email', () => {
         // user data
@@ -73,13 +78,12 @@ describe('Submission box request submissions tests', () => {
         ]
 
         // Check that a valid email must be entered
-        cy.visit('/submission-box/request-submissions')
 
         cy.wrap(testValues).each((input: { email: string; expectedResponse: string }) => {
             cy.get('[data-cy="email"]').find('input').clear().type(input.email)
             cy.get('[data-cy="add"]').click()
 
-            cy.url().should('include', '/submission-box/request-submissions')
+            cy.url().should('include', '/submission-box')
 
             cy.get('[data-cy="email"]').find('p.Mui-error').should('be.visible').and('contain', input.expectedResponse)
         })
@@ -89,7 +93,6 @@ describe('Submission box request submissions tests', () => {
         const requestedEmail = 'requested@mail.com'
 
         // Check that submitting with nothing in the field presents user with prompt and does not create a submission request
-        cy.visit('/submission-box/request-submissions')
 
         // Check that the errors do not exist
         cy.get('p.Mui-error').should('have.length', 0)
@@ -97,12 +100,12 @@ describe('Submission box request submissions tests', () => {
         cy.get('[data-cy="email"]').type(requestedEmail)
         cy.get('[data-cy="add"]').click()
 
-        cy.url().should('include', '/submission-box/request-submissions')
+        cy.url().should('include', '/submission-box')
 
         cy.get('[data-cy="email"]').type(requestedEmail)
         cy.get('[data-cy="add"]').click()
 
-        cy.url().should('include', '/submission-box/request-submissions')
+        cy.url().should('include', '/submission-box')
 
         cy.get('p.Mui-error').should('have.length', 1)
         cy.get('[data-cy="email"]')
@@ -112,8 +115,6 @@ describe('Submission box request submissions tests', () => {
     })
 
     it('Should let the user return to the previous page using the back button', () => {
-        cy.visit('/submission-box/request-submissions')
-
         cy.get('[data-cy="back-button"]').click()
 
         cy.url().should('include', '/submission-box/settings')
