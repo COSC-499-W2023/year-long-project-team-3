@@ -5,7 +5,7 @@ import Header from '@/components/Header'
 import React from 'react'
 
 // TODO: Implement this page (right now it's only a bare bones version for testing)
-export default function SubmissionBoxAddMembersPage() {
+export default function SubmissionBoxReviewAndCreatePage() {
     const session = useSession()
     return (
         <>

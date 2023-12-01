@@ -9,6 +9,7 @@ import { useSession } from 'next-auth/react'
 import Header from '@/components/Header'
 import { useRouter } from 'next/navigation'
 import ProgressDots from '@/components/ProgressDots'
+import PageLoadProgress from '@/components/PageLoadProgress'
 
 const VisuallyHiddenInput = styled('input')({
     clipPath: 'inset(50%)',
@@ -25,7 +26,9 @@ export default function UploadVideoPage() {
     const session = useSession()
     const { status } = session
     const router = useRouter()
+
     const [isUploadVideoPageVisible, setIsUploadVideoPageVisible] = useState(false)
+    const [isUploadingVideo, setIsUploadingVideo] = useState(false)
 
     useEffect(() => {
         if (status === 'authenticated') {
@@ -48,6 +51,7 @@ export default function UploadVideoPage() {
         if (!uploadedFile) {
             toast.error('No file selected')
         }
+        setIsUploadingVideo(true)
         const videoUploadForm = new FormData()
         videoUploadForm.append('video', uploadedFile!)
 
@@ -56,53 +60,55 @@ export default function UploadVideoPage() {
             body: videoUploadForm,
         }).then(async (res: Response) => {
             const body = await res.json()
+            if (res.status !== 201) {
+                console.log(body)
+                toast.error(body.error)
+                throw new Error(body.error)
+            }
             const videoId = body.video.id as string
             router.push(`/video/edit/${ videoId }`)
+        }).catch((err) => {
+            router.push('/')
+        }).finally(() => {
+            setIsUploadingVideo(false)
         })
     }
 
     return (
-        isUploadVideoPageVisible && (
-            <>
-                <Header {...session} />
-                <Box
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        gap: '1rem',
-                        width: '100%',
-                        height: '100%',
-                        padding: '2rem',
-                    }}
-                >
+        <>
+            <PageLoadProgress show={isUploadingVideo} />
+            {isUploadVideoPageVisible && (
+                <>
+                    <Header {...session} />
                     <Box
                         sx={{
-                            minWidth: '16rem',
-                            width: '70%',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            gap: '1rem',
+                            width: '100%',
+                            height: '100%',
+                            padding: '2rem',
                         }}
                     >
-                        <ProgressDots activeStep={0} numSteps={3} labels={['Upload', 'Edit', 'Submit']} />
-                    </Box>
-                    <Box display='flex' width='100%' flexDirection='column' alignItems='center'>
-                        <h1>Upload Video</h1>
-                        <Button
-                            data-cy='upload-button'
-                            component='label'
-                            variant='contained'
-                            startIcon={<CloudUploadIcon />}
+                        <Box
+                            sx={{
+                                minWidth: '16rem',
+                                width: '70%',
+                            }}
                         >
-                            Upload
-                            <VisuallyHiddenInput
-                                data-cy='test-input'
-                                type='file'
-                                accept='.mp4'
-                                onChange={handleFileChanged}
-                            />
-                        </Button>
+                            <ProgressDots activeStep={0} numSteps={3} labels={['Upload', 'Edit', 'Submit']} />
+                        </Box>
+                        <Box display='flex' width='100%' flexDirection='column' alignItems='center'>
+                            <h1>Upload Video</h1>
+                            <Button component='label' variant='contained' startIcon={<CloudUploadIcon />}>
+                                Upload
+                                <VisuallyHiddenInput data-cy='test-input' type='file' accept='.mp4' onChange={handleFileChanged} />
+                            </Button>
+                        </Box>
                     </Box>
-                </Box>
-            </>
-        )
+                </>
+            )}
+        </>
     )
 }

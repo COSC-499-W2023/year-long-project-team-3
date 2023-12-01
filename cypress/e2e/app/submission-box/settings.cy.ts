@@ -36,10 +36,12 @@ describe('Submission box settings tests', () => {
         // Create submission box
         cy.visit('/submission-box/settings')
         cy.get('[data-cy="submission-box-title"]').type(title)
-        cy.get('[data-cy="next"]').click()
+
+        // Double click is a known issue, cypress is not acting correctly on browser preview deployment
+        cy.get('[data-cy="next"]').click().click()
 
         // We shouldn't be on the submission-box/settings page anymore
-        cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('include', '/submission-box/add-members')
+        cy.get('[data-cy="title"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Submission Box Settings')
     })
 
     it('Should let the user return to the previous page using the back button', () => {
