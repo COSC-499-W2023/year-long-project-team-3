@@ -36,7 +36,7 @@ export default function SubmissionInboxPage() {
             <Header {...session} />
             <Box display='grid' gridTemplateColumns='1fr 4fr' height='100%'>
                 <Dashboard userEmail={'test'} initialSidebarSelectedOption={'submission_boxes_inbox'} />
-                <Box >
+                <Box>
                     <Typography data-cy='title' variant='h5' color={'textSecondary'} sx={{ m: 2, fontWeight: 'bold' }}>
                         Submission In-Box
                     </Typography>
@@ -46,8 +46,20 @@ export default function SubmissionInboxPage() {
                         border={1}
                         borderColor={'textSecondary'}
                     >
-                        {!hasSubmissions && <Typography variant='h5' align='center' color={'textSecondary'} sx={{mt: 20}}>You Do Not Have Any Active Submission Boxes</Typography>}
-                        {hasSubmissions && <SubmissionBoxList submissionBoxes={submissionInboxes} />}
+                        {!hasSubmissions && (
+                            <Typography
+                                data-cy='no submission text'
+                                variant='h5'
+                                align='center'
+                                color={'textSecondary'}
+                                sx={{ mt: 20 }}
+                            >
+                                You Do Not Have Any Active Submission Boxes
+                            </Typography>
+                        )}
+                        {hasSubmissions && (
+                            <SubmissionBoxList data-cy='submission list' submissionBoxes={submissionInboxes} />
+                        )}
                     </Box>
                 </Box>
             </Box>

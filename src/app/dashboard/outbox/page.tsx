@@ -36,7 +36,7 @@ export default function SubmissionOutboxPage() {
             <Header {...session} />
             <Box display='grid' gridTemplateColumns='1fr 4fr' height='100%'>
                 <Dashboard userEmail={'test'} initialSidebarSelectedOption={'submission_boxes_outbox'} />
-                <Box >
+                <Box>
                     <Typography data-cy='title' variant='h5' color={'textSecondary'} sx={{ m: 2, fontWeight: 'bold' }}>
                         Submission Out-Box
                     </Typography>
@@ -46,7 +46,11 @@ export default function SubmissionOutboxPage() {
                         border={1}
                         borderColor={'textSecondary'}
                     >
-                        {!hasSubmissions && <Typography variant='h5' align='center' color={'textSecondary'} sx={{mt: 20}}>You Have Not Submitted To Any Active Submission Boxes</Typography>}
+                        {!hasSubmissions && (
+                            <Typography variant='h5' align='center' color={'textSecondary'} sx={{ mt: 20 }}>
+                                You Have Not Submitted To Any Active Submission Boxes
+                            </Typography>
+                        )}
                         {hasSubmissions && <SubmissionBoxList submissionBoxes={submissionOutboxes} />}
                     </Box>
                 </Box>
