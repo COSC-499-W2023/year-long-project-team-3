@@ -20,7 +20,7 @@ export default function DashboardSidebarSubmissionBoxes(props: DashboardSidebarS
     const { sidebarSelectedOption } = props
 
     return (
-        <Box marginTop='3rem' display='flex' flexDirection='column'>
+        <Box marginTop='3rem' display='flex' flexDirection='column' gap='0.5rem'>
             <Typography color={theme.palette.text.secondary} fontSize={'25px'} fontWeight={600} marginBottom={'1rem'}>
                 Submission Boxes
             </Typography>
