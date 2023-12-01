@@ -5,18 +5,18 @@ import { ObjectSchema } from 'yup'
 import * as yup from 'yup'
 import { useFormik } from 'formik'
 import { Box } from '@mui/material'
-import dayjs, { Dayjs } from 'dayjs'
+import dayjs from 'dayjs'
 
 type SettingsData = {
     title: string
     description: string | undefined
-    closingDate: Date | null | undefined
+    closingDate: Date | null
 }
 
 type SettingsFormProps = SettingsData & {
     setTitle: React.Dispatch<React.SetStateAction<string>>
     setDescription: React.Dispatch<React.SetStateAction<string | undefined>>
-    setClosingDate: React.Dispatch<React.SetStateAction<Date | null | undefined>>
+    setClosingDate: React.Dispatch<React.SetStateAction<Date | null>>
     isTitleError: boolean
     setIsTitleError: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -38,7 +38,6 @@ export default function SubmissionBoxSettings({
             closingDate: closingDate,
         },
         validationSchema: validationSchema,
-        // TODO: properly implement handleSubmit
         onSubmit: () => {},
     })
 
@@ -116,7 +115,24 @@ export default function SubmissionBoxSettings({
                     disablePast
                     label='Closing Date'
                     value={formik.values.closingDate ? dayjs(formik.values.closingDate) : null}
-                    onChange={formik.handleChange}
+                    onChange={(e) => {
+                        formik.setFieldValue('closingDate', e)
+                    }}
+                    defaultValue={null}
+                    // @ts-ignore
+                    textField={(props) => (
+                        <TextField
+                            margin='normal'
+                            variant='outlined'
+                            name='closingDate'
+                            onBlur={formik.handleBlur}
+                            error={formik.touched.closingDate && Boolean(formik.errors.closingDate)}
+                            FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
+                            helperText={formik.touched.closingDate && formik.errors.closingDate}
+                            data-cy='closingDate'
+                            {...props}
+                        />
+                    )}
                 />
             </Box>
         </>
@@ -127,5 +143,5 @@ export const validationSchema: ObjectSchema<SettingsData> = yup.object().shape({
     title: yup.string().required('Please enter a title for your submission box'),
     description: yup.string(),
     // only future dates can be chosen due to disablePast on DateTimePicker
-    closingDate: yup.date().nullable(),
+    closingDate: yup.date().typeError('Please enter a valid date').nullable().default(null),
 })

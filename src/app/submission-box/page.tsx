@@ -2,7 +2,9 @@
 
 import React, { useState } from 'react'
 import { useMultiStepForm } from '@/utils/useMultiStepForm'
-import SubmissionBoxSettings, { validationSchema as settingsValidationSchema } from 'src/components/SubmissionBoxSettings'
+import SubmissionBoxSettings, {
+    validationSchema as settingsValidationSchema,
+} from 'src/components/SubmissionBoxSettings'
 import SubmissionBoxRequestSubmission from 'src/components/SubmissionBoxRequestSubmission'
 import SubmissionBoxReviewAndCreate from 'src/components/SubmissionBoxReviewAndCreate'
 import Header from '@/components/Header'
@@ -22,7 +24,7 @@ export default function SubmissionBox() {
     const [title, setTitle] = useState('')
     const [isTitleError, setIsTitleError] = useState(false)
     const [description, setDescription] = useState<string | undefined>()
-    const [closingDate, setClosingDate] = useState<Date | null | undefined>()
+    const [closingDate, setClosingDate] = useState<Date | null>(null)
     const [emails, setEmails] = useState<string[]>([])
 
     const { steps, currentStepIndex, step, stepTitles, currentStepTitle, isFirstStep, isLastStep, back, next } =
