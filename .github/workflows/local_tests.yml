@@ -131,7 +131,7 @@ jobs:
                     path: cypress/screenshots
                     if-no-files-found: ignore
             -   name: Save cypress results
-                id: save-cypress-results
+                id: save-cypress-outputs
                 run: |
                     echo "PR_ID=$CYPRESS_PULL_REQUEST_ID" >> $GITHUB_OUTPUT
             -   name: Upload test results
