@@ -25,6 +25,8 @@ describe('Submission box request submissions tests', () => {
         cy.get('[data-cy="next"]').click()
 
         cy.url().should('include', '/submission-box')
+
+        cy.get('[data-cy="title"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Review & Create')
     })
 
     it('Should let user add submission requests', () => {

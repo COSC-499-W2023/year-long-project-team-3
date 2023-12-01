@@ -1,3 +1,5 @@
+import { TIMEOUT } from '../../../utils/constants'
+
 describe('Submission box settings tests', () => {
     before(() => {
         cy.task('clearDB')
@@ -27,7 +29,7 @@ describe('Submission box settings tests', () => {
             .and('contain', 'Please enter a title for your submission box')
     })
 
-    it('Should allow user to move on to the next page', () => {
+    it('Should allow user to click next', () => {
         // User data
         const title = 'My Test Title'
 
@@ -38,6 +40,7 @@ describe('Submission box settings tests', () => {
         cy.get('[data-cy="next"]').click().click()
 
         // We shouldn't be on the seeing the settings step anymore
+        cy.get('[data-cy="title"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Request Submissions')
     })
 
     it.skip('Should let the user return to the previous page using the return to dashboard button', () => {
