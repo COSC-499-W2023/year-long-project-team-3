@@ -11,17 +11,17 @@ import SubmissionBoxList from '@/components/SubmissionBoxList'
 
 export default function SubmissionOutboxPage() {
     const session = useSession()
-    const [submissionOutboxes, setSubmissionOutboxes] = useState([])
+    const [submissionOutboxes, setSubmissionOutboxes] = useState<any>()
     const [hasSubmissions, setHasSubmissions] = useState(false)
 
     useEffect(() => {
         async function fetchSubmissionOutboxes() {
             const response = await fetch('/api/submission-box/outboxes')
             const submissionOutboxes = await response.json()
-            if (submissionOutboxes.length > 0) {
+            if (submissionOutboxes.submissionBoxes.length > 0) {
                 setHasSubmissions(true)
             }
-            setSubmissionOutboxes(submissionOutboxes)
+            setSubmissionOutboxes(submissionOutboxes.submissionBoxes)
         }
 
         fetchSubmissionOutboxes()
