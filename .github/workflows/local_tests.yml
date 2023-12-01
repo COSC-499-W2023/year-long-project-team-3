@@ -157,7 +157,7 @@ jobs:
                 uses: peter-evans/create-or-update-comment@v3
                 continue-on-error: true
                 env:
-                    PR_ID: ${{ needs.cypress-e2e.outputs.PR_ID }}
+                    PR_ID: ${{ needs.cypress-e2e.outputs.PR_ID || github.event.number }}
                 with:
                     issue-number: ${{ env.PR_ID }}
                     body-path: cypress/reports/test_results.md
