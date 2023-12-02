@@ -1,5 +1,4 @@
 'use client'
-import type { InferGetStaticPropsType, GetStaticProps, GetStaticPaths } from 'next'
 import React, { useEffect, useState } from 'react'
 import Header from '@/components/Header'
 import { SessionContextValue, useSession } from 'next-auth/react'
