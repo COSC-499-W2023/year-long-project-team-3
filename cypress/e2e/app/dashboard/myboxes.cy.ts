@@ -25,7 +25,7 @@ describe('Dashboard My Submission Boxes Tests', () => {
         cy.url().should('not.contain', 'login')
 
         cy.visit('/dashboard')
-        cy.get('[data-cy="Submission In-Box"]').click()
+        cy.get('[data-cy="My Boxes"]').click()
         cy.url().should('contain', 'myboxes')
         cy.get('[data-cy="no submission text"]')
             .should('be.visible')
@@ -46,7 +46,7 @@ describe('Dashboard My Submission Boxes Tests', () => {
         cy.url().should('not.contain', 'login')
 
         cy.visit('/dashboard')
-        cy.get('[data-cy="Submission In-Box"]').click()
+        cy.get('[data-cy="My Boxes"]').click()
         cy.url().should('contain', 'myboxes')
         cy.get('[data-cy="Incoming Submission Box"]')
             .should('be.visible').and('contain', 'Incoming Submission Box')
