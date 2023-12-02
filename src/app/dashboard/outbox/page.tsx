@@ -47,7 +47,7 @@ export default function SubmissionOutboxPage() {
                         borderColor={'textSecondary'}
                     >
                         {!hasSubmissions && (
-                            <Typography variant='h5' align='center' color={'textSecondary'} sx={{ mt: 20 }}>
+                            <Typography data-cy='no submission text' variant='h5' align='center' color={'textSecondary'} sx={{ mt: 20 }}>
                                 You Have Not Submitted To Any Active Submission Boxes
                             </Typography>
                         )}

@@ -20,7 +20,6 @@ export type SubmissionBoxListProps = {
 
 export default function SubmissionBoxList(props: SubmissionBoxListProps) {
     const [submissionBoxes, setSubmissionBoxes] = useState(props.submissionBoxes)
-    const router = useRouter()
 
     return (
         <List sx={{ maxHeight: 600, overflow: 'auto', position: 'relative', pl: 1, pr: 1 }}>
@@ -33,7 +32,7 @@ export default function SubmissionBoxList(props: SubmissionBoxListProps) {
                         gridTemplateColumns='3fr 1fr'
                         alignItems='center'
                     >
-                        <Typography sx={{ p: 1, color: 'textSecondary', fontWeight: 'bold' }}>
+                        <Typography data-cy={submissionBox.title} sx={{ p: 1, color: 'textSecondary', fontWeight: 'bold' }}>
                             {submissionBox.title}
                         </Typography>
                         <Typography sx={{ p: 1, color: 'textSecondary' }}>

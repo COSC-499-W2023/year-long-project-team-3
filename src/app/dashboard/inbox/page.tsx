@@ -58,7 +58,7 @@ export default function SubmissionInboxPage() {
                             </Typography>
                         )}
                         {hasSubmissions && (
-                            <SubmissionBoxList data-cy='submission list' submissionBoxes={submissionInboxes} />
+                            <SubmissionBoxList submissionBoxes={submissionInboxes} />
                         )}
                     </Box>
                 </Box>

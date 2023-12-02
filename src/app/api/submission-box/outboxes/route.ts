@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import logger from '@/utils/logger'
 import prisma from '@/lib/prisma'
-import { SubmissionBox } from '@prisma/client'
+import { RequestedSubmission, SubmissionBox } from '@prisma/client'
 
 export async function GET(_: NextRequest): Promise<NextResponse> {
     try {
@@ -11,7 +11,7 @@ export async function GET(_: NextRequest): Promise<NextResponse> {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
 
-        const userId = (
+        const userId: string = (
             await prisma.user.findUniqueOrThrow({
                 where: {
                     email: session.user.email,
@@ -22,7 +22,7 @@ export async function GET(_: NextRequest): Promise<NextResponse> {
             })
         ).id
 
-        const submissionBoxIds = await prisma.submissionBoxManager.findMany({
+        const submissionBoxIds = await prisma.requestedSubmission.findMany({
             where: {
                 userId: userId,
             },
@@ -31,13 +31,12 @@ export async function GET(_: NextRequest): Promise<NextResponse> {
             },
         })
 
-        const submissionBoxPromises: Promise<SubmissionBox>[] = submissionBoxIds.map(
-            async ({ submissionBoxId }): Promise<SubmissionBox> =>
-                await prisma.submissionBox.findUniqueOrThrow({
-                    where: {
-                        id: submissionBoxId,
-                    },
-                })
+        const submissionBoxPromises: Promise<SubmissionBox>[] = submissionBoxIds.map(({ submissionBoxId }) =>
+            prisma.submissionBox.findUniqueOrThrow({
+                where: {
+                    id: submissionBoxId,
+                },
+            })
         )
 
         const submissionBoxes: SubmissionBox[] = await Promise.all(submissionBoxPromises)

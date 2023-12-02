@@ -1,5 +1,7 @@
 import { defineConfig } from 'cypress'
 import clearDB from './cypress/tasks/clearDB'
+import loadInSubmissionBoxes from './cypress/tasks/loadInSubmissionBoxes'
+import loadOutSubmissionBoxes from './cypress/tasks/loadOutSubmissionBoxes'
 
 require('dotenv').config()
 
@@ -11,6 +13,8 @@ export default defineConfig({
             // implement node event listeners here
             on('task', {
                 clearDB,
+                loadInSubmissionBoxes,
+                loadOutSubmissionBoxes,
             })
         },
         experimentalModifyObstructiveThirdPartyCode: true,

@@ -33,7 +33,7 @@ export default async function loadInSubmissionBoxes() {
 
     const submission = await prisma.submissionBox.create({
         data: {
-            title: 'Incoming Submission Box',
+            title: 'Outgoing Submission Box',
             description: null,
             closesAt: new Date('2050-12-01T03:24:00'),
             videoStoreToDate: null,
