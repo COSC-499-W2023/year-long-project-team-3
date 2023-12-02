@@ -68,7 +68,7 @@ export default function SubmitVideoPage() {
             .catch((err) => {
                 logger.error(err)
                 router.push('/dashboard')
-                toast.error('There is an unexpected error occurred!')
+                toast.error('An unexpected error occurred!')
             })
             .finally(() => {
                 setIsLoading(false)
