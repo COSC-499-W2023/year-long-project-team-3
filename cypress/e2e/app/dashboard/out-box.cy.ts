@@ -7,20 +7,23 @@ describe('Dashboard Submission Inbox Tests', () => {
         cy.task('clearDB')
     })
 
-    it('should not display any outgoing submission boxes', () => {
+    it('should not display any outgoing submission boxes on a user that has no outgoing submission boxes', () => {
+        const email = 'noSubmissions@box.com'
+        const password = 'noSubmissions1'
+
         cy.visit('/signup')
 
         // Sign up
         cy.visit('/signup')
-        cy.get('[data-cy="email"]').type('email@e.com')
-        cy.get('[data-cy="password"]').type('Password1')
-        cy.get('[data-cy="passwordConfirmation"]').type('Password1')
+        cy.get('[data-cy="email"]').type(email)
+        cy.get('[data-cy="password"]').type(password)
+        cy.get('[data-cy="passwordConfirmation"]').type(password)
         cy.get('[data-cy="submit"]').click()
         cy.url().should('contain', 'login')
 
         // Login
-        cy.get('[data-cy=email]').type('email@e.com')
-        cy.get('[data-cy=password]').type('Password1')
+        cy.get('[data-cy=email]').type(email)
+        cy.get('[data-cy=password]').type(password)
         cy.get('[data-cy=submit]').click()
         cy.url().should('not.contain', 'login')
 
@@ -33,12 +36,15 @@ describe('Dashboard Submission Inbox Tests', () => {
     })
 
     it('should display outgoing submission boxes for a user that has outgoing submission boxes', () => {
-    // Load database
+        const email = 'submission@out.box'
+        const password = 'submissionOut1'
+
+        // Load database
         cy.task('loadOutSubmissionBoxes')
         // Login
         cy.visit('/login')
-        cy.get('[data-cy=email]').type('submission@out.box')
-        cy.get('[data-cy=password]').type('submissionOut1')
+        cy.get('[data-cy=email]').type(email)
+        cy.get('[data-cy=password]').type(password)
         cy.get('[data-cy=submit]').click()
         cy.url().should('not.contain', 'login')
 
