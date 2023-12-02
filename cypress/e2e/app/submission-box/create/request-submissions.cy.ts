@@ -1,4 +1,5 @@
 import { TIMEOUT } from '../../../../utils/constants'
+import { v4 as uuidv4 } from 'uuid'
 
 describe('Submission box request submissions tests', () => {
     before(() => {
@@ -7,127 +8,166 @@ describe('Submission box request submissions tests', () => {
 
     beforeEach(() => {
         cy.task('clearDB')
-        cy.visit('/submission-box')
-
-        const title = 'My Test Title'
-
-        // Create submission box
-        cy.get('[data-cy="submission-box-title"]').type(title)
-
-        // Double click is a known issue, cypress is not acting correctly on browser preview deployment
-        cy.get('[data-cy="next"]').click().click()
-
-        // We should be on the request submission step
-        cy.get('[data-cy="title"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Request Submissions')
     })
 
-    it('Should allow user to click next', () => {
-        cy.get('[data-cy="next"]').click()
+    context('Logged in', () => {
+        beforeEach(() => {
+            cy.session('testuser', () => {
+                const email = 'user' + uuidv4() + '@example.com'
+                const password = 'Password1'
 
-        cy.url().should('include', '/submission-box')
+                // Sign up
+                cy.visit('/signup')
+                cy.get('[data-cy="email"]').type(email)
+                cy.get('[data-cy="password"]').type(password)
+                cy.get('[data-cy="passwordConfirmation"]').type(password)
+                cy.get('[data-cy="submit"]').click()
+                cy.url().should('contain', 'login')
 
-        cy.get('[data-cy="title"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Review & Create')
-    })
+                // Login
+                cy.get('[data-cy=email]').type(email)
+                cy.get('[data-cy=password]').type(password)
+                cy.get('[data-cy=submit]').click()
+                cy.url().should('not.contain', 'login')
+            })
 
-    it('Should let user add submission requests', () => {
-        const requestedEmail = 'requested@mail.com'
+            cy.visit('/dashboard')
+            cy.get('[data-cy="Create new"]').click()
 
-        cy.get('[data-cy="email"]').type(requestedEmail)
-        cy.get('[data-cy="add"]').click()
+            const title = 'My Test Title'
 
-        cy.get('[data-cy="requested-email"]').should('contain', requestedEmail)
-    })
+            // Create submission box
+            cy.get('[data-cy="submission-box-title"]').type(title)
 
-    it('Should let user remove submission requests', () => {
-        const requestedEmail = 'requested@mail.com'
+            // Double click is a known issue, cypress is not acting correctly on browser preview deployment
+            cy.get('[data-cy="next"]').click().click()
 
-        cy.get('[data-cy="email"]').type(requestedEmail)
-        cy.get('[data-cy="add"]').click()
+            // We should be on the request submission step
+            cy.get('[data-cy="title"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Request Submissions')
+        })
 
-        cy.get('[data-cy="requested-email"]').should('contain', requestedEmail)
+        it('Should allow user to click next', () => {
+            cy.get('[data-cy="next"]').click()
 
-        cy.get('[data-cy="remove"]').click()
+            cy.url().should('include', '/submission-box')
 
-        cy.get('[data-cy="requested-email"]').should('not.exist')
-    })
+            cy.get('[data-cy="title"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Review & Create')
+        })
 
-    it('Should not allow the user to add an empty email', () => {
-        // Check that submitting with nothing in the field presents user with prompt and does not create a submission request card
+        it('Should let user add submission requests', () => {
+            const requestedEmail = 'requested@mail.com'
 
-        // Check that the errors do not exist
-        cy.get('.MuiFormHelperText-root').should('have.length', 0)
+            cy.get('[data-cy="email"]').type(requestedEmail)
+            cy.get('[data-cy="add"]').click()
 
-        cy.get('[data-cy="add"]').click()
+            cy.get('[data-cy="requested-email"]').should('contain', requestedEmail)
+        })
 
-        cy.url().should('include', '/submission-box')
+        it('Should let user remove submission requests', () => {
+            const requestedEmail = 'requested@mail.com'
 
-        cy.get('.MuiFormHelperText-root').should('have.length', 1)
-        cy.get('[data-cy="email"]')
-            .find('.MuiFormHelperText-root')
-            .should('be.visible')
-            .and('contain', 'To request a submission from someone, enter their email')
-    })
+            cy.get('[data-cy="email"]').type(requestedEmail)
+            cy.get('[data-cy="add"]').click()
 
-    // TODO: test this. Cannot be tested currently as tests are run without user being logged in
-    it.skip('Should not allow the user to add their own email', () => {})
+            cy.get('[data-cy="requested-email"]').should('contain', requestedEmail)
 
-    it('Should give the user error feedback for an invalid email', () => {
-        // user data
-        const testValues = [
-            { email: 'badEmail', expectedResponse: 'Enter a valid email' },
-            { email: 'incomplete@email', expectedResponse: 'Enter a valid email' },
-            { email: 'incomplete@email.', expectedResponse: 'Enter a valid email' },
-        ]
+            cy.get('[data-cy="remove"]').click()
 
-        // Check that a valid email must be entered
+            cy.get('[data-cy="requested-email"]').should('not.exist')
+        })
 
-        cy.wrap(testValues).each((input: { email: string; expectedResponse: string }) => {
-            cy.get('[data-cy="email"]').find('input').clear().type(input.email)
+        it('Should not allow the user to add an empty email', () => {
+            // Check that submitting with nothing in the field presents user with prompt and does not create a submission request card
+
+            // Check that the errors do not exist
+            cy.get('.MuiFormHelperText-root').should('have.length', 0)
+
             cy.get('[data-cy="add"]').click()
 
             cy.url().should('include', '/submission-box')
 
-            cy.get('[data-cy="email"]').find('p.Mui-error').should('be.visible').and('contain', input.expectedResponse)
+            cy.get('.MuiFormHelperText-root').should('have.length', 1)
+            cy.get('[data-cy="email"]')
+                .find('.MuiFormHelperText-root')
+                .should('be.visible')
+                .and('contain', 'To request a submission from someone, enter their email')
+        })
+
+        // TODO: test this. Cannot be tested currently as tests are run without user being logged in
+        it.skip('Should not allow the user to add their own email', () => {})
+
+        it('Should give the user error feedback for an invalid email', () => {
+            // user data
+            const testValues = [
+                { email: 'badEmail', expectedResponse: 'Enter a valid email' },
+                { email: 'incomplete@email', expectedResponse: 'Enter a valid email' },
+                { email: 'incomplete@email.', expectedResponse: 'Enter a valid email' },
+            ]
+
+            // Check that a valid email must be entered
+
+            cy.wrap(testValues).each((input: { email: string; expectedResponse: string }) => {
+                cy.get('[data-cy="email"]').find('input').clear().type(input.email)
+                cy.get('[data-cy="add"]').click()
+
+                cy.url().should('include', '/submission-box')
+
+                cy.get('[data-cy="email"]')
+                    .find('p.Mui-error')
+                    .should('be.visible')
+                    .and('contain', input.expectedResponse)
+            })
+        })
+
+        it('Should give the user error feedback for a duplicate email', () => {
+            const requestedEmail = 'requested@mail.com'
+
+            // Check that submitting with nothing in the field presents user with prompt and does not create a submission request
+
+            // Check that the errors do not exist
+            cy.get('p.Mui-error').should('have.length', 0)
+
+            cy.get('[data-cy="email"]').type(requestedEmail)
+            cy.get('[data-cy="add"]').click()
+
+            cy.url().should('include', '/submission-box')
+
+            cy.get('[data-cy="email"]').type(requestedEmail)
+            cy.get('[data-cy="add"]').click()
+
+            cy.url().should('include', '/submission-box')
+
+            cy.get('p.Mui-error').should('have.length', 1)
+            cy.get('[data-cy="email"]')
+                .find('p.Mui-error')
+                .should('be.visible')
+                .and('contain', 'This email has already been added!')
+        })
+
+        it('Should let the user return to the previous page using the return to dashboard button', () => {
+            cy.get('[data-cy="back-button"]').click()
+
+            // TODO: change this to test for appropriate URL
+            cy.url().should('include', '/dashboard')
+        })
+
+        it('Should let the user return to the previous step using the back button', () => {
+            cy.get('[data-cy="back"]').click()
+
+            cy.url().should('include', '/submission-box')
+
+            cy.get('[data-cy="title"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Box Settings')
         })
     })
 
-    it('Should give the user error feedback for a duplicate email', () => {
-        const requestedEmail = 'requested@mail.com'
+    context('Not logged in', () => {
+        beforeEach(() => {
+            cy.visit('/submission-box/create')
+        })
 
-        // Check that submitting with nothing in the field presents user with prompt and does not create a submission request
-
-        // Check that the errors do not exist
-        cy.get('p.Mui-error').should('have.length', 0)
-
-        cy.get('[data-cy="email"]').type(requestedEmail)
-        cy.get('[data-cy="add"]').click()
-
-        cy.url().should('include', '/submission-box')
-
-        cy.get('[data-cy="email"]').type(requestedEmail)
-        cy.get('[data-cy="add"]').click()
-
-        cy.url().should('include', '/submission-box')
-
-        cy.get('p.Mui-error').should('have.length', 1)
-        cy.get('[data-cy="email"]')
-            .find('p.Mui-error')
-            .should('be.visible')
-            .and('contain', 'This email has already been added!')
-    })
-
-    it.skip('Should let the user return to the previous page using the return to dashboard button', () => {
-        cy.get('[data-cy="back-button"]').click()
-
-        // TODO: change this to test for appropriate URL (currently not implemented as the user is not logged in for this test and would therefore be re-routed to login)
-        // cy.url().should('include', '/dashboard')
-    })
-
-    it('Should let the user return to the previous step using the back button', () => {
-        cy.get('[data-cy="back"]').click()
-
-        cy.url().should('include', '/submission-box')
-
-        cy.get('[data-cy="title"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Box Settings')
+        // TODO: awaiting middleware changes
+        it.skip('Should redirect to login', () => {
+            cy.url().should('contain', 'login')
+        })
     })
 })
