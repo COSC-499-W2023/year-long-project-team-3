@@ -82,6 +82,7 @@ describe('Test submission inbox API', () => {
                 expect(submissionBox.closesAt).to.eq(closesAt.toISOString())
                 expect(submissionBox.videoStoreToDate).to.eq(videoStoreToDate)
                 expect(submissionBox.maxVideoLength).to.eq(maxVideoLength)
+                expect(submissionBox.isPublic).to.eq(isPublic)
             })
         })
     })
