@@ -6,10 +6,6 @@ describe('Submission box review and create tests', () => {
         cy.task('clearDB')
     })
 
-    beforeEach(() => {
-        cy.task('clearDB')
-    })
-
     context('Logged in', () => {
         beforeEach(() => {
             cy.session('testuser', () => {

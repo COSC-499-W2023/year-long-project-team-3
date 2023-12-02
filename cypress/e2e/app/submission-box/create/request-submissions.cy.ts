@@ -6,10 +6,6 @@ describe('Submission box request submissions tests', () => {
         cy.task('clearDB')
     })
 
-    beforeEach(() => {
-        cy.task('clearDB')
-    })
-
     let currentUserEmail: string
 
     context('Logged in', () => {
