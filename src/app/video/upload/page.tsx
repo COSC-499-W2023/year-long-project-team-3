@@ -9,6 +9,7 @@ import { useSession } from 'next-auth/react'
 import Header from '@/components/Header'
 import { useRouter } from 'next/navigation'
 import ProgressDots from '@/components/ProgressDots'
+import PageLoadProgress from '@/components/PageLoadProgress'
 
 const VisuallyHiddenInput = styled('input')({
     clipPath: 'inset(50%)',
@@ -25,18 +26,8 @@ export default function UploadVideoPage() {
     const session = useSession()
     const { status } = session
     const router = useRouter()
-    const [isUploadVideoPageVisible, setIsUploadVideoPageVisible] = useState(false)
 
-    useEffect(() => {
-        if (status === 'authenticated') {
-            setIsUploadVideoPageVisible(true)
-        } else if (status === 'unauthenticated') {
-            setIsUploadVideoPageVisible(false)
-            router.push('/login')
-        } else {
-            setIsUploadVideoPageVisible(false)
-        }
-    }, [router, status])
+    const [isUploadingVideo, setIsUploadingVideo] = useState(false)
 
     const handleFileChanged = (event: ChangeEvent<HTMLInputElement>) => {
         if (!!event.target?.files) {
@@ -48,21 +39,35 @@ export default function UploadVideoPage() {
         if (!uploadedFile) {
             toast.error('No file selected')
         }
+        setIsUploadingVideo(true)
         const videoUploadForm = new FormData()
         videoUploadForm.append('video', uploadedFile!)
 
         fetch('/api/video/upload', {
             method: 'POST',
             body: videoUploadForm,
-        }).then(async (res: Response) => {
-            const body = await res.json()
-            const videoId = body.video.id as string
-            router.push(`/video/edit/${ videoId }`)
         })
+            .then(async (res: Response) => {
+                const body = await res.json()
+                if (res.status !== 201) {
+                    console.log(body)
+                    toast.error(body.error)
+                    throw new Error(body.error)
+                }
+                const videoId = body.video.id as string
+                router.push(`/video/edit/${ videoId }`)
+            })
+            .catch((err) => {
+                router.push('/')
+            })
+            .finally(() => {
+                setIsUploadingVideo(false)
+            })
     }
 
     return (
-        isUploadVideoPageVisible && (
+        <>
+            <PageLoadProgress show={isUploadingVideo} />
             <>
                 <Header {...session} />
                 <Box
@@ -93,6 +98,6 @@ export default function UploadVideoPage() {
                     </Box>
                 </Box>
             </>
-        )
+        </>
     )
 }
