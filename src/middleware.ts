@@ -14,7 +14,8 @@ export default withAuth(
     {
         callbacks: {
             authorized: ({ req, token }) => {
-                return !(token === null && req.nextUrl.pathname.startsWith('/dashboard'))
+                const protectedPages = ['/dashboard', '/submission-box', '/video', '/api/video']
+                return !(token === null && protectedPages.some((page) => req.nextUrl.pathname.startsWith(page)))
             },
         },
     }
