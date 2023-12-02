@@ -10,10 +10,13 @@ describe('Submission box request submissions tests', () => {
         cy.task('clearDB')
     })
 
+    let currentUserEmail: string
+
     context('Logged in', () => {
         beforeEach(() => {
             cy.session('testuser', () => {
                 const email = 'user' + uuidv4() + '@example.com'
+                currentUserEmail = email
                 const password = 'Password1'
 
                 // Sign up
@@ -93,8 +96,21 @@ describe('Submission box request submissions tests', () => {
                 .and('contain', 'To request a submission from someone, enter their email')
         })
 
-        // TODO: test this. Cannot be tested currently as tests are run without user being logged in
-        it.skip('Should not allow the user to add their own email', () => {})
+        it('Should not allow the user to add their own email', () => {
+            cy.get('.MuiFormHelperText-root').should('have.length', 0)
+
+            cy.get('[data-cy="email"]').type(currentUserEmail)
+
+            cy.get('[data-cy="add"]').click()
+
+            cy.url().should('include', '/submission-box')
+
+            cy.get('.MuiFormHelperText-root').should('have.length', 1)
+            cy.get('[data-cy="email"]')
+                .find('.MuiFormHelperText-root')
+                .should('be.visible')
+                .and('contain', 'You cannot add your own email!')
+        })
 
         it('Should give the user error feedback for an invalid email', () => {
             // user data
