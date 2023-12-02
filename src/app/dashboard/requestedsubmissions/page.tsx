@@ -44,7 +44,7 @@ export default function SubmissionOutboxPage() {
                         component='section'
                         sx={{ borderTopLeftRadius: 25, borderBottomLeftRadius: 25, height: 602 }}
                         border={1}
-                        borderColor={'textSecondary'}
+                        borderColor={'text.secondary'}
                     >
                         {!hasSubmissions && (
                             <Typography data-cy='no submission text' variant='h5' align='center' color={'textSecondary'} sx={{ mt: 20 }}>

@@ -44,7 +44,7 @@ export default function SubmissionInboxPage() {
                         component='section'
                         sx={{ borderTopLeftRadius: 25, borderBottomLeftRadius: 25, height: 602 }}
                         border={1}
-                        borderColor={'textSecondary'}
+                        borderColor={'text.secondary'}
                     >
                         {!hasSubmissions && (
                             <Typography
