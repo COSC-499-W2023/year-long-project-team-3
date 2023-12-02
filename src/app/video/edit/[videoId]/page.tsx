@@ -10,6 +10,8 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import EditorTools from '@/components/EditorTools'
 import { useRouter, usePathname } from 'next/navigation'
 import VideoProcessing from '@/components/VideoProcessing'
+import PageLoadProgress from '@/components/PageLoadProgress'
+import { toast } from 'react-toastify'
 
 export default function VideoPreviewPage() {
     const session: SessionContextValue = useSession()
@@ -46,26 +48,36 @@ export default function VideoPreviewPage() {
     }
 
     useEffect(() => {
-        if (!videoId) {
-            cleanUpVideoState()
-            return
-        }
-
-        fetch(`/api/video/${ videoId }`)
-            .then(async (res) => {
-                if (res.status !== 200) {
-                    throw new Error('Could not fetch video')
-                }
-                const { videoUrl, isCloudProcessed } = await res.json()
-                setIsVideoVisible(true)
-                setStreamingVideoUrl(videoUrl)
-                setIsCloudProcessed(isCloudProcessed)
-            })
-            .catch((err) => {
-                console.error(err)
+        const interval = setInterval(async () => {
+            if (!videoId) {
                 cleanUpVideoState()
-                router.push('/dashboard')
-            })
+                return
+            }
+
+            fetch(`/api/video/${ videoId }`)
+                .then(async (res) => {
+                    if (res.status !== 200) {
+                        throw new Error('Could not fetch video')
+                    }
+                    const { videoUrl, isCloudProcessed } = await res.json()
+                    setStreamingVideoUrl(videoUrl)
+                    setIsCloudProcessed(isCloudProcessed)
+                    setIsVideoVisible(true)
+                    if (isCloudProcessed) {
+                        clearInterval(interval)
+                        return
+                    }
+                })
+                .catch((err) => {
+                    console.error(err)
+                    cleanUpVideoState()
+                    router.push('/dashboard')
+                    toast.error(
+                        'There was an error accessing the video you requested. Please try again and contact support if the error continues.'
+                    )
+                })
+        }, 2000)
+        return () => clearInterval(interval)
     }, [router, videoId])
 
     useEffect(() => {
@@ -92,7 +104,7 @@ export default function VideoPreviewPage() {
                 <Header {...session} />
                 {/*Main Body*/}
                 {!isVideoVisible ? (
-                    <VideoProcessing />
+                    <PageLoadProgress />
                 ) : (
                     <>
                         {isCloudProcessed ? (
