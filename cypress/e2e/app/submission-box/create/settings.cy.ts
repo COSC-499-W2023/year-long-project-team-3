@@ -80,8 +80,7 @@ describe('Submission box settings tests', () => {
             cy.visit('/submission-box/create')
         })
 
-        // TODO: awaiting middleware changes
-        it.skip('Should redirect to login', () => {
+        it('Should redirect to login', () => {
             cy.url().should('contain', 'login')
         })
     })

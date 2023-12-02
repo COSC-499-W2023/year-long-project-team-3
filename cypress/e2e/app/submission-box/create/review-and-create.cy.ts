@@ -54,7 +54,7 @@ describe('Submission box review and create tests', () => {
             // TODO: extend this test to check more details about the page
         })
 
-        it.skip('Should let the user return to the previous page using the return to dashboard button', () => {
+        it('Should let the user return to the previous page using the return to dashboard button', () => {
             cy.get('[data-cy="back-button"]').click()
 
             // TODO: change this to test for appropriate URL
@@ -81,8 +81,7 @@ describe('Submission box review and create tests', () => {
             cy.visit('/submission-box/create')
         })
 
-        // TODO: awaiting middleware changes
-        it.skip('Should redirect to login', () => {
+        it('Should redirect to login', () => {
             cy.url().should('contain', 'login')
         })
     })
