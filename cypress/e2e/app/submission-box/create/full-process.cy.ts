@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 
-describe('Test full submission boc creation', () => {
+describe('Test full submission box creation', () => {
     it('should work', () => {
         cy.task('clearDB')
 
