@@ -53,15 +53,17 @@ export default function SubmissionBoxReviewAndCreate({ title, description, closi
                 )}
                 {closingDate && (
                     <DateTimePicker
+                        className='data-cy-date-time' // regular data-cy didn't work
                         disabled
                         label='Closing Date'
                         value={dayjs(closingDate)}
                         asp-format='{0:yyyy-MM-dd}' // DOM error without this
+                        format='YYYY/MM/DD hh:mm A'
                     />
                 )}
 
                 {emails.length > 0 && (
-                    <Box sx={{ width: '20rem' }}>
+                    <Box sx={{ width: '20rem' }} data-cy='requested-emails'>
                         <Typography>Requested Emails:</Typography>
                         {emails.map((email, index) => (
                             <Chip key={index} label={email} sx={{ m: 0.5, ml: 0 }} />
