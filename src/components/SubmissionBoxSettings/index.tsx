@@ -109,7 +109,6 @@ export default function SubmissionBoxSettings({
                     FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
                     helperText={formik.touched.description && formik.errors.description}
                     data-cy='description'
-                    sx={{ '& .MuiOutlinedInput-root': { borderRadius: 0.3 } }} // this is needed to override the borderRadius: 100 in the theme
                 />
                 <DateTimePicker
                     disablePast

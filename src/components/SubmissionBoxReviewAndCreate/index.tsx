@@ -49,7 +49,6 @@ export default function SubmissionBoxReviewAndCreate({ title, description, closi
                         rows={4}
                         value={description}
                         data-cy='description'
-                        sx={{ '& .MuiOutlinedInput-root': { borderRadius: 0.3 } }} // this is needed to override the borderRadius: 100 in the theme
                     />
                 )}
                 {closingDate && (

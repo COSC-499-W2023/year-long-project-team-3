@@ -101,7 +101,7 @@ export default function SubmissionBoxRequestSubmission({ emails, setEmails }: Re
                     overflow: 'auto',
                     p: 2,
                     backgroundColor: '#F5F5F5',
-                    borderRadius: 0.3, // this is needed to override the borderRadius: 100 in the theme
+                    borderRadius: 2,
                     mb: 5,
                 }}
             >
