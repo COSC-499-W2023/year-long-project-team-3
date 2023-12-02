@@ -2,11 +2,9 @@
 
 import React, { useState } from 'react'
 import { useMultiStepForm } from '@/utils/useMultiStepForm'
-import SubmissionBoxSettings, {
-    validationSchema as settingsValidationSchema,
-} from 'src/components/SubmissionBoxSettings'
-import SubmissionBoxRequestSubmission from 'src/components/SubmissionBoxRequestSubmission'
-import SubmissionBoxReviewAndCreate from 'src/components/SubmissionBoxReviewAndCreate'
+import SubmissionBoxSettings, { validationSchema as settingsValidationSchema } from '@/components/SubmissionBoxSettings'
+import SubmissionBoxRequestSubmission from '@/components/SubmissionBoxRequestSubmission'
+import SubmissionBoxReviewAndCreate from '@/components/SubmissionBoxReviewAndCreate'
 import Header from '@/components/Header'
 import BackButton from '@/components/BackButton'
 import { Box, Button } from '@mui/material'
@@ -87,6 +85,8 @@ export default function SubmissionBox() {
                             display: 'flex',
                             flexDirection: 'row',
                             alignItems: 'center',
+                            width: '20rem',
+                            justifyContent: isFirstStep ? 'center' : 'space-between',
                         }}
                     >
                         {!isFirstStep && (
