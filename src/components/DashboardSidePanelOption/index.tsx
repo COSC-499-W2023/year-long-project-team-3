@@ -1,4 +1,4 @@
-import { Box, darken, Icon, lighten, Typography } from '@mui/material'
+import { Box, lighten, Typography } from '@mui/material'
 import { theme } from '../ThemeRegistry/theme'
 import { ReactElement } from 'react'
 
@@ -57,7 +57,6 @@ function _getHoverTitleColor(isDisabled: boolean, isAddButton: boolean) {
     return theme.palette.primary.dark
 }
 
-
 export default function DashboardSidePanelOption(props: DashboardSidePanelOptionProps) {
     const { isDisabled, isSelected, isAddButton } = props
 
@@ -90,9 +89,7 @@ export default function DashboardSidePanelOption(props: DashboardSidePanelOption
             onClick={props.isDisabled ? () => {} : props.onClick}
         >
             {props.icon}
-            <Typography fontWeight={600}>
-                {props.title}
-            </Typography>
+            <Typography fontWeight={600}>{props.title}</Typography>
         </Box>
     )
 }

@@ -132,7 +132,7 @@ export default function SubmissionBox() {
     // TODO: adapt once api has been implemented
     async function handleCreate() {
         try {
-            const response = await fetch('api/submission-box/create', {
+            const response = await fetch('/api/submission-box/create', {
                 method: 'POST',
                 body: JSON.stringify({
                     title: title,

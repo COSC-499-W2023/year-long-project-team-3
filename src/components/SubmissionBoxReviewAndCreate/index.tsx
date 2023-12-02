@@ -5,8 +5,6 @@ import TextField from '@mui/material/TextField'
 import dayjs from 'dayjs'
 import { DateTimePicker } from '@mui/x-date-pickers'
 
-// TODO: Implement this component (right now it's only a bare bones version for testing)
-
 type ReviewAndCreateData = {
     title: string
     description: string | undefined
