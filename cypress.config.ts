@@ -1,5 +1,7 @@
 import { defineConfig } from 'cypress'
 import clearDB from './cypress/tasks/clearDB'
+import createOneVideoAndRetrieveVideoId from './cypress/tasks/createOneVideoAndRetrieveId'
+import getUserId from './cypress/tasks/getUserId'
 import loadInSubmissionBoxes from './cypress/tasks/loadInSubmissionBoxes'
 import loadOutSubmissionBoxes from './cypress/tasks/loadOutSubmissionBoxes'
 
@@ -13,6 +15,8 @@ export default defineConfig({
             // implement node event listeners here
             on('task', {
                 clearDB,
+                createOneVideoAndRetrieveVideoId,
+                getUserId,
                 loadInSubmissionBoxes,
                 loadOutSubmissionBoxes,
             })
@@ -28,6 +32,10 @@ export default defineConfig({
             reportDir: 'cypress/reports/e2e',
             reportFilename: 'e2e',
             reportTitle: 'E2E Tests',
+        },
+
+        env: {
+            CYPRESS_RUN_LOCAL_ONLY: process.env.CYPRESS_RUN_LOCAL_ONLY,
         },
     },
 
