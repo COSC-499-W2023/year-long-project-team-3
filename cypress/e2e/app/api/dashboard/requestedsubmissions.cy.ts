@@ -1,7 +1,4 @@
-describe('Test submission inbox API', () => {
-    before(() => {
-        cy.task('clearDB')
-    })
+describe('Test requested submission API', () => {
 
     beforeEach(() => {
         cy.task('clearDB')
@@ -11,7 +8,7 @@ describe('Test submission inbox API', () => {
         it('should reject any request if not logged in', () => {
             cy.request({
                 method: 'GET',
-                url: '/api/submission-box/outboxes',
+                url: '/api/submission-box/requestedsubmissions',
                 failOnStatusCode: false,
             }).then((response) => {
                 expect(response.status).to.eq(401)
@@ -40,7 +37,7 @@ describe('Test submission inbox API', () => {
 
             cy.request({
                 method: 'GET',
-                url: '/api/submission-box/outboxes',
+                url: '/api/submission-box/requestedsubmissions',
             }).then((response) => {
                 expect(response.status).to.eq(200)
                 const data = response.body
@@ -70,7 +67,7 @@ describe('Test submission inbox API', () => {
 
             cy.request({
                 method: 'GET',
-                url: '/api/submission-box/outboxes',
+                url: '/api/submission-box/requestedsubmissions',
             }).then((response) => {
                 expect(response.status).to.eq(200)
                 const data = response.body

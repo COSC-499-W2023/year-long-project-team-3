@@ -1,7 +1,4 @@
-describe('Dashboard Submission Inbox Tests', () => {
-    before(() => {
-        cy.task('clearDB')
-    })
+describe('Dashboard Requested Submission Boxes Tests', () => {
 
     beforeEach(() => {
         cy.task('clearDB')
@@ -29,7 +26,7 @@ describe('Dashboard Submission Inbox Tests', () => {
 
         cy.visit('/dashboard')
         cy.get('[data-cy="Submission Out-Box"]').click()
-        cy.url().should('contain', 'outbox')
+        cy.url().should('contain', 'requestedsubmissions')
         cy.get('[data-cy="no submission text"]')
             .should('be.visible')
             .and('contain', 'You Have Not Submitted To Any Active Submission Boxes')
@@ -50,7 +47,7 @@ describe('Dashboard Submission Inbox Tests', () => {
 
         cy.visit('/dashboard')
         cy.get('[data-cy="Submission Out-Box"]').click()
-        cy.url().should('contain', 'outbox')
+        cy.url().should('contain', 'requestedsubmissions')
         cy.get('[data-cy="Outgoing Submission Box"]')
             .should('be.visible').and('contain', 'Outgoing Submission Box')
     })

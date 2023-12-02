@@ -14,7 +14,7 @@ export type DashboardProps = {
 export default function Dashboard(props: DashboardProps) {
     return (
         <>
-            <Box display='grid' gridTemplateColumns='1fr' height='100%'>
+            <Box display='grid' maxWidth={325} height='100%'>
                 <DashboardSidebar initialSidebarSelectedOption={props.initialSidebarSelectedOption ?? 'menu_recent'} />
             </Box>
         </>

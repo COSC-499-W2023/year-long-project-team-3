@@ -9,22 +9,22 @@ import React, { useEffect, useState } from 'react'
 import logger from '@/utils/logger'
 import SubmissionBoxList from '@/components/SubmissionBoxList'
 
-export default function SubmissionInboxPage() {
+export default function SubmissionOutboxPage() {
     const session = useSession()
-    const [submissionInboxes, setSubmissionInboxes] = useState<any>()
+    const [requestedSubmissions, setRequestedSubmissions] = useState<any>()
     const [hasSubmissions, setHasSubmissions] = useState(false)
 
     useEffect(() => {
-        async function fetchSubmissionInboxes() {
-            const response = await fetch('/api/submission-box/inboxes')
-            const submissionInboxes = await response.json()
-            if (submissionInboxes.submissionBoxes.length > 0) {
+        async function fetchRequestedSubmissions() {
+            const response = await fetch('/api/submission-box/requestedsubmissions')
+            const requestedSubmissions = await response.json()
+            if (requestedSubmissions.submissionBoxes.length > 0) {
                 setHasSubmissions(true)
             }
-            setSubmissionInboxes(submissionInboxes.submissionBoxes)
+            setRequestedSubmissions(requestedSubmissions.submissionBoxes)
         }
 
-        fetchSubmissionInboxes()
+        fetchRequestedSubmissions()
             .then(() => {})
             .catch((error) => {
                 logger.error(error)
@@ -35,10 +35,10 @@ export default function SubmissionInboxPage() {
         <>
             <Header {...session} />
             <Box display='grid' gridTemplateColumns='1fr 4fr' height='100%'>
-                <Dashboard userEmail={'test'} initialSidebarSelectedOption={'submission_boxes_inbox'} />
+                <Dashboard userEmail={'test'} initialSidebarSelectedOption={'requested_submission_boxes'} />
                 <Box>
-                    <Typography data-cy='title' variant='h5' color={'textSecondary'} sx={{ m: 2, fontWeight: 'bold' }}>
-                        Submission In-Box
+                    <Typography data-cy='title' variant='h5' color={'textSecondary'} sx={{ m: 2, fontWeight: 'bold', py: '1rem' }}>
+                        Submission Out-Box
                     </Typography>
                     <Box
                         component='section'
@@ -47,19 +47,11 @@ export default function SubmissionInboxPage() {
                         borderColor={'textSecondary'}
                     >
                         {!hasSubmissions && (
-                            <Typography
-                                data-cy='no submission text'
-                                variant='h5'
-                                align='center'
-                                color={'textSecondary'}
-                                sx={{ mt: 20 }}
-                            >
-                                You Do Not Have Any Active Submission Boxes
+                            <Typography data-cy='no submission text' variant='h5' align='center' color={'textSecondary'} sx={{ mt: 20 }}>
+                                You Have Not Submitted To Any Active Submission Boxes
                             </Typography>
                         )}
-                        {hasSubmissions && (
-                            <SubmissionBoxList submissionBoxes={submissionInboxes} />
-                        )}
+                        {hasSubmissions && <SubmissionBoxList submissionBoxes={requestedSubmissions} />}
                     </Box>
                 </Box>
             </Box>
