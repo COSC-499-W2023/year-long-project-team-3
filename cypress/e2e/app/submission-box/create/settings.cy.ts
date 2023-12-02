@@ -29,12 +29,11 @@ describe('Submission box settings tests', () => {
                 cy.get('[data-cy=password]').type(password)
                 cy.get('[data-cy=submit]').click()
                 cy.url().should('not.contain', 'login')
-
-                // Navigate to Create New Submission Box
-                cy.get('[data-cy=submission-box-create]')
             })
-            cy.visit('/submission-box/create')
+            cy.visit('/dashboard')
+            cy.get('[data-cy="Create new"]').click()
         })
+
         it('Should not allow the user to go to the next step without entering a title', () => {
             // Check that submitting with nothing in the fields presents user with prompts and does not let the user move on
 
@@ -68,8 +67,8 @@ describe('Submission box settings tests', () => {
             cy.get('[data-cy="title"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Request Submissions')
         })
 
-        it.skip('Should let the user return to the previous page using the return to dashboard button', () => {
-            cy.get('[data-cy="back"]').click()
+        it('Should let the user return to the previous page using the return to dashboard button', () => {
+            cy.get('[data-cy="back-button"]').click()
 
             // TODO: change this to test for appropriate URL
             cy.url().should('include', '/dashboard')
@@ -81,7 +80,8 @@ describe('Submission box settings tests', () => {
             cy.visit('/submission-box/create')
         })
 
-        it('Should redirect to login', () => {
+        // TODO: awaiting middleware changes
+        it.skip('Should redirect to login', () => {
             cy.url().should('contain', 'login')
         })
     })

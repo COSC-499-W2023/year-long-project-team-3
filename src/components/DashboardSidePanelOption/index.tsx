@@ -74,6 +74,7 @@ export default function DashboardSidePanelOption(props: DashboardSidePanelOption
             borderRadius={60}
             bgcolor={backgroundColor}
             alignItems='center'
+            data-cy={props.title}
             sx={{
                 fontSize: '15px',
                 color: titleColor,

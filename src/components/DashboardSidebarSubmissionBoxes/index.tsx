@@ -31,7 +31,6 @@ export default function DashboardSidebarSubmissionBoxes(props: DashboardSidebarS
                 isSelected={sidebarSelectedOption === 'submission_boxes_create_new'}
                 isDisabled={false}
                 isAddButton={true}
-                data-cy='submission-box-create'
             />
             <DashboardSidePanelOption
                 title={'Submission In-Box'}
