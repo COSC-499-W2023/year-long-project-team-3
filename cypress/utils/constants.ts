@@ -4,7 +4,6 @@ export const TIMEOUT = {
     MEDIUM: 3000,
     LONG: 6000,
     EXTRA_LONG: 8000,
-    EXTRA_EXTRA_LONG: 80000,
 }
 
 export const DELAY = {
