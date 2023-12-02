@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma'
 import { getEmailRegex } from '@/utils/verification'
 import logger from '@/utils/logger'
 
-type SubmissionBoxCreateData = {
+export type SubmissionBoxCreateData = {
     title: string
     description?: string | undefined
     closesAt?: Date | undefined
@@ -90,8 +90,23 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         })
         const submissionBoxId = newSubmissionBox.id
 
+        // Add logged-in user as manager
+        const owner = await prisma.user.findUniqueOrThrow({
+            where: {
+                email: session.user?.email!,
+            },
+        })
+
+        await prisma.submissionBoxManager.create({
+            data: {
+                userId: owner.id,
+                viewPermission: 'owner',
+                submissionBoxId: submissionBoxId,
+            },
+        })
+
         // Get any users that already exist
-        let existingUsers: Record<string, string>
+        let existingUsers: Record<string, string> = {}
         if (reqData.requestedEmails.length > 0) {
             const users = await prisma.user.findMany({
                 select: {
@@ -121,21 +136,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
                     submissionBoxId: submissionBoxId,
                 }
             }),
-        })
-
-        // Add logged-in user as manager
-        const owner = await prisma.user.findUniqueOrThrow({
-            where: {
-                email: session.user?.email!,
-            },
-        })
-
-        await prisma.submissionBoxManager.create({
-            data: {
-                userId: owner.id,
-                viewPermission: 'owner',
-                submissionBoxId: submissionBoxId,
-            },
         })
 
         return NextResponse.json(newSubmissionBox, { status: 201 })
