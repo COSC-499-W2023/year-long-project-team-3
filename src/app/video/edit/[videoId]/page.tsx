@@ -16,7 +16,6 @@ export default function VideoPreviewPage() {
     const pathname = usePathname()
 
     const [changesMade, setChangesMade] = useState(false)
-    const [isEditVideoPageVisible, setIsEditVideoPageVisible] = useState(false)
     const [streamingVideoUrl, setStreamingVideoUrl] = useState<string>('')
     const [isVideoVisible, setIsVideoVisible] = useState(false)
 
@@ -45,7 +44,7 @@ export default function VideoPreviewPage() {
     }
 
     useEffect(() => {
-        if (!videoId || !isEditVideoPageVisible) {
+        if (!videoId) {
             cleanUpVideoState()
             return
         }
@@ -64,19 +63,7 @@ export default function VideoPreviewPage() {
                 cleanUpVideoState()
                 router.push('/dashboard')
             })
-    }, [router, videoId, isEditVideoPageVisible])
-
-    const { status } = session
-    useEffect(() => {
-        if (status === 'authenticated') {
-            setIsEditVideoPageVisible(true)
-        } else if (status === 'unauthenticated') {
-            cleanUpVideoState()
-            router.push('/login')
-        } else {
-            cleanUpVideoState()
-        }
-    }, [router, status])
+    }, [router, videoId])
 
     useEffect(() => {
         resizeNavButtons()
@@ -88,137 +75,135 @@ export default function VideoPreviewPage() {
     }, [])
 
     return (
-        isEditVideoPageVisible && (
-            <>
+        <>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'stretch',
+                    m: 0,
+                    p: 0,
+                    width: '100vw',
+                    height: '100vh',
+                }}
+            >
+                <Header {...session} />
+                {/*Main Body*/}
                 <Box
                     sx={{
                         display: 'flex',
                         flexDirection: 'column',
-                        alignItems: 'stretch',
-                        m: 0,
-                        p: 0,
-                        width: '100vw',
-                        height: '100vh',
+                        alignItems: 'center',
+                        gap: '1rem',
+                        width: '100%',
+                        height: '100%',
+                        p: '2rem',
                     }}
                 >
-                    <Header {...session} />
-                    {/*Main Body*/}
+                    <Box
+                        sx={{
+                            minWidth: '16rem',
+                            width: '70%',
+                        }}
+                    >
+                        <ProgressDots activeStep={1} numSteps={3} labels={['Record', 'Edit', 'Submit']} />
+                    </Box>
+                    <Alert
+                        severity='info'
+                        sx={{
+                            visibility: changesMade ? 'block' : 'hidden',
+                            borderRadius: '1rem',
+                        }}
+                    >
+                        You have requested changes that will require the video to be processed. These changes will be
+                        processed once you continue to the next page
+                    </Alert>
                     <Box
                         sx={{
                             display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            gap: '1rem',
+                            flexDirection: 'row',
+                            flexGrow: 1,
                             width: '100%',
                             height: '100%',
-                            p: '2rem',
                         }}
                     >
                         <Box
+                            className='column-1'
                             sx={{
-                                minWidth: '16rem',
-                                width: '70%',
+                                width: '20%',
+                                pr: '1rem',
                             }}
-                        >
-                            <ProgressDots activeStep={1} numSteps={3} labels={['Record', 'Edit', 'Submit']} />
-                        </Box>
-                        <Alert
-                            severity='info'
-                            sx={{
-                                visibility: changesMade ? 'block' : 'hidden',
-                                borderRadius: '1rem',
-                            }}
-                        >
-                            You have requested changes that will require the video to be processed. These changes will
-                            be processed once you continue to the next page
-                        </Alert>
+                        ></Box>
                         <Box
+                            className='column-2'
                             sx={{
                                 display: 'flex',
-                                flexDirection: 'row',
-                                flexGrow: 1,
-                                width: '100%',
-                                height: '100%',
+                                flexDirection: 'column',
+                                width: '60%',
+                                alignItems: 'center',
+                                gap: '2rem',
                             }}
                         >
+                            {/*Contains video and buttons*/}
                             <Box
-                                className='column-1'
-                                sx={{
-                                    width: '20%',
-                                    pr: '1rem',
-                                }}
-                            ></Box>
-                            <Box
-                                className='column-2'
                                 sx={{
                                     display: 'flex',
                                     flexDirection: 'column',
-                                    width: '60%',
+                                    justifyContent: 'space-between',
                                     alignItems: 'center',
                                     gap: '2rem',
+                                    width: '100%',
+                                    height: '100%',
                                 }}
                             >
-                                {/*Contains video and buttons*/}
+                                {/*TODO: Replace with a dynamic url later*/}
                                 <Box
                                     sx={{
                                         display: 'flex',
                                         flexDirection: 'column',
-                                        justifyContent: 'space-between',
                                         alignItems: 'center',
-                                        gap: '2rem',
+                                        flexGrow: 1,
+                                        flexShrink: 1,
+                                        minWidth: '20vh',
+                                        minHeight: '20vw',
                                         width: '100%',
-                                        height: '100%',
                                     }}
                                 >
-                                    {/*TODO: Replace with a dynamic url later*/}
-                                    <Box
-                                        sx={{
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            alignItems: 'center',
-                                            flexGrow: 1,
-                                            flexShrink: 1,
-                                            minWidth: '20vh',
-                                            minHeight: '20vw',
-                                            width: '100%',
-                                        }}
-                                    >
-                                        {isVideoVisible && <ScalingReactPlayer url={streamingVideoUrl} />}
-                                    </Box>
+                                    {isVideoVisible && <ScalingReactPlayer url={streamingVideoUrl} />}
+                                </Box>
 
-                                    {/*The back and continue buttons*/}
-                                    <Box
-                                        id='nav-buttons-div'
-                                        sx={{
-                                            display: 'flex',
-                                            justifyContent: 'space-between',
-                                            width: '100%',
-                                        }}
-                                    >
-                                        <Button variant={'contained'} startIcon={<ArrowBackIcon />}>
-                                            Back
-                                        </Button>
-                                        <Button variant={'contained'} endIcon={<ArrowForwardIcon />}>
-                                            Continue
-                                        </Button>
-                                    </Box>
+                                {/*The back and continue buttons*/}
+                                <Box
+                                    id='nav-buttons-div'
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        width: '100%',
+                                    }}
+                                >
+                                    <Button variant={'contained'} startIcon={<ArrowBackIcon />}>
+                                        Back
+                                    </Button>
+                                    <Button variant={'contained'} endIcon={<ArrowForwardIcon />}>
+                                        Continue
+                                    </Button>
                                 </Box>
                             </Box>
-                            <Box
-                                className='column-3'
-                                sx={{
-                                    width: '20%',
-                                    p: '0 1rem',
-                                    borderRadius: '1rem',
-                                }}
-                            >
-                                <EditorTools setIsEditorChanged={setChangesMade} />
-                            </Box>
+                        </Box>
+                        <Box
+                            className='column-3'
+                            sx={{
+                                width: '20%',
+                                p: '0 1rem',
+                                borderRadius: '1rem',
+                            }}
+                        >
+                            <EditorTools setIsEditorChanged={setChangesMade} />
                         </Box>
                     </Box>
                 </Box>
-            </>
-        )
+            </Box>
+        </>
     )
 
     function cleanUpVideoState() {

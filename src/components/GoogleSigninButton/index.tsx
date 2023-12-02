@@ -3,16 +3,16 @@
 'use client'
 
 import React from 'react'
-import './GoogleSigninButton.module.css'
+import styles from './GoogleSigninButton.module.css'
 import { signIn } from 'next-auth/react'
 import logger from '@/utils/logger'
 
 export default function GoogleSignInButton() {
     return (
-        <button className='gsi-material-button' onClick={signInWithGoogle} data-cy='google-sign-in-btn'>
-            <div className='gsi-material-button-state'></div>
-            <div className='gsi-material-button-content-wrapper'>
-                <div className='gsi-material-button-icon'>
+        <button className={styles['gsi-material-button']} onClick={signInWithGoogle} data-cy='google-sign-in-btn'>
+            <div className={styles['gsi-material-button-state']}></div>
+            <div className={styles['gsi-material-button-content-wrapper']}>
+                <div className={styles['gsi-material-button-icon']}>
                     <svg
                         version='1.1'
                         xmlns='http://www.w3.org/2000/svg'
@@ -39,7 +39,7 @@ export default function GoogleSignInButton() {
                         <path fill='none' d='M0 0h48v48H0z'></path>
                     </svg>
                 </div>
-                <span className='gsi-material-button-contents'>Sign in with Google</span>
+                <span className={styles['gsi-material-button-contents']}>Sign in with Google</span>
                 <span style={{ display: 'none' }}>Sign in with Google</span>
             </div>
         </button>
