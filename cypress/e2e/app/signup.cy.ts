@@ -1,9 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 
 describe('Sign up tests', () => {
-    before(() => {
-        cy.task('clearDB')
-    })
     beforeEach(() => {
         cy.task('clearDB')
     })
@@ -183,5 +180,28 @@ describe('Sign up tests', () => {
 
         // After clicking again, the password confirmation input type should change back to 'password'
         cy.get('[data-cy=passwordConfirmation] input').should('have.attr', 'type', 'password')
+    })
+
+    it('should add new user to any requested submissions with same email', () => {
+        const email = 'red@is.sus'
+        const password = 'Password1'
+
+        cy.task('createSubmissionBoxWithEmail', email)
+
+        cy.visit('/signup')
+
+        cy.get('[data-cy=email]').type(email)
+        cy.get('[data-cy=password]').type(password)
+        cy.get('[data-cy=passwordConfirmation]').type(password)
+        cy.get('[data-cy=submit]').click()
+        cy.url().should('not.contain', 'signup')
+
+        cy.task('getUserId', email).then((userId) => {
+            cy.task('getRequestedSubmissions').then((requestedSubmissions: any) => {
+                expect(requestedSubmissions).to.have.length(1)
+                expect(requestedSubmissions[0].email).to.eq(email)
+                expect(requestedSubmissions[0].userId).to.eq(userId)
+            })
+        })
     })
 })

@@ -6,6 +6,7 @@ import createUser from './cypress/tasks/createUser'
 import getSubmissionBoxes from './cypress/tasks/getSubmissionBoxes'
 import getSubmissionBoxManagers from './cypress/tasks/getSubmissionBoxManagers'
 import getRequestedSubmissions from './cypress/tasks/getRequestedSubmissions'
+import createSubmissionBoxWithEmail from './cypress/tasks/createSubmissionBoxWithEmail'
 
 require('dotenv').config()
 
@@ -23,6 +24,7 @@ export default defineConfig({
                 getSubmissionBoxes,
                 getSubmissionBoxManagers,
                 getRequestedSubmissions,
+                createSubmissionBoxWithEmail,
             })
         },
         experimentalModifyObstructiveThirdPartyCode: true,
