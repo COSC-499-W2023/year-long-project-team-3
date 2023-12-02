@@ -25,7 +25,9 @@ export default function DashboardSidePanel(props: DashboardSidePanelProps) {
                 setSidebarSelectedOption={setSidebarSelectedOption}
             />
             <DashboardSidebarSubmissionBoxes
-                onCreateNewClick={() => {}}
+                onCreateNewClick={() => {
+                    router.push('/submission-box/create')
+                }}
                 onSubmissionInboxClick={() => {}}
                 onSubmissionOutboxClick={() => {}}
                 sidebarSelectedOption={sidebarSelectedOption}

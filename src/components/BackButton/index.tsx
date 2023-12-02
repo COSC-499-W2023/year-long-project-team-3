@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 
 export type BackButtonProps = {
     route: string
+    title: string
 }
 
 export default function BackButton(props: BackButtonProps) {
@@ -32,7 +33,7 @@ export default function BackButton(props: BackButtonProps) {
         >
             <ArrowBack />
             <Typography variant='h6' sx={{ ml: 1 }}>
-                Back
+                {props.title}
             </Typography>
         </Box>
     )
