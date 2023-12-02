@@ -178,7 +178,6 @@ export default function VideoPreviewPage() {
                                             height: '100%',
                                         }}
                                     >
-                                        {/*TODO: Replace with a dynamic url later*/}
                                         <Box
                                             sx={{
                                                 display: 'flex',
