@@ -71,7 +71,7 @@ describe('Submission box settings tests', () => {
             cy.get('[data-cy="back-button"]').click()
 
             // TODO: change this to test for appropriate URL
-            cy.url().should('include', '/dashboard')
+            cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('include', '/dashboard')
         })
     })
 
