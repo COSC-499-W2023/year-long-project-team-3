@@ -26,7 +26,6 @@ type FormValues = {
 
 export default function SubmitVideoPage() {
     const session = useSession()
-    const { status } = session
     const router = useRouter()
     const pathname = usePathname()
 
@@ -48,7 +47,6 @@ export default function SubmitVideoPage() {
         validateOnBlur: true,
     })
 
-    const [isSubmitVideoPageVisible, setIsSubmitVideoPageVisible] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [video, setVideo] = useState<Video>()
 
@@ -57,19 +55,7 @@ export default function SubmitVideoPage() {
     const [unSelectedSubmissionBoxes, setUnSelectedSubmissionBoxes] = useState<SubmissionBox[]>([])
 
     useEffect(() => {
-        if (status === 'authenticated') {
-            setIsSubmitVideoPageVisible(true)
-        } else if (status === 'unauthenticated') {
-            cleanPageState()
-            router.push('/login')
-        } else {
-            cleanPageState()
-        }
-    }, [router, status])
-
-    useEffect(() => {
-        if (!videoId || !isSubmitVideoPageVisible) {
-            cleanPageState()
+        if (!videoId) {
             return
         }
 
@@ -81,213 +67,197 @@ export default function SubmitVideoPage() {
             })
             .catch((err) => {
                 logger.error(err)
-                toast.error('There is an unexpected error occurred!')
-                cleanPageState()
                 router.push('/dashboard')
+                toast.error('There is an unexpected error occurred!')
             })
             .finally(() => {
                 setIsLoading(false)
             })
-    }, [videoId, isSubmitVideoPageVisible, router])
+    }, [videoId, router])
 
     return (
         <>
-            <PageLoadProgress show={isLoading} />
-            {isSubmitVideoPageVisible && !!video && (
-                <>
-                    <Header {...session} />
+            <PageLoadProgress show={isLoading && !video} />
+            <>
+                <Header {...session} />
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '1rem',
+                        width: '100%',
+                        height: '100%',
+                        padding: '2rem',
+                    }}
+                >
                     <Box
                         sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            gap: '1rem',
-                            width: '100%',
-                            height: '100%',
-                            padding: '2rem',
+                            minWidth: '16rem',
+                            width: '70%',
                         }}
                     >
-                        <Box
-                            sx={{
-                                minWidth: '16rem',
-                                width: '70%',
-                            }}
-                        >
-                            <ProgressDots activeStep={2} numSteps={3} labels={['Upload', 'Edit', 'Submit']} />
-                        </Box>
-                        <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
-                            <Box display='flex'>
-                                <Box width={300} height={200} display='flex' alignItems='start' justifyContent='end'>
-                                    {!!video.thumbnail ? (
-                                        <Image
-                                            src={video.thumbnail}
-                                            alt={video.title}
-                                            width={0}
-                                            height={0}
-                                            objectPosition={'100% 0'}
-                                            objectFit={'cover'}
-                                            style={{
-                                                borderRadius: 20,
-                                                maxWidth: '21vw',
-                                                maxHeight: '14vw',
-                                                width: '100%',
-                                                height: '100%',
-                                            }}
-                                        />
-                                    ) : (
-                                        <Box
-                                            component='span'
-                                            sx={{
-                                                borderRadius: '20px',
-                                                maxWidth: '21vw',
-                                                maxHeight: '14vw',
-                                                width: '100%',
-                                                height: '100%',
-                                                backgroundColor: 'grey',
-                                            }}
-                                        />
-                                    )}
-                                </Box>
-                                <Box
-                                    display='flex'
-                                    flexDirection='column'
-                                    paddingLeft='2rem'
-                                    alignItems='start'
-                                    gap='0.5rem'
-                                >
-                                    <Box>
-                                        <TextField
-                                            id='videoTitle'
-                                            label='Title'
-                                            placeholder='Your video title'
-                                            variant='standard'
-                                            sx={{
-                                                minWidth: '16rem',
-                                            }}
-                                            InputLabelProps={{ shrink: true }}
-                                            value={formik.values.videoTitle}
-                                            onChange={formik.handleChange}
-                                            onBlur={formik.handleBlur}
-                                            error={formik.touched.videoTitle && Boolean(formik.errors.videoTitle)}
-                                            helperText={formik.touched.videoTitle && formik.errors.videoTitle}
-                                        />
-                                    </Box>
-                                    <Box>
-                                        <TextField
-                                            id='videoDescription'
-                                            label='Description'
-                                            placeholder='Your video description (optional)'
-                                            variant='standard'
-                                            sx={{
-                                                minWidth: '16rem',
-                                                // Remove bottom outline
-                                                '& .MuiInput-underline:before': {
-                                                    borderBottom: 0,
-                                                },
-                                                '& .MuiInput-underline:after': {
-                                                    borderBottom: 0,
-                                                },
-                                                '& .MuiInput-underline:hover:not(.Mui-disabled, .Mui-error):before': {
-                                                    borderBottom: 0,
-                                                },
-                                            }}
-                                            multiline
-                                            rows={6}
-                                            InputLabelProps={{ shrink: true }}
-                                            value={formik.values.videoDescription}
-                                            onChange={formik.handleChange}
-                                            onBlur={formik.handleBlur}
-                                            error={
-                                                formik.touched.videoDescription &&
-                                                Boolean(formik.errors.videoDescription)
-                                            }
-                                            helperText={
-                                                formik.touched.videoDescription && formik.errors.videoDescription
-                                            }
-                                        />
-                                    </Box>
-                                </Box>
+                        <ProgressDots activeStep={2} numSteps={3} labels={['Upload', 'Edit', 'Submit']} />
+                    </Box>
+                    <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
+                        <Box display='flex'>
+                            <Box width={300} height={200} display='flex' alignItems='start' justifyContent='end'>
+                                {!!video && !!video.thumbnail ? (
+                                    <Image
+                                        src={video.thumbnail}
+                                        alt={video.title}
+                                        width={0}
+                                        height={0}
+                                        objectPosition={'100% 0'}
+                                        objectFit={'cover'}
+                                        style={{
+                                            borderRadius: 20,
+                                            maxWidth: '21vw',
+                                            maxHeight: '14vw',
+                                            width: '100%',
+                                            height: '100%',
+                                        }}
+                                    />
+                                ) : (
+                                    <Box
+                                        component='span'
+                                        sx={{
+                                            borderRadius: '20px',
+                                            maxWidth: '21vw',
+                                            maxHeight: '14vw',
+                                            width: '100%',
+                                            height: '100%',
+                                            backgroundColor: 'grey',
+                                        }}
+                                    />
+                                )}
                             </Box>
                             <Box
                                 display='flex'
                                 flexDirection='column'
-                                sx={{
-                                    '& .MuiInputBase-root.MuiOutlinedInput-root': {
-                                        borderRadius: '8px',
-                                    },
-                                    width: '35vw',
-                                }}
+                                paddingLeft='2rem'
+                                alignItems='start'
+                                gap='0.5rem'
                             >
-                                <Typography variant='h6' fontWeight='600'>
-                                    Choose boxes to submit to:
-                                </Typography>
-                                <Select
-                                    multiple
-                                    value={selectedSubmissionBoxes}
-                                    sx={{
-                                        '& .MuiOutlinedInput-input': {
-                                            borderRadius: '8px',
-                                        },
-                                        width: '100%',
-                                    }}
-                                    renderValue={(selected) => (
-                                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                                            {selected.map(({ id, title }) => (
-                                                <Chip
-                                                    key={id}
-                                                    label={title}
-                                                    onMouseDown={(e) => e.stopPropagation()}
-                                                    onDelete={() => handleRemoveSelectedSubmissionBoxItem(id)}
-                                                    deleteIcon={<HighlightOffIcon />}
-                                                    sx={{
-                                                        borderRadius: '8px',
-                                                    }}
-                                                />
-                                            ))}
-                                        </Box>
-                                    )}
-                                    MenuProps={MenuProps}
-                                >
-                                    {unSelectedSubmissionBoxes?.length > 0 &&
-                                        unSelectedSubmissionBoxes.map((submissionBox) => (
-                                            <MenuItem
-                                                key={submissionBox.id}
-                                                value={submissionBox.title}
-                                                onClick={() => handleClickSubmissionBoxListItem(submissionBox.id)}
-                                            >
-                                                {submissionBox.title}
-                                            </MenuItem>
-                                        ))}
-                                </Select>
+                                <Box>
+                                    <TextField
+                                        id='videoTitle'
+                                        label='Title'
+                                        placeholder='Your video title'
+                                        variant='standard'
+                                        sx={{
+                                            minWidth: '16rem',
+                                        }}
+                                        InputLabelProps={{ shrink: true }}
+                                        value={formik.values.videoTitle}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        error={formik.touched.videoTitle && Boolean(formik.errors.videoTitle)}
+                                        helperText={formik.touched.videoTitle && formik.errors.videoTitle}
+                                    />
+                                </Box>
+                                <Box>
+                                    <TextField
+                                        id='videoDescription'
+                                        label='Description'
+                                        placeholder='Your video description (optional)'
+                                        variant='standard'
+                                        sx={{
+                                            minWidth: '16rem',
+                                            // Remove bottom outline
+                                            '& .MuiInput-underline:before': {
+                                                borderBottom: 0,
+                                            },
+                                            '& .MuiInput-underline:after': {
+                                                borderBottom: 0,
+                                            },
+                                            '& .MuiInput-underline:hover:not(.Mui-disabled, .Mui-error):before': {
+                                                borderBottom: 0,
+                                            },
+                                        }}
+                                        multiline
+                                        rows={6}
+                                        InputLabelProps={{ shrink: true }}
+                                        value={formik.values.videoDescription}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        error={
+                                            formik.touched.videoDescription && Boolean(formik.errors.videoDescription)
+                                        }
+                                        helperText={formik.touched.videoDescription && formik.errors.videoDescription}
+                                    />
+                                </Box>
                             </Box>
                         </Box>
                         <Box
                             display='flex'
-                            justifyContent='space-between'
-                            width='70vw'
-                            position='absolute'
-                            bottom='4rem'
+                            flexDirection='column'
+                            sx={{
+                                '& .MuiInputBase-root.MuiOutlinedInput-root': {
+                                    borderRadius: '8px',
+                                },
+                                width: '35vw',
+                            }}
                         >
-                            <Button variant={'contained'} startIcon={<ArrowBackIcon />} onClick={handleClickBackButton}>
-                                Back
-                            </Button>
-                            <Button
-                                variant={'contained'}
-                                startIcon={<ArrowForwardIcon />}
-                                onClick={() => formik.handleSubmit()}
+                            <Typography variant='h6' fontWeight='600'>
+                                Choose boxes to submit to:
+                            </Typography>
+                            <Select
+                                multiple
+                                value={selectedSubmissionBoxes}
+                                sx={{
+                                    '& .MuiOutlinedInput-input': {
+                                        borderRadius: '8px',
+                                    },
+                                    width: '100%',
+                                }}
+                                renderValue={(selected) => (
+                                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                                        {selected.map(({ id, title }) => (
+                                            <Chip
+                                                key={id}
+                                                label={title}
+                                                onMouseDown={(e) => e.stopPropagation()}
+                                                onDelete={() => handleRemoveSelectedSubmissionBoxItem(id)}
+                                                deleteIcon={<HighlightOffIcon />}
+                                                sx={{
+                                                    borderRadius: '8px',
+                                                }}
+                                            />
+                                        ))}
+                                    </Box>
+                                )}
+                                MenuProps={MenuProps}
                             >
-                                Submit
-                            </Button>
+                                {unSelectedSubmissionBoxes?.length > 0 &&
+                                    unSelectedSubmissionBoxes.map((submissionBox) => (
+                                        <MenuItem
+                                            key={submissionBox.id}
+                                            value={submissionBox.title}
+                                            onClick={() => handleClickSubmissionBoxListItem(submissionBox.id)}
+                                        >
+                                            {submissionBox.title}
+                                        </MenuItem>
+                                    ))}
+                            </Select>
                         </Box>
                     </Box>
-                </>
-            )}
+                    <Box display='flex' justifyContent='space-between' width='70vw' position='absolute' bottom='4rem'>
+                        <Button variant={'contained'} startIcon={<ArrowBackIcon />} onClick={handleClickBackButton}>
+                            Back
+                        </Button>
+                        <Button
+                            variant={'contained'}
+                            startIcon={<ArrowForwardIcon />}
+                            onClick={() => formik.handleSubmit()}
+                        >
+                            Submit
+                        </Button>
+                    </Box>
+                </Box>
+            </>
         </>
     )
-
-    function cleanPageState() {
-        setIsLoading(false)
-    }
 
     function handleClickSubmissionBoxListItem(submissionBoxId: string) {
         const submissionBoxIdx = unSelectedSubmissionBoxes.findIndex((sb) => sb.id === submissionBoxId)
@@ -354,7 +324,8 @@ export default function SubmitVideoPage() {
             .catch((err) => {
                 logger.error(err)
                 toast.error('Unexpected error occurred while submitting the video')
-            }).finally(() => {
+            })
+            .finally(() => {
                 setIsLoading(false)
             })
     }
