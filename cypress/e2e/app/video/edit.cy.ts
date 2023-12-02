@@ -1,3 +1,4 @@
+import { TIMEOUT } from 'cypress/utils/constants'
 import { describe } from 'mocha'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -12,14 +13,18 @@ describe('Test video editing page', () => {
         })
     })
 
-
     // Skip this because there is no way to retrieve the video ID from the DB
-    context.skip('Logged in', () => {
+    context('Logged in', () => {
+        if (!Cypress.env('CYPRESS_RUN_LOCAL_ONLY')) {
+            it.skip('Skipped in production', () => {})
+            return
+        }
+        let videoUrl = ''
+
         beforeEach(() => {
             cy.session('testuser', () => {
                 const email = 'user' + uuidv4() + '@example.com'
                 const password = 'Password1'
-
                 // Sign up
                 cy.visit('/signup')
                 cy.get('[data-cy="email"]').type(email)
@@ -33,15 +38,25 @@ describe('Test video editing page', () => {
                 cy.get('[data-cy=password]').type(password)
                 cy.get('[data-cy=submit]').click()
                 cy.url().should('not.contain', 'login')
+
+                // Redirect to video edit page
+                cy.task('getUserId', email).then((userId) => {
+                    cy.task('createOneVideoAndRetrieveVideoId', { ownerId: userId, title: 'Test video' }).then(
+                        (videoId) => {
+                            videoUrl = '/video/edit/' + videoId
+                        }
+                    )
+                })
             })
-            cy.visit('/video/edit')
         })
 
         it('should contain video', () => {
+            cy.visit(videoUrl)
             cy.get('.react-player').should('exist')
         })
 
         it('should have continue and back buttons', () => {
+            cy.visit(videoUrl)
             cy.get('#nav-buttons-div')
                 .find('button')
                 .should('have.length', 2)
@@ -50,6 +65,7 @@ describe('Test video editing page', () => {
         })
 
         it('should show message on edit change', () => {
+            cy.visit(videoUrl)
             // Make change
             cy.get('.editor-tools').should('exist').find('.MuiIconButton-root').should('have.length', 4).first().click()
 
@@ -58,6 +74,7 @@ describe('Test video editing page', () => {
         })
 
         it('should open modals', () => {
+            cy.visit(videoUrl)
             cy.get('.editor-tools')
                 .find('.MuiIconButton-root')
                 .not('[aria-label=Mute]')
@@ -73,7 +90,9 @@ describe('Test video editing page', () => {
                 })
         })
 
-        it('should be controllable by keyboard', () => {
+        // Skip this because we do not have an actual video to test with
+        it.skip('should be controllable by keyboard', () => {
+            cy.visit(videoUrl)
             const pressKey = (code: string) => {
                 cy.get('body').trigger('keydown', { code: code })
                 cy.wait(50)
