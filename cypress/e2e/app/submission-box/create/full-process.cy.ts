@@ -75,6 +75,7 @@ describe('Test full submission boc creation', () => {
                             expect(managers).to.have.length(1)
                             expect(managers[0].userId).to.eq(userId)
                             expect(managers[0].submissionBoxId).to.eq(subBox.id)
+                            expect(managers[0].viewPermission).to.eq('owner')
                         })
 
                         cy.task('getRequestedSubmissions').then((requestedSubmissions: any) => {
