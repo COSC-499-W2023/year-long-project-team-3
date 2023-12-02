@@ -1,3 +1,5 @@
+'use client'
+
 import Box from '@mui/material/Box'
 import DashboardSidebarMenu from '@/components/DashboardSidebarMenu'
 import DashboardSidebarSubmissionBoxes from '@/components/DashboardSidebarSubmissionBoxes'
@@ -10,8 +12,8 @@ export type DashboardSidePanelProps = {
 }
 
 export default function DashboardSidePanel(props: DashboardSidePanelProps) {
-    const [sidebarSelectedOption, setSidebarSelectedOption] = useState<SidebarOption>(props.initialSidebarSelectedOption)
     const router = useRouter()
+    const [sidebarSelectedOption, setSidebarSelectedOption] = useState<SidebarOption>('menu_recent')
 
     return (
         <Box display='flex' flexDirection='column' margin={'0 2rem'}>
@@ -33,7 +35,9 @@ export default function DashboardSidePanel(props: DashboardSidePanelProps) {
                 setSidebarSelectedOption={setSidebarSelectedOption}
             />
             <DashboardSidebarSubmissionBoxes
-                onCreateNewClick={() => {}}
+                onCreateNewClick={() => {
+                    router.push('/submission-box/create')
+                }}
                 onSubmissionInboxClick={() => {
                     router.push('/dashboard/myboxes')
                 }}
