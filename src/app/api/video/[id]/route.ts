@@ -60,7 +60,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
         }
 
-        return NextResponse.json({ videoUrl: streamableUrl }, { status: 200 })
+        return NextResponse.json({ videoUrl: streamableUrl, isCloudProcessed: video.isCloudProcessed }, { status: 200 })
     } catch (err) {
         logger.error(err)
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
