@@ -1,7 +1,6 @@
 import { withAuth } from 'next-auth/middleware'
 import { NextRequest, NextResponse } from 'next/server'
 import logger from '@/utils/logger'
-import { getServerSession } from 'next-auth'
 
 export default withAuth(
     function middleware(request: NextRequest) {
