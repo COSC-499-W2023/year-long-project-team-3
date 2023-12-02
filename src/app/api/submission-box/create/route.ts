@@ -6,12 +6,12 @@ import logger from '@/utils/logger'
 
 export type SubmissionBoxCreateData = {
     title: string
-    description?: string | undefined
-    closesAt?: Date | undefined
+    description?: string
+    closesAt?: Date
     requestedEmails: string[]
-    videoStoreToDate?: Date | undefined
-    maxVideoLength?: number | undefined
-    isPublic?: boolean | undefined
+    videoStoreToDate?: Date
+    maxVideoLength?: number
+    isPublic?: boolean
 }
 
 function validateRequest(data: any): data is SubmissionBoxCreateData {
@@ -21,20 +21,16 @@ function validateRequest(data: any): data is SubmissionBoxCreateData {
     if (!data.title || typeof data.title != 'string') {
         return false
     }
-    if (!data.requestedEmails) {
+    if (!data.requestedEmails || !Array.isArray(data.requestedEmails)) {
         return false
-    } else {
-        try {
-            const emailRegex = getEmailRegex()
-            const hasNonStringEmail = data.requestedEmails.some(
-                (x: any) => typeof x !== 'string' || !emailRegex.test(x)
-            )
-            if (hasNonStringEmail) {
-                return false
-            }
-        } catch (err) {
-            return false
-        }
+    }
+    const emailRegex = getEmailRegex()
+    if (
+        data.requestedEmails.some(
+            (x: any) => typeof x !== 'string' || !emailRegex.test(x)
+        )
+    ) {
+        return false
     }
     if (data.description && typeof data.description !== 'string') {
         return false
@@ -72,17 +68,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             return NextResponse.json({ error: 'Invalid Request' }, { status: 400 })
         }
 
-        // Make the date field an actual date
-        if (reqData.closesAt) {
-            reqData.closesAt = new Date(reqData.closesAt)
-        }
-
         // Create submission box
         const newSubmissionBox = await prisma.submissionBox.create({
             data: {
                 title: reqData.title,
                 description: reqData.description,
-                closesAt: reqData.closesAt,
+                // Make the date field an actual date
+                closesAt: reqData.closesAt ? new Date(reqData.closesAt) : undefined,
                 videoStoreToDate: reqData.videoStoreToDate,
                 maxVideoLength: reqData.maxVideoLength,
                 isPublic: reqData.isPublic,
@@ -106,26 +98,26 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         })
 
         // Get any users that already exist
-        let existingUsers: Record<string, string> = {}
-        if (reqData.requestedEmails.length > 0) {
-            const users = await prisma.user.findMany({
-                select: {
-                    id: true,
-                    email: true,
-                },
-                where: {
-                    email: {
-                        in: reqData.requestedEmails,
+        const users =
+            reqData.requestedEmails.length === 0
+                ? []
+                : await prisma.user.findMany({
+                    select: {
+                        id: true,
+                        email: true,
                     },
-                },
-            })
+                    where: {
+                        email: {
+                            in: reqData?.requestedEmails,
+                        },
+                    },
+                })
 
-            // Convert the array of users to an object for faster lookups
-            existingUsers = users.reduce((userRecord: Record<string, string>, user) => {
-                userRecord[user.email] = user.id
-                return userRecord
-            }, {})
-        }
+        // Convert the array of users to an object for faster lookups
+        const existingUsers = users.reduce((userRecord: Record<string, string>, user) => {
+            userRecord[user.email] = user.id
+            return userRecord
+        }, {})
 
         // Create submission requests
         await prisma.requestedSubmission.createMany({
