@@ -8,14 +8,14 @@ import { SidebarOption } from '@/types/dashboard/sidebar'
 
 export type DashboardProps = {
     userEmail: string
-    initialSidebarSelectedOption?: SidebarOption
+    initialSidebarSelectedOption: SidebarOption
 }
 
 export default function Dashboard(props: DashboardProps) {
     return (
         <>
             <Box display='grid' maxWidth={325} height='100%'>
-                <DashboardSidebar initialSidebarSelectedOption={props.initialSidebarSelectedOption ?? 'menu_recent'} />
+                <DashboardSidebar initialSidebarSelectedOption={props.initialSidebarSelectedOption} />
             </Box>
         </>
     )

@@ -36,7 +36,7 @@ export default function DashboardSidebarSubmissionBoxes(props: DashboardSidebarS
                 title={'My Boxes'}
                 icon={<InboxIcon />}
                 onClick={handleSubmissionInboxClick}
-                isSelected={sidebarSelectedOption === 'my_submission_boxes'}
+                isSelected={sidebarSelectedOption === 'submission_boxes_my_boxes'}
                 isDisabled={false}
                 isAddButton={false}
             />
@@ -44,7 +44,7 @@ export default function DashboardSidebarSubmissionBoxes(props: DashboardSidebarS
                 title={'My Requests'}
                 icon={<SendIcon />}
                 onClick={handleSubmissionOutboxClick}
-                isSelected={sidebarSelectedOption === 'requested_submission_boxes'}
+                isSelected={sidebarSelectedOption === 'submission_boxes_my_requests '}
                 isDisabled={false}
                 isAddButton={false}
             />
@@ -57,12 +57,12 @@ export default function DashboardSidebarSubmissionBoxes(props: DashboardSidebarS
     }
 
     function handleSubmissionInboxClick() {
-        props.setSidebarSelectedOption('my_submission_boxes')
+        props.setSidebarSelectedOption('submission_boxes_my_boxes')
         props.onSubmissionInboxClick()
     }
 
     function handleSubmissionOutboxClick() {
-        props.setSidebarSelectedOption('requested_submission_boxes')
+        props.setSidebarSelectedOption('submission_boxes_my_requests ')
         props.onSubmissionOutboxClick()
     }
 }

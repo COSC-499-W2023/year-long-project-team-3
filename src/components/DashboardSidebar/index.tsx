@@ -13,7 +13,9 @@ export type DashboardSidePanelProps = {
 
 export default function DashboardSidePanel(props: DashboardSidePanelProps) {
     const router = useRouter()
-    const [sidebarSelectedOption, setSidebarSelectedOption] = useState<SidebarOption>('menu_recent')
+    const [sidebarSelectedOption, setSidebarSelectedOption] = useState<SidebarOption>(
+        props.initialSidebarSelectedOption
+    )
 
     return (
         <Box display='flex' flexDirection='column' margin={'0 2rem'}>
