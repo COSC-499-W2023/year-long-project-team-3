@@ -6,7 +6,7 @@ const arbitraryValidRequest = {
 }
 describe('Test submission box creation API', () => {
     context('Logged out', () => {
-        it('should reject any request', () => {
+        it('should reject any request if not logged in', () => {
             cy.request({
                 method: 'POST',
                 url: '/api/submission-box/create',
