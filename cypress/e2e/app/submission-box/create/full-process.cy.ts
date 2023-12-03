@@ -41,7 +41,7 @@ describe('Test full submission box creation', () => {
 
                     cy.get('[data-cy=submission-box-title]').type(sb.title)
                     cy.get('[data-cy=description]').type(sb.description)
-                    cy.get('.data-cy-date-time-picker').type(sb.closesAt.replaceAll(' ', ''))
+                    cy.typeDatePicker('.data-cy-date-time-picker', sb.closesAt.replaceAll(' ', ''))
                     cy.get('[data-cy=next]').click()
 
                     cy.get('[data-cy=title]').should('contain', 'Request Submissions')
@@ -61,6 +61,9 @@ describe('Test full submission box creation', () => {
                     })
 
                     cy.get('[data-cy=next]').click()
+
+                    // Wait a bit for submission box to be added to database, else test is flaky
+                    cy.wait(2000)
 
                     cy.task('getSubmissionBoxes').then((submissionBoxes: any) => {
                         assert(Array.isArray(submissionBoxes))
