@@ -1,4 +1,5 @@
 'use client'
+
 import React, { useEffect, useState } from 'react'
 import Header from '@/components/Header'
 import { SessionContextValue, useSession } from 'next-auth/react'
@@ -13,7 +14,6 @@ import PageLoadProgress from '@/components/PageLoadProgress'
 
 export default function VideoPreviewPage() {
     const session: SessionContextValue = useSession()
-    const { status } = session
     const router = useRouter()
     const pathname = usePathname()
 
@@ -22,7 +22,7 @@ export default function VideoPreviewPage() {
     const [isVideoVisible, setIsVideoVisible] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
 
-    const videoId = pathname.split('/').pop()
+    const videoId = pathname?.split('/').pop()
 
     function resizeNavButtons() {
         const buttonsDiv = document.getElementById('nav-buttons-div')
@@ -124,8 +124,8 @@ export default function VideoPreviewPage() {
                                 borderRadius: '1rem',
                             }}
                         >
-                            You have requested changes that will require the video to be processed. These changes
-                            will be processed once you continue to the next page
+                            You have requested changes that will require the video to be processed. These changes will
+                            be processed once you continue to the next page
                         </Alert>
                         <Box
                             sx={{

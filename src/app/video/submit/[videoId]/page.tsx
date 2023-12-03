@@ -29,7 +29,7 @@ export default function SubmitVideoPage() {
     const router = useRouter()
     const pathname = usePathname()
 
-    const videoId = pathname.split('/').pop()
+    const videoId = pathname?.split('/').pop()
 
     const validationSchema: ObjectSchema<FormValues> = yup.object().shape({
         videoTitle: yup.string().required('Title required'),
