@@ -17,7 +17,7 @@ require('dotenv').config()
 export default defineConfig({
     e2e: {
         projectId: process.env.CYPRESS_PROJECT_ID,
-        baseUrl: process.env.CYPRESS_BASE_URL,
+        baseUrl: process.env.CYPRESS_BASE_URL ?? 'http://localhost:3000',
         setupNodeEvents(on, config) {
             // implement node event listeners here
             on('task', {

@@ -128,7 +128,6 @@ jobs:
                     install: true
                     browser: chrome
                     wait-on: ${{ secrets.CYPRESS_BASE_URL }}
-                    base-url: ${{ secrets.CYPRESS_BASE_URL }}
                     config: baseUrl=${{ secrets.CYPRESS_BASE_URL }}
             -   name: Save cypress video
                 if: failure()
