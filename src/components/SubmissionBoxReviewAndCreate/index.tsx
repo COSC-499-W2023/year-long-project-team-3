@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography'
 import React from 'react'
 import TextField from '@mui/material/TextField'
 import dayjs from 'dayjs'
-import { DateTimePicker } from '@mui/x-date-pickers'
+import { DesktopDateTimePicker } from '@mui/x-date-pickers'
 
 type ReviewAndCreateData = {
     title: string
@@ -52,7 +52,7 @@ export default function SubmissionBoxReviewAndCreate({ title, description, closi
                     />
                 )}
                 {closingDate && (
-                    <DateTimePicker
+                    <DesktopDateTimePicker
                         className='data-cy-date-time' // regular data-cy didn't work
                         disabled
                         label='Closing Date'

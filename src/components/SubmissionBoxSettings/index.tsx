@@ -1,5 +1,5 @@
 import TextField from '@mui/material/TextField'
-import { DateTimePicker } from '@mui/x-date-pickers'
+import { DesktopDateTimePicker} from '@mui/x-date-pickers'
 import React, { useEffect } from 'react'
 import { ObjectSchema } from 'yup'
 import * as yup from 'yup'
@@ -110,7 +110,7 @@ export default function SubmissionBoxSettings({
                     helperText={formik.touched.description && formik.errors.description}
                     data-cy='description'
                 />
-                <DateTimePicker
+                <DesktopDateTimePicker
                     className='data-cy-date-time-picker' // regular data-cy wasn't working
                     disablePast
                     label='Closing Date'
