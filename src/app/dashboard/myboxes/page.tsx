@@ -41,28 +41,34 @@ export default function SubmissionInboxPage() {
                         data-cy='title'
                         variant='h5'
                         color={'textSecondary'}
-                        sx={{ m: 2, fontWeight: 'bold', py: '1rem' }}
+                        sx={{ m: 2, fontWeight: 'bold', py: '1rem', marginTop: '1rem' }}
                     >
                         My Boxes
                     </Typography>
                     <Box
-                        component='section'
-                        sx={{ borderTopLeftRadius: 25, borderBottomLeftRadius: 25, height: 602, backgroundColor: 'secondary.lighter' }}
-                        border={1}
+                        sx={{
+                            borderTopLeftRadius: 25,
+                            borderBottomLeftRadius: 25,
+                            height: '100vh',
+                            backgroundColor: 'secondary.lighter',
+                        }}
                         borderColor={'secondary.lighter'}
                     >
-                        {!hasSubmissions && (
-                            <Typography
-                                data-cy='no submission text'
-                                variant='h5'
-                                align='center'
-                                color={'textSecondary'}
-                                sx={{ mt: 20 }}
-                            >
-                                You Do Not Have Any Active Submission Boxes
-                            </Typography>
-                        )}
-                        {hasSubmissions && <SubmissionBoxList submissionBoxes={myBoxes} />}
+                        <Box component='section' sx={{ height: 602, paddingTop: '1rem' }}>
+                            {!hasSubmissions ? (
+                                <Typography
+                                    data-cy='no submission text'
+                                    variant='h5'
+                                    align='center'
+                                    color={'textSecondary'}
+                                    sx={{ mt: 20, marginTop: 0 }}
+                                >
+                                    You Do Not Have Any Active Submission Boxes
+                                </Typography>
+                            ) : (
+                                <SubmissionBoxList submissionBoxes={myBoxes} />
+                            )}
+                        </Box>
                     </Box>
                 </Box>
             </Box>

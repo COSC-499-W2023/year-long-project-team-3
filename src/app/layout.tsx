@@ -25,7 +25,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
     return (
         <html lang='en'>
-            <body>
+            <body style={{ overflow: 'hidden' }}>
                 <ThemeRegistry>
                     <NextAuthProvider session={session}>{children}</NextAuthProvider>
                 </ThemeRegistry>
