@@ -39,7 +39,7 @@ export default function DashboardSidebarSubmissionBoxes(props: DashboardSidebarS
                 isSelected={sidebarSelectedOption === 'submission_boxes_my_boxes'}
                 isDisabled={false}
                 isAddButton={false}
-                data-cy={'My Boxes'}
+                data-cy='My Boxes'
             />
             <DashboardSidePanelOption
                 title={'My Requests'}
@@ -48,7 +48,7 @@ export default function DashboardSidebarSubmissionBoxes(props: DashboardSidebarS
                 isSelected={sidebarSelectedOption === 'submission_boxes_my_requests '}
                 isDisabled={false}
                 isAddButton={false}
-                data-cy={'My Requests'}
+                data-cy='My Requests'
             />
         </Box>
     )

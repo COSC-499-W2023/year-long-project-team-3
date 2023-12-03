@@ -105,7 +105,7 @@ jobs:
     cypress-e2e:
         name: Cypress Run E2E Tests on GitHub machine
         runs-on: ubuntu-latest
-        needs: [ run-lint, migrate-db-e2e ]
+        needs: [ migrate-db-e2e ]
         outputs:
             PR_ID: ${{ steps.save-cypress-outputs.outputs.PR_ID }}
         steps:
