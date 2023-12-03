@@ -1,24 +1,15 @@
 {
   "compilerOptions": {
-    // fixes Cypress not finding tsconfig.json
-    "target": "es6",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": false,
-    "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
+    "module": "commonjs",
     "esModuleInterop": true,
-    "module": "esnext",
+    "strict": true,
+    "allowJs": false,
+    "target": "es6",
     "moduleResolution": "node",
-    // Cypress can't handle "bundle"
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "incremental": true,
-    "types": [
-      "cypress",
-      "node"
-    ]
+    "sourceMap": true,
+    "outDir": "dist"
   },
-  "include": ["**/*.ts", "**/*.tsx",],
-  "exclude": ["node_modules"]
+  "lib": [
+    "es2015"
+  ]
 }

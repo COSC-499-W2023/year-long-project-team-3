@@ -1,7 +1,6 @@
-const SQSConsumer = require('sqs-consumer')
-const { Consumer } = SQSConsumer
-const ClientSqs = require('@aws-sdk/client-sqs')
-const { Message, SQSClient } = ClientSqs
+import logger from './logger'
+import { Consumer } from 'sqs-consumer'
+import { SQSClient } from '@aws-sdk/client-sqs'
 
 /* TODO: Remove Prisma Stuff */
 const Prisma = require('@prisma/client')
@@ -20,9 +19,9 @@ const globalForPrisma = globalThis as unknown as {
 const prisma = globalForPrisma.prisma ?? prismaClientSingleton()
 
 const app = Consumer.create({
-    queueUrl: process.env.QUEUE_URL,
-    handleMessage: async (message: typeof Message) => {
-        const videoMetadata = JSON.parse(message.Body)
+    queueUrl: <string>process.env.QUEUE_URL,
+    handleMessage: async (message) => {
+        const videoMetadata = JSON.parse(<string>message.Body)
         const videoId: number = videoMetadata.videoId
         await prisma.video.update({
             where: {
@@ -42,11 +41,11 @@ const app = Consumer.create({
 })
 
 app.on('error', (err: any) => {
-    console.error(err.message)
+    logger.error(err.message)
 })
 
 app.on('processing_error', (err: any) => {
-    console.error(err.message)
+    logger.error(err.message)
 })
 
 app.start()
