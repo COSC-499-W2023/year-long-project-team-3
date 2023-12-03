@@ -111,7 +111,7 @@ export default function SubmissionBoxSettings({
                     data-cy='description'
                 />
                 <DesktopDateTimePicker
-                    className='data-cy-date-time-picker' // regular data-cy wasn't working
+                    className='data-cy-date-time' // regular data-cy wasn't working
                     disablePast
                     label='Closing Date'
                     value={formik.values.closingDate ? dayjs(formik.values.closingDate) : null}
