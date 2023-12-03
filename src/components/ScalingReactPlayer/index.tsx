@@ -117,6 +117,7 @@ const ScalingReactPlayer = (props: ScalingReactPlayerProps) => {
             }}
         >
             <VideoPlayer
+                data-cy='video-player'
                 playerref={playerRef}
                 className='react-player'
                 url={props.url}

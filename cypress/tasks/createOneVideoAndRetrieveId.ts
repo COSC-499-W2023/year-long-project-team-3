@@ -19,6 +19,8 @@ export default async function createOneVideoAndRetrieveVideoId(
             },
             title: title,
             s3Key: 'test',
+            isCloudProcessed: true,
+            processedVideoUrl: '/videos/lemons.mp4',
         },
     })
 
