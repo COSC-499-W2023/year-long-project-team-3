@@ -44,6 +44,16 @@ export async function POST(req: Request) {
             },
         })
 
+        // Check if user has been requested for any submission boxes and update the corresponding SubmissionRequests
+        await prisma.requestedSubmission.updateMany({
+            where: {
+                email: email,
+            },
+            data: {
+                userId: newUser.id,
+            },
+        })
+
         return NextResponse.json(
             {
                 user: newUser,

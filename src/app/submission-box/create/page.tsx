@@ -137,7 +137,7 @@ export default function SubmissionBox() {
                 body: JSON.stringify({
                     title: title,
                     description: description,
-                    closingDate: closingDate,
+                    closesAt: closingDate,
                     requestedEmails: emails,
                 }),
             })
