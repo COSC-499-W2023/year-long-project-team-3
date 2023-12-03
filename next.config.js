@@ -38,8 +38,20 @@ const nextConfig = () => {
         }
     }
 
+    const imageWhitelistHostnames = process.env.NEXT_IMAGE_WHITELIST_HOSTNAMES.split(' ')
+
     return {
         env: getEnvironmentVariables(),
+        images: {
+            remotePatterns: imageWhitelistHostnames.map((imageWhitelistHostname) => {
+                return {
+                    protocol: 'https',
+                    hostname: imageWhitelistHostname,
+                    port: '',
+                    pathname: '**',
+                }
+            }),
+        },
     }
 }
 

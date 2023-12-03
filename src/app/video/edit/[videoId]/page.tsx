@@ -59,9 +59,13 @@ export default function VideoPreviewPage() {
                     if (res.status !== 200) {
                         throw new Error('Could not fetch video')
                     }
-                    const { videoUrl, isCloudProcessed } = await res.json()
-                    setStreamingVideoUrl(videoUrl)
-                    setIsCloudProcessed(isCloudProcessed)
+                    const responseJson = await res.json()
+                    const video = responseJson.video
+                    if (!video) {
+                        throw new Error('No video found')
+                    }
+                    setStreamingVideoUrl(video.processedVideoUrl)
+                    setIsCloudProcessed(video.isCloudProcessed)
                     setIsVideoVisible(true)
                     if (isCloudProcessed) {
                         clearInterval(interval)
@@ -210,14 +214,14 @@ export default function VideoPreviewPage() {
                                                     startIcon={<ArrowBackIcon />}
                                                     onClick={handleClickBackButton}
                                                 >
-                                                Back
+                                                    Back
                                                 </Button>
                                                 <Button
                                                     variant={'contained'}
                                                     endIcon={<ArrowForwardIcon />}
                                                     onClick={handleClickContinueButton}
                                                 >
-                                                Continue
+                                                    Continue
                                                 </Button>
                                             </Box>
                                         </Box>
