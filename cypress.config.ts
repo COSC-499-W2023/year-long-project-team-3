@@ -2,6 +2,11 @@ import { defineConfig } from 'cypress'
 import clearDB from './cypress/tasks/clearDB'
 import createOneVideoAndRetrieveVideoId from './cypress/tasks/createOneVideoAndRetrieveId'
 import getUserId from './cypress/tasks/getUserId'
+import createUser from './cypress/tasks/createUser'
+import getSubmissionBoxes from './cypress/tasks/getSubmissionBoxes'
+import getSubmissionBoxManagers from './cypress/tasks/getSubmissionBoxManagers'
+import getRequestedSubmissions from './cypress/tasks/getRequestedSubmissions'
+import createSubmissionBoxWithEmail from './cypress/tasks/createSubmissionBoxWithEmail'
 import loadInSubmissionBoxes from './cypress/tasks/loadInSubmissionBoxes'
 import loadOutSubmissionBoxes from './cypress/tasks/loadOutSubmissionBoxes'
 
@@ -17,6 +22,11 @@ export default defineConfig({
                 clearDB,
                 createOneVideoAndRetrieveVideoId,
                 getUserId,
+                createUser,
+                getSubmissionBoxes,
+                getSubmissionBoxManagers,
+                getRequestedSubmissions,
+                createSubmissionBoxWithEmail,
                 loadInSubmissionBoxes,
                 loadOutSubmissionBoxes,
             })
