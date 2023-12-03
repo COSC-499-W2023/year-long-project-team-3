@@ -21,11 +21,6 @@ import { Visibility as VisibilityIconOn, VisibilityOff as VisibilityIconOff } fr
 import GoogleSigninButton from '@/components/GoogleSigninButton'
 import HorizontalSeparator from 'src/components/HorizontalSeparator'
 
-interface FormValues {
-    email: string
-    password: string
-}
-
 export default function LoginForm() {
     const router = useRouter()
 
@@ -39,13 +34,13 @@ export default function LoginForm() {
         event.preventDefault()
     }
 
-    const formik = useFormik<FormValues>({
+    const formik = useFormik<UserSignUpData>({
         initialValues: {
             email: '',
             password: '',
         },
         validationSchema: validationSchema,
-        onSubmit: (values: FormValues) => handleSubmit(values),
+        onSubmit: (values: UserSignUpData) => handleSubmit(values),
     })
 
     return (
@@ -180,7 +175,7 @@ export default function LoginForm() {
     }
 }
 
-const validationSchema: ObjectSchema<FormValues> = yup.object().shape({
+const validationSchema: ObjectSchema<UserSignUpData> = yup.object().shape({
     email: yup.string().matches(getEmailRegex(), 'Enter a valid email').required('Email is required'),
     password: yup.string().required('Enter your password'),
 })

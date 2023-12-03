@@ -20,10 +20,10 @@ export default function DashboardSidePanel(props: DashboardSidePanelProps) {
     return (
         <Box display='flex' flexDirection='column' margin={'0 2rem'}>
             <DashboardSidebarMenu
+                onRecordNewClick={handleOnRecordNewClick}
                 onRecentClick={() => {
                     router.push('/dashboard/placeholder')
                 }}
-                onRecordNewClick={() => {}}
                 onStarredClick={() => {
                     router.push('/dashboard/placeholder')
                 }}
@@ -51,4 +51,8 @@ export default function DashboardSidePanel(props: DashboardSidePanelProps) {
             />
         </Box>
     )
+
+    function handleOnRecordNewClick() {
+        router.push('/video/upload')
+    }
 }
