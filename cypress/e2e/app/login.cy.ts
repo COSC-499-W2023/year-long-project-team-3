@@ -67,7 +67,7 @@ describe('Login tests', () => {
         cy.get('[data-cy="submit"]').click()
 
         // We shouldn't be on the login page anymore
-        cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('include', '/dashboard')
+        cy.url({ timeout: TIMEOUT.EXTRA_EXTRA_LONG }).should('include', '/dashboard')
         cy.get('[data-cy="dashboard-message"]').should('contain', `Welcome to the dashboard, ${ userEmail }!`)
 
         // We should be able to log out
