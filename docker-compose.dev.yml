@@ -33,6 +33,19 @@ services:
             - db
         restart: always
 
+    poll-worker:
+        build:
+            context: .
+            dockerfile: Poll-Worker-Dockerfile
+            args:
+                - ARG_DATABASE_URL=$DATABASE_URL
+        container_name: docker-poll-worker
+        env_file: workers/poll-worker/.env
+        networks:
+            - internal-dev
+        restart: always
+
+
 volumes:
     pgdata:
 

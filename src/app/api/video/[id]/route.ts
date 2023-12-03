@@ -52,6 +52,14 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             },
         })
 
+        if (video.processedVideoUrl === null && video.isCloudProcessed) {
+            logger.error(`Video ${ video.id } does not have a streamable url`)
+            return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+        }
+        if (video.processedVideoUrl === '') {
+            logger.error(`Video ${ video.id } should not have an empty url`)
+            return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+        }
         return NextResponse.json({ video: video }, { status: 200 })
     } catch (err) {
         logger.error(err)

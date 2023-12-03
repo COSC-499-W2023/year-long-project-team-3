@@ -18,6 +18,7 @@ import { toast } from 'react-toastify'
 import logger from '@/utils/logger'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import PageLoadProgressBlurBackground from '@/components/PageLoadProgressBlurBackround'
 
 type FormValues = {
     videoTitle: string
@@ -77,7 +78,7 @@ export default function SubmitVideoPage() {
 
     return (
         <>
-            <PageLoadProgress show={isLoading && !video} />
+            <PageLoadProgressBlurBackground show={isLoading && !video} />
             <>
                 <Header {...session} />
                 <Box
@@ -105,17 +106,16 @@ export default function SubmitVideoPage() {
                                 {!!video && !!video.thumbnail ? (
                                     <Image
                                         src={video.thumbnail}
-                                        alt={video.title}
-                                        width={0}
-                                        height={0}
+                                        alt='Video Thumbnail'
+                                        width={300}
+                                        height={200}
+                                        quality={50}
                                         objectPosition={'100% 0'}
                                         objectFit={'cover'}
                                         style={{
                                             borderRadius: 20,
                                             maxWidth: '21vw',
                                             maxHeight: '14vw',
-                                            width: '100%',
-                                            height: '100%',
                                         }}
                                     />
                                 ) : (

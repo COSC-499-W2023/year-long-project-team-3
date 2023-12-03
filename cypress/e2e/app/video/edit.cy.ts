@@ -53,12 +53,12 @@ describe('Test video editing page', () => {
 
         it('should contain video', () => {
             cy.visit(videoUrl)
-            cy.get('.react-player').should('exist')
+            cy.get('.react-player', { timeout: TIMEOUT.EXTRA_LONG }).should('exist')
         })
 
         it('should have continue and back buttons', () => {
             cy.visit(videoUrl)
-            cy.get('#nav-buttons-div')
+            cy.get('#nav-buttons-div', { timeout: TIMEOUT.EXTRA_LONG })
                 .find('button')
                 .should('have.length', 2)
                 .and('contain', 'Back')
@@ -68,7 +68,12 @@ describe('Test video editing page', () => {
         it('should show message on edit change', () => {
             cy.visit(videoUrl)
             // Make change
-            cy.get('.editor-tools').should('exist').find('.MuiIconButton-root').should('have.length', 4).first().click()
+            cy.get('.editor-tools', { timeout: TIMEOUT.EXTRA_LONG })
+                .should('exist')
+                .find('.MuiIconButton-root')
+                .should('have.length', 4)
+                .first()
+                .click()
 
             // Check for message
             cy.get('.MuiAlert-root[role=alert]').should('exist').and('be.visible')
@@ -76,7 +81,7 @@ describe('Test video editing page', () => {
 
         it('should open modals', () => {
             cy.visit(videoUrl)
-            cy.get('.editor-tools')
+            cy.get('.editor-tools', { timeout: TIMEOUT.EXTRA_LONG })
                 .find('.MuiIconButton-root')
                 .not('[aria-label=Mute]')
                 .each((button) => {
@@ -91,14 +96,14 @@ describe('Test video editing page', () => {
                 })
         })
 
-        // Skip this because we do not have an actual video to test with
-        it.skip('should be controllable by keyboard', () => {
+        it('should be controllable by keyboard', () => {
             cy.visit(videoUrl)
             const pressKey = (code: string) => {
                 cy.get('body').trigger('keydown', { code: code })
                 cy.wait(50)
                 cy.get('body').trigger('keyup', { code: code })
             }
+            cy.get('.react-player video', { timeout: TIMEOUT.EXTRA_LONG })
 
             // Play/pause
             pressKey('KeyK')
