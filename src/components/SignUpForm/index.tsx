@@ -198,6 +198,7 @@ export default function SignUpForm() {
 
             const userInfo = await response.json()
             if (response.status == 201) {
+                toast.success(`User ${ userInfo.user.email } successfully signed up`)
                 logger.info(`User ${ userInfo.user.email } successfully signed up`)
                 router.push('/login')
                 router.refresh()

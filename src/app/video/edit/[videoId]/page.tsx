@@ -12,6 +12,7 @@ import { useRouter, usePathname } from 'next/navigation'
 import VideoProcessing from '@/components/VideoProcessing'
 import PageLoadProgress from '@/components/PageLoadProgress'
 import { toast } from 'react-toastify'
+import BackButton from '@/components/BackButton'
 
 export default function VideoPreviewPage() {
     const session: SessionContextValue = useSession()
@@ -107,7 +108,7 @@ export default function VideoPreviewPage() {
                 }}
             >
                 <Header {...session} />
-                {/*Main Body*/}
+                <BackButton route={'/dashboard '} title={'Return to Dashboard'} /> {/*Main Body*/}
                 {!isVideoVisible ? (
                     <PageLoadProgress />
                 ) : (
