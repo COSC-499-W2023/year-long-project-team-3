@@ -35,9 +35,14 @@ export default function SubmissionInboxPage() {
         <>
             <Header {...session} />
             <Box display='grid' gridTemplateColumns='1fr 4fr' height='100%'>
-                <Dashboard userEmail={'test'} initialSidebarSelectedOption={'my_submission_boxes'} />
+                <Dashboard userEmail={'test'} initialSidebarSelectedOption={'submission_boxes_my_boxes'} />
                 <Box>
-                    <Typography data-cy='title' variant='h5' color={'textSecondary'} sx={{ m: 2, fontWeight: 'bold', py: '1rem' }}>
+                    <Typography
+                        data-cy='title'
+                        variant='h5'
+                        color={'textSecondary'}
+                        sx={{ m: 2, fontWeight: 'bold', py: '1rem' }}
+                    >
                         My Boxes
                     </Typography>
                     <Box
@@ -57,9 +62,7 @@ export default function SubmissionInboxPage() {
                                 You Do Not Have Any Active Submission Boxes
                             </Typography>
                         )}
-                        {hasSubmissions && (
-                            <SubmissionBoxList submissionBoxes={myBoxes} />
-                        )}
+                        {hasSubmissions && <SubmissionBoxList submissionBoxes={myBoxes} />}
                     </Box>
                 </Box>
             </Box>
