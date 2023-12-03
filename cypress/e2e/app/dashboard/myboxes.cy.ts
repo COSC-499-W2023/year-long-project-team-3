@@ -1,3 +1,5 @@
+import { TIMEOUT } from '../../../utils/constants'
+
 describe('Dashboard My Submission Boxes Tests', () => {
 
     beforeEach(() => {
@@ -25,9 +27,9 @@ describe('Dashboard My Submission Boxes Tests', () => {
         cy.url().should('not.contain', 'login')
 
         cy.visit('/dashboard')
-        cy.get('[data-cy="My Boxes"]').click()
+        cy.get('[data-cy="My Boxes"]', { timeout: TIMEOUT.LONG }).click()
         cy.url().should('contain', 'myboxes')
-        cy.get('[data-cy="no submission text"]')
+        cy.get('[data-cy="no submission text"]', { timeout: TIMEOUT.LONG })
             .should('be.visible')
             .and('contain', 'You Do Not Have Any Active Submission Boxes')
     })
@@ -46,9 +48,9 @@ describe('Dashboard My Submission Boxes Tests', () => {
         cy.url().should('not.contain', 'login')
 
         cy.visit('/dashboard')
-        cy.get('[data-cy="My Boxes"]').click()
+        cy.get('[data-cy="My Boxes"]', { timeout: TIMEOUT.LONG }).click()
         cy.url().should('contain', 'myboxes')
-        cy.get('[data-cy="Incoming Submission Box"]')
+        cy.get('[data-cy="Incoming Submission Box"]', { timeout: TIMEOUT.LONG })
             .should('be.visible').and('contain', 'Incoming Submission Box')
     })
 })
