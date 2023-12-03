@@ -42,3 +42,6 @@ next-env.d.ts
 /cypress/videos
 /cypress/downloads
 /cypress/reports
+
+# workers
+/workers/poll-worker/node_modules

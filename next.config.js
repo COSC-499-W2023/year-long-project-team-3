@@ -35,12 +35,23 @@ const nextConfig = () => {
             awsAccessKeyId: process.env.AWS_ACCESS_KEY_ID,
             awsSecretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
             awsSessionToken: process.env.AWS_SESSION_TOKEN,
-            cloudfrontDistributionId: process.env.CLOUDFRONT_DISTRUBUTION_ID,
         }
     }
 
+    const imageWhitelistHostnames = process.env.NEXT_IMAGE_WHITELIST_HOSTNAMES.split(' ')
+
     return {
         env: getEnvironmentVariables(),
+        images: {
+            remotePatterns: imageWhitelistHostnames.map((imageWhitelistHostname) => {
+                return {
+                    protocol: 'https',
+                    hostname: imageWhitelistHostname,
+                    port: '',
+                    pathname: '**',
+                }
+            }),
+        },
     }
 }
 

@@ -4,6 +4,7 @@ export const TIMEOUT = {
     MEDIUM: 3000,
     LONG: 6000,
     EXTRA_LONG: 8000,
+    EXTRA_EXTRA_LONG: 30000,
 }
 
 export const DELAY = {
@@ -12,4 +13,9 @@ export const DELAY = {
     MEDIUM: 3000,
     LONG: 6000,
     EXTRA_LONG: 8000,
+}
+
+export const MOCKUSER = {
+    email: 'test@emial.com',
+    password: 'Password1',
 }

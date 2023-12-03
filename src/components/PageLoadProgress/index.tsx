@@ -1,11 +1,7 @@
 import { Box, CircularProgress } from '@mui/material'
 
-export type PageLoadProgressProps = {
-    show: boolean
-}
-
-export default function PageLoadProgress(props: PageLoadProgressProps) {
-    return props.show && (
+export default function PageLoadProgress() {
+    return (
         <Box
             position='absolute'
             top={0}
@@ -15,12 +11,8 @@ export default function PageLoadProgress(props: PageLoadProgressProps) {
             display='flex'
             justifyContent='center'
             alignItems='center'
-            sx={{
-                backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                zIndex: 1000,
-            }}
         >
-            <CircularProgress />
+            <CircularProgress data-cy='loading-circle' />
         </Box>
     )
 }

@@ -9,7 +9,7 @@ import { useSession } from 'next-auth/react'
 import Header from '@/components/Header'
 import { useRouter } from 'next/navigation'
 import ProgressDots from '@/components/ProgressDots'
-import PageLoadProgress from '@/components/PageLoadProgress'
+import PageLoadProgressBlurBackground from 'src/components/PageLoadProgressBlurBackround'
 import logger from '@/utils/logger'
 
 const VisuallyHiddenInput = styled('input')({
@@ -69,7 +69,7 @@ export default function UploadVideoPage() {
 
     return (
         <>
-            <PageLoadProgress show={isUploadingVideo} />
+            <PageLoadProgressBlurBackground show={isUploadingVideo} />
             <>
                 <Header {...session} />
                 <Box
@@ -95,7 +95,12 @@ export default function UploadVideoPage() {
                         <h1>Upload Video</h1>
                         <Button component='label' variant='contained' startIcon={<CloudUploadIcon />}>
                             Upload
-                            <VisuallyHiddenInput type='file' accept='.mp4' onChange={handleFileChanged} />
+                            <VisuallyHiddenInput
+                                data-cy='test-input'
+                                type='file'
+                                accept='.mp4'
+                                onChange={handleFileChanged}
+                            />
                         </Button>
                     </Box>
                 </Box>
