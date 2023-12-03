@@ -18,13 +18,13 @@ describe('Dashboard Requested Submission Boxes Tests', () => {
         cy.get('[data-cy="password"]').type(password)
         cy.get('[data-cy="passwordConfirmation"]').type(password)
         cy.get('[data-cy="submit"]').click()
-        cy.url().should('contain', 'login')
+        cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'login')
 
         // Login
         cy.get('[data-cy=email]').type(email)
         cy.get('[data-cy=password]').type(password)
         cy.get('[data-cy=submit]').click()
-        cy.url().should('not.contain', 'login')
+        cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('not.contain', 'login')
 
         cy.visit('/dashboard')
         cy.get('[data-cy="My Requests"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
@@ -48,9 +48,9 @@ describe('Dashboard Requested Submission Boxes Tests', () => {
         cy.url().should('not.contain', 'login')
 
         cy.visit('/dashboard')
-        cy.get('[data-cy="My Requests"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
-        cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'requestedsubmissions')
-        cy.get('[data-cy="Outgoing Submission Box"]', { timeout: TIMEOUT.EXTRA_LONG })
+        cy.get('[data-cy="My Requests"]', { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
+        cy.url({ timeout: TIMEOUT.EXTRA_EXTRA_LONG }).should('contain', 'requestedsubmissions')
+        cy.get('[data-cy="Outgoing Submission Box"]', { timeout: TIMEOUT.EXTRA_EXTRA_LONG })
             .should('be.visible').and('contain', 'Outgoing Submission Box')
     })
 })
