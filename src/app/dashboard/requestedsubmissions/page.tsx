@@ -35,16 +35,16 @@ export default function SubmissionOutboxPage() {
         <>
             <Header {...session} />
             <Box display='grid' gridTemplateColumns='1fr 4fr' height='100%'>
-                <Dashboard userEmail={'test'} initialSidebarSelectedOption={'requested_submission_boxes'} />
+                <Dashboard userEmail={'test'} initialSidebarSelectedOption={'submission_boxes_my_requests '} />
                 <Box>
                     <Typography data-cy='title' variant='h5' color={'textSecondary'} sx={{ m: 2, fontWeight: 'bold', py: '1rem' }}>
                         Submission Out-Box
                     </Typography>
                     <Box
                         component='section'
-                        sx={{ borderTopLeftRadius: 25, borderBottomLeftRadius: 25, height: 602 }}
+                        sx={{ borderTopLeftRadius: 25, borderBottomLeftRadius: 25, height: 602, backgroundColor: 'secondary.lighter' }}
                         border={1}
-                        borderColor={'text.secondary'}
+                        borderColor={'secondary.lighter'}
                     >
                         {!hasSubmissions && (
                             <Typography data-cy='no submission text' variant='h5' align='center' color={'textSecondary'} sx={{ mt: 20 }}>

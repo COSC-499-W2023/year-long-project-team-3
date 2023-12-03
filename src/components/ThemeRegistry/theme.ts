@@ -31,7 +31,8 @@ export const theme: Theme = createTheme({
         },
         secondary: {
             main: '#f50057',
-            lighter: '#cad5e1',
+            light: '#cad5e1',
+            lighter: '#edf1f5',
         },
         text: {
             primary: '#000000',

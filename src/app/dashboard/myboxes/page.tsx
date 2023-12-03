@@ -47,9 +47,9 @@ export default function SubmissionInboxPage() {
                     </Typography>
                     <Box
                         component='section'
-                        sx={{ borderTopLeftRadius: 25, borderBottomLeftRadius: 25, height: 602 }}
+                        sx={{ borderTopLeftRadius: 25, borderBottomLeftRadius: 25, height: 602, backgroundColor: 'secondary.lighter' }}
                         border={1}
-                        borderColor={'text.secondary'}
+                        borderColor={'secondary.lighter'}
                     >
                         {!hasSubmissions && (
                             <Typography
