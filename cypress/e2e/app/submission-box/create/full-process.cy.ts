@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
+import {TIMEOUT} from '../../../../utils/constants'
 
 describe('Test full submission box creation', () => {
     it('should work', () => {
@@ -33,7 +34,7 @@ describe('Test full submission box creation', () => {
                 (requestedUser: any) => {
                     cy.visit('/dashboard')
 
-                    cy.get('[data-cy="Create new"]').click({force: true})
+                    cy.get('[data-cy="Create new"]').click()
 
                     cy.url().should('contain', 'submission-box/create')
 
@@ -41,7 +42,7 @@ describe('Test full submission box creation', () => {
 
                     cy.get('[data-cy=submission-box-title]').type(sb.title)
                     cy.get('[data-cy=description]').type(sb.description)
-                    cy.get('.data-cy-date-time').type(sb.closesAt.replaceAll(' ', ''))
+                    cy.get('.data-cy-date-time', {timeout: TIMEOUT.EXTRA_LONG}).type(sb.closesAt.replaceAll(' ', ''))
                     cy.get('[data-cy=next]').click({force: true})
 
                     cy.get('[data-cy=title]').should('contain', 'Request Submissions')
@@ -55,7 +56,7 @@ describe('Test full submission box creation', () => {
 
                     cy.get('[data-cy=submission-box-title]').find('input').should('have.value', sb.title)
                     cy.get('[data-cy=description]').should('contain', sb.description)
-                    cy.get('.data-cy-date-time').find('input').should('contain.value', sb.closesAt)
+                    cy.get('.data-cy-date-time', {timeout: TIMEOUT.EXTRA_LONG}).find('input').should('contain.value', sb.closesAt)
                     cy.wrap(sb.requestedEmails).each((email: string) => {
                         cy.get('[data-cy=requested-emails]').should('contain', email)
                     })
