@@ -61,7 +61,7 @@ export default function SubmissionInboxPage() {
                                     variant='h5'
                                     align='center'
                                     color={'textSecondary'}
-                                    sx={{ mt: 20, marginTop: 0 }}
+                                    sx={{ mt: 20 }}
                                 >
                                     You Do Not Have Any Active Submission Boxes
                                 </Typography>

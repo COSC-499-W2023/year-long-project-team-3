@@ -43,7 +43,7 @@ export default function SubmissionOutboxPage() {
                         color={'textSecondary'}
                         sx={{ m: 2, fontWeight: 'bold', py: '1rem', marginTop: '1rem' }}
                     >
-                        Submission Out-Box
+                        Requested Submissions
                     </Typography>
 
                     <Box
