@@ -6,7 +6,7 @@ import Logo from '@/components/Logo'
 const HeaderLogo = () => {
     return (
         <Box sx={{ m: 2 }}>
-            <Logo fontSize={30} />
+            <Logo fontSize={40} />
         </Box>
     )
 }
