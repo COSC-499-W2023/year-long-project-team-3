@@ -1,8 +1,9 @@
 import { type NextRequest, NextResponse } from 'next/server'
-import logger from '@/utils/logger'
 import { getServerSession } from 'next-auth'
+import logger from '@/utils/logger'
+import { Video } from '@prisma/client'
 import prisma from '@/lib/prisma'
-import { type Video } from '@prisma/client'
+import getStreamableUrl from '@/utils/getStreamableUrl'
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
     try {
@@ -52,12 +53,14 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             },
         })
 
-        if (video.processedVideoUrl === null && video.isCloudProcessed) {
+        const streamableUrl = await getStreamableUrl(video.s3Key as string)
+
+        if (!streamableUrl) {
             logger.error(`Video ${ video.id } does not have a streamable url`)
             return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
         }
-        const url: string = video.processedVideoUrl ?? ''
-        return NextResponse.json({ videoUrl: url, isCloudProcessed: video.isCloudProcessed, thumbnail: video.thumbnail }, { status: 200 })
+
+        return NextResponse.json({ videoUrl: streamableUrl }, { status: 200 })
     } catch (err) {
         logger.error(err)
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })

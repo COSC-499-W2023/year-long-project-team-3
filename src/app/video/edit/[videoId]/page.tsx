@@ -23,7 +23,7 @@ export default function VideoPreviewPage() {
     const [isVideoVisible, setIsVideoVisible] = useState(false)
     const [isCloudProcessed, setIsCloudProcessed] = useState(false)
 
-    const videoId = pathname.split('/').pop()
+    const videoId = pathname?.split('/').pop()
 
     function resizeNavButtons() {
         const buttonsDiv = document.getElementById('nav-buttons-div')
@@ -88,6 +88,7 @@ export default function VideoPreviewPage() {
             window.removeEventListener('resize', resizeNavButtons)
         }
     }, [])
+
     return (
         <>
             <Box
@@ -175,7 +176,6 @@ export default function VideoPreviewPage() {
                                                 height: '100%',
                                             }}
                                         >
-                                            {/*TODO: Replace with a dynamic url later*/}
                                             <Box
                                                 sx={{
                                                     display: 'flex',
@@ -199,17 +199,25 @@ export default function VideoPreviewPage() {
                                             {/*The back and continue buttons*/}
                                             <Box
                                                 id='nav-buttons-div'
-                                                sx={{
-                                                    display: 'flex',
-                                                    justifyContent: 'space-between',
-                                                    width: '100%',
-                                                }}
+                                                display='flex'
+                                                justifyContent='space-between'
+                                                width='70vw'
+                                                position='absolute'
+                                                bottom='4rem'
                                             >
-                                                <Button variant={'contained'} startIcon={<ArrowBackIcon />}>
-                                                    Back
+                                                <Button
+                                                    variant={'contained'}
+                                                    startIcon={<ArrowBackIcon />}
+                                                    onClick={handleClickBackButton}
+                                                >
+                                                Back
                                                 </Button>
-                                                <Button variant={'contained'} endIcon={<ArrowForwardIcon />}>
-                                                    Continue
+                                                <Button
+                                                    variant={'contained'}
+                                                    endIcon={<ArrowForwardIcon />}
+                                                    onClick={handleClickContinueButton}
+                                                >
+                                                Continue
                                                 </Button>
                                             </Box>
                                         </Box>
@@ -238,5 +246,13 @@ export default function VideoPreviewPage() {
     function cleanUpVideoState() {
         setStreamingVideoUrl('')
         setIsVideoVisible(false)
+    }
+
+    function handleClickContinueButton() {
+        router.push(`/video/submit/${ videoId }`)
+    }
+
+    function handleClickBackButton() {
+        router.back()
     }
 }

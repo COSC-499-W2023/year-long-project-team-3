@@ -111,12 +111,14 @@ export default function SubmissionBoxSettings({
                     data-cy='description'
                 />
                 <DateTimePicker
+                    className='data-cy-date-time-picker' // regular data-cy wasn't working
                     disablePast
                     label='Closing Date'
                     value={formik.values.closingDate ? dayjs(formik.values.closingDate) : null}
                     onChange={(e) => {
                         formik.setFieldValue('closingDate', e)
                     }}
+                    format='YYYY/MM/DD hh:mm A'
                     defaultValue={null}
                     // @ts-ignore
                     textField={(props) => (

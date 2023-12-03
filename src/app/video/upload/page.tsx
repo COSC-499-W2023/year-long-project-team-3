@@ -3,13 +3,14 @@
 import { Box, Button } from '@mui/material'
 import { CloudUpload as CloudUploadIcon } from '@mui/icons-material'
 import { styled } from '@mui/material/styles'
-import { type ChangeEvent, useEffect, useState } from 'react'
+import React, { type ChangeEvent, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useSession } from 'next-auth/react'
 import Header from '@/components/Header'
 import { useRouter } from 'next/navigation'
 import ProgressDots from '@/components/ProgressDots'
 import PageLoadProgressBlurBackground from 'src/components/PageLoadProgressBlurBackround'
+import logger from '@/utils/logger'
 
 const VisuallyHiddenInput = styled('input')({
     clipPath: 'inset(50%)',
@@ -24,7 +25,6 @@ const VisuallyHiddenInput = styled('input')({
 
 export default function UploadVideoPage() {
     const session = useSession()
-    const { status } = session
     const router = useRouter()
 
     const [isUploadingVideo, setIsUploadingVideo] = useState(false)
@@ -58,7 +58,9 @@ export default function UploadVideoPage() {
                 router.push(`/video/edit/${ videoId }`)
             })
             .catch((err) => {
-                router.push('/')
+                logger.error(err)
+                toast.error('Unexpected error occurred when uploading your video')
+                router.push('/dashboard')
             })
             .finally(() => {
                 setIsUploadingVideo(false)
