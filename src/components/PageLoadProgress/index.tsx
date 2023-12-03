@@ -12,7 +12,7 @@ export default function PageLoadProgress() {
             justifyContent='center'
             alignItems='center'
         >
-            <CircularProgress />
+            <CircularProgress data-cy='loading-circle' />
         </Box>
     )
 }

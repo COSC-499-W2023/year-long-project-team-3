@@ -12,7 +12,7 @@ export default function VideoProcessing() {
                     mt: '2rem',
                 }}
             >
-                <Alert severity='info'>
+                <Alert severity='info' data-cy='video-processing-alert'>
                     Your video is currently being processed by our server. Please wait or come back later.
                 </Alert>
                 <Box sx={{ mt: '2rem' }}>

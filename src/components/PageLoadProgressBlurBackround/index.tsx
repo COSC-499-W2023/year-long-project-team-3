@@ -21,7 +21,7 @@ export default function PageLoadProgressBlurBackground(props: PageLoadProgressPr
                     zIndex: 1000,
                 }}
             >
-                <CircularProgress />
+                <CircularProgress data-cy='loading-circle-blur-background' />
             </Box>
         )
     )

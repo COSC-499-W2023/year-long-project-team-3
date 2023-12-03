@@ -188,7 +188,12 @@ export default function VideoPreviewPage() {
                                                     width: '100%',
                                                 }}
                                             >
-                                                {isVideoVisible && <ScalingReactPlayer url={streamingVideoUrl} />}
+                                                {isVideoVisible && (
+                                                    <ScalingReactPlayer
+                                                        data-cy='scaling-react-player'
+                                                        url={streamingVideoUrl}
+                                                    />
+                                                )}
                                             </Box>
 
                                             {/*The back and continue buttons*/}
