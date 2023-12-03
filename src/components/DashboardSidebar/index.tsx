@@ -16,8 +16,8 @@ export default function DashboardSidePanel(props: DashboardSidePanelProps) {
     return (
         <Box display='flex' flexDirection='column' margin={'0 2rem'}>
             <DashboardSidebarMenu
+                onRecordNewClick={handleOnRecordNewClick}
                 onRecentClick={() => {}}
-                onRecordNewClick={() => {}}
                 onStarredClick={() => {}}
                 onSubmittedVideosClick={() => {}}
                 onTrashClick={() => {}}
@@ -35,4 +35,8 @@ export default function DashboardSidePanel(props: DashboardSidePanelProps) {
             />
         </Box>
     )
+
+    function handleOnRecordNewClick() {
+        router.push('/video/upload')
+    }
 }
