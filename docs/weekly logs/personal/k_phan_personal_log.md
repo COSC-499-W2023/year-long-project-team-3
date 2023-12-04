@@ -1,6 +1,26 @@
 # K Phan
 
-## Term 1 Week 11 and 12 (December 13, 2023 - December 26, 2023)
+## Term 1 Week 13 (November 27, 2023 - December 03, 2023)
+
+### Week's Goals
+
+- Dashboard UI (COMPLETED)
+- Help teammates to finish up their tasks (COMPLETED)
+- Make sure no tests fail in production (COMPLETED)
+- Complete the project report (COMPLETED)
+
+### Tasks Worked On
+- Dashboard side panel
+- API for getting videos
+- API for getting submission boxes
+- API for submitting videos to submission boxes
+- Test debugging for submission box E2E tests
+- Helped with debugging UI issues
+
+### Teamformation Report
+![](./imgs/week-13-k-phan-tasks.png)
+
+## Term 1 Week 11 and 12 (November 13, 2023 - November 26, 2023)
 
 ### Week's Goals
 - Finish uploading video to AWS S3
