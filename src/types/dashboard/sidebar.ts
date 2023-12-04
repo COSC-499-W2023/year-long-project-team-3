@@ -5,5 +5,5 @@ export type SidebarOption =
     | 'menu_starred'
     | 'menu_trash'
     | 'submission_boxes_create_new'
-    | 'submission_boxes_inbox'
-    | 'submission_boxes_outbox'
+    | 'submission_boxes_my_boxes'
+    | 'submission_boxes_my_requests '
