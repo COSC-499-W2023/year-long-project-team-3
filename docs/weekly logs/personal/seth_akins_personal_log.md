@@ -230,7 +230,7 @@ will have to reconsider how we do that moving forwards.
 ### Goals
 - This week I focused on writing tests for and integrating the poll worker into the rest of the AWS pipeline.
 - This required some minor tweaks, such as a loading page will the video processes
-- I also completed a couple of small  improvements, such as fixing some issues with the Sign in with Google button and
+- I also completed a couple of small improvements, such as fixing some issues with the Sign in with Google button and
   fixing some pages that were not properly using middleware
 
 ### Tasks
