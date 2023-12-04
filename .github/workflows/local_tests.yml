@@ -89,10 +89,23 @@ jobs:
                     body-path: cypress/reports/test_results.md
                     token: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
 
+    migrate-db-e2e:
+        name: Set up database
+        runs-on: ubuntu-latest
+        needs: [ run-lint ]
+        continue-on-error: true
+        steps:
+            -   uses: actions/checkout@v4
+            -   name: Write environment variables
+                run: |
+                    echo "${{ secrets.ENV_TEST_LOCAL }}" > .env
+            -   name: Migrate Database
+                run: npx prisma migrate deploy &> prisma_migrate.log
+
     cypress-e2e:
         name: Cypress Run E2E Tests on GitHub machine
         runs-on: ubuntu-latest
-        needs: [ run-lint ]
+        needs: [ migrate-db-e2e ]
         outputs:
             PR_ID: ${{ steps.save-cypress-outputs.outputs.PR_ID }}
         steps:
@@ -109,13 +122,15 @@ jobs:
                 env:
                     CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
                     GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
+                    CYPRESS_BASE_URL: ${{ secrets.CYPRESS_BASE_URL }}
                 with:
                     build: npm run build
                     start: npm run start
                     install: true
                     browser: chrome
-                    wait-on: ${{ secrets.CYPRESS_BASE_URL }}
-                    config: baseUrl=${{ secrets.CYPRESS_BASE_URL }}
+                    headed: true
+                    wait-on: ${{ env.CYPRESS_BASE_URL }}
+                    config: baseUrl=${{ env.CYPRESS_BASE_URL }}
             -   name: Save cypress video
                 if: failure()
                 uses: actions/upload-artifact@v3

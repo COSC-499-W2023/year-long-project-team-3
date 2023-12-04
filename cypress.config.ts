@@ -9,14 +9,15 @@ import getSubmissionBoxes from './cypress/tasks/getSubmissionBoxes'
 import getSubmissionBoxManagers from './cypress/tasks/getSubmissionBoxManagers'
 import getRequestedSubmissions from './cypress/tasks/getRequestedSubmissions'
 import createSubmissionBoxWithEmail from './cypress/tasks/createSubmissionBoxWithEmail'
-
+import loadInSubmissionBoxes from './cypress/tasks/loadInSubmissionBoxes'
+import loadOutSubmissionBoxes from './cypress/tasks/loadOutSubmissionBoxes'
 
 require('dotenv').config()
 
 export default defineConfig({
     e2e: {
         projectId: process.env.CYPRESS_PROJECT_ID,
-        baseUrl: process.env.CYPRESS_BASE_URL,
+        baseUrl: process.env.CYPRESS_BASE_URL ?? 'http://localhost:3000',
         setupNodeEvents(on, config) {
             // implement node event listeners here
             on('task', {
@@ -30,6 +31,8 @@ export default defineConfig({
                 createSubmissionBoxWithEmail,
                 populateDB,
                 getLatestVideo,
+                loadInSubmissionBoxes,
+                loadOutSubmissionBoxes,
             })
         },
         experimentalModifyObstructiveThirdPartyCode: true,

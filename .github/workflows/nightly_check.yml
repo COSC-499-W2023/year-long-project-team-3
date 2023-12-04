@@ -79,6 +79,7 @@ jobs:
                     wait-on: ${{ secrets.CYPRESS_BASE_URL }}
                     browser: chrome
                     record: true
+                    headed: true
                     config: baseUrl=${{ secrets.CYPRESS_BASE_URL }}
                     group: 'E2E Tests on Production workflow'
 

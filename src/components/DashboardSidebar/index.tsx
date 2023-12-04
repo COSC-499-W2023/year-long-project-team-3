@@ -7,20 +7,32 @@ import { useState } from 'react'
 import { SidebarOption } from '@/types/dashboard/sidebar'
 import { useRouter } from 'next/navigation'
 
-export type DashboardSidePanelProps = {}
+export type DashboardSidePanelProps = {
+    initialSidebarSelectedOption: SidebarOption
+}
 
 export default function DashboardSidePanel(props: DashboardSidePanelProps) {
     const router = useRouter()
-    const [sidebarSelectedOption, setSidebarSelectedOption] = useState<SidebarOption>('menu_recent')
+    const [sidebarSelectedOption, setSidebarSelectedOption] = useState<SidebarOption>(
+        props.initialSidebarSelectedOption
+    )
 
     return (
         <Box display='flex' flexDirection='column' margin={'0 2rem'}>
             <DashboardSidebarMenu
                 onRecordNewClick={handleOnRecordNewClick}
-                onRecentClick={() => {}}
-                onStarredClick={() => {}}
-                onSubmittedVideosClick={() => {}}
-                onTrashClick={() => {}}
+                onRecentClick={() => {
+                    router.push('/dashboard/placeholder')
+                }}
+                onStarredClick={() => {
+                    router.push('/dashboard/placeholder')
+                }}
+                onSubmittedVideosClick={() => {
+                    router.push('/dashboard/placeholder')
+                }}
+                onTrashClick={() => {
+                    router.push('/dashboard/placeholder')
+                }}
                 sidebarSelectedOption={sidebarSelectedOption}
                 setSidebarSelectedOption={setSidebarSelectedOption}
             />
@@ -28,8 +40,12 @@ export default function DashboardSidePanel(props: DashboardSidePanelProps) {
                 onCreateNewClick={() => {
                     router.push('/submission-box/create')
                 }}
-                onSubmissionInboxClick={() => {}}
-                onSubmissionOutboxClick={() => {}}
+                onSubmissionInboxClick={() => {
+                    router.push('/dashboard/myboxes')
+                }}
+                onSubmissionOutboxClick={() => {
+                    router.push('/dashboard/requestedsubmissions')
+                }}
                 sidebarSelectedOption={sidebarSelectedOption}
                 setSidebarSelectedOption={setSidebarSelectedOption}
             />

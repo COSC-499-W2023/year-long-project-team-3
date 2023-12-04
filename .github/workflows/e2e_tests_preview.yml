@@ -68,6 +68,7 @@ jobs:
                 with:
                     wait-on: ${{ secrets.CYPRESS_BASE_URL }}
                     browser: chrome
+                    headed: true
                     config: baseUrl=${{ secrets.CYPRESS_BASE_URL }}
             -   name: Upload screenshots
                 uses: actions/upload-artifact@v3

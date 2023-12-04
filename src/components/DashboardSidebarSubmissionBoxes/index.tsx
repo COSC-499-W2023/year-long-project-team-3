@@ -20,7 +20,7 @@ export default function DashboardSidebarSubmissionBoxes(props: DashboardSidebarS
     const { sidebarSelectedOption } = props
 
     return (
-        <Box marginTop='3rem' display='flex' flexDirection='column'>
+        <Box marginTop='3rem' display='flex' flexDirection='column' gap='0.5rem'>
             <Typography color={theme.palette.text.secondary} fontSize={'25px'} fontWeight={600} marginBottom={'1rem'}>
                 Submission Boxes
             </Typography>
@@ -33,20 +33,22 @@ export default function DashboardSidebarSubmissionBoxes(props: DashboardSidebarS
                 isAddButton={true}
             />
             <DashboardSidePanelOption
-                title={'Submission In-Box'}
+                title={'My Boxes'}
                 icon={<InboxIcon />}
                 onClick={handleSubmissionInboxClick}
-                isSelected={sidebarSelectedOption === 'submission_boxes_inbox'}
+                isSelected={sidebarSelectedOption === 'submission_boxes_my_boxes'}
                 isDisabled={false}
                 isAddButton={false}
+                data-cy='My Boxes'
             />
             <DashboardSidePanelOption
-                title={'Submission Out-Box'}
+                title={'My Requests'}
                 icon={<SendIcon />}
                 onClick={handleSubmissionOutboxClick}
-                isSelected={sidebarSelectedOption === 'submission_boxes_outbox'}
+                isSelected={sidebarSelectedOption === 'submission_boxes_my_requests '}
                 isDisabled={false}
                 isAddButton={false}
+                data-cy='My Requests'
             />
         </Box>
     )
@@ -57,12 +59,12 @@ export default function DashboardSidebarSubmissionBoxes(props: DashboardSidebarS
     }
 
     function handleSubmissionInboxClick() {
-        props.setSidebarSelectedOption('submission_boxes_inbox')
+        props.setSidebarSelectedOption('submission_boxes_my_boxes')
         props.onSubmissionInboxClick()
     }
 
     function handleSubmissionOutboxClick() {
-        props.setSidebarSelectedOption('submission_boxes_outbox')
+        props.setSidebarSelectedOption('submission_boxes_my_requests ')
         props.onSubmissionOutboxClick()
     }
 }
