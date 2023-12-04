@@ -128,6 +128,7 @@ jobs:
                     start: npm run start
                     install: true
                     browser: chrome
+                    headed: true
                     wait-on: ${{ env.CYPRESS_BASE_URL }}
                     config: baseUrl=${{ env.CYPRESS_BASE_URL }}
             -   name: Save cypress video

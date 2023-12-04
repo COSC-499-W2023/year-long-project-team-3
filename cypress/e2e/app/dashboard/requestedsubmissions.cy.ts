@@ -27,7 +27,7 @@ describe('Dashboard Requested Submission Boxes Tests', () => {
         cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('not.contain', 'login')
 
         cy.visit('/dashboard')
-        cy.get('[data-cy="My Requests"]', { timeout: TIMEOUT.EXTRA_LONG }).click().click()
+        cy.get('[data-cy="My Requests"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
         cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'requestedsubmissions')
         cy.get('[data-cy="no submission text"]', { timeout: TIMEOUT.EXTRA_LONG })
             .should('be.visible')
@@ -48,7 +48,7 @@ describe('Dashboard Requested Submission Boxes Tests', () => {
         cy.url().should('not.contain', 'login')
 
         cy.visit('/dashboard')
-        cy.get('[data-cy="My Requests"]', { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click().click()
+        cy.get('[data-cy="My Requests"]', { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
         cy.url({ timeout: TIMEOUT.EXTRA_EXTRA_LONG }).should('contain', 'requestedsubmissions')
         cy.get('[data-cy="Outgoing Submission Box"]', { timeout: TIMEOUT.EXTRA_EXTRA_LONG })
             .should('be.visible').and('contain', 'Outgoing Submission Box')
