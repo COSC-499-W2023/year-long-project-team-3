@@ -198,3 +198,28 @@ My goal for this week was to finalize the mocks for the video sending process. M
 implementing the forms that I started, and work on the design document for our team.
 
 ### Additional Context
+
+
+## Teresa Saller - Week 13 (2023/11/27 - 2023/12/03)
+
+![teresa-saller-tasks-w13](imgs/teresa-saller-tasks-w13.png)
+
+### Tasks
+
+Completed:
+- [Submission Box Settings Form #221](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/221)
+- [Submission Box Add Members Form #224](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/224)
+- [Rework submission box creation to be one page and add review page #248](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/248)
+- [Design document creation #63](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/63)
+
+In progress:
+
+This last week, I spent over 30h testing and implementing the UI I mocked out for the submission box forms. I also spent
+a considerable amount of time making diagrams for our user interaction flow and writing up our UI changes for the Design
+Document.
+
+### Goals
+
+My goal for this week was to finish implementing the forms that I started, and work on the design document for our team.
+
+### Additional Context
