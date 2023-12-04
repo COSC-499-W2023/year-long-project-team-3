@@ -1,5 +1,5 @@
 import { TIMEOUT } from '../../../utils/constants'
-import runWithRetry from '../../../utils/clickUntilExist'
+import runWithRetry from '../../../utils/runUntilExist'
 
 describe('Dashboard My Submission Boxes Tests', () => {
     beforeEach(() => {
