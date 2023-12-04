@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation'
 import ProgressDots from '@/components/ProgressDots'
 import PageLoadProgressBlurBackground from 'src/components/PageLoadProgressBlurBackround'
 import logger from '@/utils/logger'
+import BackButton from '@/components/BackButton'
 
 const VisuallyHiddenInput = styled('input')({
     clipPath: 'inset(50%)',
@@ -72,6 +73,7 @@ export default function UploadVideoPage() {
             <PageLoadProgressBlurBackground show={isUploadingVideo} />
             <>
                 <Header {...session} />
+                <BackButton route={'/dashboard '} title={'Return to Dashboard'} />{' '}
                 <Box
                     sx={{
                         display: 'flex',

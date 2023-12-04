@@ -164,7 +164,8 @@ export default function LoginForm() {
             } else if (signInData.error) {
                 toast.error(signInData.error)
             } else {
-                logger.info(`User ${ userData.email } successfully signed up`)
+                toast.success(`User ${ userData.email } successfully logged in`)
+                logger.info(`User ${ userData.email } successfully logged in`)
                 router.push('/dashboard')
                 router.refresh()
             }
