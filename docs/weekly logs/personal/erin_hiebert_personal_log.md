@@ -137,3 +137,26 @@
 ### Additional Context
 
 -   I had a family emergency during the final days of reading week and that has caused me significant stress and mental drain, I am currently on the mend to finish the semester strong but this past week's performance on my end was affected.
+
+## Week 13 (27/11/2023 - 03/12/2023)
+
+![](imgs/week-13-erin-tasks.png)
+
+### Week Tasks
+
+-   User Interface Design  #62 (Completed)
+-   Dashboard Page for Receiving Videos  #58 (Completed)
+-   Combine Dashboard Components to Create Dashboard Page  #222 (Completed)
+-   Video creation  #64 (Completed)
+-   Replace Logo  #262 (Completed)
+
+### Week Goals
+
+-   Completed incoming and out-going submission box dashboard pages including stitching an API and some already completed components onto the page.  Also developed the UI as to reflect the mock I previously created for the dashboard pages.
+-   Created tests for dashboard pages submission process and tests for the APIs
+-   Uploaded logo I created onto our app
+-   Recorded, edited, and finished design video
+
+### Additional Context
+
+-   It was a hard week and a hard milestone but now it is over yay
