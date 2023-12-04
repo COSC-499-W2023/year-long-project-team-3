@@ -108,7 +108,6 @@ export default function VideoPreviewPage() {
                 }}
             >
                 <Header {...session} />
-                <BackButton route={'/dashboard '} title={'Return to Dashboard'} /> {/*Main Body*/}
                 {!isVideoVisible ? (
                     <PageLoadProgress />
                 ) : (
@@ -122,9 +121,21 @@ export default function VideoPreviewPage() {
                                     gap: '1rem',
                                     width: '100%',
                                     height: '100%',
-                                    p: '2rem',
+                                    pb: '2rem',
                                 }}
                             >
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'flex-start',
+                                        width: '100%',
+                                        m: 0,
+                                    }}
+                                >
+                                    <BackButton route={'/dashboard '} title={'Return to Dashboard'} />
+                                </Box>
+                                {/*Main Body*/}
                                 <Box
                                     sx={{
                                         minWidth: '16rem',
@@ -207,7 +218,6 @@ export default function VideoPreviewPage() {
                                                 display='flex'
                                                 justifyContent='space-between'
                                                 width='70vw'
-                                                position='absolute'
                                                 bottom='4rem'
                                             >
                                                 <Button
