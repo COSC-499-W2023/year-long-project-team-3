@@ -1,4 +1,5 @@
 import { Alert, Box } from '@mui/material'
+import Image from 'next/image'
 
 export default function VideoProcessing() {
     return (
@@ -16,7 +17,15 @@ export default function VideoProcessing() {
                     Your video is currently being processed by our server. Please wait or come back later.
                 </Alert>
                 <Box sx={{ mt: '2rem' }}>
-                    <img src='https://media.tenor.com/DCycRQnBpOYAAAAC/math-hmm.gif' alt='processing gif' />
+                    <Image
+                        src='https://media.tenor.com/DCycRQnBpOYAAAAC/math-hmm.gif'
+                        alt='processing gif'
+                        width={300}
+                        height={200}
+                        style={{
+                            borderRadius: '1rem',
+                        }}
+                    />
                 </Box>
             </Box>
         </>

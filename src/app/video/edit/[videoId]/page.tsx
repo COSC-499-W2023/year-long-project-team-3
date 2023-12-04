@@ -83,7 +83,7 @@ export default function VideoPreviewPage() {
                 })
         }, 2000)
         return () => clearInterval(interval)
-    }, [router, videoId])
+    }, [isCloudProcessed, router, videoId])
 
     useEffect(() => {
         resizeNavButtons()
