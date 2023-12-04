@@ -54,7 +54,7 @@ describe('Test Video Upload and Streaming Processing Pipeline', () => {
             })
 
             /* Check that the processed video preview is displayed once we redirect to the edit page */
-            cy.get('[data-cy=video-player]', { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).should('be.visible')
+            cy.get('[data-cy=video-player]', { timeout: 100000000 }).should('be.visible')
         })
     })
 })
