@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
-import PageLoadProgress from '@/components/PageLoadProgress'
 import Header from '@/components/Header'
 import { Box, Select, Typography, Chip, MenuItem, Button } from '@mui/material'
 import ProgressDots from '@/components/ProgressDots'
@@ -19,6 +18,7 @@ import logger from '@/utils/logger'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import PageLoadProgressBlurBackground from '@/components/PageLoadProgressBlurBackround'
+import BackButton from '@/components/BackButton'
 
 type FormValues = {
     videoTitle: string
@@ -81,6 +81,7 @@ export default function SubmitVideoPage() {
             <PageLoadProgressBlurBackground show={isLoading && !video} />
             <>
                 <Header {...session} />
+                <BackButton route={'/dashboard '} title={'Return to Dashboard'} />{' '}
                 <Box
                     sx={{
                         display: 'flex',

@@ -29,7 +29,7 @@ export default function DashboardSidebarMenu(props: DashboardMenuSidebarProps) {
                 Menu
             </Typography>
             <DashboardSidePanelOption
-                title={'Record New'}
+                title={'Upload New'}
                 icon={<PlayCircleFilledIcon sx={{ color: 'white' }} />}
                 onClick={handleRecordNewClick}
                 isSelected={sidebarSelectedOption === 'menu_record_new'}

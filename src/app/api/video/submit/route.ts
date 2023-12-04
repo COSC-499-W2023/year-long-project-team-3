@@ -112,7 +112,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
         await Promise.all(updatedRequestedSubmissionPromises)
 
-        return NextResponse.json({ message: 'Successfully submitted' }, { status: 201 })
+        return NextResponse.json({ message: `Successfully submitted ${ videoTitle }` }, { status: 201 })
     } catch (err) {
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }

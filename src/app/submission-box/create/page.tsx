@@ -144,6 +144,7 @@ export default function SubmissionBox() {
 
             const submissionBoxInfo = await response.json()
             if (response.status == 201) {
+                toast.success(`Submission box ${ submissionBoxInfo.title } successfully created!`)
                 logger.info(`Submission box with title ${ submissionBoxInfo.title } successfully created`)
                 router.push('/dashboard')
                 router.refresh()
