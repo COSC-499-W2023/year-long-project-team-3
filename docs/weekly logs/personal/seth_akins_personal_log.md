@@ -189,7 +189,7 @@ will have to reconsider how we do that moving forwards.
 
 - We have spent a decent amount of time arguing over design this week, so hopefully we can figure that out soon
 
-## Week 11 & 12 (06/11/2023 - 12/11/2023)
+## Week 11 & 12 (13/11/2023 - 26/11/2023)
 
 ### Task Breakdown
 
@@ -220,3 +220,32 @@ will have to reconsider how we do that moving forwards.
   deployed app can access AWS, but they will not let us generate more users or give them to us.
 - As a result, our deployment will probably be disabled for now until we can implement a workaround, but that will
   require a large refactor
+
+## Week 13 (27/11/2023 - 03/12/2023)
+
+### Task Breakdown
+
+![](imgs/week-13-seth-akins-tasks.png)
+
+### Goals
+- This week I focused on writing tests for and integrating the poll worker into the rest of the AWS pipeline.
+- This required some minor tweaks, such as a loading page will the video processes
+- I also completed a couple of small improvements, such as fixing some issues with the Sign in with Google button and
+  fixing some pages that were not properly using middleware
+
+### Tasks
+
+#### Completed Tasks
+
+- [Actually Use Middleware](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/257)
+- [Fix Google Button](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/255)
+- [Create Worker to Poll SQS for Video Metadata](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/197)
+
+#### In-Progress Tasks
+
+- [Pick Website Colours](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/174)
+
+### Additional Context
+
+- We once again had trouble merging everything at the end.
+- Also, we didn't know what to submit for the design document, so hopefully that goes well
