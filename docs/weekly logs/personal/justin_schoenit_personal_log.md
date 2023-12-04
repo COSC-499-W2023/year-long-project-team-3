@@ -1,5 +1,28 @@
 # Weekly Individual Log - Justin Schoenit
 
+## Week 13 (Nov 27 - Dec 3)
+
+### Tasks
+
+![](imgs/week-13-tasks-justin.png)
+
+### Goals
+
+- Get some pages mocked and implemented
+- Get video upload working
+- Get AWS video pipeline working/researched
+
+### My Contributions
+
+- Updated database design with submission boxes
+- Wrote API for creating submission boxes in the database and inviting people to them
+- Integrated API with Teresa's submission box UI
+- Tested the integration
+- Worked on fixing tests
+
+### Additional Context
+
+N/A
 
 ## Week 11/12 (Nov 13 - Nov 26)
 
