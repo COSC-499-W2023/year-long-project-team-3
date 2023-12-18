@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
@@ -55,8 +55,11 @@ export default function VideoCard(props: VideoCardProps) {
                     component='span'
                     sx={{ display: 'block', height: '1px', width: '100%', backgroundColor: '#E7E7ED' }}
                 />
-                <Box padding={'8px'} fontSize={'14px'} lineHeight={'150%'} fontWeight={500}>
-                    {props.title}
+
+                <Box padding={'8px'}>
+                    <Typography noWrap fontSize='14px' lineHeight='150%' fontWeight={500}>
+                        {props.title}
+                    </Typography>
                 </Box>
             </Box>
         </Box>
