@@ -19,31 +19,11 @@ export default function DashboardSidePanel(props: DashboardSidePanelProps) {
         <Box display='flex' flexDirection='column' margin={'0 2rem'} minWidth={200} maxWidth={260} height='100%'>
             <DashboardSidebarMenu
                 onRecordNewClick={handleOnRecordNewClick}
-                onRecentClick={() => {
-                    router.push('/dashboard/placeholder')
-                }}
-                onStarredClick={() => {
-                    router.push('/dashboard/placeholder')
-                }}
-                onSubmittedVideosClick={() => {
-                    router.push('/dashboard/placeholder')
-                }}
-                onTrashClick={() => {
-                    router.push('/dashboard/placeholder')
-                }}
                 sidebarSelectedOption={props.sidebarSelectedOption}
                 setSidebarSelectedOption={props.setSidebarSelectedOption}
             />
             <DashboardSidebarSubmissionBoxes
-                onCreateNewClick={() => {
-                    router.push('/submission-box/create')
-                }}
-                onSubmissionInboxClick={() => {
-                    router.push('/dashboard/myboxes')
-                }}
-                onSubmissionOutboxClick={() => {
-                    router.push('/dashboard/requestedsubmissions')
-                }}
+                onCreateNewClick={handleOnCreateNewSubmissionBoxClick}
                 sidebarSelectedOption={props.sidebarSelectedOption}
                 setSidebarSelectedOption={props.setSidebarSelectedOption}
             />
@@ -52,5 +32,9 @@ export default function DashboardSidePanel(props: DashboardSidePanelProps) {
 
     function handleOnRecordNewClick() {
         router.push('/video/upload')
+    }
+
+    function handleOnCreateNewSubmissionBoxClick() {
+        router.push('/submission-box/create')
     }
 }

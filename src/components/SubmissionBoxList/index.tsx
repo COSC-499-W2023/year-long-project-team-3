@@ -3,18 +3,10 @@ import ListItem from '@mui/material/ListItem'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import List from '@mui/material/List'
+import { SubmissionBox } from '@prisma/client'
 
 export type SubmissionBoxListProps = {
-    submissionBoxes: {
-        id: number
-        title: string
-        description: string | null
-        createdAt: Date
-        closesAt: Date | null
-        videoStoreToDate: Date | null
-        maxVideoLength: null
-        isPublic: boolean
-    }[]
+    submissionBoxes: SubmissionBox[]
 }
 
 export default function SubmissionBoxList(props: SubmissionBoxListProps) {
@@ -31,7 +23,10 @@ export default function SubmissionBoxList(props: SubmissionBoxListProps) {
                         gridTemplateColumns='3fr 1fr'
                         alignItems='center'
                     >
-                        <Typography data-cy={submissionBox.title} sx={{ p: 1, color: 'textSecondary', fontWeight: 'bold' }}>
+                        <Typography
+                            data-cy={submissionBox.title}
+                            sx={{ p: 1, color: 'textSecondary', fontWeight: 'bold' }}
+                        >
                             {submissionBox.title}
                         </Typography>
                         <Typography sx={{ p: 1, color: 'textSecondary' }}>
