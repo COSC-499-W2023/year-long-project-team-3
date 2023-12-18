@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
 import ListItem from '@mui/material/ListItem'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -17,11 +17,9 @@ export type SubmissionBoxListProps = {
 export default function SubmissionBoxList(props: SubmissionBoxListProps) {
     const router = useRouter()
 
-    const [submissionBoxes, setSubmissionBoxes] = useState(props.submissionBoxes)
-
     return (
         <List sx={{ maxHeight: 600, overflow: 'auto', position: 'relative', pl: 1, pr: 1 }}>
-            {submissionBoxes.map((submissionBox, idx: number) => (
+            {props.submissionBoxes.map((submissionBox, idx: number) => (
                 <ListItem key={`submission_box_${ idx }`} onClick={() => handleClickListItem(submissionBox.id)}>
                     <Box
                         sx={{
