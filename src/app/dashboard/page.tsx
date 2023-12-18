@@ -30,7 +30,6 @@ export default function DashboardPage() {
 
     // Page load controls
     const [isFetching, setIsFetching] = useState(false)
-    const [isDisplayWaiting, setIsDisplayWaiting] = useState(false)
 
     // Fetch all videos for the "recent" tab
     useEffect(() => {
@@ -64,7 +63,7 @@ export default function DashboardPage() {
         } else if (sidebarSelectedOption === 'menu_submitted_videos') {
             setIsVideoTabSelected(true)
             setPageTitle('Submitted Videos')
-            setIsDisplayWaiting(true)
+            setIsFetching(true)
             getUserIdByEmail(session.data.user.email)
                 .then((userId) => {
                     setDisplayVideos(allVideos.filter((video) => video.ownerId === userId))
@@ -73,7 +72,7 @@ export default function DashboardPage() {
                     toast.error(error)
                 })
                 .finally(() => {
-                    setIsDisplayWaiting(false)
+                    setIsFetching(false)
                 })
         } else if (sidebarSelectedOption === 'menu_starred') {
             setIsVideoTabSelected(true)
@@ -88,76 +87,72 @@ export default function DashboardPage() {
         } else if (sidebarSelectedOption === 'submission_boxes_my_boxes') {
             setIsVideoTabSelected(false)
             setPageTitle('Submission Boxes')
-            setIsDisplayWaiting(true)
+            setIsFetching(true)
             fetchMyBoxes()
                 .then((submissionBoxes) => setSubmissionBoxes(submissionBoxes))
                 .catch((error) => toast.error(error))
-                .finally(() => setIsDisplayWaiting(false))
+                .finally(() => setIsFetching(false))
         } else if (sidebarSelectedOption === 'submission_boxes_my_requests') {
             setIsVideoTabSelected(false)
             setPageTitle('Requested Submissions')
-            setIsDisplayWaiting(true)
+            setIsFetching(true)
             fetchMyRequests()
                 .then((submissionBoxes) => setSubmissionBoxes(submissionBoxes))
                 .catch((error) => toast.error(error))
-                .finally(() => setIsDisplayWaiting(false))
+                .finally(() => setIsFetching(false))
         }
     }, [sidebarSelectedOption, allVideos, session])
 
     return (
         <>
             <Header {...session} />
-            {isFetching ? (
-                <PageLoadProgress />
-            ) : (
-                <Box display='grid' gridTemplateColumns='1fr 4fr' height='100%' width='100%'>
-                    <DashboardSidebar
-                        sidebarSelectedOption={sidebarSelectedOption}
-                        setSidebarSelectedOption={setSidebarSelectedOption}
-                    />
-                    <Box width='100%' display='flex' flexDirection='column'>
-                        <Typography
-                            data-cy='title'
-                            variant='h5'
-                            color={'textSecondary'}
-                            sx={{ m: 2, fontWeight: 'bold', py: '1rem', marginTop: '1rem' }}
-                        >
-                            {pageTitle}
-                        </Typography>
-                        <Box
-                            sx={{
-                                borderTopLeftRadius: 25,
-                                borderBottomLeftRadius: 25,
-                                height: '100vh',
-                                backgroundColor: 'secondary.lighter',
-                            }}
-                            borderColor={'secondary.lighter'}
-                            width='100%'
-                        >
-                            {isDisplayWaiting ? (
-                                <PageLoadProgress />
-                            ) : (
-                                <Box component='section' sx={{ height: '80vh', paddingTop: 5 }} width='100%'>
-                                    {isVideoTabSelected ? (
-                                        <VideoList
-                                            videos={displayVideos.map((video) => {
-                                                return {
-                                                    title: video.title,
-                                                    videoId: video.id,
-                                                    thumbnailUrl: video.thumbnail,
-                                                }
-                                            })}
-                                        />
-                                    ) : (
-                                        <SubmissionBoxList submissionBoxes={submissionBoxes} />
-                                    )}
-                                </Box>
-                            )}
-                        </Box>
+            <Box display='grid' gridTemplateColumns='1fr 4fr' height='100%' width='100%'>
+                <DashboardSidebar
+                    sidebarSelectedOption={sidebarSelectedOption}
+                    setSidebarSelectedOption={setSidebarSelectedOption}
+                />
+                <Box width='100%' display='flex' flexDirection='column'>
+                    <Typography
+                        data-cy='title'
+                        variant='h5'
+                        color={'textSecondary'}
+                        sx={{ m: 2, fontWeight: 'bold', py: '1rem', marginTop: '1rem' }}
+                    >
+                        {pageTitle}
+                    </Typography>
+                    <Box
+                        sx={{
+                            borderTopLeftRadius: 25,
+                            borderBottomLeftRadius: 25,
+                            height: '100vh',
+                            backgroundColor: 'secondary.lighter',
+                        }}
+                        borderColor={'secondary.lighter'}
+                        width='100%'
+                    >
+                        {isFetching ? (
+                            <PageLoadProgress />
+                        ) : (
+                            <Box component='section' sx={{ height: '80vh', paddingTop: 5 }} width='100%'>
+                                {isVideoTabSelected ? (
+                                    <VideoList
+                                        videos={displayVideos.map((video) => {
+                                            return {
+                                                title: video.title,
+                                                videoId: video.id,
+                                                thumbnailUrl: video.thumbnail,
+                                            }
+                                        })}
+                                    />
+                                ) : (
+                                    <SubmissionBoxList submissionBoxes={submissionBoxes} />
+                                )}
+                            </Box>
+                        )}
                     </Box>
-                    ; ;
                 </Box>
-            )}
+                ; ;
+            </Box>
         </>
     )
 
