@@ -44,11 +44,12 @@ export default function SubmissionBoxList(props: SubmissionBoxListProps) {
                         >
                             {submissionBox.title}
                         </Typography>
-                        {!!submissionBox.closesAt && (
-                            <Typography sx={{ p: 1, color: 'textSecondary' }}>
-                                Close Date:{' ' + new Date(submissionBox.closesAt).toDateString().slice(4)}
-                            </Typography>
-                        )}
+                        <Typography sx={{ p: 1, color: 'textSecondary' }}>
+                            Close Date:{' '}
+                            {!!submissionBox.closesAt
+                                ? new Date(submissionBox.closesAt).toDateString().slice(4)
+                                : 'N/A'}
+                        </Typography>
                     </Box>
                 </ListItem>
             ))}
