@@ -63,30 +63,31 @@ export default function DashboardPage() {
         } else if (sidebarSelectedOption === 'menu_submitted_videos') {
             setIsVideoTabSelected(true)
             setPageTitle('Submitted Videos')
+
             setIsFetching(true)
             getUserIdByEmail(session.data.user.email)
                 .then((userId) => {
-                    setDisplayVideos(allVideos.filter((video) => video.ownerId === userId))
+                    const ownedVideos = allVideos.filter((video) => video.ownerId === userId)
+                    setDisplayVideos(ownedVideos)
                 })
-                .catch((error) => {
-                    toast.error(error)
-                })
-                .finally(() => {
-                    setIsFetching(false)
-                })
+                .catch((error) => toast.error(error))
+                .finally(() => setIsFetching(false))
         } else if (sidebarSelectedOption === 'menu_starred') {
             setIsVideoTabSelected(true)
             setPageTitle('Starred')
+
             // TODO: Added isStarred field to Video model
             setDisplayVideos([])
         } else if (sidebarSelectedOption === 'menu_trash') {
             setIsVideoTabSelected(true)
             setPageTitle('Trash')
+
             // TODO: Added isDeleted field to Video model
             setDisplayVideos([])
         } else if (sidebarSelectedOption === 'submission_boxes_my_boxes') {
             setIsVideoTabSelected(false)
             setPageTitle('Submission Boxes')
+
             setIsFetching(true)
             fetchMyBoxes()
                 .then((submissionBoxes) => setSubmissionBoxes(submissionBoxes))
@@ -95,6 +96,7 @@ export default function DashboardPage() {
         } else if (sidebarSelectedOption === 'submission_boxes_my_requests') {
             setIsVideoTabSelected(false)
             setPageTitle('Requested Submissions')
+
             setIsFetching(true)
             fetchMyRequests()
                 .then((submissionBoxes) => setSubmissionBoxes(submissionBoxes))
