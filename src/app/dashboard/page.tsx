@@ -151,7 +151,6 @@ export default function DashboardPage() {
                         )}
                     </Box>
                 </Box>
-                ; ;
             </Box>
         </>
     )
