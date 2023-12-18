@@ -35,7 +35,7 @@ export default function SubmissionOutboxPage() {
         <>
             <Header {...session} />
             <Box display='grid' gridTemplateColumns='1fr 4fr' height='100%'>
-                <Dashboard userEmail={'test'} initialSidebarSelectedOption={'submission_boxes_my_requests '} />
+                {/*<Dashboard userEmail={'test'} initialSidebarSelectedOption={'submission_boxes_my_requests '} />*/}
                 <Box>
                     <Typography
                         data-cy='title'

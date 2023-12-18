@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 export type VideoCardProps = {
     videoId: string
     title: string
-    thumbnailUrl: string
+    thumbnailUrl: string | null
 }
 
 export default function VideoCard(props: VideoCardProps) {
@@ -15,7 +15,6 @@ export default function VideoCard(props: VideoCardProps) {
         <Box
             width={230}
             height={200}
-            borderRadius={4}
             display={'flex'}
             alignItems={'center'}
             position={'relative'}
@@ -24,20 +23,25 @@ export default function VideoCard(props: VideoCardProps) {
                 '&:hover': {
                     cursor: 'pointer',
                     boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.5)',
+                    borderRadius: '8px',
                 },
+                borderRadius: '8px',
+                backgroundColor: 'black',
             }}
             onClick={handleOnClick}
         >
-            <Image
-                src={props.thumbnailUrl}
-                width={230}
-                height={200}
-                quality={2}
-                alt={props.title}
-                objectPosition={'100% 0'}
-                objectFit={'cover'}
-                style={{ borderRadius: '4px' }}
-            />
+            {!!props.thumbnailUrl && (
+                <Image
+                    src={props.thumbnailUrl}
+                    width={230}
+                    height={200}
+                    quality={2}
+                    alt={props.title}
+                    objectPosition={'100% 0'}
+                    objectFit={'cover'}
+                    style={{ borderRadius: '4px' }}
+                />
+            )}
 
             <Box
                 width={'100%'}

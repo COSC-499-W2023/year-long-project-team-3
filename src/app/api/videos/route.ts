@@ -46,7 +46,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
                     select: {
                         requestedSubmissions: {
                             select: {
-                                submissionBoxId: true,
+                                id: true,
                             },
                         },
                     },
@@ -56,7 +56,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
         const allRequestedSubmissionIds: string[] = allRequestedSubmissions
             .flat()
-            .map(({ requestedSubmissions }) => requestedSubmissions.map(({ submissionBoxId }) => submissionBoxId))
+            .map(({ requestedSubmissions }) => requestedSubmissions.map(({ id }) => id))
             .flat()
 
         const allSubmittedVideoToRequestedSubmissions = await Promise.all(
@@ -71,6 +71,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
                 })
             )
         )
+        console.log('HEEEEEE2', allSubmittedVideoToRequestedSubmissions)
 
         const allSubmittedVideoIds: string[] = allSubmittedVideoToRequestedSubmissions.flat().map(({ videoId }) => videoId)
 

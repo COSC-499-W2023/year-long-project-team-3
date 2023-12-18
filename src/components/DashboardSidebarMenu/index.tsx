@@ -77,13 +77,17 @@ export default function DashboardSidebarMenu(props: DashboardMenuSidebarProps) {
     }
 
     function handleRecentClick() {
-        props.setSidebarSelectedOption('menu_recent')
-        props.onRecentClick()
+        if (sidebarSelectedOption !== 'menu_recent') {
+            props.setSidebarSelectedOption('menu_recent')
+            props.onRecentClick()
+        }
     }
 
     function handleSubmittedVideosClick() {
-        props.setSidebarSelectedOption('menu_submitted_videos')
-        props.onSubmittedVideosClick()
+        if (sidebarSelectedOption !== 'menu_submitted_videos') {
+            props.setSidebarSelectedOption('menu_submitted_videos')
+            props.onSubmittedVideosClick()
+        }
     }
 
     function handleStarredClick() {
