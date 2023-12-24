@@ -17,7 +17,7 @@ export type SubmissionBoxListProps = {
 export default function SubmissionBoxList(props: SubmissionBoxListProps) {
     const router = useRouter()
 
-    return (
+    return !!props.submissionBoxes && props.submissionBoxes.length > 0 ? (
         <List sx={{ maxHeight: 600, overflow: 'auto', position: 'relative', pl: 1, pr: 1 }}>
             {props.submissionBoxes.map((submissionBox, idx: number) => (
                 <ListItem key={`submission_box_${ idx }`} onClick={() => handleClickListItem(submissionBox.id)}>
@@ -54,6 +54,10 @@ export default function SubmissionBoxList(props: SubmissionBoxListProps) {
                 </ListItem>
             ))}
         </List>
+    ) : (
+        <Box display='flex' justifyContent='center' alignItems='center'>
+            <Typography>You do not have any submission box</Typography>
+        </Box>
     )
 
     function handleClickListItem(id: string) {

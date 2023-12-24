@@ -73,6 +73,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             data: {
                 title: videoTitle,
                 description: videoDescription,
+                isSubmitted: true,
             },
         })
 

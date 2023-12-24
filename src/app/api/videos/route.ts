@@ -25,6 +25,7 @@ export async function GET(): Promise<NextResponse> {
         const ownedVideos: Video[] = await prisma.video.findMany({
             where: {
                 ownerId: userId,
+                isSubmitted: true,
             },
         })
 

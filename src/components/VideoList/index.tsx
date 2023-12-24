@@ -1,12 +1,12 @@
 import VideoCard, { type VideoCardProps } from '@/components/VideoCard'
-import { Box } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 
 export type VideoListProps = {
     videos: VideoCardProps[]
 }
 
 export default function VideoList(props: VideoListProps) {
-    return (
+    return !!props.videos && props.videos.length > 0 ? (
         <Box
             display={'grid'}
             gridTemplateColumns={'repeat(auto-fill, minmax(250px, 1fr))'}
@@ -24,6 +24,10 @@ export default function VideoList(props: VideoListProps) {
             {props.videos.map((video, idx) => (
                 <VideoCard key={`video_${ idx }`} {...video} />
             ))}
+        </Box>
+    ) : (
+        <Box display='flex' justifyContent='center' alignItems='center'>
+            <Typography>You do not have any videos</Typography>
         </Box>
     )
 }

@@ -43,7 +43,7 @@ export default function DashboardPage() {
     // If click on video-related tab, filter videos based on sidebar selection
     // If click on submission box-related tab, fetch submission boxes
     useEffect(() => {
-        if (!allVideos || allVideos.length === 0 || !sidebarSelectedOption) {
+        if (!sidebarSelectedOption) {
             return
         }
 
