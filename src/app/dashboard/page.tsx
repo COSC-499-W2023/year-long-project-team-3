@@ -54,11 +54,12 @@ export default function DashboardPage() {
         if (sidebarSelectedOption === 'menu_recent') {
             setIsVideoTabSelected(true)
             setPageTitle('Recent')
-            const sortedVideos = allVideos.toSorted((video, otherVideo) => {
-                const videoUpdatedAt = new Date(video?.updatedAt).getTime() ?? 0
-                const otherVideoUpdatedAt = new Date(otherVideo?.updatedAt).getTime() ?? 0
-                return otherVideoUpdatedAt - videoUpdatedAt
-            })
+            const sortedVideos =
+                allVideos?.toSorted((video, otherVideo) => {
+                    const videoUpdatedAt = new Date(video?.updatedAt).getTime() ?? 0
+                    const otherVideoUpdatedAt = new Date(otherVideo?.updatedAt).getTime() ?? 0
+                    return otherVideoUpdatedAt - videoUpdatedAt
+                }) || []
             setDisplayVideos(sortedVideos)
         } else if (sidebarSelectedOption === 'menu_submitted_videos') {
             setIsVideoTabSelected(true)

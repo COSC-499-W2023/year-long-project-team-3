@@ -27,7 +27,15 @@ export default function VideoList(props: VideoListProps) {
         </Box>
     ) : (
         <Box display='flex' justifyContent='center' alignItems='center'>
-            <Typography>You do not have any videos</Typography>
+            <Typography
+                data-cy='no-video-text'
+                variant='h5'
+                align='center'
+                color={'textSecondary'}
+                sx={{ mt: 20 }}
+            >
+                You Do Not Have Any Video
+            </Typography>
         </Box>
     )
 }

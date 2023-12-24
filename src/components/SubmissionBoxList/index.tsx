@@ -56,7 +56,15 @@ export default function SubmissionBoxList(props: SubmissionBoxListProps) {
         </List>
     ) : (
         <Box display='flex' justifyContent='center' alignItems='center'>
-            <Typography>You do not have any submission box</Typography>
+            <Typography
+                data-cy='no-submission-text'
+                variant='h5'
+                align='center'
+                color={'textSecondary'}
+                sx={{ mt: 20 }}
+            >
+                You Do Not Have Any Submission Box
+            </Typography>
         </Box>
     )
 

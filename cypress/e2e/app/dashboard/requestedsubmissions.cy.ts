@@ -28,10 +28,10 @@ describe('Dashboard Requested Submission Boxes Tests', () => {
 
         cy.visit('/dashboard')
         cy.get('[data-cy="My Requests"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
-        cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'requestedsubmissions')
-        cy.get('[data-cy="no submission text"]', { timeout: TIMEOUT.EXTRA_LONG })
+        cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
+        cy.get('[data-cy="no-submission-text"]', { timeout: TIMEOUT.EXTRA_LONG })
             .should('be.visible')
-            .and('contain', 'You Have Not Submitted To Any Active Submission Boxes')
+            .and('contain', 'You Do Not Have Any Submission Box')
     })
 
     it('should display outgoing submission boxes for a user that has outgoing submission boxes', () => {
@@ -50,7 +50,7 @@ describe('Dashboard Requested Submission Boxes Tests', () => {
         cy.visit('/dashboard')
         runWithRetry(() => {
             cy.get('[data-cy="My Requests"]', { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
-            cy.url({ timeout: TIMEOUT.EXTRA_EXTRA_LONG }).should('contain', 'requestedsubmissions')
+            cy.url({ timeout: TIMEOUT.EXTRA_EXTRA_LONG }).should('contain', 'dashboard')
         })
         cy.get('[data-cy="Outgoing Submission Box"]', { timeout: TIMEOUT.EXTRA_EXTRA_LONG })
             .should('be.visible')
