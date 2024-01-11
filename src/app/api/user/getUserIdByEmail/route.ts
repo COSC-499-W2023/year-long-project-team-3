@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import prisma from '@/lib/prisma'
+import logger from '@/utils/logger'
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
     const session = await getServerSession()
@@ -12,7 +13,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const { userEmail } = await req.json()
 
     if (!userEmail) {
+        logger.error(`User ${ session.user.email } tried to get the user id of ${ userEmail }`)
         return NextResponse.json({ error: 'Bad Request' }, { status: 400 })
+    }
+
+    if (userEmail !== session.user.email) {
+        logger.error(`User ${ session.user.email } tried to get the user id of ${ userEmail }`)
+        return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
     try {
