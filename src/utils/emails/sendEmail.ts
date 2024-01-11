@@ -1,6 +1,6 @@
 import {Message, SendEmailCommand, SESClient} from '@aws-sdk/client-ses'
 
-export async function sendEmails(addresses: string[], message: Message) {
+export async function sendEmails(emailAddresses: string[], message: Message) {
     const ses = new SESClient({
         region: process.env.awsUploadRegion,
         credentials: {
@@ -11,13 +11,13 @@ export async function sendEmails(addresses: string[], message: Message) {
     })
     return ses.send(new SendEmailCommand({
         Destination: {
-            ToAddresses: addresses,
+            ToAddresses: emailAddresses,
         },
         Message: message,
         Source: 'no-reply@harpvideo.ca',
     }))
 }
 
-export async function sendEmail(address: string, message: Message) {
-    return sendEmails([address], message)
+export async function sendEmail(emailAddress: string, message: Message) {
+    return sendEmails([emailAddress], message)
 }
