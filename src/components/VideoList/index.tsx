@@ -35,7 +35,7 @@ export default function VideoList(props: VideoListProps) {
                 color={'textSecondary'}
                 sx={{ mt: 20 }}
             >
-                You Do Not Have Any Video
+                You Do Not Have Any Videos
             </Typography>
         </Box>
     )

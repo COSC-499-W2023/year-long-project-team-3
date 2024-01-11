@@ -63,7 +63,7 @@ export default function SubmissionBoxList(props: SubmissionBoxListProps) {
                 color={'textSecondary'}
                 sx={{ mt: 20 }}
             >
-                You Do Not Have Any Submission Box
+                You Do Not Have Any Submission Boxes
             </Typography>
         </Box>
     )

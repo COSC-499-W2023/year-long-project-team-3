@@ -40,7 +40,7 @@ describe('Dashboard Recent Videos Tests', () => {
 
         cy.get('[data-cy="no-video-text"]', { timeout: TIMEOUT.EXTRA_LONG })
             .should('be.visible')
-            .and('contain', 'You Do Not Have Any Video')
+            .and('contain', 'You Do Not Have Any Videos')
     })
 
     it('should display sent videos when a user has sent videos', () => {
@@ -138,6 +138,6 @@ describe('Dashboard Recent Videos Tests', () => {
             .should('be.visible')
             .should('have.css', 'background-color', 'rgb(225, 240, 255)') // Check if the tab is focused
 
-        cy.get('[data-cy="no-video-text"]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'You Do Not Have Any Video')
+        cy.get('[data-cy="no-video-text"]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'You Do Not Have Any Videos')
     })
 })
