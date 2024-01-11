@@ -16,8 +16,6 @@ import createRequestSubmissionForUser from './cypress/tasks/createRequestSubmiss
 
 require('dotenv').config()
 
-console.log('CYPRESS_RUN_LOCAL_ONLY: ', process.env.CYPRESS_RUN_LOCAL_ONLY?.toLowerCase() === 'true')
-
 export default defineConfig({
     e2e: {
         projectId: process.env.CYPRESS_PROJECT_ID,
