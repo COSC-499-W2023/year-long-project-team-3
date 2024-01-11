@@ -1,6 +1,6 @@
-import {User} from '@prisma/client'
-import {sendEmail} from '@/utils/emails/sendEmail'
-import {Message} from '@aws-sdk/client-ses'
+import { User } from '@prisma/client'
+import { sendEmail } from '@/utils/emails/sendEmail'
+import { Message } from '@aws-sdk/client-ses'
 
 export async function sendSubmissionInvitation(user: User) {
     let message = getSubmissionInvitationMessage('example.com')
@@ -149,7 +149,7 @@ function getSubmissionInvitationMessage(link: string): Message {
                                 <tr>
                                   <td style="padding-right: 0px;padding-left: 0px;" align="center">
 
-                                    <img align="center" border="0" src="https://assets.unlayer.com/projects/208170/1704994837285-icon.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 32%;max-width: 179.2px;"
+                                    <img align="center" border="0" src="https://harpvideo-public-assets.s3.ca-central-1.amazonaws.com/harpvideo.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 32%;max-width: 179.2px;"
                                       width="179.2" />
 
                                   </td>
@@ -197,7 +197,7 @@ function getSubmissionInvitationMessage(link: string): Message {
                                 <tr>
                                   <td style="padding-right: 0px;padding-left: 0px;" align="center">
 
-                                    <img align="center" border="0" src="https://cdn.templates.unlayer.com/assets/1597218650916-xxxxc.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 26%;max-width: 150.8px;"
+                                    <img align="center" border="0" src="https://harpvideo-public-assets.s3.ca-central-1.amazonaws.com/mail-icon.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 26%;max-width: 150.8px;"
                                       width="150.8" />
 
                                   </td>
