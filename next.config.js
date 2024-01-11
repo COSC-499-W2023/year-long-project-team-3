@@ -1,4 +1,5 @@
 /** @type {import("next").NextConfig} */
+const path = require('path')
 const nextConfig = () => {
     const getEnvironmentVariables = () => {
         const environmentVariables = [
@@ -51,6 +52,14 @@ const nextConfig = () => {
                     pathname: '**',
                 }
             }),
+        },
+        output: 'standalone',
+        experimental: {
+            turbo: {
+                resolveAlias: {
+                    '@': 'src',
+                },
+            },
         },
     }
 }
