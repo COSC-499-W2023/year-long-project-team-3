@@ -4,7 +4,7 @@ import { User } from '@prisma/client'
 
 export async function sendEmailVerificationEmail(user: User) {
     let message = getVerificationMessage('https://example.com')
-    await sendEmail(user.email, message)
+    return sendEmail(user.email, message)
 }
 
 function getVerificationMessage(link: string): Message {
@@ -427,7 +427,7 @@ function getVerificationMessage(link: string): Message {
             Text: {
                 Charset: 'UTF-8',
                 Data: `
-Hi ${ name },
+Hi,
 
 You're almost ready to get started. Please click on the link below to verify
 your email address and start sending videos!

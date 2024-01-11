@@ -4,7 +4,7 @@ import {Message} from '@aws-sdk/client-ses'
 
 export async function sendSubmissionInvitation(user: User) {
     let message = getSubmissionInvitationMessage('example.com')
-    await sendEmail(user.email, message)
+    return sendEmail(user.email, message)
 }
 
 function getSubmissionInvitationMessage(link: string): Message {
