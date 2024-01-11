@@ -20,6 +20,7 @@ export default function VideoList(props: VideoListProps) {
             height={'100%'}
             component={'div'}
             overflow={'scroll'}
+            data-cy='video-list'
         >
             {props.videos.map((video, idx) => (
                 <VideoCard key={`video_${ idx }`} {...video} />

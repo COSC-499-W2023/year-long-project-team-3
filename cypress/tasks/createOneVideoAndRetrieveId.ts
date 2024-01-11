@@ -3,6 +3,7 @@ import prisma from '@/lib/prisma'
 export type TestVideoCreationData = {
     ownerId: string
     title: string
+    submissionBoxId?: string
 }
 
 export default async function createOneVideoAndRetrieveVideoId(
