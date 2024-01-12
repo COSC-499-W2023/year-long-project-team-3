@@ -15,8 +15,6 @@ import { ObjectSchema } from 'yup'
 import * as yup from 'yup'
 import { toast } from 'react-toastify'
 import logger from '@/utils/logger'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import PageLoadProgressBlurBackground from '@/components/PageLoadProgressBlurBackround'
 import BackButton from '@/components/BackButton'
 
@@ -244,12 +242,32 @@ export default function SubmitVideoPage() {
                         </Box>
                     </Box>
                     <Box display='flex' justifyContent='space-between' width='70vw' position='absolute' bottom='4rem'>
-                        <Button variant={'contained'} startIcon={<ArrowBackIcon />} onClick={handleClickBackButton}>
+                        <Button
+                            type='button'
+                            variant='outlined'
+                            sx={{
+                                mt: 2,
+                                px: 5,
+                                fontSize: 15,
+                                borderRadius: 28,
+                                textTransform: 'capitalize',
+                            }}
+                            data-cy='back'
+                            onClick={handleClickBackButton}
+                        >
                             Back
                         </Button>
                         <Button
-                            variant={'contained'}
-                            startIcon={<ArrowForwardIcon />}
+                            type='button'
+                            variant='contained'
+                            sx={{
+                                mt: 2,
+                                px: 5,
+                                fontSize: 15,
+                                borderRadius: 28,
+                                textTransform: 'capitalize',
+                            }}
+                            data-cy='next'
                             onClick={() => formik.handleSubmit()}
                         >
                             Submit

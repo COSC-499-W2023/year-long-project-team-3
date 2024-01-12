@@ -5,8 +5,6 @@ import { SessionContextValue, useSession } from 'next-auth/react'
 import ProgressDots from '@/components/ProgressDots'
 import { Alert, Box, Button } from '@mui/material'
 import ScalingReactPlayer from '@/components/ScalingReactPlayer'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import EditorTools from '@/components/EditorTools'
 import { useRouter, usePathname } from 'next/navigation'
 import VideoProcessing from '@/components/VideoProcessing'
@@ -221,18 +219,34 @@ export default function VideoPreviewPage() {
                                                 bottom='4rem'
                                             >
                                                 <Button
-                                                    variant={'contained'}
-                                                    startIcon={<ArrowBackIcon />}
+                                                    type='button'
+                                                    variant='outlined'
+                                                    sx={{
+                                                        mt: 2,
+                                                        px: 5,
+                                                        fontSize: 15,
+                                                        borderRadius: 28,
+                                                        textTransform: 'capitalize',
+                                                    }}
+                                                    data-cy='back'
                                                     onClick={handleClickBackButton}
                                                 >
                                                     Back
                                                 </Button>
                                                 <Button
-                                                    variant={'contained'}
-                                                    endIcon={<ArrowForwardIcon />}
+                                                    type='button'
+                                                    variant='contained'
+                                                    sx={{
+                                                        mt: 2,
+                                                        px: 5,
+                                                        fontSize: 15,
+                                                        borderRadius: 28,
+                                                        textTransform: 'capitalize',
+                                                    }}
+                                                    data-cy='next'
                                                     onClick={handleClickContinueButton}
                                                 >
-                                                    Continue
+                                                    Next
                                                 </Button>
                                             </Box>
                                         </Box>
