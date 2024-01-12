@@ -36,8 +36,8 @@ export default function VideoCard(props: VideoCardProps) {
                     src={props.thumbnailUrl}
                     layout={'fill'}
                     alt={props.title}
-                    objectPosition={'center'}
-                    objectFit={'cover'}
+                    objectPosition={'50% 25%'}
+                    objectFit={'contain'}
                     style={{ borderRadius: '4px' }}
                 />
             )}
