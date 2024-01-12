@@ -22,7 +22,7 @@ export default function FormNavButton(props: FormNavButtonProps) {
             data-cy='back'
             onClick={props.handleClick}
         >
-            props.title
+            {props.title}
         </Button>
     )
 }
