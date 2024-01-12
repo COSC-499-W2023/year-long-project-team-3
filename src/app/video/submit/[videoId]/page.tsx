@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
 import Header from '@/components/Header'
-import { Box, Select, Typography, Chip, MenuItem, Button } from '@mui/material'
+import { Box, Select, Typography, Chip, MenuItem } from '@mui/material'
 import ProgressDots from '@/components/ProgressDots'
 import { SubmissionBox, Video } from '@prisma/client'
 import Image from 'next/image'
@@ -17,6 +17,7 @@ import { toast } from 'react-toastify'
 import logger from '@/utils/logger'
 import PageLoadProgressBlurBackground from '@/components/PageLoadProgressBlurBackround'
 import BackButton from '@/components/BackButton'
+import FormNavButton from '@/components/FormNavButton'
 
 type FormValues = {
     videoTitle: string
@@ -242,36 +243,16 @@ export default function SubmitVideoPage() {
                         </Box>
                     </Box>
                     <Box display='flex' justifyContent='space-between' width='70vw' position='absolute' bottom='4rem'>
-                        <Button
-                            type='button'
-                            variant='outlined'
-                            sx={{
-                                mt: 2,
-                                px: 5,
-                                fontSize: 15,
-                                borderRadius: 28,
-                                textTransform: 'capitalize',
-                            }}
-                            data-cy='back'
-                            onClick={handleClickBackButton}
-                        >
-                            Back
-                        </Button>
-                        <Button
-                            type='button'
-                            variant='contained'
-                            sx={{
-                                mt: 2,
-                                px: 5,
-                                fontSize: 15,
-                                borderRadius: 28,
-                                textTransform: 'capitalize',
-                            }}
-                            data-cy='next'
-                            onClick={() => formik.handleSubmit()}
-                        >
-                            Submit
-                        </Button>
+                        <FormNavButton
+                            title={'Back'}
+                            variant={'outlined'}
+                            handleClick={handleClickBackButton}
+                        ></FormNavButton>
+                        <FormNavButton
+                            title={'Submit'}
+                            variant={'contained'}
+                            handleClick={() => formik.handleSubmit()}
+                        ></FormNavButton>
                     </Box>
                 </Box>
             </>

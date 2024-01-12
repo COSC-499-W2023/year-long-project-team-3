@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Header from '@/components/Header'
 import { SessionContextValue, useSession } from 'next-auth/react'
 import ProgressDots from '@/components/ProgressDots'
-import { Alert, Box, Button } from '@mui/material'
+import { Alert, Box } from '@mui/material'
 import ScalingReactPlayer from '@/components/ScalingReactPlayer'
 import EditorTools from '@/components/EditorTools'
 import { useRouter, usePathname } from 'next/navigation'
@@ -11,6 +11,7 @@ import VideoProcessing from '@/components/VideoProcessing'
 import PageLoadProgress from '@/components/PageLoadProgress'
 import { toast } from 'react-toastify'
 import BackButton from '@/components/BackButton'
+import FormNavButton from '@/components/FormNavButton'
 
 export default function VideoPreviewPage() {
     const session: SessionContextValue = useSession()
@@ -218,36 +219,16 @@ export default function VideoPreviewPage() {
                                                 width='70vw'
                                                 bottom='4rem'
                                             >
-                                                <Button
-                                                    type='button'
-                                                    variant='outlined'
-                                                    sx={{
-                                                        mt: 2,
-                                                        px: 5,
-                                                        fontSize: 15,
-                                                        borderRadius: 28,
-                                                        textTransform: 'capitalize',
-                                                    }}
-                                                    data-cy='back'
-                                                    onClick={handleClickBackButton}
-                                                >
-                                                    Back
-                                                </Button>
-                                                <Button
-                                                    type='button'
-                                                    variant='contained'
-                                                    sx={{
-                                                        mt: 2,
-                                                        px: 5,
-                                                        fontSize: 15,
-                                                        borderRadius: 28,
-                                                        textTransform: 'capitalize',
-                                                    }}
-                                                    data-cy='next'
-                                                    onClick={handleClickContinueButton}
-                                                >
-                                                    Next
-                                                </Button>
+                                                <FormNavButton
+                                                    title={'Back'}
+                                                    variant={'outlined'}
+                                                    handleClick={handleClickBackButton}
+                                                ></FormNavButton>
+                                                <FormNavButton
+                                                    title={'Next'}
+                                                    variant={'contained'}
+                                                    handleClick={handleClickNextButton}
+                                                ></FormNavButton>
                                             </Box>
                                         </Box>
                                     </Box>
@@ -277,7 +258,7 @@ export default function VideoPreviewPage() {
         setIsVideoVisible(false)
     }
 
-    function handleClickContinueButton() {
+    function handleClickNextButton() {
         router.push(`/video/submit/${ videoId }`)
     }
 
