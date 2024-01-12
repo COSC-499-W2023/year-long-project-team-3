@@ -27,17 +27,16 @@ export default function VideoCard(props: VideoCardProps) {
                 },
                 borderRadius: '8px',
                 backgroundColor: 'black',
+                overflow: 'hidden',
             }}
             onClick={handleOnClick}
         >
             {!!props.thumbnailUrl && (
                 <Image
                     src={props.thumbnailUrl}
-                    width={230}
-                    height={200}
-                    quality={2}
+                    layout={'fill'}
                     alt={props.title}
-                    objectPosition={'100% 0'}
+                    objectPosition={'center'}
                     objectFit={'cover'}
                     style={{ borderRadius: '4px' }}
                 />
