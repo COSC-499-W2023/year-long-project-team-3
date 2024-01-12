@@ -1,5 +1,6 @@
 import { TIMEOUT } from '../../../utils/constants'
 import runWithRetry from '../../../utils/runUntilExist'
+import { v4 as uuidv4 } from 'uuid'
 
 describe('Dashboard Requested Submission Boxes Tests', () => {
     beforeEach(() => {
@@ -37,9 +38,10 @@ describe('Dashboard Requested Submission Boxes Tests', () => {
     it('should display outgoing submission boxes for a user that has outgoing submission boxes', () => {
         const email = 'submission@out.box'
         const password = 'submissionOut1'
+        const title = 'Outgoing Submission Box' + uuidv4()
 
         // Load database
-        cy.task('loadOutSubmissionBoxes')
+        cy.task('loadOutSubmissionBoxes', { email, password, title })
         // Login
         cy.visit('/login')
         cy.get('[data-cy=email]').type(email)
@@ -54,6 +56,6 @@ describe('Dashboard Requested Submission Boxes Tests', () => {
         })
         cy.get('[data-cy="Outgoing Submission Box"]', { timeout: TIMEOUT.EXTRA_EXTRA_LONG })
             .should('be.visible')
-            .and('contain', 'Outgoing Submission Box')
+            .and('contain', title)
     })
 })

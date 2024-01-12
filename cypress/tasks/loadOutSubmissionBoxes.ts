@@ -1,8 +1,14 @@
 import prisma from '@/lib/prisma'
 import { hash } from 'bcrypt'
-export default async function loadInSubmissionBoxes() {
-    const email = 'submission@out.box'
-    const password = 'submissionOut1'
+
+type LoadInSubmissionBoxesProps = {
+    email: string
+    password: string
+    title: string
+}
+
+export default async function loadInSubmissionBoxes(props: LoadInSubmissionBoxesProps) {
+    const { email, password, title } = props
     const hashedPassword = await hash(password, 10)
 
     await prisma.user.create({
@@ -33,7 +39,7 @@ export default async function loadInSubmissionBoxes() {
 
     const submission = await prisma.submissionBox.create({
         data: {
-            title: 'Outgoing Submission Box',
+            title: title,
             description: null,
             closesAt: new Date('2050-12-01T03:24:00'),
             videoStoreToDate: null,
