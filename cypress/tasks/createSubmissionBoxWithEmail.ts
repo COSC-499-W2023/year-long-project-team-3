@@ -3,7 +3,7 @@ import prisma from '@/lib/prisma'
 type CreateSubmissionBoxWithEmail = {
     submissionBoxTitle?: string
     email?: string
-    userId: string
+    userId?: string
 }
 
 export default async function createSubmissionBoxWithEmail(props: CreateSubmissionBoxWithEmail) {
@@ -17,17 +17,19 @@ export default async function createSubmissionBoxWithEmail(props: CreateSubmissi
         data: {
             submissionBoxId: newSubBox.id,
             email: props.email ?? '',
-            userId: props.userId ?? '',
+            userId: props.userId,
         },
     })
 
-    await prisma.submissionBoxManager.create({
-        data: {
-            userId: props.userId,
-            submissionBoxId: newSubBox.id,
-            viewPermission: 'owner',
-        },
-    })
+    if (!!props.userId) {
+        await prisma.submissionBoxManager.create({
+            data: {
+                userId: props.userId,
+                submissionBoxId: newSubBox.id,
+                viewPermission: 'owner',
+            },
+        })
+    }
 
     return requestedSubmission.id
 }

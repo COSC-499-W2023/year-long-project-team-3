@@ -186,7 +186,7 @@ describe('Sign up tests', () => {
         const email = 'red@is.sus'
         const password = 'Password1'
 
-        cy.task('createSubmissionBoxWithEmail', email)
+        cy.task('createSubmissionBoxWithEmail', { email })
 
         cy.visit('/signup')
 
