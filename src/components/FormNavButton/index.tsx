@@ -19,7 +19,7 @@ export default function FormNavButton(props: FormNavButtonProps) {
                 borderRadius: 28,
                 textTransform: 'capitalize',
             }}
-            data-cy='back'
+            data-cy={props.title}
             onClick={props.handleClick}
         >
             {props.title}

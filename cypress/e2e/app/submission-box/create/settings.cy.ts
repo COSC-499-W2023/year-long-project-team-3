@@ -38,7 +38,7 @@ describe('Submission box settings tests', () => {
             // Check that the errors do not exist
             cy.get('p.Mui-error').should('have.length', 0)
 
-            cy.get('[data-cy="next"]').click()
+            cy.get('[data-cy="Next"]').click()
 
             cy.url().should('include', '/submission-box')
 
@@ -57,7 +57,7 @@ describe('Submission box settings tests', () => {
             cy.get('[data-cy="submission-box-title"]').type(title)
 
             // Double click is a known issue, cypress is not acting correctly on browser preview deployment
-            cy.get('[data-cy="next"]').click().click()
+            cy.get('[data-cy="Next"]').click().click()
 
             // We shouldn't be on the seeing the settings step anymore
             cy.get('[data-cy="title"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Request Submissions')
