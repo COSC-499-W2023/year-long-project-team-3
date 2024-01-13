@@ -15,7 +15,18 @@ export default function LoginPage() {
     useEffect(() => {
         if (status === 'authenticated') {
             setIsLoginPageVisible(false)
-            router.push('/dashboard')
+
+            // Check if user email verified
+            fetch('/api/verify-email/is-verified').then(async (res) => {
+                if (res.status === 200) {
+                    const isVerified = (await res.json()).isVerified
+                    if (isVerified) {
+                        router.push('/dashboard')
+                    } else {
+                        router.push('/verify-email')
+                    }
+                }
+            })
         } else if (status === 'unauthenticated') {
             setIsLoginPageVisible(true)
         } else {

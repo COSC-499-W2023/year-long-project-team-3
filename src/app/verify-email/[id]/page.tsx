@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
 import { Box, Button, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
+import PageLoadProgress from '@/components/PageLoadProgress'
 
 export default function VerifyEmail() {
     const session = useSession()
@@ -61,7 +62,7 @@ export default function VerifyEmail() {
                 }}
             >
                 {pageStatus === 0 ? (
-                    <Typography>spinning wheel</Typography>
+                    <PageLoadProgress />
                 ) : (
                     <>
                         <Typography

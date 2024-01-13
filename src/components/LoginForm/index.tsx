@@ -166,8 +166,22 @@ export default function LoginForm() {
             } else {
                 toast.success(`User ${ userData.email } successfully logged in`)
                 logger.info(`User ${ userData.email } successfully logged in`)
-                router.push('/dashboard')
-                router.refresh()
+
+                // Check if the user's email is verified
+                fetch('/api/verify-email/is-verified').then(async (res) => {
+                    if (res.status === 200) {
+                        const isVerified = (await res.json()).isVerified ?? true
+                        if (isVerified) {
+                            router.push('/dashboard')
+                        } else {
+                            router.push('/verify-email')
+                        }
+                        router.refresh()
+                    } else {
+                        router.push('/dashboard')
+                        router.refresh()
+                    }
+                })
             }
         } catch (err) {
             const errMessage = JSON.stringify(err, Object.getOwnPropertyNames(err))
