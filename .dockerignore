@@ -22,8 +22,3 @@ docs
 *.md
 
 npm-debug.log
-
-# Environment variables
-.env
-.env.docker.local
-production.env

@@ -27,10 +27,11 @@ export const authOptions: NextAuthOptions = {
     session: {
         strategy: 'jwt',
     },
+    secret: process.env.nextAuthSecret,
     providers: [
         GoogleProvider({
-            clientId: process.env.GOOGLE_CLIENT_ID as string,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+            clientId: process.env.googleClientId as string,
+            clientSecret: process.env.googleClientSecret as string,
             profile(profile) {
                 return {
                     id: profile.sub,
@@ -80,6 +81,8 @@ export const authOptions: NextAuthOptions = {
         },
     },
 }
+
+console.log('Goodbye')
 
 function passwordMatch(enteredPassword: string, password: string): Promise<boolean> {
     return compare(enteredPassword, password)
