@@ -4,7 +4,11 @@ import { InputAdornment, TextField } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 import React from 'react'
 
-export default function DashboardSearchBar() {
+export type DashboardSearchBarProps = {
+    setSearchTerm: React.Dispatch<React.SetStateAction<string>>
+}
+
+export default function DashboardSearchBar(props: DashboardSearchBarProps) {
     return (
         <>
             <div className='dashboard-search-bar'>
@@ -27,7 +31,7 @@ export default function DashboardSearchBar() {
                         ),
                     }}
                     onChange={(event) => {
-                        console.log(event.target.value)
+                        props.setSearchTerm(event.target.value)
                     }}
                 />
             </div>

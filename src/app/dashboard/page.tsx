@@ -32,6 +32,9 @@ export default function DashboardPage() {
     // Page load controls
     const [isFetching, setIsFetching] = useState(false)
 
+    // Search states
+    const [searchTerm, setSearchTerm] = useState('')
+
     // Fetch all videos for the "recent" tab
     useEffect(() => {
         setIsFetching(true)
@@ -61,7 +64,10 @@ export default function DashboardPage() {
                     const otherVideoUpdatedAt = new Date(otherVideo?.updatedAt).getTime() ?? 0
                     return otherVideoUpdatedAt - videoUpdatedAt
                 }) || []
-            setDisplayVideos(sortedVideos)
+            const filteredVideos = sortedVideos.filter((video) => {
+                return video.title.toLowerCase().includes(searchTerm.trim().toLowerCase()) || video.description?.toLowerCase().includes(searchTerm.trim().toLowerCase())
+            })
+            setDisplayVideos(filteredVideos)
         } else if (sidebarSelectedOption === 'menu_submitted_videos') {
             setIsVideoTabSelected(true)
             setPageTitle('Submitted Videos')
@@ -70,7 +76,10 @@ export default function DashboardPage() {
             getUserIdByEmail(session.data.user.email)
                 .then((userId) => {
                     const ownedVideos = allVideos.filter((video) => video.ownerId === userId)
-                    setDisplayVideos(ownedVideos)
+                    const filteredVideos = ownedVideos.filter((video) => {
+                        return video.title.toLowerCase().includes(searchTerm.trim().toLowerCase()) || video.description?.toLowerCase().includes(searchTerm.trim().toLowerCase())
+                    })
+                    setDisplayVideos(filteredVideos)
                 })
                 .catch((error) => toast.error(error))
                 .finally(() => setIsFetching(false))
@@ -92,7 +101,12 @@ export default function DashboardPage() {
 
             setIsFetching(true)
             fetchMyBoxes()
-                .then((submissionBoxes) => setSubmissionBoxes(submissionBoxes))
+                .then((submissionBoxes) => {
+                    const filteredSubmissionBoxes = submissionBoxes.filter((submissionBox) => {
+                        return submissionBox.title.toLowerCase().includes(searchTerm.trim().toLowerCase()) || submissionBox.description?.toLowerCase().includes(searchTerm.trim().toLowerCase())
+                    })
+                    setSubmissionBoxes(filteredSubmissionBoxes)
+                })
                 .catch((error) => toast.error(error))
                 .finally(() => setIsFetching(false))
         } else if (sidebarSelectedOption === 'submission_boxes_my_requests') {
@@ -101,11 +115,16 @@ export default function DashboardPage() {
 
             setIsFetching(true)
             fetchMyRequests()
-                .then((submissionBoxes) => setSubmissionBoxes(submissionBoxes))
+                .then((submissionBoxes) => {
+                    const filteredSubmissionBoxes = submissionBoxes.filter((submissionBox) => {
+                        return submissionBox.title.toLowerCase().includes(searchTerm.trim().toLowerCase()) || submissionBox.description?.toLowerCase().includes(searchTerm.trim().toLowerCase())
+                    })
+                    setSubmissionBoxes(filteredSubmissionBoxes)
+                })
                 .catch((error) => toast.error(error))
                 .finally(() => setIsFetching(false))
         }
-    }, [sidebarSelectedOption, allVideos, session])
+    }, [sidebarSelectedOption, allVideos, session, searchTerm])
 
     return (
         <>
@@ -125,7 +144,7 @@ export default function DashboardPage() {
                         >
                             {pageTitle}
                         </Typography>
-                        <DashboardSearchBar />
+                        <DashboardSearchBar setSearchTerm={setSearchTerm} />
                     </Box>
                     <Box
                         sx={{
