@@ -12,6 +12,7 @@ import DashboardSidebar from '@/components/DashboardSidebar'
 import { SidebarOption } from '@/types/dashboard/sidebar'
 import VideoList from '@/components/VideoList'
 import SubmissionBoxList from '@/components/SubmissionBoxList'
+import DashboardSearchBar from '@/components/DashboardSearchBar'
 
 export default function DashboardPage() {
     const session = useSession()
@@ -115,14 +116,17 @@ export default function DashboardPage() {
                     setSidebarSelectedOption={setSidebarSelectedOption}
                 />
                 <Box width='100%' display='flex' flexDirection='column'>
-                    <Typography
-                        data-cy='title'
-                        variant='h5'
-                        color={'textSecondary'}
-                        sx={{ m: 2, fontWeight: 'bold', py: '1rem', marginTop: '1rem' }}
-                    >
-                        {pageTitle}
-                    </Typography>
+                    <Box display='flex' justifyContent='space-between' alignItems='center' paddingRight='3rem'>
+                        <Typography
+                            data-cy='title'
+                            variant='h5'
+                            color={'textSecondary'}
+                            sx={{ m: 2, fontWeight: 'bold', py: '1rem', marginTop: '1rem' }}
+                        >
+                            {pageTitle}
+                        </Typography>
+                        <DashboardSearchBar />
+                    </Box>
                     <Box
                         sx={{
                             borderTopLeftRadius: 25,
