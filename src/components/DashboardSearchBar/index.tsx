@@ -33,6 +33,7 @@ export default function DashboardSearchBar(props: DashboardSearchBarProps) {
                     onChange={(event) => {
                         props.setSearchTerm(event.target.value)
                     }}
+                    data-cy='dashboard-search-bar'
                 />
             </div>
         </>
