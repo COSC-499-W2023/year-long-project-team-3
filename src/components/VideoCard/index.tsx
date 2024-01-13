@@ -1,11 +1,11 @@
-import { Box } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 export type VideoCardProps = {
     videoId: string
     title: string
-    thumbnailUrl: string
+    thumbnailUrl: string | null
 }
 
 export default function VideoCard(props: VideoCardProps) {
@@ -15,7 +15,6 @@ export default function VideoCard(props: VideoCardProps) {
         <Box
             width={230}
             height={200}
-            borderRadius={4}
             display={'flex'}
             alignItems={'center'}
             position={'relative'}
@@ -24,20 +23,24 @@ export default function VideoCard(props: VideoCardProps) {
                 '&:hover': {
                     cursor: 'pointer',
                     boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.5)',
+                    borderRadius: '8px',
                 },
+                borderRadius: '8px',
+                backgroundColor: 'black',
+                overflow: 'hidden',
             }}
             onClick={handleOnClick}
         >
-            <Image
-                src={props.thumbnailUrl}
-                width={230}
-                height={200}
-                quality={2}
-                alt={props.title}
-                objectPosition={'100% 0'}
-                objectFit={'cover'}
-                style={{ borderRadius: '4px' }}
-            />
+            {!!props.thumbnailUrl && (
+                <Image
+                    src={props.thumbnailUrl}
+                    layout={'fill'}
+                    alt={props.title}
+                    objectPosition={'center'}
+                    objectFit={'cover'}
+                    style={{ borderRadius: '4px' }}
+                />
+            )}
 
             <Box
                 width={'100%'}
@@ -51,8 +54,11 @@ export default function VideoCard(props: VideoCardProps) {
                     component='span'
                     sx={{ display: 'block', height: '1px', width: '100%', backgroundColor: '#E7E7ED' }}
                 />
-                <Box padding={'8px'} fontSize={'14px'} lineHeight={'150%'} fontWeight={500}>
-                    {props.title}
+
+                <Box padding={'8px'}>
+                    <Typography noWrap fontSize='14px' lineHeight='150%' fontWeight={500}>
+                        {props.title}
+                    </Typography>
                 </Box>
             </Box>
         </Box>

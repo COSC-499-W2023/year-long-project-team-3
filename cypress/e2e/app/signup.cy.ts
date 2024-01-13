@@ -134,7 +134,7 @@ describe('Sign up tests', () => {
 
         cy.url().should('include', '/signup')
 
-        cy.get('.Toastify__toast-container').should('be.visible').and('contain', 'The input email is not valid')
+        cy.contains('.Toastify__toast-container', 'The input email is not valid').should('be.visible')
     })
 
     it('Should navigate to login when clicking on Already have an account?', () => {
@@ -186,7 +186,7 @@ describe('Sign up tests', () => {
         const email = 'red@is.sus'
         const password = 'Password1'
 
-        cy.task('createSubmissionBoxWithEmail', email)
+        cy.task('createSubmissionBoxWithEmail', { email })
 
         cy.visit('/signup')
 

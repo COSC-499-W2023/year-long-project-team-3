@@ -10,8 +10,8 @@ import { SidebarOption } from '@/types/dashboard/sidebar'
 
 export type DashboardSidebarSubmissionBoxesProps = {
     onCreateNewClick: () => void
-    onSubmissionInboxClick: () => void
-    onSubmissionOutboxClick: () => void
+    onSubmissionInboxClick?: () => void
+    onSubmissionOutboxClick?: () => void
     sidebarSelectedOption: SidebarOption
     setSidebarSelectedOption: React.Dispatch<React.SetStateAction<SidebarOption>>
 }
@@ -45,7 +45,7 @@ export default function DashboardSidebarSubmissionBoxes(props: DashboardSidebarS
                 title={'My Requests'}
                 icon={<SendIcon />}
                 onClick={handleSubmissionOutboxClick}
-                isSelected={sidebarSelectedOption === 'submission_boxes_my_requests '}
+                isSelected={sidebarSelectedOption === 'submission_boxes_my_requests'}
                 isDisabled={false}
                 isAddButton={false}
                 data-cy='My Requests'
@@ -60,11 +60,15 @@ export default function DashboardSidebarSubmissionBoxes(props: DashboardSidebarS
 
     function handleSubmissionInboxClick() {
         props.setSidebarSelectedOption('submission_boxes_my_boxes')
-        props.onSubmissionInboxClick()
+        if (!!props.onSubmissionInboxClick) {
+            props.onSubmissionInboxClick()
+        }
     }
 
     function handleSubmissionOutboxClick() {
-        props.setSidebarSelectedOption('submission_boxes_my_requests ')
-        props.onSubmissionOutboxClick()
+        props.setSidebarSelectedOption('submission_boxes_my_requests')
+        if (!!props.onSubmissionOutboxClick) {
+            props.onSubmissionOutboxClick()
+        }
     }
 }

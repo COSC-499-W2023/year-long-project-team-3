@@ -6,4 +6,4 @@ export type SidebarOption =
     | 'menu_trash'
     | 'submission_boxes_create_new'
     | 'submission_boxes_my_boxes'
-    | 'submission_boxes_my_requests '
+    | 'submission_boxes_my_requests'

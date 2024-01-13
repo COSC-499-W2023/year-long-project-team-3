@@ -331,7 +331,7 @@ export default function SubmitVideoPage() {
     }
 
     async function fetchSubmissionInbox(): Promise<SubmissionBox[]> {
-        const res = await fetch('/api/submission-box/inboxes')
+        const res = await fetch('/api/submission-box/requestedsubmissions')
         if (res.status !== 200) {
             throw new Error('Failed to fetch submission boxes')
         }

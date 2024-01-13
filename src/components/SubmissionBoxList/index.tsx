@@ -1,48 +1,74 @@
-import React, { useState } from 'react'
+'use client'
+
+import React from 'react'
 import ListItem from '@mui/material/ListItem'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import List from '@mui/material/List'
+import { SubmissionBox } from '@prisma/client'
+import { useRouter } from 'next/navigation'
+import { darken } from '@mui/system'
+import { theme } from '@/components/ThemeRegistry/theme'
 
 export type SubmissionBoxListProps = {
-    submissionBoxes: {
-        id: number
-        title: string
-        description: string | null
-        createdAt: Date
-        closesAt: Date | null
-        videoStoreToDate: Date | null
-        maxVideoLength: null
-        isPublic: boolean
-    }[]
+    submissionBoxes: SubmissionBox[]
 }
 
 export default function SubmissionBoxList(props: SubmissionBoxListProps) {
-    const [submissionBoxes, setSubmissionBoxes] = useState(props.submissionBoxes)
+    const router = useRouter()
 
-    return (
+    return !!props.submissionBoxes && props.submissionBoxes.length > 0 ? (
         <List sx={{ maxHeight: 600, overflow: 'auto', position: 'relative', pl: 1, pr: 1 }}>
-            {submissionBoxes.map((submissionBox, id: React.Key) => (
-                <ListItem key={id}>
+            {props.submissionBoxes.map((submissionBox, idx: number) => (
+                <ListItem key={`submission_box_${ idx }`} onClick={() => handleClickListItem(submissionBox.id)}>
                     <Box
-                        sx={{ p: 1, backgroundColor: 'secondary.light', borderRadius: 1, width: '100%' }}
+                        sx={{
+                            p: 1,
+                            backgroundColor: 'secondary.light',
+                            borderRadius: 1,
+                            width: '100%',
+                            padding: '1rem 2rem',
+                            cursor: 'pointer',
+                            '&:hover': {
+                                backgroundColor: darken(theme.palette.secondary.light, 0.2),
+                            },
+                        }}
                         borderColor={'textSecondary'}
-                        display='grid'
-                        gridTemplateColumns='3fr 1fr'
+                        display='flex'
                         alignItems='center'
+                        justifyContent='space-between'
                     >
-                        <Typography data-cy={submissionBox.title} sx={{ p: 1, color: 'textSecondary', fontWeight: 'bold' }}>
+                        <Typography
+                            data-cy={submissionBox.title}
+                            sx={{ p: 1, color: 'textSecondary', fontWeight: 'bold' }}
+                        >
                             {submissionBox.title}
                         </Typography>
                         <Typography sx={{ p: 1, color: 'textSecondary' }}>
                             Close Date:{' '}
-                            {submissionBox.closesAt !== null
+                            {!!submissionBox.closesAt
                                 ? new Date(submissionBox.closesAt).toDateString().slice(4)
-                                : 'never'}
+                                : 'N/A'}
                         </Typography>
                     </Box>
                 </ListItem>
             ))}
         </List>
+    ) : (
+        <Box display='flex' justifyContent='center' alignItems='center'>
+            <Typography
+                data-cy='no-submission-text'
+                variant='h5'
+                align='center'
+                color={'textSecondary'}
+                sx={{ mt: 20 }}
+            >
+                You Do Not Have Any Submission Boxes
+            </Typography>
+        </Box>
     )
+
+    function handleClickListItem(id: string) {
+        router.push(`/submission-box/${ id }`)
+    }
 }

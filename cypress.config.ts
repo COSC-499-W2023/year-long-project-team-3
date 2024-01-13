@@ -11,6 +11,8 @@ import getRequestedSubmissions from './cypress/tasks/getRequestedSubmissions'
 import createSubmissionBoxWithEmail from './cypress/tasks/createSubmissionBoxWithEmail'
 import loadInSubmissionBoxes from './cypress/tasks/loadInSubmissionBoxes'
 import loadOutSubmissionBoxes from './cypress/tasks/loadOutSubmissionBoxes'
+import submitVideoToSubmissionBox from './cypress/tasks/submitVideoToSubmissionBox'
+import createRequestSubmissionForUser from './cypress/tasks/createRequestSubmissionForUser'
 
 require('dotenv').config()
 
@@ -33,6 +35,8 @@ export default defineConfig({
                 getLatestVideo,
                 loadInSubmissionBoxes,
                 loadOutSubmissionBoxes,
+                submitVideoToSubmissionBox,
+                createRequestSubmissionForUser,
             })
         },
         experimentalModifyObstructiveThirdPartyCode: true,
@@ -49,8 +53,11 @@ export default defineConfig({
         },
 
         env: {
-            CYPRESS_RUN_LOCAL_ONLY: process.env.CYPRESS_RUN_LOCAL_ONLY,
+            CYPRESS_RUN_LOCAL_ONLY: process.env.CYPRESS_RUN_LOCAL_ONLY?.toLowerCase() === 'true',
         },
+
+        viewportWidth: 1920,
+        viewportHeight: 1080,
     },
 
     component: {

@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import logger from '@/utils/logger'
 import { getServerSession } from 'next-auth'
 import prisma from '@/lib/prisma'
 import { Video } from '@prisma/client'
 
-export async function GET(req: NextRequest): Promise<NextResponse> {
+export async function GET(): Promise<NextResponse> {
     try {
         const session = await getServerSession()
         if (!session || !session.user?.email) {
@@ -25,6 +25,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
         const ownedVideos: Video[] = await prisma.video.findMany({
             where: {
                 ownerId: userId,
+                isSubmitted: true,
             },
         })
 
@@ -46,7 +47,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
                     select: {
                         requestedSubmissions: {
                             select: {
-                                submissionBoxId: true,
+                                id: true,
                             },
                         },
                     },
@@ -56,7 +57,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
         const allRequestedSubmissionIds: string[] = allRequestedSubmissions
             .flat()
-            .map(({ requestedSubmissions }) => requestedSubmissions.map(({ submissionBoxId }) => submissionBoxId))
+            .map(({ requestedSubmissions }) => requestedSubmissions.map(({ id }) => id))
             .flat()
 
         const allSubmittedVideoToRequestedSubmissions = await Promise.all(
@@ -72,7 +73,9 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             )
         )
 
-        const allSubmittedVideoIds: string[] = allSubmittedVideoToRequestedSubmissions.flat().map(({ videoId }) => videoId)
+        const allSubmittedVideoIds: string[] = allSubmittedVideoToRequestedSubmissions
+            .flat()
+            .map(({ videoId }) => videoId)
 
         const submittedVideos: Video[] = await Promise.all(
             allSubmittedVideoIds.map((videoId) => prisma.video.findUniqueOrThrow({ where: { id: videoId } }))
