@@ -2,6 +2,12 @@ import { v4 as uuidv4 } from 'uuid'
 import { TIMEOUT } from '../../../utils/constants'
 
 describe('Dashboard Search Bar', () => {
+    if (!Cypress.env('CYPRESS_RUN_LOCAL_ONLY')) {
+        // TODO: Remove this when we have a way to get the video ID (aka using Cognito)
+        it.skip('Skipped in production', () => {})
+        return
+    }
+
     let email: string
 
     beforeEach(() => {
