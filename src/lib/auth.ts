@@ -20,7 +20,6 @@ export const authOptions: NextAuthOptions = {
             child.error(msg)
         },
     },
-    secret: process.env.nextAuthSecret,
     pages: {
         signIn: '/login',
     },
@@ -30,8 +29,8 @@ export const authOptions: NextAuthOptions = {
     },
     providers: [
         GoogleProvider({
-            clientId: process.env.googleClientId as string,
-            clientSecret: process.env.googleClientSecret as string,
+            clientId: process.env.GOOGLE_CLIENT_ID as string,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
             profile(profile) {
                 return {
                     id: profile.sub,

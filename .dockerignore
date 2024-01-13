@@ -3,10 +3,10 @@
 .husky
 .next
 node_modules
-public
 
 # Exclude tests
 cypress
+cypress.config.ts
 
 # Exclude configuration files
 .dockerignore
@@ -16,8 +16,6 @@ cypress
 .prettier*
 *docker-compose*
 *Dockerfile*
-*.config.js
-tsconfig.json
 
 # Exlude documentation
 docs
@@ -27,4 +25,5 @@ npm-debug.log
 
 # Environment variables
 .env
-.env*.local
+.env.docker.local
+production.env

@@ -49,7 +49,7 @@ export default function GoogleSignInButton() {
 function signInWithGoogle(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault()
     signIn('google', {
-        callbackUrl: `${ process.env.appBaseUrl }/dashboard`,
+        callbackUrl: `${ process.env.NEXT_PUBLIC_BASE_URL }/dashboard`,
     }).catch((err) => {
         logger.error('An unexpected error occurred while log in with Google: ' + err.error)
     })
