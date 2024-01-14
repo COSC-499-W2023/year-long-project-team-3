@@ -169,6 +169,7 @@ export default function DashboardPage() {
                                                 thumbnailUrl: video.thumbnail,
                                             }
                                         })}
+                                        isSearching={isSearching()}
                                     />
                                 ) : (
                                     <SubmissionBoxList submissionBoxes={submissionBoxes} />
@@ -180,6 +181,10 @@ export default function DashboardPage() {
             </Box>
         </>
     )
+
+    function isSearching(): boolean {
+        return !searchTerm || searchTerm !== ''
+    }
 
     async function fetchAllVideos(): Promise<Video[]> {
         const response = await fetch('/api/videos')
