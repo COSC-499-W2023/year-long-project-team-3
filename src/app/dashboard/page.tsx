@@ -183,7 +183,7 @@ export default function DashboardPage() {
     )
 
     function isSearching(): boolean {
-        return !searchTerm || searchTerm !== ''
+        return allVideos?.length > 0 && searchTerm !== ''
     }
 
     async function fetchAllVideos(): Promise<Video[]> {

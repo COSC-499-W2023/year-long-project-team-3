@@ -1,5 +1,6 @@
 import VideoCard, { type VideoCardProps } from '@/components/VideoCard'
 import { Box, Typography } from '@mui/material'
+import { useEffect, useState } from 'react'
 
 export type VideoListProps = {
     videos: VideoCardProps[]
@@ -7,6 +8,16 @@ export type VideoListProps = {
 }
 
 export default function VideoList(props: VideoListProps) {
+    const [displayText, setDisplayText] = useState<string>('You Do Not Have Any Videos')
+
+    useEffect(() => {
+        if (props.isSearching) {
+            setDisplayText('There Are No Videos That Match This Search')
+        } else {
+            setDisplayText('You Do Not Have Any Videos')
+        }
+    }, [props.isSearching])
+
     return !!props.videos && props.videos.length > 0 ? (
         <Box
             display={'grid'}
@@ -36,9 +47,7 @@ export default function VideoList(props: VideoListProps) {
                 color={'textSecondary'}
                 sx={{ mt: 20 }}
             >
-                {
-                    props.isSearching ? 'You Do Not Have Any Videos' : 'There Are No Videos That Match This Search'
-                }
+                { displayText }
             </Typography>
         </Box>
     )
