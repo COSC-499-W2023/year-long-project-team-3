@@ -1,11 +1,11 @@
 'use client'
 
-import HeaderSignOutButtons from '@/components/HeaderSignOutButtons'
 import HeaderSignInButtons from '@/components/HeaderSignInButtons'
 import { AppBar, Box, Toolbar, Typography } from '@mui/material'
 import HeaderLogo from '../HeaderLogo'
-import {type SessionContextValue, useSession} from 'next-auth/react'
+import { type SessionContextValue, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import UserAvatar from '@/components/UserAvatar'
 
 export type HeaderProps = {} & SessionContextValue
 
@@ -32,7 +32,7 @@ export default function Header(props: HeaderProps) {
                     </Typography>
                 </Box>
                 <Box sx={{ flexGrow: 1 }} />
-                {status === 'authenticated' ? <HeaderSignOutButtons /> : <HeaderSignInButtons />}
+                {status === 'authenticated' ? <UserAvatar /> : <HeaderSignInButtons />}
             </Toolbar>
         </AppBar>
     )
