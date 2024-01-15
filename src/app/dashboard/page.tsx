@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react'
 import Header from '@/components/Header'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { SubmissionBox, Video } from '@prisma/client'
 import { toast } from 'react-toastify'
 import PageLoadProgress from '@/components/PageLoadProgress'
@@ -19,10 +19,12 @@ export default function DashboardPage() {
 
     // Videos
     const [allVideos, setAllVideos] = useState<Video[]>([])
+    const [tempVideos, setTempVideos] = useState<Video[]>([])
     const [displayVideos, setDisplayVideos] = useState<Video[]>([])
 
     // Submission Boxes
     const [submissionBoxes, setSubmissionBoxes] = useState<SubmissionBox[]>([])
+    const [tempSubmissionBoxes, setTempSubmissionBoxes] = useState<SubmissionBox[]>([])
 
     // Page component controls
     const [sidebarSelectedOption, setSidebarSelectedOption] = useState<SidebarOption>('menu_recent')
@@ -34,6 +36,7 @@ export default function DashboardPage() {
 
     // Search states
     const [searchTerm, setSearchTerm] = useState('')
+    const [isSearching, setIsSearching] = useState(false)
 
     // Fetch all videos for the "recent" tab
     useEffect(() => {
@@ -43,6 +46,36 @@ export default function DashboardPage() {
             .catch((error) => toast.error(error))
             .finally(() => setIsFetching(false))
     }, [])
+
+    useEffect(() => {
+        if (!searchTerm) {
+            setIsSearching(false)
+        } else if (isVideoTabSelected && tempVideos.length === 0) {
+            setIsSearching(false)
+        } else if (!isVideoTabSelected && tempSubmissionBoxes.length === 0) {
+            setIsSearching(false)
+        } else {
+            setIsSearching(searchTerm.length > 0)
+        }
+    }, [displayVideos.length, isVideoTabSelected, searchTerm, submissionBoxes.length])
+
+    useEffect(() => {
+        if (isVideoTabSelected) {
+            const filteredVideos = tempVideos.filter(
+                (video) =>
+                    video.title.toLowerCase().includes(searchTerm.trim().toLowerCase()) ||
+                    video.description?.toLowerCase().includes(searchTerm.trim().toLowerCase())
+            )
+            setDisplayVideos(filteredVideos)
+        } else {
+            const filteredSubmissionBoxes = tempSubmissionBoxes.filter(
+                (submissionBox) =>
+                    submissionBox.title.toLowerCase().includes(searchTerm.trim().toLowerCase()) ||
+                    submissionBox.description?.toLowerCase().includes(searchTerm.trim().toLowerCase())
+            )
+            setSubmissionBoxes(filteredSubmissionBoxes)
+        }
+    }, [isVideoTabSelected, searchTerm, tempSubmissionBoxes, tempVideos])
 
     // If click on video-related tab, filter videos based on sidebar selection
     // If click on submission box-related tab, fetch submission boxes
@@ -64,10 +97,7 @@ export default function DashboardPage() {
                     const otherVideoUpdatedAt = new Date(otherVideo?.updatedAt).getTime() ?? 0
                     return otherVideoUpdatedAt - videoUpdatedAt
                 }) || []
-            const filteredVideos = sortedVideos.filter((video) => {
-                return video.title.toLowerCase().includes(searchTerm.trim().toLowerCase()) || video.description?.toLowerCase().includes(searchTerm.trim().toLowerCase())
-            })
-            setDisplayVideos(filteredVideos)
+            setTempVideos(sortedVideos)
         } else if (sidebarSelectedOption === 'menu_submitted_videos') {
             setIsVideoTabSelected(true)
             setPageTitle('Submitted Videos')
@@ -76,10 +106,7 @@ export default function DashboardPage() {
             getUserIdByEmail(session.data.user.email)
                 .then((userId) => {
                     const ownedVideos = allVideos.filter((video) => video.ownerId === userId)
-                    const filteredVideos = ownedVideos.filter((video) => {
-                        return video.title.toLowerCase().includes(searchTerm.trim().toLowerCase()) || video.description?.toLowerCase().includes(searchTerm.trim().toLowerCase())
-                    })
-                    setDisplayVideos(filteredVideos)
+                    setTempVideos(ownedVideos)
                 })
                 .catch((error) => toast.error(error))
                 .finally(() => setIsFetching(false))
@@ -88,13 +115,13 @@ export default function DashboardPage() {
             setPageTitle('Starred')
 
             // TODO: Added isStarred field to Video model
-            setDisplayVideos([])
+            setTempVideos([])
         } else if (sidebarSelectedOption === 'menu_trash') {
             setIsVideoTabSelected(true)
             setPageTitle('Trash')
 
             // TODO: Added isDeleted field to Video model
-            setDisplayVideos([])
+            setTempVideos([])
         } else if (sidebarSelectedOption === 'submission_boxes_my_boxes') {
             setIsVideoTabSelected(false)
             setPageTitle('Submission Boxes')
@@ -102,10 +129,7 @@ export default function DashboardPage() {
             setIsFetching(true)
             fetchMyBoxes()
                 .then((submissionBoxes) => {
-                    const filteredSubmissionBoxes = submissionBoxes.filter((submissionBox) => {
-                        return submissionBox.title.toLowerCase().includes(searchTerm.trim().toLowerCase()) || submissionBox.description?.toLowerCase().includes(searchTerm.trim().toLowerCase())
-                    })
-                    setSubmissionBoxes(filteredSubmissionBoxes)
+                    setTempSubmissionBoxes(submissionBoxes)
                 })
                 .catch((error) => toast.error(error))
                 .finally(() => setIsFetching(false))
@@ -116,15 +140,12 @@ export default function DashboardPage() {
             setIsFetching(true)
             fetchMyRequests()
                 .then((submissionBoxes) => {
-                    const filteredSubmissionBoxes = submissionBoxes.filter((submissionBox) => {
-                        return submissionBox.title.toLowerCase().includes(searchTerm.trim().toLowerCase()) || submissionBox.description?.toLowerCase().includes(searchTerm.trim().toLowerCase())
-                    })
-                    setSubmissionBoxes(filteredSubmissionBoxes)
+                    setTempSubmissionBoxes(submissionBoxes)
                 })
                 .catch((error) => toast.error(error))
                 .finally(() => setIsFetching(false))
         }
-    }, [sidebarSelectedOption, allVideos, session, searchTerm])
+    }, [sidebarSelectedOption, allVideos, session])
 
     return (
         <>
@@ -144,7 +165,7 @@ export default function DashboardPage() {
                         >
                             {pageTitle}
                         </Typography>
-                        <DashboardSearchBar setSearchTerm={setSearchTerm} />
+                        <DashboardSearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
                     </Box>
                     <Box
                         sx={{
@@ -169,10 +190,10 @@ export default function DashboardPage() {
                                                 thumbnailUrl: video.thumbnail,
                                             }
                                         })}
-                                        isSearching={isSearching()}
+                                        isSearching={isSearching}
                                     />
                                 ) : (
-                                    <SubmissionBoxList submissionBoxes={submissionBoxes} />
+                                    <SubmissionBoxList submissionBoxes={submissionBoxes} isSearching={isSearching} />
                                 )}
                             </Box>
                         )}
@@ -181,10 +202,6 @@ export default function DashboardPage() {
             </Box>
         </>
     )
-
-    function isSearching(): boolean {
-        return allVideos?.length > 0 && searchTerm !== ''
-    }
 
     async function fetchAllVideos(): Promise<Video[]> {
         const response = await fetch('/api/videos')

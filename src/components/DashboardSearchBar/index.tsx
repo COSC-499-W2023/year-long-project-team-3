@@ -2,9 +2,11 @@
 
 import { InputAdornment, TextField } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
+import ClearIcon from '@mui/icons-material/Clear'
 import React from 'react'
 
 export type DashboardSearchBarProps = {
+    searchTerm: string
     setSearchTerm: React.Dispatch<React.SetStateAction<string>>
 }
 
@@ -15,7 +17,8 @@ export default function DashboardSearchBar(props: DashboardSearchBarProps) {
                 <TextField
                     type='text'
                     placeholder='Search'
-                    variant='outlined' sx={{
+                    variant='outlined'
+                    sx={{
                         '& .MuiInputBase-root.MuiOutlinedInput-root': {
                             width: '20vw',
                         },
@@ -29,10 +32,22 @@ export default function DashboardSearchBar(props: DashboardSearchBarProps) {
                                 <SearchIcon />
                             </InputAdornment>
                         ),
+                        endAdornment: (
+                            <InputAdornment
+                                position='end'
+                                onClick={() => props.setSearchTerm('')}
+                                sx={{
+                                    cursor: 'pointer',
+                                }}
+                            >
+                                <ClearIcon />
+                            </InputAdornment>
+                        ),
                     }}
                     onChange={(event) => {
                         props.setSearchTerm(event.target.value)
                     }}
+                    value={props.searchTerm}
                     data-cy='dashboard-search-bar'
                 />
             </div>
