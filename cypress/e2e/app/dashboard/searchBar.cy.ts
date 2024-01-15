@@ -52,6 +52,7 @@ describe('Dashboard Search Bar', () => {
             })
         })
 
+        cy.reload()
         cy.get('[data-cy="video-list"]', { timeout: TIMEOUT.EXTRA_LONG })
             .should('be.visible')
             .children()
@@ -64,5 +65,33 @@ describe('Dashboard Search Bar', () => {
             .should('be.visible')
             .children()
             .should('have.length', 2)
+    })
+
+
+    it('should display different string when no videos are found', () => {
+        cy.visit('/dashboard')
+
+        cy.get('[data-cy="no-video-text"]', { timeout: TIMEOUT.EXTRA_LONG }).should('be.visible').should('contain', 'You Do Not Have Any Videos')
+
+        const videoShouldNotBeDisplayed = 'Not Display' + uuidv4()
+        cy.task('getUserId', email).then((userId) => {
+            cy.task('createRequestSubmissionForUser', { userId }).then((submissionBoxId) => {
+                cy.task('createOneVideoAndRetrieveVideoId', { ownerId: userId, title: videoShouldNotBeDisplayed }).then(
+                    (videoId) => {
+                        cy.task('submitVideoToSubmissionBox', { requestedSubmissionId: submissionBoxId, videoId })
+                    }
+                )
+            })
+        })
+
+        cy.reload()
+        cy.get('[data-cy="video-list"]', { timeout: TIMEOUT.EXTRA_LONG })
+            .should('be.visible')
+            .children()
+            .should('have.length', 1)
+
+        cy.get('[data-cy="dashboard-search-bar"]').type('Random String')
+
+        cy.get('[data-cy="no-video-text"]', { timeout: TIMEOUT.EXTRA_LONG }).should('be.visible').should('contain', 'There Are No Videos That Match This Search')
     })
 })
