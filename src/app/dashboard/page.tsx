@@ -12,16 +12,19 @@ import DashboardSidebar from '@/components/DashboardSidebar'
 import { SidebarOption } from '@/types/dashboard/sidebar'
 import VideoList from '@/components/VideoList'
 import SubmissionBoxList from '@/components/SubmissionBoxList'
+import DashboardSearchBar from '@/components/DashboardSearchBar'
 
 export default function DashboardPage() {
     const session = useSession()
 
     // Videos
     const [allVideos, setAllVideos] = useState<Video[]>([])
+    const [tempVideos, setTempVideos] = useState<Video[]>([])
     const [displayVideos, setDisplayVideos] = useState<Video[]>([])
 
     // Submission Boxes
     const [submissionBoxes, setSubmissionBoxes] = useState<SubmissionBox[]>([])
+    const [tempSubmissionBoxes, setTempSubmissionBoxes] = useState<SubmissionBox[]>([])
 
     // Page component controls
     const [sidebarSelectedOption, setSidebarSelectedOption] = useState<SidebarOption>('menu_recent')
@@ -31,6 +34,10 @@ export default function DashboardPage() {
     // Page load controls
     const [isFetching, setIsFetching] = useState(false)
 
+    // Search states
+    const [searchTerm, setSearchTerm] = useState('')
+    const [isSearching, setIsSearching] = useState(false)
+
     // Fetch all videos for the "recent" tab
     useEffect(() => {
         setIsFetching(true)
@@ -39,6 +46,36 @@ export default function DashboardPage() {
             .catch((error) => toast.error(error))
             .finally(() => setIsFetching(false))
     }, [])
+
+    useEffect(() => {
+        if (!searchTerm) {
+            setIsSearching(false)
+        } else if (isVideoTabSelected && tempVideos.length === 0) {
+            setIsSearching(false)
+        } else if (!isVideoTabSelected && tempSubmissionBoxes.length === 0) {
+            setIsSearching(false)
+        } else {
+            setIsSearching(searchTerm.length > 0)
+        }
+    }, [displayVideos.length, isVideoTabSelected, searchTerm, submissionBoxes.length])
+
+    useEffect(() => {
+        if (isVideoTabSelected) {
+            const filteredVideos = tempVideos.filter(
+                (video) =>
+                    video.title.toLowerCase().includes(searchTerm.trim().toLowerCase()) ||
+                    video.description?.toLowerCase().includes(searchTerm.trim().toLowerCase())
+            )
+            setDisplayVideos(filteredVideos)
+        } else {
+            const filteredSubmissionBoxes = tempSubmissionBoxes.filter(
+                (submissionBox) =>
+                    submissionBox.title.toLowerCase().includes(searchTerm.trim().toLowerCase()) ||
+                    submissionBox.description?.toLowerCase().includes(searchTerm.trim().toLowerCase())
+            )
+            setSubmissionBoxes(filteredSubmissionBoxes)
+        }
+    }, [isVideoTabSelected, searchTerm, tempSubmissionBoxes, tempVideos])
 
     // If click on video-related tab, filter videos based on sidebar selection
     // If click on submission box-related tab, fetch submission boxes
@@ -60,7 +97,7 @@ export default function DashboardPage() {
                     const otherVideoUpdatedAt = new Date(otherVideo?.updatedAt).getTime() ?? 0
                     return otherVideoUpdatedAt - videoUpdatedAt
                 }) || []
-            setDisplayVideos(sortedVideos)
+            setTempVideos(sortedVideos)
         } else if (sidebarSelectedOption === 'menu_submitted_videos') {
             setIsVideoTabSelected(true)
             setPageTitle('Submitted Videos')
@@ -69,7 +106,7 @@ export default function DashboardPage() {
             getUserIdByEmail(session.data.user.email)
                 .then((userId) => {
                     const ownedVideos = allVideos.filter((video) => video.ownerId === userId)
-                    setDisplayVideos(ownedVideos)
+                    setTempVideos(ownedVideos)
                 })
                 .catch((error) => toast.error(error))
                 .finally(() => setIsFetching(false))
@@ -78,20 +115,22 @@ export default function DashboardPage() {
             setPageTitle('Starred')
 
             // TODO: Added isStarred field to Video model
-            setDisplayVideos([])
+            setTempVideos([])
         } else if (sidebarSelectedOption === 'menu_trash') {
             setIsVideoTabSelected(true)
             setPageTitle('Trash')
 
             // TODO: Added isDeleted field to Video model
-            setDisplayVideos([])
+            setTempVideos([])
         } else if (sidebarSelectedOption === 'submission_boxes_my_boxes') {
             setIsVideoTabSelected(false)
             setPageTitle('Submission Boxes')
 
             setIsFetching(true)
             fetchMyBoxes()
-                .then((submissionBoxes) => setSubmissionBoxes(submissionBoxes))
+                .then((submissionBoxes) => {
+                    setTempSubmissionBoxes(submissionBoxes)
+                })
                 .catch((error) => toast.error(error))
                 .finally(() => setIsFetching(false))
         } else if (sidebarSelectedOption === 'submission_boxes_my_requests') {
@@ -100,7 +139,9 @@ export default function DashboardPage() {
 
             setIsFetching(true)
             fetchMyRequests()
-                .then((submissionBoxes) => setSubmissionBoxes(submissionBoxes))
+                .then((submissionBoxes) => {
+                    setTempSubmissionBoxes(submissionBoxes)
+                })
                 .catch((error) => toast.error(error))
                 .finally(() => setIsFetching(false))
         }
@@ -115,14 +156,17 @@ export default function DashboardPage() {
                     setSidebarSelectedOption={setSidebarSelectedOption}
                 />
                 <Box width='100%' display='flex' flexDirection='column'>
-                    <Typography
-                        data-cy='title'
-                        variant='h5'
-                        color={'textSecondary'}
-                        sx={{ m: 2, fontWeight: 'bold', py: '1rem', marginTop: '1rem' }}
-                    >
-                        {pageTitle}
-                    </Typography>
+                    <Box display='flex' justifyContent='space-between' alignItems='center' paddingRight='3rem'>
+                        <Typography
+                            data-cy='title'
+                            variant='h5'
+                            color={'textSecondary'}
+                            sx={{ m: 2, fontWeight: 'bold', py: '1rem', marginTop: '1rem' }}
+                        >
+                            {pageTitle}
+                        </Typography>
+                        <DashboardSearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+                    </Box>
                     <Box
                         sx={{
                             borderTopLeftRadius: 25,
@@ -146,9 +190,10 @@ export default function DashboardPage() {
                                                 thumbnailUrl: video.thumbnail,
                                             }
                                         })}
+                                        isSearching={isSearching}
                                     />
                                 ) : (
-                                    <SubmissionBoxList submissionBoxes={submissionBoxes} />
+                                    <SubmissionBoxList submissionBoxes={submissionBoxes} isSearching={isSearching} />
                                 )}
                             </Box>
                         )}

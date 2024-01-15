@@ -1,6 +1,5 @@
 'use client'
 
-import React from 'react'
 import ListItem from '@mui/material/ListItem'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -12,6 +11,7 @@ import { theme } from '@/components/ThemeRegistry/theme'
 
 export type SubmissionBoxListProps = {
     submissionBoxes: SubmissionBox[]
+    isSearching: boolean
 }
 
 export default function SubmissionBoxList(props: SubmissionBoxListProps) {
@@ -63,7 +63,9 @@ export default function SubmissionBoxList(props: SubmissionBoxListProps) {
                 color={'textSecondary'}
                 sx={{ mt: 20 }}
             >
-                You Do Not Have Any Submission Boxes
+                { props.isSearching
+                    ? 'There Are No Submission Boxes That Match This Search'
+                    : 'You Do Not Have Any Submission Boxes' }
             </Typography>
         </Box>
     )
