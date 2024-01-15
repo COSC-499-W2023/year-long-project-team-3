@@ -228,6 +228,7 @@ will have to reconsider how we do that moving forwards.
 ![](imgs/week-13-seth-akins-tasks.png)
 
 ### Goals
+
 - This week I focused on writing tests for and integrating the poll worker into the rest of the AWS pipeline.
 - This required some minor tweaks, such as a loading page will the video processes
 - I also completed a couple of small improvements, such as fixing some issues with the Sign in with Google button and
@@ -249,3 +250,30 @@ will have to reconsider how we do that moving forwards.
 
 - We once again had trouble merging everything at the end.
 - Also, we didn't know what to submit for the design document, so hopefully that goes well
+
+# Term 2
+
+## Week 1 (8/01/2024 - 14/01/2024)
+
+![](imgs/term-2-week-1-seth-akins-tasks.png)
+
+### Goals
+
+- This week I started working on migrating our app deployment from Vercel to AWS. The reason for this is because in
+  we do not have permanent credentials we can give to Vercel, so to be able to access the AWS resources, we have to
+  deploy on AWS.
+- While doing this, I ran into an issue with our authentication service, so we need to port over to a newer version,
+  which I will be working on with Justin for this week.
+
+### Tasks
+
+#### Completed Tasks
+
+- None :(
+
+#### In-Progress Tasks
+- [Attempt to Fix Deployment Issues](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/278)
+- [Port Authentication to AuthJs](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/294)
+
+### Additional Context
+- I ran into many issues moving the deployment this week, so hopefully next week goes better.
