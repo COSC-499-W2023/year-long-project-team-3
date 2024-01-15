@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import ListItem from '@mui/material/ListItem'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -17,16 +16,6 @@ export type SubmissionBoxListProps = {
 
 export default function SubmissionBoxList(props: SubmissionBoxListProps) {
     const router = useRouter()
-
-    const [displayText, setDisplayText] = useState<string>('You Do Not Have Any Submission Boxes')
-
-    useEffect(() => {
-        if (props.isSearching) {
-            setDisplayText('There Are No Submission Boxes That Match This Search')
-        } else {
-            setDisplayText('You Do Not Have Any Submission Boxes')
-        }
-    }, [props.isSearching])
 
     return !!props.submissionBoxes && props.submissionBoxes.length > 0 ? (
         <List sx={{ maxHeight: 600, overflow: 'auto', position: 'relative', pl: 1, pr: 1 }}>
@@ -74,7 +63,9 @@ export default function SubmissionBoxList(props: SubmissionBoxListProps) {
                 color={'textSecondary'}
                 sx={{ mt: 20 }}
             >
-                { displayText }
+                { props.isSearching
+                    ? 'There Are No Submission Boxes That Match This Search'
+                    : 'You Do Not Have Any Submission Boxes' }
             </Typography>
         </Box>
     )
