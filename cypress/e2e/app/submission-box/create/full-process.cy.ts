@@ -1,21 +1,17 @@
 import { v4 as uuidv4 } from 'uuid'
+import { DELAY } from '../../../../utils/constants'
 
 describe('Test full submission box creation', () => {
-    // TODO: This will be fixed in another PR
-    it.skip('should work', () => {
+    it('should work', () => {
         cy.task('clearDB')
 
         const email = 'user@example.com'
         const password = 'Password1'
         // Sign up
-        cy.visit('/signup')
-        cy.get('[data-cy="email"]').type(email)
-        cy.get('[data-cy="password"]').type(password)
-        cy.get('[data-cy="passwordConfirmation"]').type(password)
-        cy.get('[data-cy="submit"]').click()
-        cy.url().should('contain', 'login')
+        cy.task('createUser', { email, password })
 
         // Login
+        cy.visit('/login')
         cy.get('[data-cy=email]').type(email)
         cy.get('[data-cy=password]').type(password)
         cy.get('[data-cy=submit]').click()
@@ -62,6 +58,8 @@ describe('Test full submission box creation', () => {
                     })
 
                     cy.get('[data-cy=next]').click()
+
+                    cy.wait(DELAY.MEDIUM)
 
                     cy.task('getSubmissionBoxes').then((submissionBoxes: any) => {
                         assert(Array.isArray(submissionBoxes))

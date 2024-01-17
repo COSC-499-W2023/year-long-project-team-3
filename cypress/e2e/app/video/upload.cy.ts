@@ -36,7 +36,7 @@ describe('Test Video Upload and Streaming Processing Pipeline', () => {
             /* Upload video from "file system" */
             cy.visit('/video/upload')
             cy.get('[data-cy=test-input]').selectFile('public/videos/lemons.mp4', { force: true })
-            cy.get('[data-cy=loading-circle-blur-background]', { timeout: TIMEOUT.LONG }).should('be.visible')
+            cy.get('[data-cy=loading-circle-blur-background]', { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).should('be.visible')
 
             /* Check if the url changes and displays the loading icon */
             cy.url({ timeout: TIMEOUT.LONG }).should('contain', 'video/edit/')

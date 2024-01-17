@@ -9,6 +9,7 @@ export default async function loadInSubmissionBoxes() {
         data: {
             email,
             password: hashedPassword,
+            emailVerified: new Date(),
             accounts: {
                 create: {
                     type: 'bcrypt',

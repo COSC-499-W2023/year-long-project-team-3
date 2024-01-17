@@ -10,17 +10,11 @@ describe('Dashboard Requested Submission Boxes Tests', () => {
         const email = 'noSubmissions@box.com'
         const password = 'noSubmissions1'
 
-        cy.visit('/signup')
-
         // Sign up
-        cy.visit('/signup')
-        cy.get('[data-cy="email"]').type(email)
-        cy.get('[data-cy="password"]').type(password)
-        cy.get('[data-cy="passwordConfirmation"]').type(password)
-        cy.get('[data-cy="submit"]').click()
-        cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'login')
+        cy.task('createUser', { email, password })
 
         // Login
+        cy.visit('/login')
         cy.get('[data-cy=email]').type(email)
         cy.get('[data-cy=password]').type(password)
         cy.get('[data-cy=submit]').click()

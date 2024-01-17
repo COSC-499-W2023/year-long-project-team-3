@@ -13,14 +13,10 @@ describe('Submission box settings tests', () => {
                 const password = 'Password1'
 
                 // Sign up
-                cy.visit('/signup')
-                cy.get('[data-cy="email"]').type(email)
-                cy.get('[data-cy="password"]').type(password)
-                cy.get('[data-cy="passwordConfirmation"]').type(password)
-                cy.get('[data-cy="submit"]').click()
-                cy.url().should('contain', 'login')
+                cy.task('createUser', { email, password })
 
                 // Login
+                cy.visit('/login')
                 cy.get('[data-cy=email]').type(email)
                 cy.get('[data-cy=password]').type(password)
                 cy.get('[data-cy=submit]').click()

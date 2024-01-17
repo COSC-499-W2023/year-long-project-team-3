@@ -7,7 +7,7 @@ export default withAuth(
         // Check if we should redirect when a user's email isn't verified
         const cookies = request.cookies
         const isLoggedIn = cookies.has('next-auth.session-token')
-        const protectedPages = ['/dashboard', '/submission-box', '/video', '/api/video', '/api/submission-box', '/api/videos']
+        const protectedPages = ['/dashboard', '/submission-box', '/video']
         if (
             isLoggedIn &&
             protectedPages.some(page => request.nextUrl.pathname.startsWith(page))
@@ -33,7 +33,7 @@ export default withAuth(
     {
         callbacks: {
             authorized: ({ req, token }) => {
-                const protectedPages = ['/dashboard', '/submission-box', '/video', '/api/video', '/api/submission-box', '/api/videos']
+                const protectedPages = ['/dashboard', '/submission-box', '/video']
                 return !(token === null && protectedPages.some((page) => req.nextUrl.pathname.startsWith(page)))
             },
         },
