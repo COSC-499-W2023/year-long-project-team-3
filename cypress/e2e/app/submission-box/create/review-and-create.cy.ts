@@ -32,12 +32,12 @@ describe('Submission box review and create tests', () => {
             cy.get('[data-cy="submission-box-title"]').type(title)
 
             // Double click is a known issue, cypress is not acting correctly on browser preview deployment
-            cy.get('[data-cy="next"]').click().click()
+            cy.get('[data-cy="Next"]').click().click()
 
             // We should be on the request submission step
             cy.get('[data-cy="title"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Request Submissions')
 
-            cy.get('[data-cy="next"]').click()
+            cy.get('[data-cy="Next"]').click()
         })
 
         it('Should allow the user to review their submission box before creating', () => {
@@ -54,7 +54,7 @@ describe('Submission box review and create tests', () => {
         })
 
         it('Should let the user return to the previous step using the back button', () => {
-            cy.get('[data-cy="back"]').click()
+            cy.get('[data-cy="Back"]').click()
 
             cy.url().should('include', '/submission-box')
 
@@ -62,7 +62,7 @@ describe('Submission box review and create tests', () => {
         })
 
         it.skip('Should allow user to click create', () => {
-            cy.get('[data-cy="next"]').click()
+            cy.get('[data-cy="Create"]').click()
 
             cy.url().should('include', '/dashboard')
         })

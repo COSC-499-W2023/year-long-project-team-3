@@ -1,5 +1,7 @@
 # Weekly Individual Log - Erin Hiebert
 
+# SEMESTER 1
+
 ## Week 4 (25/09/2023 - 01/10/2023)
 
 ### Tasks Worked On
@@ -160,3 +162,22 @@
 ### Additional Context
 
 -   It was a hard week and a hard milestone but now it is over yay
+
+# SEMESTER 2
+
+## Week 1 (08/01/2024 - 14/01/2024)
+
+![](imgs/term-2-week-1-erin-tasks.png)
+
+### Week Tasks
+
+-   Research AWS Rekognition for face blurring  #289 (In Progress)
+
+### Week Goals
+
+-   My goal for this week was beginning on figuring out how to integrate face blurring in our app.  The discussion group on tuesday helped to direct some of the research but my lack of experience with AWS services proved to be difficult to easily understand the best way to complete the task.
+-   Very possible that I will shift to a different task for next week.
+
+### Additional Context
+
+-   NA

@@ -34,14 +34,14 @@ describe('Submission box request submissions tests', () => {
             cy.get('[data-cy="submission-box-title"]').type(title)
 
             // Double click is a known issue, cypress is not acting correctly on browser preview deployment
-            cy.get('[data-cy="next"]').click().click()
+            cy.get('[data-cy="Next"]').click().click()
 
             // We should be on the request submission step
             cy.get('[data-cy="title"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Request Submissions')
         })
 
         it('Should allow user to click next', () => {
-            cy.get('[data-cy="next"]').click()
+            cy.get('[data-cy="Next"]').click()
 
             cy.url().should('include', '/submission-box')
 
@@ -159,7 +159,7 @@ describe('Submission box request submissions tests', () => {
         })
 
         it('Should let the user return to the previous step using the back button', () => {
-            cy.get('[data-cy="back"]').click()
+            cy.get('[data-cy="Back"]').click()
 
             cy.url().should('include', '/submission-box')
 

@@ -1,14 +1,26 @@
 import prisma from '@/lib/prisma'
+import { v4 as uuidv4 } from 'uuid'
 
 export type TestVideoCreationData = {
-    ownerId: string
+    ownerId?: string
     title: string
+    submissionBoxId?: string
 }
 
 export default async function createOneVideoAndRetrieveVideoId(
     testVideoCreationData: TestVideoCreationData
 ): Promise<string> {
-    const { ownerId, title } = testVideoCreationData
+    let ownerId = testVideoCreationData.ownerId
+    const { title } = testVideoCreationData
+
+    if (!ownerId) {
+        const fakeUser = await prisma.user.create({
+            data: {
+                email: 'user' + uuidv4() + '@example.com',
+            },
+        })
+        ownerId = fakeUser.id
+    }
 
     const video = await prisma.video.create({
         data: {

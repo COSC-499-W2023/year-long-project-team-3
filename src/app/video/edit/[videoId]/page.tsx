@@ -3,16 +3,15 @@ import React, { useEffect, useState } from 'react'
 import Header from '@/components/Header'
 import { SessionContextValue, useSession } from 'next-auth/react'
 import ProgressDots from '@/components/ProgressDots'
-import { Alert, Box, Button } from '@mui/material'
+import { Alert, Box } from '@mui/material'
 import ScalingReactPlayer from '@/components/ScalingReactPlayer'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import EditorTools from '@/components/EditorTools'
 import { useRouter, usePathname } from 'next/navigation'
 import VideoProcessing from '@/components/VideoProcessing'
 import PageLoadProgress from '@/components/PageLoadProgress'
 import { toast } from 'react-toastify'
 import BackButton from '@/components/BackButton'
+import FormNavButton from '@/components/FormNavButton'
 
 export default function VideoPreviewPage() {
     const session: SessionContextValue = useSession()
@@ -220,20 +219,16 @@ export default function VideoPreviewPage() {
                                                 width='70vw'
                                                 bottom='4rem'
                                             >
-                                                <Button
+                                                <FormNavButton
+                                                    title={'Back'}
+                                                    variant={'outlined'}
+                                                    handleClick={handleClickBackButton}
+                                                ></FormNavButton>
+                                                <FormNavButton
+                                                    title={'Next'}
                                                     variant={'contained'}
-                                                    startIcon={<ArrowBackIcon />}
-                                                    onClick={handleClickBackButton}
-                                                >
-                                                    Back
-                                                </Button>
-                                                <Button
-                                                    variant={'contained'}
-                                                    endIcon={<ArrowForwardIcon />}
-                                                    onClick={handleClickContinueButton}
-                                                >
-                                                    Continue
-                                                </Button>
+                                                    handleClick={handleClickNextButton}
+                                                ></FormNavButton>
                                             </Box>
                                         </Box>
                                     </Box>
@@ -263,7 +258,7 @@ export default function VideoPreviewPage() {
         setIsVideoVisible(false)
     }
 
-    function handleClickContinueButton() {
+    function handleClickNextButton() {
         router.push(`/video/submit/${ videoId }`)
     }
 

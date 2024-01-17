@@ -1,5 +1,26 @@
 # K Phan
 
+## Term 2 Week 1 (December 04, 2023 - January 14, 2024)
+
+### Week's Goals
+- Video Dashboard Page (both UI + backend) (COMPLETED)
+- Dashboard Searchbar (IN REVIEW)
+- Mock up for detailed video page (IN REVIEW)
+
+### Tasks Worked On
+- Video Dashboard Page (both UI + backend)
+  - https://github.com/COSC-499-W2023/year-long-project-team-3/issues/277
+  - https://github.com/COSC-499-W2023/year-long-project-team-3/issues/275
+  - https://github.com/COSC-499-W2023/year-long-project-team-3/issues/254
+- Refactored code structure for dashboard
+- Dashboard Searchbar
+  - https://github.com/COSC-499-W2023/year-long-project-team-3/issues/288
+- Mock up for detailed video page
+- Reviewed PRs
+
+### Teamformation Report
+![](./imgs/term-2-week-1-k-phan-tasks.png)
+
 ## Term 1 Week 13 (November 27, 2023 - December 03, 2023)
 
 ### Week's Goals

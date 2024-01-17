@@ -13,6 +13,7 @@ const nextConfig = () => {
             'AWS_UPLOAD_REGION',
             'AWS_ACCESS_KEY_ID',
             'AWS_SECRET_ACCESS_KEY',
+            'NEXT_IMAGE_WHITELIST_HOSTNAMES',
         ]
 
         // Check if all environment variables are set
