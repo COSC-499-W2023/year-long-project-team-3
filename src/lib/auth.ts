@@ -30,8 +30,8 @@ export const authOptions: NextAuthOptions = {
     secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET,
     providers: [
         GoogleProvider({
-            clientId: process.env.googleClientId as string,
-            clientSecret: process.env.googleClientSecret as string,
+            clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string,
+            clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET as string,
             profile(profile) {
                 return {
                     id: profile.sub,
@@ -81,8 +81,6 @@ export const authOptions: NextAuthOptions = {
         },
     },
 }
-
-console.log('Goodbye')
 
 function passwordMatch(enteredPassword: string, password: string): Promise<boolean> {
     return compare(enteredPassword, password)

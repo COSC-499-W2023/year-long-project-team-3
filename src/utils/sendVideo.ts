@@ -39,18 +39,18 @@ export default async function sendVideo(rawVideo: File, owner: User): Promise<Vi
     const rawVideoBuffer = await rawVideo.arrayBuffer()
 
     const client = new S3Client({
-        region: process.env.awsUploadRegion,
+        region: process.env.AWS_UPLOAD_REGION,
         credentials: {
-            accessKeyId: process.env.awsAccessKeyId as string,
-            secretAccessKey: process.env.awsSecretAccessKey as string,
-            sessionToken: process.env.awsSessionToken as string,
+            accessKeyId: process.env.AWS_ACCESS_KEY_ID as string,
+            secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY as string,
+            sessionToken: process.env.AWS_SESSION_TOKEN as string,
         },
     })
 
     const uploadS3 = new Upload({
         client: client,
         params: {
-            Bucket: process.env.awsUploadBucket as string,
+            Bucket: process.env.AWS_UPLOAD_BUCKET as string,
             Key: s3Key,
             Body: Readable.from(Buffer.from(rawVideoBuffer)),
         },
@@ -99,7 +99,7 @@ export default async function sendVideo(rawVideo: File, owner: User): Promise<Vi
     const uploadJson = new Upload({
         client: client,
         params: {
-            Bucket: process.env.awsUploadBucket as string,
+            Bucket: process.env.AWS_UPLOAD_BUCKET as string,
             Key: await makeS3Key(newVideo, 'json'),
             Body: metadataFile,
         },
