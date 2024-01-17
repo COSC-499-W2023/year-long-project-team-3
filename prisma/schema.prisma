@@ -57,6 +57,7 @@ model Video {
   ownerId           String?
   s3Key             String?
   isCloudProcessed  Boolean          @default(false)
+  isSubmitted       Boolean          @default(false)
   thumbnail         String?
   rawVideoUrl       String?
   processedVideoUrl String?

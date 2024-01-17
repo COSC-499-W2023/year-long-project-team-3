@@ -223,3 +223,24 @@ Document.
 My goal for this week was to finish implementing the forms that I started, and work on the design document for our team.
 
 ### Additional Context
+
+
+## Teresa Saller - Term 2: Week 1 (2024/01/08 - 2024/01/14)
+
+![teresa-saller-tasks-w1-t2.png](imgs/teresa-saller-tasks-w1-t2.png)
+
+### Tasks
+
+Completed:
+- [Choose either continue or next for navigation buttons #282](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/282)
+
+In progress:
+- [Add Avatar and Dropdown instead of Sign Out Button #295](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/295)
+
+Researching ways to implement face-blurring using AWS, and another small UI improvement, see PR above.
+
+### Goals
+
+My goal for this week is to submit my UI improvement for review, and to put at least 6h into researching face-blurring.
+
+### Additional Context

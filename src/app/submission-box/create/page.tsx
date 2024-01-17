@@ -7,13 +7,14 @@ import SubmissionBoxRequestSubmission from '@/components/SubmissionBoxRequestSub
 import SubmissionBoxReviewAndCreate from '@/components/SubmissionBoxReviewAndCreate'
 import Header from '@/components/Header'
 import BackButton from '@/components/BackButton'
-import { Box, Button } from '@mui/material'
+import { Box } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import ProgressDots from '@/components/ProgressDots'
 import Typography from '@mui/material/Typography'
 import logger from '@/utils/logger'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
+import FormNavButton from '@/components/FormNavButton'
 
 export default function SubmissionBox() {
     const session = useSession()
@@ -90,25 +91,13 @@ export default function SubmissionBox() {
                         }}
                     >
                         {!isFirstStep && (
-                            <Button
-                                type='button'
-                                variant='outlined'
-                                sx={{ mt: 2, px: 5, fontSize: 15, borderRadius: 28, textTransform: 'capitalize' }}
-                                data-cy='back'
-                                onClick={back}
-                            >
-                                Back
-                            </Button>
+                            <FormNavButton title={'Back'} variant={'outlined'} handleClick={back}></FormNavButton>
                         )}
-                        <Button
-                            type='button'
-                            variant='contained'
-                            sx={{ mt: 2, px: 5, fontSize: 15, borderRadius: 28, textTransform: 'capitalize' }}
-                            data-cy='next'
-                            onClick={handleNext}
-                        >
-                            {isLastStep ? 'Create' : 'Next'}
-                        </Button>
+                        <FormNavButton
+                            title={isLastStep ? 'Create' : 'Next'}
+                            variant={'contained'}
+                            handleClick={handleNext}
+                        ></FormNavButton>
                     </Box>
                 </Box>
             </Box>

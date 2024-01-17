@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
 import Header from '@/components/Header'
-import { Box, Select, Typography, Chip, MenuItem, Button } from '@mui/material'
+import { Box, Select, Typography, Chip, MenuItem } from '@mui/material'
 import ProgressDots from '@/components/ProgressDots'
 import type { SubmissionBox, Video } from '@prisma/client'
 import Image from 'next/image'
@@ -15,10 +15,9 @@ import { ObjectSchema } from 'yup'
 import * as yup from 'yup'
 import { toast } from 'react-toastify'
 import logger from '@/utils/logger'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import PageLoadProgressBlurBackground from '@/components/PageLoadProgressBlurBackround'
 import BackButton from '@/components/BackButton'
+import FormNavButton from '@/components/FormNavButton'
 
 type FormValues = {
     videoTitle: string
@@ -244,16 +243,16 @@ export default function SubmitVideoPage() {
                         </Box>
                     </Box>
                     <Box display='flex' justifyContent='space-between' width='70vw' position='absolute' bottom='4rem'>
-                        <Button variant={'contained'} startIcon={<ArrowBackIcon />} onClick={handleClickBackButton}>
-                            Back
-                        </Button>
-                        <Button
+                        <FormNavButton
+                            title={'Back'}
+                            variant={'outlined'}
+                            handleClick={handleClickBackButton}
+                        ></FormNavButton>
+                        <FormNavButton
+                            title={'Submit'}
                             variant={'contained'}
-                            startIcon={<ArrowForwardIcon />}
-                            onClick={() => formik.handleSubmit()}
-                        >
-                            Submit
-                        </Button>
+                            handleClick={() => formik.handleSubmit()}
+                        ></FormNavButton>
                     </Box>
                 </Box>
             </>
@@ -332,7 +331,7 @@ export default function SubmitVideoPage() {
     }
 
     async function fetchSubmissionInbox(): Promise<SubmissionBox[]> {
-        const res = await fetch('/api/submission-box/inboxes')
+        const res = await fetch('/api/submission-box/requestedsubmissions')
         if (res.status !== 200) {
             throw new Error('Failed to fetch submission boxes')
         }

@@ -1,29 +1,45 @@
 import VideoCard, { type VideoCardProps } from '@/components/VideoCard'
-import { Box } from '@mui/material'
-import { VideoPageType } from '@/types/videos/videoPage'
+import { Box, Typography } from '@mui/material'
 
 export type VideoListProps = {
     videos: VideoCardProps[]
-    videoPageType: VideoPageType
+    isSearching: boolean
 }
 
 export default function VideoList(props: VideoListProps) {
-    return (
+    return !!props.videos && props.videos.length > 0 ? (
         <Box
             display={'grid'}
             gridTemplateColumns={'repeat(auto-fill, minmax(250px, 1fr))'}
+            gridTemplateRows={'min-content'}
+            justifyContent={'center'}
+            justifyItems={'center'}
             rowGap={'55px'}
-            columnGap={'60px'}
+            columnGap={'.8rem'}
             padding={'0 30px'}
             width={'100%'}
             height={'100%'}
-            maxWidth={'1280px'}
-            component={props.videoPageType === 'received' ? 'section' : 'div'}
+            component={'div'}
             overflow={'scroll'}
+            data-cy='video-list'
         >
             {props.videos.map((video, idx) => (
-                <VideoCard key={`${ props.videoPageType }_video_${ idx }`} {...video} />
+                <VideoCard key={`video_${ idx }`} {...video} />
             ))}
+        </Box>
+    ) : (
+        <Box display='flex' justifyContent='center' alignItems='center'>
+            <Typography
+                data-cy='no-video-text'
+                variant='h5'
+                align='center'
+                color={'textSecondary'}
+                sx={{ mt: 20 }}
+            >
+                { props.isSearching
+                    ? 'There Are No Videos That Match This Search'
+                    : 'You Do Not Have Any Videos' }
+            </Typography>
         </Box>
     )
 }

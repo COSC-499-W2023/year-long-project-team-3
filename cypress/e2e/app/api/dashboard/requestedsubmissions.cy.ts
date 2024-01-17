@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid'
+
 describe('Test requested submission API', () => {
 
     beforeEach(() => {
@@ -19,7 +21,7 @@ describe('Test requested submission API', () => {
 
     context('Logged in', () => {
         it('should return an empty submissionBox array when a user does not have any outgoing submission boxes', () => {
-            const email = 'noSubmission@user.com'
+            const email = 'noSubmission' + uuidv4() + '@user.com'
             const password = 'noSubmission1'
 
             cy.visit('/signup')
@@ -47,9 +49,9 @@ describe('Test requested submission API', () => {
         })
 
         it('should return a correct submissionBox array of outgoing submission boxes when a user has outgoing submission boxes', () => {
-            const email = 'submission@out.box'
+            const email = 'submission' + uuidv4() + '@out.box'
             const password = 'submissionOut1'
-            const title = 'Outgoing Submission Box'
+            const title = 'Outgoing Submission Box ' + uuidv4()
             const description = null
             const closesAt = new Date('2050-12-01T03:24:00')
             const videoStoreToDate = null
@@ -57,7 +59,8 @@ describe('Test requested submission API', () => {
             const isPublic = false
 
             // Load database
-            cy.task('loadOutSubmissionBoxes')
+            cy.task('loadOutSubmissionBoxes', { email, password, title })
+
             // Login
             cy.visit('/login')
             cy.get('[data-cy=email]').type(email)

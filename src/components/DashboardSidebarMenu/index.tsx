@@ -12,10 +12,10 @@ import { SidebarOption } from '@/types/dashboard/sidebar'
 
 export type DashboardMenuSidebarProps = {
     onRecordNewClick: () => void
-    onRecentClick: () => void
-    onSubmittedVideosClick: () => void
-    onStarredClick: () => void
-    onTrashClick: () => void
+    onRecentClick?: () => void
+    onSubmittedVideosClick?: () => void
+    onStarredClick?: () => void
+    onTrashClick?: () => void
     sidebarSelectedOption: SidebarOption
     setSidebarSelectedOption: React.Dispatch<React.SetStateAction<SidebarOption>>
 }
@@ -25,7 +25,13 @@ export default function DashboardSidebarMenu(props: DashboardMenuSidebarProps) {
 
     return (
         <Box marginTop='4rem' display='flex' flexDirection='column' gap='0.5rem'>
-            <Typography color={theme.palette.text.secondary} fontSize={'25px'} fontWeight={600} marginBottom={'1rem'} data-cy='Side Bar Menu'>
+            <Typography
+                color={theme.palette.text.secondary}
+                fontSize={'25px'}
+                fontWeight={600}
+                marginBottom={'1rem'}
+                data-cy='Side Bar Menu'
+            >
                 Menu
             </Typography>
             <DashboardSidePanelOption
@@ -77,22 +83,34 @@ export default function DashboardSidebarMenu(props: DashboardMenuSidebarProps) {
     }
 
     function handleRecentClick() {
-        props.setSidebarSelectedOption('menu_recent')
-        props.onRecentClick()
+        if (sidebarSelectedOption !== 'menu_recent') {
+            props.setSidebarSelectedOption('menu_recent')
+            if (!!props.onRecentClick) {
+                props.onRecentClick()
+            }
+        }
     }
 
     function handleSubmittedVideosClick() {
-        props.setSidebarSelectedOption('menu_submitted_videos')
-        props.onSubmittedVideosClick()
+        if (sidebarSelectedOption !== 'menu_submitted_videos') {
+            props.setSidebarSelectedOption('menu_submitted_videos')
+            if (!!props.onSubmittedVideosClick) {
+                props.onSubmittedVideosClick()
+            }
+        }
     }
 
     function handleStarredClick() {
         props.setSidebarSelectedOption('menu_starred')
-        props.onStarredClick()
+        if (!!props.onStarredClick) {
+            props.onStarredClick()
+        }
     }
 
     function handleTrashClick() {
         props.setSidebarSelectedOption('menu_trash')
-        props.onTrashClick()
+        if (!!props.onTrashClick) {
+            props.onTrashClick()
+        }
     }
 }

@@ -1,5 +1,32 @@
 # Weekly Individual Log - Justin Schoenit
 
+## Week 1 (Jan 8 - 14)
+
+### Tasks
+
+![](imgs/week-1-t2-tasks-justin.png)
+
+### Goals
+
+- face blur (Erin, Teresa)
+- UI fixes for consistency (Teresa)
+- email verification / email invites (Justin)
+- batch messages to everyone in submission box or specific users (Seth)
+- Filter/search for videos by title, date, and person that submitted (K)
+- detail/edit page for videos (K) -> make mock first!
+- detail/edit page for submission boxes (Seth) -> make mock first!
+
+### My Contributions
+
+- Set up Amazon SES for email sending
+- Wrote frontend and backend for verifying email address
+  - DB change
+  - Had issues modifying middleware.ts for verifying if a user has verified their email address before allowing them to access certain page that might require them to have a verified email address
+
+### Additional Context
+
+N/A
+
 ## Week 13 (Nov 27 - Dec 3)
 
 ### Tasks

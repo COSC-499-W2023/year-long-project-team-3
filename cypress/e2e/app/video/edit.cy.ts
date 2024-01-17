@@ -56,13 +56,13 @@ describe('Test video editing page', () => {
             cy.get('.react-player', { timeout: TIMEOUT.EXTRA_LONG }).should('exist')
         })
 
-        it('should have continue and back buttons', () => {
+        it('should have next and back buttons', () => {
             cy.visit(videoUrl)
             cy.get('#nav-buttons-div', { timeout: TIMEOUT.EXTRA_LONG })
                 .find('button')
                 .should('have.length', 2)
                 .and('contain', 'Back')
-                .and('contain', 'Continue')
+                .and('contain', 'Next')
         })
 
         it('should show message on edit change', () => {
