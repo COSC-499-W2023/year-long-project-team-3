@@ -22,8 +22,11 @@ COPY ./.env.production.local .
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
+# Needed so prisma knows which dotenv file to access
+RUN npm install -g dotenv-cli
+
 # Generate prisma client
-RUN npx prisma generate
+RUN dotenv -e .env.production.local -- npx prisma generate
 
 RUN npm run build
 
