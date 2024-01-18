@@ -73,7 +73,7 @@ export default function VerifyEmail() {
                         >
                             {pageMsg}
                         </Typography>
-                        <Button variant='contained' onClick={() => router.push('/dashboard')}>
+                        <Button variant='contained' data-cy='dashboard-button' onClick={() => router.push('/dashboard')}>
                     Proceed to Dashboard
                         </Button>
                         {pageStatus === 2 && (

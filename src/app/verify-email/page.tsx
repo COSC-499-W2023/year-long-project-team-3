@@ -40,7 +40,7 @@ export default function VerifyEmail() {
                     fontSize: '36px',
                     fontWeight: '600',
                 }}>It looks like your email isn&apos;t verified!</Typography>
-                <Button onClick={resendEmail} variant='contained' sx={{ fontSize: '20px' }}>{buttonText}</Button>
+                <Button onClick={resendEmail} variant='contained' sx={{ fontSize: '20px' }} data-cy='verify-email-button'>{buttonText}</Button>
             </Box>
         </>
     )
