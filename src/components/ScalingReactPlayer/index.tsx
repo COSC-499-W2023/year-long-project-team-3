@@ -8,6 +8,7 @@ import screenfull from 'screenfull'
 
 export type ScalingReactPlayerProps = {
     url: string
+    allowKeyDown?: boolean
 }
 
 const ScalingReactPlayer = (props: ScalingReactPlayerProps) => {
@@ -98,7 +99,9 @@ const ScalingReactPlayer = (props: ScalingReactPlayerProps) => {
         rescalePlayer()
 
         // Add event listeners
-        window.addEventListener('keydown', keyboardControl)
+        if (props.allowKeyDown) {
+            window.addEventListener('keydown', keyboardControl)
+        }
         window.addEventListener('resize', rescalePlayer)
 
         // Cleanup the listeners on component unmount
@@ -106,7 +109,7 @@ const ScalingReactPlayer = (props: ScalingReactPlayerProps) => {
             window.removeEventListener('keydown', keyboardControl)
             window.removeEventListener('resize', rescalePlayer)
         }
-    }, [keyboardControl])
+    }, [keyboardControl, props.allowKeyDown])
 
     return (
         <Box

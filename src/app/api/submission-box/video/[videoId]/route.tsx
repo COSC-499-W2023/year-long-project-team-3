@@ -1,16 +1,16 @@
-import { type NextRequest, NextResponse } from 'next/server'
-import logger from '@/utils/logger'
+import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import prisma from '@/lib/prisma'
-import { type Video } from '@prisma/client'
+import logger from '@/utils/logger'
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
-    try {
-        const session = await getServerSession()
-        if (!session || !session.user?.email) {
-            return NextResponse.json({ error: 'You must be signed in to upload a video' }, { status: 401 })
-        }
+    const session = await getServerSession()
 
+    if (!session || !session.user?.email) {
+        return NextResponse.json({ error: 'You must be signed in to upload a video' }, { status: 401 })
+    }
+
+    try {
         const videoId = req.nextUrl.pathname.split('/').pop()
         if (!videoId) {
             return NextResponse.json({ error: 'No videoId provided' }, { status: 500 })
@@ -46,23 +46,29 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
         }
 
-        const video: Video = await prisma.video.findUniqueOrThrow({
+        const submittedVideos = await prisma.submittedVideo.findMany({
             where: {
-                id: videoId,
+                videoId: videoId,
             },
         })
 
-        if (video.processedVideoUrl === null && video.isCloudProcessed) {
-            logger.error(`Video ${ video.id } does not have a streamable url`)
-            return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
-        }
-        if (video.processedVideoUrl === '') {
-            logger.error(`Video ${ video.id } should not have an empty url`)
-            return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
-        }
-        return NextResponse.json({ video: video }, { status: 200 })
+        const requestedSubmissionIds = submittedVideos.map(({ requestedSubmissionId }) => requestedSubmissionId)
+
+        const submissionBoxes = await prisma.submissionBox.findMany({
+            where: {
+                requestedSubmissions: {
+                    some: {
+                        id: {
+                            in: [...requestedSubmissionIds],
+                        },
+                    },
+                },
+            },
+        })
+
+        return NextResponse.json({ submissionBoxes }, { status: 200 })
     } catch (err) {
         logger.error(err)
-        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+        return NextResponse.json({ error: 'An unexpected error occurred' }, { status: 500 })
     }
 }

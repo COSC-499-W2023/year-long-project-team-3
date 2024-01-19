@@ -1,21 +1,30 @@
 import { type NextRequest, NextResponse } from 'next/server'
-import logger from '@/utils/logger'
 import { getServerSession } from 'next-auth'
 import prisma from '@/lib/prisma'
-import { type Video } from '@prisma/client'
+import logger from '@/utils/logger'
 
-export async function GET(req: NextRequest): Promise<NextResponse> {
+export async function PUT(req: NextRequest): Promise<NextResponse> {
+    const session = await getServerSession()
+    if (!session || !session.user?.email) {
+        return NextResponse.json({ error: 'You must be signed in to upload a video' }, { status: 401 })
+    }
+
+    const videoId = req.nextUrl.pathname.split('/').pop()
+    if (!videoId) {
+        return NextResponse.json({ error: 'No videoId provided' }, { status: 500 })
+    }
+
+    const { title, description } = await req.json()
+    if (!title || typeof title !== 'string') {
+        logger.error(`User ${ session.user.email } did not provide a title`)
+        return NextResponse.json({ error: 'No title provided' }, { status: 500 })
+    }
+    if (typeof description !== 'string') {
+        logger.error('Unexpected description type')
+        return NextResponse.json({ error: 'Unexpected description type' }, { status: 500 })
+    }
+
     try {
-        const session = await getServerSession()
-        if (!session || !session.user?.email) {
-            return NextResponse.json({ error: 'You must be signed in to upload a video' }, { status: 401 })
-        }
-
-        const videoId = req.nextUrl.pathname.split('/').pop()
-        if (!videoId) {
-            return NextResponse.json({ error: 'No videoId provided' }, { status: 500 })
-        }
-
         const user = await prisma.user.findUniqueOrThrow({
             where: {
                 email: session.user.email,
@@ -46,23 +55,18 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
         }
 
-        const video: Video = await prisma.video.findUniqueOrThrow({
+        const updatedVideo = await prisma.video.update({
             where: {
                 id: videoId,
             },
+            data: {
+                title: title,
+                description: description,
+            },
         })
 
-        if (video.processedVideoUrl === null && video.isCloudProcessed) {
-            logger.error(`Video ${ video.id } does not have a streamable url`)
-            return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
-        }
-        if (video.processedVideoUrl === '') {
-            logger.error(`Video ${ video.id } should not have an empty url`)
-            return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
-        }
-        return NextResponse.json({ video: video }, { status: 200 })
-    } catch (err) {
-        logger.error(err)
+        return NextResponse.json({ video: updatedVideo }, { status: 200 })
+    } catch (error) {
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }
 }
