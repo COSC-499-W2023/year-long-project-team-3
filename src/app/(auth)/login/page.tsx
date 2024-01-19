@@ -19,7 +19,7 @@ export default function LoginPage() {
             // Check if user email verified
             fetch('/api/verify-email/is-verified').then(async (res) => {
                 if (res.status === 200) {
-                    const isVerified = (await res.json()).isVerified
+                    const { isVerified } = await res.json()
                     if (isVerified) {
                         router.push('/dashboard')
                     } else {

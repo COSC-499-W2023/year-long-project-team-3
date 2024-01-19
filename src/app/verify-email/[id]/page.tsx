@@ -7,12 +7,14 @@ import { Box, Button, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import PageLoadProgress from '@/components/PageLoadProgress'
 
+type PageStatus = 'loading' | 'success' | 'error'
+
 export default function VerifyEmail() {
     const session = useSession()
     const router = useRouter()
     const emailVerificationId = usePathname()?.split('/').pop()
     const [pageMsg, setPageMsg] = useState('')
-    const [pageStatus, setPageStatus] = useState(0)
+    const [pageStatus, setPageStatus] = useState('loading' as PageStatus)
     const [buttonText, setButtonText] = useState('Resend Email')
 
     // Hook is being called twice for some reason, so this stops that
@@ -23,14 +25,14 @@ export default function VerifyEmail() {
             fetch(`/api/verify-email/${ emailVerificationId }`).then(async (res) => {
                 if (res.status === 200) {
                     setPageMsg('Email verified!')
-                    setPageStatus(1)
+                    setPageStatus('success' as PageStatus)
                 } else if (res.status === 400) {
                     const error = await res.json()
                     setPageMsg(error.error ?? 'Invalid verification link.')
-                    setPageStatus(2)
+                    setPageStatus('error' as PageStatus)
                 } else {
                     setPageMsg('There was an issue while verifying your email.')
-                    setPageStatus(2)
+                    setPageStatus('error' as PageStatus)
                 }
             })
         }
@@ -61,7 +63,7 @@ export default function VerifyEmail() {
                     gap: '2rem',
                 }}
             >
-                {pageStatus === 0 ? (
+                {pageStatus === 'loading' ? (
                     <PageLoadProgress />
                 ) : (
                     <>
@@ -76,7 +78,7 @@ export default function VerifyEmail() {
                         <Button variant='contained' data-cy='dashboard-button' onClick={() => router.push('/dashboard')}>
                     Proceed to Dashboard
                         </Button>
-                        {pageStatus === 2 && (
+                        {pageStatus === 'error' && (
                             <Button onClick={resendEmail} variant='contained'>{buttonText}</Button>
                         )}
                     </>

@@ -170,16 +170,19 @@ export default function LoginForm() {
                 // Check if the user's email is verified
                 fetch('/api/verify-email/is-verified').then(async (res) => {
                     if (res.status === 200) {
-                        const isVerified = (await res.json()).isVerified ?? true
-                        if (isVerified) {
-                            router.push('/dashboard')
+                        const { isVerified } = await res.json()
+                        if (isVerified !== undefined) {
+                            if (isVerified) {
+                                router.push('/dashboard')
+                            } else {
+                                router.push('/verify-email')
+                            }
+                            router.refresh()
                         } else {
-                            router.push('/verify-email')
+                            toast.error('There was an error while checking if your email is verified')
                         }
-                        router.refresh()
                     } else {
-                        router.push('/dashboard')
-                        router.refresh()
+                        toast.error('There was an error while checking if your email is verified')
                     }
                 })
             }
