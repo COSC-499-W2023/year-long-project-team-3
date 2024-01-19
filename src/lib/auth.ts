@@ -77,6 +77,10 @@ export const authOptions: NextAuthOptions = {
             return token
         },
         redirect: async ({ url, baseUrl }) => {
+            // Allow relative redirect paths
+            if (url.startsWith('/')) {
+                return `${ baseUrl }${ url }`
+            }
             return url.startsWith(baseUrl) ? Promise.resolve(url) : Promise.resolve(baseUrl)
         },
     },

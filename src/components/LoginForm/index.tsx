@@ -6,7 +6,6 @@ import Link from '@mui/material/Link'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import React, { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { toast } from 'react-toastify'
 import Logo from '@/components/Logo'
@@ -22,8 +21,6 @@ import GoogleSigninButton from '@/components/GoogleSigninButton'
 import HorizontalSeparator from 'src/components/HorizontalSeparator'
 
 export default function LoginForm() {
-    const router = useRouter()
-
     const [passwordVisible, setPasswordVisible] = useState(false)
 
     const handleClickShowPassword = () => {
@@ -166,8 +163,6 @@ export default function LoginForm() {
             } else {
                 toast.success(`User ${ userData.email } successfully logged in`)
                 logger.info(`User ${ userData.email } successfully logged in`)
-                router.push('/dashboard')
-                router.refresh()
             }
         } catch (err) {
             const errMessage = JSON.stringify(err, Object.getOwnPropertyNames(err))

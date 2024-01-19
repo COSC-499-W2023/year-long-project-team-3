@@ -6,10 +6,13 @@ import React from 'react'
 import styles from './GoogleSigninButton.module.css'
 import { signIn } from 'next-auth/react'
 import logger from '@/utils/logger'
+import { useSearchParams } from 'next/navigation'
 
 export default function GoogleSignInButton() {
+    const callbackUrl = useSearchParams().get('callbackUrl')
+
     return (
-        <button className={styles['gsi-material-button']} onClick={signInWithGoogle} data-cy='google-sign-in-btn'>
+        <button className={styles['gsi-material-button']} onClick={(e) => signInWithGoogle(e, callbackUrl)} data-cy='google-sign-in-btn'>
             <div className={styles['gsi-material-button-state']}></div>
             <div className={styles['gsi-material-button-content-wrapper']}>
                 <div className={styles['gsi-material-button-icon']}>
@@ -46,10 +49,10 @@ export default function GoogleSignInButton() {
     )
 }
 
-function signInWithGoogle(e: React.MouseEvent<HTMLButtonElement>) {
+function signInWithGoogle(e: React.MouseEvent<HTMLButtonElement>, callbackUrl: string | null) {
     e.preventDefault()
     signIn('google', {
-        callbackUrl: `${ process.env.appBaseUrl }/dashboard`,
+        callbackUrl: callbackUrl ?? '/dashboard',
     }).catch((err) => {
         logger.error('An unexpected error occurred while log in with Google: ' + err.error)
     })
