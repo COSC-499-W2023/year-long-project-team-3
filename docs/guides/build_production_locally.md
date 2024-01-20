@@ -21,7 +21,17 @@
 - If desired, the built container can also be pushed to AWS
 - To do so, run the following commands
 
-1. `aws ecr get-login-password --region <region> --profile <my-profile> | docker login --username AWS --password-stdin <aws_account_id.dkr.ecr.region.amazonaws.com>`
-   - The `<region>` tag is the AWS region where the container registry is located
-   - The `<my-profile>` tag is a CLI profile you have configured locally (see documentation [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html))
-   - 
+1. Login: `aws ecr get-login-password --region <region> --profile <my-profile> | docker login --username AWS --password-stdin <uri>`
+    - The `<region>` tag is the AWS region where the container registry is located
+    - The `<my-profile>` tag is a CLI profile you have configured locally (see
+      documentation [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html))
+    - The `<uri>` tag has the format `aws_account_id.dkr.ecr.region.amazonaws.com` and is the uri for the Elastic
+      Container Repository (ECR)
+
+2. Taging the Image: `docker tag <image> <uri>`
+    - The `<image>` tag is the tag of the docker image you build locally. This will be `harp-video` if you used the
+      commands above.
+    - The `<uri>` tag is the uri for the ECR repository (use the same one you used above)
+
+3. Pushing the image `docker push <uri>`
+   - Again, the `<uri>` tag is the same as in the two previous commands.
