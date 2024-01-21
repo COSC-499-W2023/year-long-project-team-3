@@ -36,6 +36,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Create env File
+        run: |
+          echo "${{ secrets.STAGING_ENV_FILE }}" > .env
+
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
