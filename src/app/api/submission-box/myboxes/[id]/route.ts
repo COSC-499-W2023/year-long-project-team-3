@@ -38,6 +38,21 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             return NextResponse.json({ error: 'Forbidden' }, {status: 403 })
         }
 
+        const requestedBoxVideosIds = await prisma.submittedVideo.findMany({
+            where: {
+                requestedSubmissionId: submissionBoxId,
+            },
+            select: {
+                videoId: true,
+            },
+        })
+
+        const boxVideosIds = requestedBoxVideosIds.flat().map(({videoId}) => videoId)
+
+        const boxVideos = await Promise.all(
+            boxVideosIds.map((videoId) => prisma.video.findUniqueOrThrow({where: {id: videoId } }))
+        )
+
         return NextResponse.json({ videos: boxVideos }, {status: 200 })
     } catch (err) {
         logger.error(err)
