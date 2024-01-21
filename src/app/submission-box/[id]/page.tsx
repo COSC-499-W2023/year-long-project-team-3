@@ -5,43 +5,38 @@ import React, { useEffect, useState } from 'react'
 import { SessionContextValue, useSession } from 'next-auth/react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { Video } from '@prisma/client'
+import { SubmissionBox, Video } from '@prisma/client'
 import VideoList from '@/components/VideoList'
 import { toast } from 'react-toastify'
+import BackButton from '@/components/BackButton'
 
 export default function SubmissionBoxDetailPage() {
     const session: SessionContextValue = useSession()
     const pathname = usePathname()
     const [videos, setVideos] = useState<Video[]>([])
+    const [boxInfo, setBoxInfo] = useState<SubmissionBox | null>(null)
     const boxId = pathname?.split('/').pop()
 
     useEffect(() => {
         fetchVideos(boxId)
             .then((videos: Video[]) => setVideos(videos))
             .catch((error) => toast.error(error))
+        fetchBoxInfo(boxId)
+            .then((submissionBoxInfo) => setBoxInfo(submissionBoxInfo))
+            .catch((error) => toast.error(error))
     }, [])
 
-    return(
+    return (
         <>
             <Header {...session} />
-            <Box width='100%' display='flex' flexDirection='column'>
-                <Box display='flex' justifyContent='space-between' alignItems='center' paddingLeft='3rem'>
-                    <Typography
-                        data-cy='title'
-                        variant='h5'
-                        color={'textSecondary'}
-                        sx={{ m: 2, fontWeight: 'bold', py: '1rem', marginTop: '1rem' }}
-                    >
-                        Dashboard
-                    </Typography>
-                </Box>
-            </Box>
+            <BackButton route={'/dashboard '} title={'Return to Dashboard'} />{' '}
             <Box display='grid' gridTemplateColumns='4fr 1fr' height='100%' width='100%'>
                 <Box
                     sx={{
                         borderTopRightRadius: 25,
                         height: '100vh',
                         backgroundColor: 'secondary.lighter',
+                        paddingTop: 5,
                     }}
                     borderColor={'secondary.lighter'}
                     width='100%'
@@ -61,20 +56,27 @@ export default function SubmissionBoxDetailPage() {
                     <Typography data-cy='submissionBoxTitleHeading' color={'textSecondary'} sx={{ m: 1 }}>
                         Title
                     </Typography>
-                    <Typography data-cy='submissionBoxTitle' variant='h5' color={'textSecondary'} paddingBottom='2rem' sx={{ m: 1, fontWeight: 'bold'}}>
-                        TITLE OF DASHBOARD
+                    <Typography data-cy='submissionBoxTitle' variant='h5' color={'textSecondary'} paddingBottom='2rem'
+                        sx={{ m: 1, fontWeight: 'bold' }}>
+                        { boxInfo ? boxInfo.title : 'N/A' }
                     </Typography>
                     <Typography data-cy='submissionBoxDateHeading' color={'textSecondary'} sx={{ m: 1 }}>
-                        Close Date:
+                      Close Date:
                     </Typography>
-                    <Typography data-cy='submissionBoxDate' variant='h6' color={'textSecondary'} paddingBottom='2rem' paddingLeft='1rem' sx={{ m: 1 }}>
-                        DATE
+                    <Typography data-cy='submissionBoxDate' variant='h6' color={'textSecondary'} paddingBottom='2rem'
+                        paddingLeft='1rem' sx={{ m: 1 }}>
+                        { boxInfo ?
+                            !!boxInfo.closesAt ? new Date(boxInfo.closesAt).toDateString().slice(4) : 'N/A'
+                            : 'N/A' }
                     </Typography>
                     <Typography data-cy='submissionBoxDescHeading' color={'textSecondary'} sx={{ m: 1 }}>
-                        Description
+                      Description
                     </Typography>
-                    <Typography data-cy='submissionBoxDate' variant='subtitle2' color={'textSecondary'} paddingBottom='2rem' paddingLeft='1rem' sx={{ m: 1 }}>
-                        A lengthy description of the submission box. Includes instructions of submission and what is required of the submittee to include in their video.
+                    <Typography data-cy='submissionBoxDate' variant='subtitle2' color={'textSecondary'}
+                        paddingBottom='2rem' paddingLeft='1rem' sx={{ m: 1 }}>
+                        {boxInfo
+                            ? boxInfo.description
+                            : 'N/A'}
                     </Typography>
                 </Box>
             </Box>
@@ -83,7 +85,13 @@ export default function SubmissionBoxDetailPage() {
 
     async function fetchVideos(boxId: string | undefined): Promise<Video[]> {
         const response = await fetch(`/api/submission-box/myboxes/${ boxId }`)
-        const { videos } = await response.json()
+        const { videos, submissionBoxInfo } = await response.json()
         return videos
+    }
+
+    async function fetchBoxInfo(boxId: string | undefined) {
+        const response = await fetch(`/api/submission-box/myboxes/${ boxId }`)
+        const { videos, submissionBoxInfo } = await response.json()
+        return submissionBoxInfo
     }
 }

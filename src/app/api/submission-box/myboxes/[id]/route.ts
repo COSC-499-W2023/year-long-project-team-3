@@ -25,7 +25,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
                 },
             })
         ).id
-        // TODO: logic might be flawed here
+
         const ownedSubmissionBox = await prisma.submissionBoxManager.findMany({
             where: {
                 userId: userId,
@@ -37,6 +37,12 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             logger.error(`User ${ userId } does not have permission to access submission box ${ submissionBoxId }`)
             return NextResponse.json({ error: 'Forbidden' }, {status: 403 })
         }
+
+        const submissionBox = await prisma.submissionBox.findUniqueOrThrow({
+            where: {
+                id: submissionBoxId,
+            },
+        })
 
         const requestedSubmissions = await prisma.submissionBox.findMany({
             where: {
@@ -75,7 +81,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             boxVideosIds.map((videoId) => prisma.video.findUniqueOrThrow({where: {id: videoId } }))
         )
 
-        return NextResponse.json({ videos: boxVideos }, {status: 200 })
+        return NextResponse.json({ videos: boxVideos, submissionBoxInfo: submissionBox }, {status: 200 })
     } catch (err) {
         logger.error(err)
         return NextResponse.json({ error: 'Internal Server Error' }, {status: 500 })
