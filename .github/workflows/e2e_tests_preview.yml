@@ -9,29 +9,74 @@ on:
                 type: boolean
                 default: false
 
+env:
+    AWS_REGION: ca-central-1                   # set this to your preferred AWS region, e.g. us-west-1
+    ECR_REPOSITORY: harp-video           # set this to your Amazon ECR repository name
+    ECS_SERVICE: harp-video-website-staging-deployment                  # set this to your Amazon ECS service name
+    ECS_CLUSTER: HarpVideoDeployment                 # set this to your Amazon ECS cluster name
+    ECS_TASK_DEFINITION: amazon-ecs-task-definition.json # set this to the path to your Amazon ECS task definition
+    # file, e.g. .aws/task-definition.json
+    CONTAINER_NAME: harp-video           # set this to the name of the container in the
+    # containerDefinitions section of your task definition
+
+permissions:
+    id-token: write   # This is required for requesting the JWT
+    contents: read    # This is required for actions/checkout
+
 jobs:
     deploy-preview:
-        name: Deploy Preview
+        name: Deploy
         runs-on: ubuntu-latest
-        if: ${{ inputs.run_deploy }}
-        env:
-            VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-            VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        environment: production
+
         steps:
-            -   uses: actions/checkout@v4
-            -   name: Install Vercel CLI
-                run: npm install --global vercel@latest
-            -   name: Pull Vercel Environment Information
-                run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
-            -   name: Write .env
-                run: |
-                    echo "${{ secrets.ENV_PREVIEW }}" > .env
-            -   name: Build Project Artifacts
-                run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
-            -   name: Deploy Project Artifacts to Vercel
-                run: |
-                    url="$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})"
-                    vercel alias --token=${{ secrets.VERCEL_TOKEN }} set "$url" ubco-capstone-team-3.vercel.app
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Create env File
+              run: |
+                  echo "${{ secrets.STAGING_ENV_FILE }}" > .env
+
+            - name: configure aws credentials
+              uses: aws-actions/configure-aws-credentials@v3
+              with:
+                  role-to-assume: arn:aws:iam::932748244514:role/GithubActionRole
+                  role-session-name: GithubActionRole
+                  aws-region: ${{ env.AWS_REGION }}
+
+            - name: Login to Amazon ECR
+              id: login-ecr
+              uses: aws-actions/amazon-ecr-login@62f4f872db3836360b72999f4b87f1ff13310f3a
+
+            - name: Build, tag, and push image to Amazon ECR
+              id: build-image
+              env:
+                  ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+                  IMAGE_TAG: ${{ github.sha }}
+              run: |
+                  # Build a docker container and
+                  # push it to ECR so that it can
+                  # be deployed to ECS.
+                  docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile.prod .
+                  docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+                  echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+            - name: Fill in the new image ID in the Amazon ECS task definition
+              id: task-def
+              uses: aws-actions/amazon-ecs-render-task-definition@c804dfbdd57f713b6c079302a4c01db7017a36fc
+              with:
+                  task-definition: ${{ env.ECS_TASK_DEFINITION }}
+                  container-name: ${{ env.CONTAINER_NAME }}
+                  image: ${{ steps.build-image.outputs.image }}
+
+            - name: Deploy Amazon ECS task definition
+              uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a
+              with:
+                  task-definition: ${{ steps.task-def.outputs.task-definition }}
+                  service: ${{ env.ECS_SERVICE }}
+                  cluster: ${{ env.ECS_CLUSTER }}
+                  wait-for-service-stability: true
+
 
     setup-db:
         name: Set up database
@@ -43,7 +88,7 @@ jobs:
             -   uses: actions/checkout@v4
             -   name: Write environment variables
                 run: |
-                    echo "${{ secrets.ENV_PREVIEW }}" > .env
+                    echo "${{ secrets.STAGING_ENV_FILE }}" > .env
             -   name: Migrate Database
                 run: npx prisma migrate deploy &> prisma_migrate.log
 
@@ -60,7 +105,7 @@ jobs:
             -   uses: actions/checkout@v4
             -   name: Write environment variables
                 run: |
-                    echo "${{ secrets.ENV_PREVIEW }}" > .env
+                    echo "${{ secrets.STAGING_ENV_FILE }}" > .env
             -   name: Cypress Run E2E Tests
                 uses: cypress-io/github-action@v6
                 env:
