@@ -16,6 +16,8 @@ import createRequestSubmissionForUser from './cypress/tasks/createRequestSubmiss
 
 require('dotenv').config()
 
+console.log(process.env.NEXT_PUBLIC_CYPRESS_BASE_URL)
+
 export default defineConfig({
     e2e: {
         projectId: process.env.NEXT_PUBLIC_CYPRESS_PROJECT_ID,
