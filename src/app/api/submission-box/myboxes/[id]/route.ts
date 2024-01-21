@@ -25,7 +25,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
                 },
             })
         ).id
-
+        // TODO: logic might be flawed here
         const ownedSubmissionBox = await prisma.submissionBoxManager.findMany({
             where: {
                 userId: userId,
@@ -38,12 +38,16 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             return NextResponse.json({ error: 'Forbidden' }, {status: 403 })
         }
 
-        const requestedBoxVideosIds = await prisma.submittedVideo.findMany({
+        const requestedSubmissions = await prisma.submissionBox.findMany({
             where: {
-                requestedSubmissionId: submissionBoxId,
+                id: submissionBoxId,
             },
             select: {
-                videoId: true,
+                requestedSubmissions: {
+                    select: {
+                        id: true,
+                    },
+                },
             },
         })
 

@@ -1,16 +1,25 @@
 'use client'
-
 import { usePathname } from 'next/navigation'
 import Header from '@/components/Header'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { SessionContextValue, useSession } from 'next-auth/react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
+import { Video } from '@prisma/client'
+import VideoList from '@/components/VideoList'
+import { toast } from 'react-toastify'
 
 export default function SubmissionBoxDetailPage() {
     const session: SessionContextValue = useSession()
     const pathname = usePathname()
+    const [videos, setVideos] = useState<Video[]>([])
     const boxId = pathname?.split('/').pop()
+
+    useEffect(() => {
+        fetchVideos(boxId)
+            .then((videos: Video[]) => setVideos(videos))
+            .catch((error) => toast.error(error))
+    }, [])
 
     return(
         <>
@@ -37,7 +46,16 @@ export default function SubmissionBoxDetailPage() {
                     borderColor={'secondary.lighter'}
                     width='100%'
                 >
-
+                    <VideoList
+                        videos={videos.map((video) => {
+                            return {
+                                title: video.title,
+                                videoId: video.id,
+                                thumbnailUrl: video.thumbnail,
+                            }
+                        })}
+                        isSearching={false}
+                    />
                 </Box>
                 <Box paddingLeft='1rem'>
                     <Typography data-cy='submissionBoxTitleHeading' color={'textSecondary'} sx={{ m: 1 }}>
@@ -62,4 +80,10 @@ export default function SubmissionBoxDetailPage() {
             </Box>
         </>
     )
+
+    async function fetchVideos(boxId: string | undefined): Promise<Video[]> {
+        const response = await fetch(`/api/submission-box/myboxes/${ boxId }`)
+        const { videos } = await response.json()
+        return videos
+    }
 }
