@@ -51,6 +51,24 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             },
         })
 
+        const requestedSubmissionIds: string[] = requestedSubmissions
+            .flat()
+            .map(({ requestedSubmissions }) => requestedSubmissions.map(({ id }) => id))
+            .flat()
+
+        const requestedBoxVideosIds = await Promise.all(
+            requestedSubmissionIds.map((requestedSubmissionId) =>
+                prisma.submittedVideo.findMany({
+                    where: {
+                        requestedSubmissionId: requestedSubmissionId,
+                    },
+                    select: {
+                        videoId: true,
+                    },
+                })
+            )
+        )
+
         const boxVideosIds = requestedBoxVideosIds.flat().map(({videoId}) => videoId)
 
         const boxVideos = await Promise.all(
