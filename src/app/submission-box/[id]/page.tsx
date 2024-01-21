@@ -24,7 +24,7 @@ export default function SubmissionBoxDetailPage() {
         fetchBoxInfo(boxId)
             .then((submissionBoxInfo) => setBoxInfo(submissionBoxInfo))
             .catch((error) => toast.error(error))
-    }, [])
+    }, [boxId])
 
     return (
         <>
