@@ -27,7 +27,7 @@ jobs:
     deploy-preview:
         name: Deploy
         runs-on: ubuntu-latest
-        environment: production
+        environment: preview
 
         steps:
             - name: Checkout
