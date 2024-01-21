@@ -40,11 +40,6 @@ export default async function sendVideo(rawVideo: File, owner: User): Promise<Vi
 
     const client = new S3Client({
         region: process.env.AWS_UPLOAD_REGION,
-        credentials: {
-            accessKeyId: process.env.AWS_ACCESS_KEY_ID as string,
-            secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY as string,
-            sessionToken: process.env.AWS_SESSION_TOKEN as string,
-        },
     })
 
     const uploadS3 = new Upload({
