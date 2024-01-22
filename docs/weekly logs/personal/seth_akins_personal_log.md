@@ -280,7 +280,7 @@ will have to reconsider how we do that moving forwards.
 
 - I ran into many issues moving the deployment this week, so hopefully next week goes better.
 
-## Week 1 (8/01/2024 - 14/01/2024)
+## Week 2 (15/01/2024 - 21/01/2024)
 
 ![](imgs/seth-akins-term-2-week-2-tasks.png)
 
@@ -299,7 +299,7 @@ will have to reconsider how we do that moving forwards.
   up credentials for our repo on AWS and the action itself using the OpenID Connect protocol. The deploying works, now
   I am just fixing the Cypress tests to run on the AWS hosted container instead of the on the machine running the GitHub
   action.
-- Lastly I added some documentation of how you can manually build and upload an image of our docker container to AWS.
+- Lastly, I added some documentation of how you can manually build and upload an image of our docker container to AWS.
 
 ### Tasks
 
