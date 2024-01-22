@@ -116,7 +116,7 @@ jobs:
                     wait-on: http://harp-video-staging-balancer-1212142463.ca-central-1.elb.amazonaws.com/
                     browser: chrome
                     headed: true
-                    config: http://harp-video-staging-balancer-1212142463.ca-central-1.elb.amazonaws.com/
+                    config: baseUrl="http://harp-video-staging-balancer-1212142463.ca-central-1.elb.amazonaws.com/"
             -   name: Upload screenshots
                 uses: actions/upload-artifact@v3
                 if: failure()
