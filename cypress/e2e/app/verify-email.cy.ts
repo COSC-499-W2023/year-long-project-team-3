@@ -37,7 +37,7 @@ describe('Test email verification', () => {
     })
 
     it('should allow user verify email', () => {
-        cy.get('[data-cy=verify-email-button]').click()
+        cy.get('[data-cy=verify-email-button]').should('be.visible').click()
         cy.get('[data-cy=verify-email-button]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain.text', 'Email Sent!')
 
         cy.task('getVerificationToken', email).then((token) => {
