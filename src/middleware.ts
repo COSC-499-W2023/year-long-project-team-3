@@ -12,13 +12,14 @@ export default withAuth(
             isLoggedIn &&
             protectedPages.some(page => request.nextUrl.pathname.startsWith(page))
         ) {
-            const res = await (await fetch(process.env.NEXT_PUBLIC_BASE_URL + '/api/verify-email/is-verified', {
+            const res = await fetch(process.env.NEXT_PUBLIC_BASE_URL + '/api/verify-email/is-verified', {
                 method: 'GET',
                 headers: {
                     'cookie': cookies.toString(),
                 },
-            })).json()
-            if (!(res.isVerified ?? false)) {
+            })
+            const { isVerified } = await res.json()
+            if (!isVerified) {
                 const url = request.nextUrl.clone()
                 url.pathname = '/verify-email'
                 return NextResponse.redirect(url)
