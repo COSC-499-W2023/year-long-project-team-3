@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
             logger.error('User submitted an email validation token that was not in the database')
             return NextResponse.json({ error: 'Invalid verification link' }, { status: 400 })
         } else if (!isDateWithinLast24Hours(requestedEmailVerification.updatedAt)) {
-            return NextResponse.json({ error: 'Verification link expired' }, { status: 400 })
+            return NextResponse.json({ error: 'Verification link expired' }, { status: 410 })
         }
 
         // Set user's email as verified
