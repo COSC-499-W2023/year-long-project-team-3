@@ -48,7 +48,7 @@ export async function GET(req: NextRequest) {
 
         return NextResponse.json({ message: 'User email verified' }, { status: 200 })
     } catch (e) {
-        logger.error('Unknown error occurred while validating email')
+        logger.error('Unknown error occurred while validating email: ' + e)
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }
 }
