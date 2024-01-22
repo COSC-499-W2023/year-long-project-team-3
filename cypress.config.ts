@@ -13,6 +13,7 @@ import loadInSubmissionBoxes from './cypress/tasks/loadInSubmissionBoxes'
 import loadOutSubmissionBoxes from './cypress/tasks/loadOutSubmissionBoxes'
 import submitVideoToSubmissionBox from './cypress/tasks/submitVideoToSubmissionBox'
 import createRequestSubmissionForUser from './cypress/tasks/createRequestSubmissionForUser'
+import getVerificationToken from 'cypress/tasks/getVerificationToken'
 
 require('dotenv').config()
 
@@ -28,6 +29,7 @@ export default defineConfig({
                 clearDB,
                 createOneVideoAndRetrieveVideoId,
                 getUserId,
+                getVerificationToken,
                 createUser,
                 getSubmissionBoxes,
                 getSubmissionBoxManagers,

@@ -15,6 +15,7 @@ export default async function loadInSubmissionBoxes(props: LoadInSubmissionBoxes
         data: {
             email,
             password: hashedPassword,
+            emailVerified: new Date(),
             accounts: {
                 create: {
                     type: 'bcrypt',
