@@ -3,6 +3,7 @@ import { Message } from '@aws-sdk/client-ses'
 import * as process from 'process'
 import prisma from '@/lib/prisma'
 import { v4 as uuidv4 } from 'uuid'
+import logger from '@/utils/logger'
 
 export async function sendEmailVerificationEmail(email: string): Promise<boolean> {
     const user = await prisma.user.findUniqueOrThrow({
@@ -34,7 +35,9 @@ export async function sendEmailVerificationEmail(email: string): Promise<boolean
             let message = getVerificationMessage(baseUrl + '/verify-email/' + verificationToken.token)
             const res = await sendEmail(email, message)
             return res.$metadata.httpStatusCode === 200
-        } catch (e) {}
+        } catch (e) {
+            logger.error('Failed to generate unique token for database: ' + e)
+        }
     }
     return false
 }
