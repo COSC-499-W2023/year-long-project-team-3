@@ -4,12 +4,14 @@ type CreateSubmissionBoxWithEmail = {
     submissionBoxTitle?: string
     email?: string
     userId?: string
+    submissionBoxDescription?: string
 }
 
 export default async function createSubmissionBoxWithEmail(props: CreateSubmissionBoxWithEmail) {
     const newSubBox = await prisma.submissionBox.create({
         data: {
             title: props.submissionBoxTitle ?? 'test',
+            description: props.submissionBoxDescription ?? null,
         },
     })
 

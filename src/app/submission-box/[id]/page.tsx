@@ -72,10 +72,10 @@ export default function SubmissionBoxDetailPage() {
                     <Typography data-cy='submissionBoxDescHeading' color={'textSecondary'} sx={{ m: 1 }}>
                       Description
                     </Typography>
-                    <Typography data-cy='submissionBoxDate' variant='subtitle2' color={'textSecondary'}
+                    <Typography data-cy='submissionBoxDesc' variant='subtitle2' color={'textSecondary'}
                         paddingBottom='2rem' paddingLeft='1rem' sx={{ m: 1 }}>
-                        {boxInfo
-                            ? boxInfo.description
+                        {boxInfo ?
+                            boxInfo.description ?? 'N/A'
                             : 'N/A'}
                     </Typography>
                 </Box>
