@@ -61,18 +61,18 @@ export default function DashboardPage() {
 
     useEffect(() => {
         if (isVideoTabSelected) {
-            const filteredVideos = tempVideos.filter(
+            const filteredVideos = tempVideos?.filter(
                 (video) =>
                     video.title.toLowerCase().includes(searchTerm.trim().toLowerCase()) ||
                     video.description?.toLowerCase().includes(searchTerm.trim().toLowerCase())
-            )
+            ) ?? []
             setDisplayVideos(filteredVideos)
         } else {
-            const filteredSubmissionBoxes = tempSubmissionBoxes.filter(
+            const filteredSubmissionBoxes = tempSubmissionBoxes?.filter(
                 (submissionBox) =>
                     submissionBox.title.toLowerCase().includes(searchTerm.trim().toLowerCase()) ||
                     submissionBox.description?.toLowerCase().includes(searchTerm.trim().toLowerCase())
-            )
+            ) ?? []
             setSubmissionBoxes(filteredSubmissionBoxes)
         }
     }, [isVideoTabSelected, searchTerm, tempSubmissionBoxes, tempVideos])
