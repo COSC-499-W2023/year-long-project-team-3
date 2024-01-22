@@ -76,20 +76,25 @@ jobs:
 #                  wait-for-service-stability: true
 
     setup-db:
-        name: Set up database
+        name: Migrate Database
         runs-on: ubuntu-latest
         needs: ['deploy-preview']
-        continue-on-error: true
         steps:
             - uses: actions/checkout@v4
             - name: Write environment variables
               run: |
                   echo "${{ secrets.STAGING_ENV_FILE }}" > .env
+            - name: Install Packages
+              run: |
+                  npm ci
+            - name: Generate Prisma
+              run: |
+                  npx prisma generate
             - name: Migrate Database
               run: npx prisma migrate deploy &> prisma_migrate.log
 
     cypress-e2e:
-        name: Run Cypress E2E tests on preview deployment
+        name: Run Cypress E2E Tests on Preview Deployment
         runs-on: ubuntu-latest
         needs: [ deploy-preview, setup-db]
         steps:
