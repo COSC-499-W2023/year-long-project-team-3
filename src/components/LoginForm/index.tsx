@@ -177,10 +177,11 @@ export default function LoginForm() {
                             } else {
                                 router.push('/verify-email')
                             }
-                            router.refresh()
                         } else {
                             toast.error('There was an error while checking if your email is verified')
+                            router.push('/verify-email')
                         }
+                        router.refresh()
                     } else {
                         toast.error('There was an error while checking if your email is verified')
                     }
