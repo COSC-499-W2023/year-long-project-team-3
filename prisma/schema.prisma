@@ -9,18 +9,18 @@ datasource db {
 }
 
 model User {
-  id                          String                       @id @default(cuid())
-  createdAt                   DateTime                     @default(now())
-  updatedAt                   DateTime                     @updatedAt
-  email                       String                       @unique
-  emailVerified               DateTime?
-  password                    String?
-  accounts                    Account[]
-  ownedVideos                 Video[]
-  whitelistedVideos           VideoWhitelistedUser[]
-  requestedSubmissions        RequestedSubmission[]
-  managedSubmissionBoxes      SubmissionBoxManager[]
-  RequestedEmailVerifications RequestedEmailVerification[]
+  id                         String                      @id @default(cuid())
+  createdAt                  DateTime                    @default(now())
+  updatedAt                  DateTime                    @updatedAt
+  email                      String                      @unique
+  emailVerified              DateTime?
+  password                   String?
+  accounts                   Account[]
+  ownedVideos                Video[]
+  whitelistedVideos          VideoWhitelistedUser[]
+  requestedSubmissions       RequestedSubmission[]
+  managedSubmissionBoxes     SubmissionBoxManager[]
+  requestedEmailVerification RequestedEmailVerification?
 
   @@index([email])
 }
