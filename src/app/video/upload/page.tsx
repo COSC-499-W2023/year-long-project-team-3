@@ -9,7 +9,7 @@ import { useSession } from 'next-auth/react'
 import Header from '@/components/Header'
 import { useRouter } from 'next/navigation'
 import ProgressDots from '@/components/ProgressDots'
-import PageLoadProgressBlurBackground from 'src/components/PageLoadProgressBlurBackround'
+import PageLoadProgressBlurBackground from '@/components/PageLoadProgressBlurBackround'
 import logger from '@/utils/logger'
 import BackButton from '@/components/BackButton'
 

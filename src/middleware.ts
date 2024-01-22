@@ -31,6 +31,7 @@ export default withAuth(
         return NextResponse.next()
     },
     {
+        secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET,
         callbacks: {
             authorized: ({ req, token }) => {
                 const protectedPages = ['/dashboard', '/submission-box', '/video']
