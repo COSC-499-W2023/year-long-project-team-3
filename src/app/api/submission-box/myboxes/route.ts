@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import logger from '@/utils/logger'
 import prisma from '@/lib/prisma'
-import { SubmissionBox } from '@prisma/client'
+import type { SubmissionBox } from '@prisma/client'
 
 export async function GET(_: NextRequest): Promise<NextResponse> {
     try {

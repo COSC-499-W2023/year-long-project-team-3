@@ -17,7 +17,7 @@ import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/lib/constants'
 import { ObjectSchema } from 'yup'
 import { IconButton, InputAdornment } from '@mui/material'
 import { Visibility as VisibilityIconOn, VisibilityOff as VisibilityIconOff } from '@mui/icons-material'
-import HorizontalSeparator from 'src/components/HorizontalSeparator'
+import HorizontalSeparator from '@/components/HorizontalSeparator'
 import GoogleSigninButton from '@/components/GoogleSigninButton'
 
 export type SignUpFormInputsData = {

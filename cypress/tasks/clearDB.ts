@@ -1,6 +1,7 @@
 import prisma from '@/lib/prisma'
 
 export default async function clearDB() {
+    await prisma.requestedEmailVerification.deleteMany({})
     await prisma.submittedVideo.deleteMany({})
     await prisma.requestedSubmission.deleteMany({})
     await prisma.submissionBoxManager.deleteMany({})
