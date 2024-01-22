@@ -113,10 +113,10 @@ jobs:
                 env:
                     GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
                 with:
-                    wait-on: ${{ secrets.CYPRESS_BASE_URL }}
+                    wait-on: http://harp-video-staging-balancer-1212142463.ca-central-1.elb.amazonaws.com/
                     browser: chrome
-                    headed: false
-                    config: baseUrl=${{ secrets.CYPRESS_BASE_URL }}
+                    headed: true
+                    config: http://harp-video-staging-balancer-1212142463.ca-central-1.elb.amazonaws.com/
             -   name: Upload screenshots
                 uses: actions/upload-artifact@v3
                 if: failure()
