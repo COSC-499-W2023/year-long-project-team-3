@@ -5,18 +5,18 @@ import logger from '@/utils/logger'
 import { isDateWithinLast24Hours } from '@/utils/verification'
 
 export async function GET(req: NextRequest) {
+    const session = await getServerSession()
+    if (!session || !session.user?.email) {
+        return NextResponse.json({ error: 'You must be signed in to upload a video' }, { status: 401 })
+    }
+
+    const verificationToken = req.nextUrl.pathname.split('/').pop()
+    if (!verificationToken) {
+        logger.error('Email verification API called with invalid path')
+        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+    }
+
     try {
-        const session = await getServerSession()
-        if (!session || !session.user?.email) {
-            return NextResponse.json({ error: 'You must be signed in to upload a video' }, { status: 401 })
-        }
-
-        const verificationToken = req.nextUrl.pathname.split('/').pop()
-        if (!verificationToken) {
-            logger.error('Email verification API called with invalid path')
-            return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
-        }
-
         const requestedEmailVerification = await prisma.requestedEmailVerification.findUnique({
             where: {
                 token: verificationToken,

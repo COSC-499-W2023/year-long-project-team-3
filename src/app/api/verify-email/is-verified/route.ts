@@ -8,12 +8,12 @@ import prisma from '@/lib/prisma'
  * @return `{ isVerified: boolean }`
  */
 export async function GET(req: NextRequest) {
-    try {
-        const session = await getServerSession()
-        if (!session || !session.user?.email) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-        }
+    const session = await getServerSession()
+    if (!session || !session.user?.email) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
 
+    try {
         const user = await prisma.user.findUniqueOrThrow({
             where: {
                 email: session.user.email,
