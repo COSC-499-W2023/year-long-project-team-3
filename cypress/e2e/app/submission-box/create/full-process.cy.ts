@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { DELAY } from '../../../../utils/constants'
 
 describe('Test full submission box creation', () => {
-    it('should work', () => {
+    it('should be able to go through the full creation path', () => {
         cy.task('clearDB')
 
         const email = 'user@example.com'
