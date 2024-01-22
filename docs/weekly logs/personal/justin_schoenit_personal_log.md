@@ -1,5 +1,28 @@
 # Weekly Individual Log - Justin Schoenit
 
+## Week 2 (Jan 15 - 21)
+
+### Tasks
+
+![](imgs/week-2-t2-tasks-justin.png)
+
+### My Contributions this week
+
+- Write tests for email verification
+- Bug fix email verification
+  - Use middleware.ts file for checking that a user's email is verified before allowing them into most of the website
+  - Automatically verify the emails of users who log in with Google
+  
+### Goals for the coming week
+
+- Send email notifications to users when they're requested to a submission box
+  - This requires changes in the way redirects are handled
+  - Write tests for this
+
+### Additional Context
+
+N/A
+
 ## Week 1 (Jan 8 - 14)
 
 ### Tasks
