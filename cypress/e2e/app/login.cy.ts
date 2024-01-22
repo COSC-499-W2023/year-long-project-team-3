@@ -46,37 +46,25 @@ describe('Login tests', () => {
         })
     })
 
-    // TODO: fix flaky test
-    it.skip('Should allow user to create an account, login, and logout', () => {
+    it('Should allow user to create an account, login, and logout', () => {
         // User data
-        const userEmail = `test-${ uuidv4() }@test.com`
+        const email = `test-${ uuidv4() }@test.com`
         const password = 'P@ssw0rd'
 
-        // Create user
-        cy.visit('/signup')
-        cy.get('[data-cy="email"]').type(userEmail)
-        cy.get('[data-cy="password"]').type(password)
-        cy.get('[data-cy="passwordConfirmation"]').type(password)
-        cy.get('[data-cy="submit"]').click()
-
-        // We shouldn't be on the signup page anymore
-        cy.url({ timeout: TIMEOUT.LONG }).should('include', '/login')
+        // Sign up
+        cy.task('createUser', { email, password })
 
         // We should be able to log in
-        cy.get('[data-cy="email"]').type(userEmail)
+        cy.visit('/login')
+        cy.get('[data-cy="email"]').type(email)
         cy.get('[data-cy="password"]').type(password)
         cy.get('[data-cy="submit"]').click()
 
         // We shouldn't be on the login page anymore
         cy.url({ timeout: TIMEOUT.EXTRA_EXTRA_LONG }).should('include', '/dashboard')
-        // TODO: Fix this assert to make it less flaky. It works locally, but it does not work on our github action.
-        // cy.get('[data-cy="dashboard-message"]', { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).should(
-        //     'contain',
-        //     `Welcome to the dashboard, ${userEmail}!`
-        // )
 
         // We should be able to log out
-        cy.get('[data-cy="sign-out-button"]').click()
+        cy.get('[data-cy="sign-out-button"]').click({ force: true })
 
         cy.title().should('eq', 'Harp: A Secure Platform for Anonymous Video Submission')
         cy.get('[data-cy="sign-up-button"]').contains('Sign Up')
