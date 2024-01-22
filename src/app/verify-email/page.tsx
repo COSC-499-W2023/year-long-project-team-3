@@ -12,7 +12,7 @@ export default function VerifyEmail() {
     const resendEmail = () => {
         setButtonText('Sending...')
         fetch('/api/verify-email/send-email').then((res) => {
-            if (res.status == 200) {
+            if (res.status === 200) {
                 setButtonText('Email Sent!')
             } else {
                 setButtonText('Failed to send. Try again')
