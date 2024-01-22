@@ -25,14 +25,14 @@ export default function VerifyEmail() {
             fetch(`/api/verify-email/${ emailVerificationId }`).then(async (res) => {
                 if (res.status === 200) {
                     setPageMsg('Email verified!')
-                    setPageStatus('success' as PageStatus)
+                    setPageStatus('success')
                 } else if (res.status === 400) {
                     const error = await res.json()
                     setPageMsg(error.error ?? 'Invalid verification link.')
-                    setPageStatus('error' as PageStatus)
+                    setPageStatus('error')
                 } else {
                     setPageMsg('There was an issue while verifying your email.')
-                    setPageStatus('error' as PageStatus)
+                    setPageStatus('error')
                 }
             })
         }
@@ -40,7 +40,7 @@ export default function VerifyEmail() {
 
     const resendEmail = () => {
         fetch('/api/verify-email/send-email').then((res) => {
-            if (res.status == 200) {
+            if (res.status === 200) {
                 setButtonText('Email Sent!')
             } else {
                 setButtonText('Failed to send. Try again')
