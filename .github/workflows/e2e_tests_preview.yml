@@ -113,6 +113,11 @@ jobs:
             -   name: Run Cypress Tests
                 run: |
                     npx cypress run
+            -   name: Save cypress outputs
+                if: always()
+                id: save-cypress-outputs
+                run: |
+                  echo "PR_ID=$CYPRESS_PULL_REQUEST_ID" >> $GITHUB_OUTPUT
             -   name: Upload screenshots
                 uses: actions/upload-artifact@v4
                 if: failure()
@@ -127,11 +132,6 @@ jobs:
                     name: cypress-videos
                     path: cypress/videos
                     if-no-files-found: ignore
-            -   name: Save cypress outputs
-                if: always()
-                id: save-cypress-outputs
-                run: |
-                  echo "PR_ID=$CYPRESS_PULL_REQUEST_ID" >> $GITHUB_OUTPUT
             -   name: Upload Test Results
                 if: always()
                 uses: actions/upload-artifact@v4
