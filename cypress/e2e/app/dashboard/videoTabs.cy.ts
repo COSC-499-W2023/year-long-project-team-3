@@ -19,14 +19,10 @@ describe('Dashboard Recent Videos Tests', () => {
         cy.visit('/signup')
 
         // Sign up
-        cy.visit('/signup')
-        cy.get('[data-cy="email"]').type(email)
-        cy.get('[data-cy="password"]').type(password)
-        cy.get('[data-cy="passwordConfirmation"]').type(password)
-        cy.get('[data-cy="submit"]').click()
-        cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'login')
+        cy.task('createUser', { email, password })
 
         // Login
+        cy.visit('/login')
         cy.get('[data-cy=email]').type(email)
         cy.get('[data-cy=password]').type(password)
         cy.get('[data-cy=submit]').click()
@@ -48,12 +44,7 @@ describe('Dashboard Recent Videos Tests', () => {
         const password = 'randomPasswordCool1'
 
         // Sign up
-        cy.visit('/signup')
-        cy.get('[data-cy="email"]').type(email)
-        cy.get('[data-cy="password"]').type(password)
-        cy.get('[data-cy="passwordConfirmation"]').type(password)
-        cy.get('[data-cy="submit"]').click()
-        cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'login')
+        cy.task('createUser', { email, password })
 
         // Create submission box and submit video
         const videoTitle = 'Test Video Title ' + uuidv4()
@@ -66,6 +57,7 @@ describe('Dashboard Recent Videos Tests', () => {
         })
 
         // Login
+        cy.visit('/login')
         cy.get('[data-cy=email]').type(email)
         cy.get('[data-cy=password]').type(password)
         cy.get('[data-cy=submit]').click()
@@ -100,12 +92,7 @@ describe('Dashboard Recent Videos Tests', () => {
         const password = 'randomPasswordCool1'
 
         // Sign up
-        cy.visit('/signup')
-        cy.get('[data-cy="email"]').type(email)
-        cy.get('[data-cy="password"]').type(password)
-        cy.get('[data-cy="passwordConfirmation"]').type(password)
-        cy.get('[data-cy="submit"]').click()
-        cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'login')
+        cy.task('createUser', { email, password })
 
         // Create submission box and submit video
         const videoTitle = 'Test Video Title ' + uuidv4()
@@ -119,6 +106,7 @@ describe('Dashboard Recent Videos Tests', () => {
         })
 
         // Login
+        cy.visit('/login')
         cy.get('[data-cy=email]').type(email)
         cy.get('[data-cy=password]').type(password)
         cy.get('[data-cy=submit]').click()

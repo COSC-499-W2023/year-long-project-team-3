@@ -244,3 +244,38 @@ Researching ways to implement face-blurring using AWS, and another small UI impr
 My goal for this week is to submit my UI improvement for review, and to put at least 6h into researching face-blurring.
 
 ### Additional Context
+
+
+## Teresa Saller - Term 2: Week 2 (2024/01/15 - 2024/01/21)
+
+![teresa-saller-tasks-w2-t2.png](imgs/teresa-saller-tasks-w1-t2.png)
+
+### Tasks
+
+Completed:
+- [Research AWS Rekognition for face blurring #289](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/289)
+- [Add infrastructure for face blurring #302](https://github.com/orgs/COSC-499-W2023/projects/34/views/2?pane=issue&itemId=50057131)
+
+In progress:
+- [Add Avatar and Dropdown instead of Sign Out Button #295](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/295)
+
+We decided to focus more heavily on core features this week to be ready for peer-review. As part of this, I spent 20h+
+this week researching AWS Rekognition and setting up infrastructure for faceblurring. As part of this:
+- I set up the repo recommended by the client: https://github.com/aws-samples/rekognition-video-people-blurring-cdk
+- I ran into and fixed the following errors:
+  - `[ERROR]	2024-01-16T20:51:13.718Z	27912bcc-8966-4c3c-8899-468f1b5ae336	Lambda role does not have permission to call DetectFaces in Amazon Rekognition.`
+    - needed to change region to us-west-2
+  - `Error: fork/exec /lambda-entrypoint.sh: exec format error from cloud formation template`
+    - needed to build the image for amd64 architecture, not arm64 which was the default for me since I am on an M2
+- I brainstormed how to link the rekognition faceblurring pipeline to our existing streaming pipeline with @Hedgemon4 and we decided to use a lambda to transfer files between the rekognition output and streaming input bucket. This lambda also generates the metadata file containing the database id needed in the streaming pipeline. It does so using the video title. 
+
+### Goals
+
+My goal for this week is to help my team reach the goals we set for the peer-review deadline. If there is time, I would
+like to implement logic to give the user a choice of whether they want their face blurred. Currently, we are always blurring
+it.
+
+### Additional Context
+
+My code contributions for this week may look small, but that is because I spent so much time getting the pipeline to work.
+None of what I did can really be tested easily, and this is the reason why I have not added any tests this week.
