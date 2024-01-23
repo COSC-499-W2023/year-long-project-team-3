@@ -47,8 +47,7 @@ export default function SubmissionBoxDetailPage() {
                     />
                 </Box>
                 <Box paddingLeft='1rem'>
-                    <SubmissionBoxDetails
-                        submissionBox = {boxInfo}/>
+                    <SubmissionBoxDetails submissionBox={boxInfo} />
                 </Box>
             </Box>
         </>

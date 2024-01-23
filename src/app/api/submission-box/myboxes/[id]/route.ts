@@ -12,7 +12,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
     const submissionBoxId = req.nextUrl.pathname.split('/').pop()
     if (!submissionBoxId) {
-        return NextResponse.json({ error: 'No submissionBoxId provided' }, {status: 400 })
+        return NextResponse.json({ error: 'No submissionBoxId provided' }, { status: 400 })
     }
 
     try {
@@ -86,7 +86,10 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             },
         })
 
-        const boxVideosIds = requestedBoxVideosIds.flat().map(({videoId}) => videoId).flat()
+        const boxVideosIds = requestedBoxVideosIds
+            .flat()
+            .map(({ videoId }) => videoId)
+            .flat()
         // Get the videos themselves
         const boxVideos = await prisma.video.findMany({
             where: {
@@ -96,10 +99,9 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             },
         })
 
-
-        return NextResponse.json({ videos: boxVideos, submissionBoxInfo: submissionBox }, {status: 200 })
+        return NextResponse.json({ videos: boxVideos, submissionBoxInfo: submissionBox }, { status: 200 })
     } catch (err) {
         logger.error(err)
-        return NextResponse.json({ error: 'Internal Server Error' }, {status: 500 })
+        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }
 }
