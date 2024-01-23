@@ -111,10 +111,12 @@ jobs:
             - name: Run Cypress Tests
               run: |
                   npx cypress run
-            - name: See results
-              run: |
-                cd cypress
-                ls
+            - name: Save Results
+              if: always()
+              uses: actions/upload-artifact@v4
+              with:
+                  name: e2e-test-results
+                  path: cypress/reports/e2e/e2e*.json
 
 #    cypress-e2e:
 #        name: Run cypress E2E tests on preview deployment
@@ -166,29 +168,29 @@ jobs:
 ##                    name: e2e-test-results
 ##                    path: cypress/reports/e2e/e2e*.json
 ##
-#    results-report:
-#        name: Report results
-#        runs-on: ubuntu-latest
-#        if: always()
-#        needs: [ cypress-e2e ]
-#        steps:
-#            -   uses: actions/checkout@v4
-#            -   name: Download test results
-#                uses: actions/download-artifact@v4
-#                with:
-#                    name: e2e-test-results
-#                    path: cypress/reports
-#            -   name: Merge reports to 1 report file
-#                run: |
-#                    npx mochawesome-merge cypress/reports/*.json > cypress/reports/test_results.json
-#            -   name: Convert report file to markdown
-#                run: |
-#                    npx mochawesome-json-to-md@0.7.2 -p cypress/reports/test_results.json -o cypress/reports/test_results.md --reportTitle="E2E Test Results"
-#            -   name: Create report and post on PR
-#                uses: peter-evans/create-or-update-comment@v3
-#                env:
-#                    PR_ID: ${{ needs.cypress-e2e.outputs.PR_ID }}
-#                with:
-#                    issue-number: ${{ env.PR_ID }}
-#                    body-path: cypress/reports/test_results.md
-#                    token: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
+    results-report:
+        name: Report results
+        runs-on: ubuntu-latest
+        if: always()
+        needs: [ cypress-e2e ]
+        steps:
+            -   uses: actions/checkout@v4
+            -   name: Download test results
+                uses: actions/download-artifact@v4
+                with:
+                    name: e2e-test-results
+                    path: cypress/reports
+            -   name: Merge reports to 1 report file
+                run: |
+                    npx mochawesome-merge cypress/reports/*.json > cypress/reports/test_results.json
+            -   name: Convert report file to markdown
+                run: |
+                    npx mochawesome-json-to-md@0.7.2 -p cypress/reports/test_results.json -o cypress/reports/test_results.md --reportTitle="E2E Test Results"
+            -   name: Create report and post on PR
+                uses: peter-evans/create-or-update-comment@v3
+                env:
+                    PR_ID: ${{ needs.cypress-e2e.outputs.PR_ID }}
+                with:
+                    issue-number: ${{ env.PR_ID }}
+                    body-path: cypress/reports/test_results.md
+                    token: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
