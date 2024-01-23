@@ -4,17 +4,19 @@ import { getServerSession } from 'next-auth'
 import prisma from '@/lib/prisma'
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
+    // API fetches all the videos sent to a specific submission box and fetches the title, date, and description of the submission box
+    const session = await getServerSession()
+    if (!session || !session.user?.email) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const submissionBoxId = req.nextUrl.pathname.split('/').pop()
+    if (!submissionBoxId) {
+        return NextResponse.json({ error: 'No submissionBoxId provided' }, {status: 400 })
+    }
+
     try {
-        const session = await getServerSession()
-        if (!session || !session.user?.email) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-        }
-
-        const submissionBoxId = req.nextUrl.pathname.split('/').pop()
-        if (!submissionBoxId) {
-            return NextResponse.json({ error: 'No submissionBoxId provided' }, {status: 500 })
-        }
-
+        // Get user id
         const userId = (
             await prisma.user.findUniqueOrThrow({
                 where: {
@@ -26,24 +28,34 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             })
         ).id
 
-        const ownedSubmissionBox = await prisma.submissionBoxManager.findMany({
+        // Grab the managed submission box that the user wants to view
+        const ownedSubmissionBox = await prisma.submissionBoxManager.findUniqueOrThrow({
             where: {
-                userId: userId,
-                submissionBoxId: submissionBoxId,
+                // eslint-disable-next-line camelcase
+                userId_submissionBoxId: {
+                    userId: userId,
+                    submissionBoxId: submissionBoxId,
+                },
+            },
+            select: {
+                viewPermission: true,
             },
         })
 
-        if (!ownedSubmissionBox) {
+        // Check if user is an owner of the managed submission box
+        if (ownedSubmissionBox.viewPermission !== 'owner') {
             logger.error(`User ${ userId } does not have permission to access submission box ${ submissionBoxId }`)
-            return NextResponse.json({ error: 'Forbidden' }, {status: 403 })
+            return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
         }
 
+        // Get the submission box itself
         const submissionBox = await prisma.submissionBox.findUniqueOrThrow({
             where: {
                 id: submissionBoxId,
             },
         })
 
+        // Grab all submissions to the submission box
         const requestedSubmissions = await prisma.submissionBox.findMany({
             where: {
                 id: submissionBoxId,
@@ -62,24 +74,28 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             .map(({ requestedSubmissions }) => requestedSubmissions.map(({ id }) => id))
             .flat()
 
-        const requestedBoxVideosIds = await Promise.all(
-            requestedSubmissionIds.map((requestedSubmissionId) =>
-                prisma.submittedVideo.findMany({
-                    where: {
-                        requestedSubmissionId: requestedSubmissionId,
-                    },
-                    select: {
-                        videoId: true,
-                    },
-                })
-            )
-        )
+        // Grab the video ids of all submissions
+        const requestedBoxVideosIds = await prisma.submittedVideo.findMany({
+            where: {
+                requestedSubmissionId: {
+                    in: [...requestedSubmissionIds],
+                },
+            },
+            select: {
+                videoId: true,
+            },
+        })
 
-        const boxVideosIds = requestedBoxVideosIds.flat().map(({videoId}) => videoId)
+        const boxVideosIds = requestedBoxVideosIds.flat().map(({videoId}) => videoId).flat()
+        // Get the videos themselves
+        const boxVideos = await prisma.video.findMany({
+            where: {
+                id: {
+                    in: [...boxVideosIds],
+                },
+            },
+        })
 
-        const boxVideos = await Promise.all(
-            boxVideosIds.map((videoId) => prisma.video.findUniqueOrThrow({where: {id: videoId } }))
-        )
 
         return NextResponse.json({ videos: boxVideos, submissionBoxInfo: submissionBox }, {status: 200 })
     } catch (err) {

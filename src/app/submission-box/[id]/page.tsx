@@ -9,6 +9,7 @@ import { SubmissionBox, Video } from '@prisma/client'
 import VideoList from '@/components/VideoList'
 import { toast } from 'react-toastify'
 import BackButton from '@/components/BackButton'
+import SubmissionBoxDetails from '@/components/SubmissionBoxDetails'
 
 export default function SubmissionBoxDetailPage() {
     const session: SessionContextValue = useSession()
@@ -19,11 +20,6 @@ export default function SubmissionBoxDetailPage() {
 
     useEffect(() => {
         fetchVideos(boxId)
-            .then((videos: Video[]) => setVideos(videos))
-            .catch((error) => toast.error(error))
-        fetchBoxInfo(boxId)
-            .then((submissionBoxInfo) => setBoxInfo(submissionBoxInfo))
-            .catch((error) => toast.error(error))
     }, [boxId])
 
     return (
@@ -53,45 +49,17 @@ export default function SubmissionBoxDetailPage() {
                     />
                 </Box>
                 <Box paddingLeft='1rem'>
-                    <Typography data-cy='submissionBoxTitleHeading' color={'textSecondary'} sx={{ m: 1 }}>
-                        Title
-                    </Typography>
-                    <Typography data-cy='submissionBoxTitle' variant='h5' color={'textSecondary'} paddingBottom='2rem'
-                        sx={{ m: 1, fontWeight: 'bold' }}>
-                        { boxInfo ? boxInfo.title : 'N/A' }
-                    </Typography>
-                    <Typography data-cy='submissionBoxDateHeading' color={'textSecondary'} sx={{ m: 1 }}>
-                      Close Date:
-                    </Typography>
-                    <Typography data-cy='submissionBoxDate' variant='h6' color={'textSecondary'} paddingBottom='2rem'
-                        paddingLeft='1rem' sx={{ m: 1 }}>
-                        { boxInfo ?
-                            !!boxInfo.closesAt ? new Date(boxInfo.closesAt).toDateString().slice(4) : 'N/A'
-                            : 'N/A' }
-                    </Typography>
-                    <Typography data-cy='submissionBoxDescHeading' color={'textSecondary'} sx={{ m: 1 }}>
-                      Description
-                    </Typography>
-                    <Typography data-cy='submissionBoxDesc' variant='subtitle2' color={'textSecondary'}
-                        paddingBottom='2rem' paddingLeft='1rem' sx={{ m: 1 }}>
-                        {boxInfo ?
-                            boxInfo.description ?? 'N/A'
-                            : 'N/A'}
-                    </Typography>
+                    <SubmissionBoxDetails
+                        submissionBox = {boxInfo}/>
                 </Box>
             </Box>
         </>
     )
 
-    async function fetchVideos(boxId: string | undefined): Promise<Video[]> {
+    async function fetchVideos(boxId: string | undefined) {
         const response = await fetch(`/api/submission-box/myboxes/${ boxId }`)
         const { videos, submissionBoxInfo } = await response.json()
-        return videos
-    }
-
-    async function fetchBoxInfo(boxId: string | undefined) {
-        const response = await fetch(`/api/submission-box/myboxes/${ boxId }`)
-        const { videos, submissionBoxInfo } = await response.json()
-        return submissionBoxInfo
+        setVideos(videos)
+        setBoxInfo(submissionBoxInfo)
     }
 }

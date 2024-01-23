@@ -2,28 +2,24 @@ import { TIMEOUT } from '../../../../utils/constants'
 import runWithRetry from '../../../../utils/runUntilExist'
 
 describe('Recieving Dashboard Details Page Tests', () => {
+    const email = 'requestedDetail@page.test'
+    const password = 'Pass1234'
     beforeEach(() => {
         cy.task('clearDB')
-
         // Can create the same user for each test, but need to create two separate submission boxes
-        const email = 'requestedDetail@page.test'
-        const password = 'Pass1234'
         cy.task('createUser', { email, password })
-    })
-
-    it('should display a submission box with no information inputted other than title', () => {
-        const email = 'requestedDetail@page.test'
-        const password = 'Pass1234'
-        const submissionBoxTitle = 'Test Recieving'
-        cy.task('getUserId', email).then((userId) => {
-            cy.task('createSubmissionBoxWithEmail', { submissionBoxTitle, email, userId })
-        })
-
         cy.visit('/login')
         cy.get('[data-cy=email]').type(email)
         cy.get('[data-cy=password]').type(password)
         cy.get('[data-cy=submit]').click()
         cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('not.contain', 'login')
+    })
+
+    it('should display a submission box with no information inputted other than title', () => {
+        const submissionBoxTitle = 'Test Recieving'
+        cy.task('getUserId', email).then((userId) => {
+            cy.task('createSubmissionBoxWithEmail', { submissionBoxTitle, email, userId })
+        })
 
         cy.visit('/dashboard')
         runWithRetry(() => {
@@ -39,8 +35,6 @@ describe('Recieving Dashboard Details Page Tests', () => {
     })
 
     it('should display a submission box with all information inputted and videos', () => {
-        const email = 'requestedDetail@page.test'
-        const password = 'Pass1234'
         const submissionBoxTitle = 'Test Recieving with Data'
         const submissionBoxDescription = 'This is a description that describes what users need to submit and have in their videos.  The description is a good tool to make sure that participants in the submission box are able to determine what is needed in their submissions and the ability for them to hit their goals. :)'
         const videoTitle = ['Test video1', 'Test video2']
@@ -54,12 +48,6 @@ describe('Recieving Dashboard Details Page Tests', () => {
                 })
             })
         })
-
-        cy.visit('/login')
-        cy.get('[data-cy=email]').type(email)
-        cy.get('[data-cy=password]').type(password)
-        cy.get('[data-cy=submit]').click()
-        cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('not.contain', 'login')
 
         cy.visit('/dashboard')
         runWithRetry(() => {
