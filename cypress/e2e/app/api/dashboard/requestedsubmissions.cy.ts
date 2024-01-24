@@ -24,14 +24,11 @@ describe('Test requested submission API', () => {
             const email = 'noSubmission' + uuidv4() + '@user.com'
             const password = 'noSubmission1'
 
-            cy.visit('/signup')
-            cy.get('[data-cy="email"]').type(email)
-            cy.get('[data-cy="password"]').type(password)
-            cy.get('[data-cy="passwordConfirmation"]').type(password)
-            cy.get('[data-cy="submit"]').click()
-            cy.url().should('contain', 'login')
+            // Sign up
+            cy.task('createUser', { email, password })
 
             // Login
+            cy.visit('/login')
             cy.get('[data-cy=email]').type(email)
             cy.get('[data-cy=password]').type(password)
             cy.get('[data-cy=submit]').click()

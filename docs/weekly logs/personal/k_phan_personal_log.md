@@ -1,5 +1,21 @@
 # K Phan
 
+## Term 2 Week 2 (January 15, 2024 - January 21, 2024)
+
+### Week's Goals
+- Finish detailed page for video (COMPLETE, NOT TESTED)
+- Finish edit video page + backend (COMPLETE, NOT TESTED)
+- Test new features (NOT COMPLETED)
+
+### Tasks Worked On
+- Detailed page for video (https://github.com/COSC-499-W2023/year-long-project-team-3/pull/312)
+- Helped with renaming files before uploading to S3
+- Asked other teams on how to blur face with Recoknition (Shout out to Jan from Team 9)
+
+### Teamformation Report
+![](./imgs/term-2-week-2-k-phan-tasks.png)
+
+
 ## Term 2 Week 1 (December 04, 2023 - January 14, 2024)
 
 ### Week's Goals

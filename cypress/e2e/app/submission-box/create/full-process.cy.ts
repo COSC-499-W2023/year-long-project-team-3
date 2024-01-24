@@ -1,21 +1,17 @@
 import { v4 as uuidv4 } from 'uuid'
+import { DELAY } from '../../../../utils/constants'
 
 describe('Test full submission box creation', () => {
-    // TODO: This will be fixed in another PR
-    it.skip('should work', () => {
+    it('should be able to go through the full creation path', () => {
         cy.task('clearDB')
 
         const email = 'user@example.com'
         const password = 'Password1'
         // Sign up
-        cy.visit('/signup')
-        cy.get('[data-cy="email"]').type(email)
-        cy.get('[data-cy="password"]').type(password)
-        cy.get('[data-cy="passwordConfirmation"]').type(password)
-        cy.get('[data-cy="submit"]').click()
-        cy.url().should('contain', 'login')
+        cy.task('createUser', { email, password })
 
         // Login
+        cy.visit('/login')
         cy.get('[data-cy=email]').type(email)
         cy.get('[data-cy=password]').type(password)
         cy.get('[data-cy=submit]').click()
@@ -43,14 +39,14 @@ describe('Test full submission box creation', () => {
                     cy.get('[data-cy=submission-box-title]').type(sb.title)
                     cy.get('[data-cy=description]').type(sb.description)
                     cy.get('.data-cy-date-time-picker').type(sb.closesAt.replaceAll(' ', ''))
-                    cy.get('[data-cy=next]').click()
+                    cy.get('[data-cy=Next]').click()
 
                     cy.get('[data-cy=title]').should('contain', 'Request Submissions')
 
                     cy.wrap(sb.requestedEmails).each((email: string) => {
                         cy.get('[data-cy=email]').type(email).type('{enter}')
                     })
-                    cy.get('[data-cy=next]').click()
+                    cy.get('[data-cy=Next]').click()
 
                     cy.get('[data-cy=title]').should('contain', 'Review & Create')
 
@@ -61,7 +57,9 @@ describe('Test full submission box creation', () => {
                         cy.get('[data-cy=requested-emails]').should('contain', email)
                     })
 
-                    cy.get('[data-cy=next]').click()
+                    cy.get('[data-cy=Create]').click()
+
+                    cy.wait(DELAY.MEDIUM)
 
                     cy.task('getSubmissionBoxes').then((submissionBoxes: any) => {
                         assert(Array.isArray(submissionBoxes))

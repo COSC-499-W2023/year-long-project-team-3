@@ -17,7 +17,6 @@ export default function LoginPage() {
     useEffect(() => {
         if (status === 'authenticated') {
             setIsLoginPageVisible(false)
-            // router.push('/dashboard')
             if (callbackUrl) {
                 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:3000'
                 if (callbackUrl.startsWith(baseUrl)) {

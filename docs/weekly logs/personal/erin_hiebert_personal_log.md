@@ -181,3 +181,23 @@
 ### Additional Context
 
 -   NA
+
+## Week 2 (15/01/2024 - 21/01/2024)
+
+![](imgs/term-2-week-2-erin-tasks.png)
+
+### Week Tasks
+
+-   Create mocks for submission detail pages  #304 (Completed)
+-   Implement submission detail page for receiving submission boxes  #305 (In Review)
+-   Detail page for submission boxes  #303 (In Progress)
+
+### Week Goals
+
+-   This week I pivoted from AWS faceblurring to creation of a detail page for our submission boxes
+-   Mocks were made for both receiving boxes and user's requested submission boxes.  That is a user is able to view all videos submitted to their submission boxes from other users AND requested submission boxes will show the video that the user has submitted to it.
+-   At present, I finished coding and testing the receiving submission boxes detail page(s)
+
+### Additional Context
+
+-   NA

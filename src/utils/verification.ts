@@ -42,3 +42,15 @@ export function validTimestamp(timestamp: string) {
     // Validate the input to match the format hh:mm:ss.ms
     return getTimestampRegex().test(timestamp)
 }
+
+export function isDateWithinLast24Hours(date: Date): boolean {
+    // Get the current date and time
+    const currentDate = new Date()
+
+    // Calculate the difference in milliseconds
+    const timeDifference = currentDate.getTime() - date.getTime()
+
+    // Check if the time difference is less than 24 hours in milliseconds
+    const twentyFourHoursInMilliseconds = 24 * 60 * 60 * 1000
+    return timeDifference < twentyFourHoursInMilliseconds
+}

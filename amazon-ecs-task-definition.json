@@ -1,0 +1,47 @@
+{
+  "family": "harp-video",
+  "containerDefinitions": [
+    {
+      "name": "harp-video",
+      "image": "932748244514.dkr.ecr.ca-central-1.amazonaws.com/harp-video:latest",
+      "cpu": 0,
+      "portMappings": [
+        {
+          "name": "harp-video-3000-tcp",
+          "containerPort": 3000,
+          "hostPort": 3000,
+          "protocol": "tcp",
+          "appProtocol": "http"
+        }
+      ],
+      "essential": true,
+      "environment": [],
+      "environmentFiles": [],
+      "mountPoints": [],
+      "volumesFrom": [],
+      "ulimits": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-create-group": "true",
+          "awslogs-group": "/ecs/",
+          "awslogs-region": "ca-central-1",
+          "awslogs-stream-prefix": "ecs"
+        },
+        "secretOptions": []
+      }
+    }
+  ],
+  "taskRoleArn": "arn:aws:iam::932748244514:role/ecsTaskExecutionRole",
+  "executionRoleArn": "arn:aws:iam::932748244514:role/ecsTaskExecutionRole",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "1024",
+  "memory": "3072",
+  "runtimePlatform": {
+    "cpuArchitecture": "X86_64",
+    "operatingSystemFamily": "LINUX"
+  }
+}

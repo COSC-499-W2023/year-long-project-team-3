@@ -2,7 +2,7 @@ import { TIMEOUT } from '../../../../utils/constants'
 import { v4 as uuidv4 } from 'uuid'
 
 describe('Submission box request submissions tests', () => {
-    before(() => {
+    beforeEach(() => {
         cy.task('clearDB')
     })
 
@@ -10,25 +10,19 @@ describe('Submission box request submissions tests', () => {
 
     context('Logged in', () => {
         beforeEach(() => {
-            cy.session('testuser', () => {
-                const email = 'user' + uuidv4() + '@example.com'
-                currentUserEmail = email
-                const password = 'Password1'
+            const email = 'user' + uuidv4() + '@example.com'
+            currentUserEmail = email
+            const password = 'Password1'
 
-                // Sign up
-                cy.visit('/signup')
-                cy.get('[data-cy="email"]').type(email)
-                cy.get('[data-cy="password"]').type(password)
-                cy.get('[data-cy="passwordConfirmation"]').type(password)
-                cy.get('[data-cy="submit"]').click()
-                cy.url().should('contain', 'login')
+            /// Sign up
+            cy.task('createUser', { email, password })
 
-                // Login
-                cy.get('[data-cy=email]').type(email)
-                cy.get('[data-cy=password]').type(password)
-                cy.get('[data-cy=submit]').click()
-                cy.url().should('not.contain', 'login')
-            })
+            // Login
+            cy.visit('/login')
+            cy.get('[data-cy=email]').type(email)
+            cy.get('[data-cy=password]').type(password)
+            cy.get('[data-cy=submit]').click()
+            cy.url().should('not.contain', 'login')
 
             cy.visit('/dashboard')
             cy.get('[data-cy="Create new"]').click()

@@ -3,7 +3,7 @@
 import { Box, Typography } from '@mui/material'
 import Logo from '@/components/Logo'
 import Header from '@/components/Header'
-import LandingPageButton from 'src/components/LandingPageButton'
+import LandingPageButton from '@/components/LandingPageButton'
 import { type SessionContextValue, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 

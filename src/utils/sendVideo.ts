@@ -39,18 +39,13 @@ export default async function sendVideo(rawVideo: File, owner: User): Promise<Vi
     const rawVideoBuffer = await rawVideo.arrayBuffer()
 
     const client = new S3Client({
-        region: process.env.awsUploadRegion,
-        credentials: {
-            accessKeyId: process.env.awsAccessKeyId as string,
-            secretAccessKey: process.env.awsSecretAccessKey as string,
-            sessionToken: process.env.awsSessionToken as string,
-        },
+        region: process.env.AWS_UPLOAD_REGION,
     })
 
     const uploadS3 = new Upload({
         client: client,
         params: {
-            Bucket: process.env.awsUploadBucket as string,
+            Bucket: process.env.AWS_UPLOAD_BUCKET as string,
             Key: s3Key,
             Body: Readable.from(Buffer.from(rawVideoBuffer)),
         },
@@ -92,24 +87,28 @@ export default async function sendVideo(rawVideo: File, owner: User): Promise<Vi
         },
     })
 
-    const metadataFile: string = JSON.stringify({
-        videoId: newVideo.id,
-        srcVideo: s3Key,
-    })
-    const uploadJson = new Upload({
-        client: client,
-        params: {
-            Bucket: process.env.awsUploadBucket as string,
-            Key: await makeS3Key(newVideo, 'json'),
-            Body: metadataFile,
-        },
-    })
-    const s3JsonData: CompleteMultipartUploadCommandOutput | AbortMultipartUploadCommandOutput = await uploadJson.done()
-    if (!isCompleteUpload(s3JsonData) || s3JsonData.Location === undefined) {
-        logger.error(s3JsonData)
-        // TODO: Send email/notify to user there is an issue with uploading video
-        throw new Error(`Unexpected error while uploading video metadata file for video ${ rawVideo.name } to S3`)
-    }
+    // TODO: Add this back in once we give the user choice on whether or not to blur their face
+    // Currently, we are generating the metadata json in the lambda that transfers videos from the rekognition output
+    // bucket to the streaming input bucket (transferBlurredVideosToStreamingPipeline)
+
+    // const metadataFile: string = JSON.stringify({
+    //     videoId: newVideo.id,
+    //     srcVideo: s3Key,
+    // })
+    // const uploadJson = new Upload({
+    //     client: client,
+    //     params: {
+    //         Bucket: process.env.AWS_UPLOAD_BUCKET as string,
+    //         Key: await makeS3Key(newVideo, 'json'),
+    //         Body: metadataFile,
+    //     },
+    // })
+    // const s3JsonData: CompleteMultipartUploadCommandOutput | AbortMultipartUploadCommandOutput = await uploadJson.done()
+    // if (!isCompleteUpload(s3JsonData) || s3JsonData.Location === undefined) {
+    //     logger.error(s3JsonData)
+    //     // TODO: Send email/notify to user there is an issue with uploading video
+    //     throw new Error(`Unexpected error while uploading video metadata file for video ${ rawVideo.name } to S3`)
+    // }
 
     return newVideo
 }

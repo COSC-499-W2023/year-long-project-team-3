@@ -272,8 +272,49 @@ will have to reconsider how we do that moving forwards.
 - None :(
 
 #### In-Progress Tasks
+
 - [Attempt to Fix Deployment Issues](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/278)
 - [Port Authentication to AuthJs](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/294)
 
 ### Additional Context
+
 - I ran into many issues moving the deployment this week, so hopefully next week goes better.
+
+## Week 2 (15/01/2024 - 21/01/2024)
+
+![](imgs/seth-akins-term-2-week-2-tasks.png)
+
+### Goals
+
+- This week I continued working on the migration from Vercel to AWS. I fixed the issues with the Docker production
+  build, set up a container registry on AWS, and uploaded the production image of our app to AWS.
+- I also set up the Elastic Container Service (ECS) on AWS, which runs the production image that we build as a container
+  on AWS. To do this, I had to set up a cluster of containers, a task which defines the image to run and the settings it
+  requires, and a service which runs the task.
+- Additionally, to make the website accessible via browser, I had to set up an Elastic Load Balancer on AWS. This
+  forwards traffic from the URL of the load balancer to the docker container running on ECS.
+- I also started fixing our currently broken GithHub Actions by changing the End-to-End test action to run on the AWS
+  container instead of on the GitHub machine. This action also automatically builds and the code into a production
+  docker container, and then pushes the image to the AWS container repository I set up. The action required setting
+  up credentials for our repo on AWS and the action itself using the OpenID Connect protocol. The deploying works, now
+  I am just fixing the Cypress tests to run on the AWS hosted container instead of the on the machine running the GitHub
+  action.
+- Lastly, I added some documentation of how you can manually build and upload an image of our docker container to AWS.
+
+### Tasks
+
+#### Completed Tasks
+
+- [Create Dockerfile to Build NextJS Application for Deployment](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/279)
+- [Add Docs On Manually Pushing a Container to ECS](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/308)
+- [Setup Staging Deployment on AWS](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/310)
+
+#### In-Progress Tasks
+
+- [Attempt to Fix Deployment Issues](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/278)
+- [Fix Staging Deployment](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/307)
+
+### Additional Context
+
+- Although the number of lines of code written this week was low, I put in a lot of time to work as all the AWS setup
+  took substantial time and required extensive research and documentation reading.

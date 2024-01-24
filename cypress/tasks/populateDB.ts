@@ -8,6 +8,7 @@ export default async function populateDB() {
         data: {
             email: MOCKUSER.email,
             password: hashedPassword,
+            emailVerified: new Date(),
             accounts: {
                 create: {
                     type: 'bcrypt',
