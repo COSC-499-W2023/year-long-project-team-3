@@ -1,7 +1,7 @@
 name: Cypress E2E Tests (Preview Deployment)
 
 on:
-    pull-request:
+    pull_request:
         types:
             - ready_for_review
 
