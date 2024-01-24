@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth'
 import prisma from '@/lib/prisma'
 import { getEmailRegex } from '@/utils/verification'
 import logger from '@/utils/logger'
+import { sendSubmissionInvitations } from '@/utils/emails/submissionInvitation'
 
 export type SubmissionBoxCreateData = {
     title: string
@@ -129,6 +130,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
                 }
             }),
         })
+
+        // Send email invitations
+        await sendSubmissionInvitations(reqData.requestedEmails, submissionBoxId)
 
         return NextResponse.json(newSubmissionBox, { status: 201 })
     } catch (err) {

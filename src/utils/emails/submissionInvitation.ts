@@ -1,13 +1,16 @@
-import { User } from '@prisma/client'
-import { sendEmail } from '@/utils/emails/sendEmail'
 import { Message } from '@aws-sdk/client-ses'
+import process from 'process'
+import { sendEmails } from '@/utils/emails/sendEmail'
 
-export async function sendSubmissionInvitation(user: User) {
-    let message = getSubmissionInvitationMessage('example.com')
-    return sendEmail(user.email, message)
+export async function sendSubmissionInvitations(emails: string[], submissionBoxId: string) {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? 'https://harpvideo.ca'
+    const boxUrl = `${ baseUrl }/submission-box/${ submissionBoxId }`
+    const message = getSubmissionInvitationMessage(boxUrl)
+    return sendEmails(emails, message)
 }
 
 function getSubmissionInvitationMessage(link: string): Message {
+    // noinspection all
     return {
         Body: {
             Html: {
