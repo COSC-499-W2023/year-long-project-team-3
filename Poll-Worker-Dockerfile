@@ -3,8 +3,8 @@ FROM node:20-alpine AS base
 # Create app directory
 WORKDIR /workers
 
-COPY package*.json ./
-COPY ../../prisma ./prisma
+COPY ./workers/poll-worker/package*.json ./
+COPY ./prisma ./prisma
 
 ENV NODE_ENV production
 
