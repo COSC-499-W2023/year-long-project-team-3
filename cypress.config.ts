@@ -17,10 +17,12 @@ import getVerificationToken from 'cypress/tasks/getVerificationToken'
 
 require('dotenv').config()
 
+console.log(process.env.NEXT_PUBLIC_CYPRESS_BASE_URL)
+
 export default defineConfig({
     e2e: {
-        projectId: process.env.CYPRESS_PROJECT_ID,
-        baseUrl: process.env.CYPRESS_BASE_URL ?? 'http://localhost:3000',
+        projectId: process.env.NEXT_PUBLIC_CYPRESS_PROJECT_ID,
+        baseUrl: process.env.NEXT_PUBLIC_CYPRESS_BASE_URL ?? 'http://localhost:3000',
         setupNodeEvents(on, config) {
             // implement node event listeners here
             on('task', {
