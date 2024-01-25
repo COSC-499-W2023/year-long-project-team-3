@@ -8,7 +8,8 @@ const nextConfig = () => {
         'NEXT_PUBLIC_GOOGLE_CLIENT_SECRET',
         'NEXT_PUBLIC_NEXTAUTH_SECRET',
         'AWS_UPLOAD_BUCKET',
-        'AWS_UPLOAD_REGION',
+        'AWS_UPLOAD_REGION_CANADA',
+        'AWS_UPLOAD_REGION_US',
     ]
 
     // Check if all environment variables are set
