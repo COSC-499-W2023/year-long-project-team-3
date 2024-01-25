@@ -16,6 +16,7 @@ cypress.config.ts
 .prettier*
 *docker-compose*
 *Dockerfile*
+.npmignore
 
 # Exlude documentation
 docs
