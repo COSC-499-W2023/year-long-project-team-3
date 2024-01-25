@@ -132,7 +132,7 @@ jobs:
         name: Report results
         runs-on: ubuntu-latest
         if: always()
-        needs: [ cypress-e2e ]
+        needs: [ deploy-preview, cypress-e2e ]
         steps:
             -   uses: actions/checkout@v4
             -   name: Download test results
