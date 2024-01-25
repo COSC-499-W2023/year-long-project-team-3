@@ -1,10 +1,12 @@
-FROM node:lts-alpine3.18
+FROM node:20-alpine AS base
 
 # Create app directory
 WORKDIR /workers
 
 COPY package*.json ./
 COPY ../../prisma ./prisma
+
+ENV NODE_ENV production
 
 ARG $ARG_DATABASE_URL
 ENV DATABASE_URL $ARG_DATABASE_URL
