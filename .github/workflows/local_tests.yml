@@ -98,3 +98,4 @@ jobs:
                     issue-number: ${{ env.PR_ID }}
                     body-path: cypress/reports/test_results.md
                     token: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
+                    edit-mode: replace
