@@ -20,7 +20,7 @@ describe('Recieving Dashboard Details Page Tests', () => {
         cy.task('getUserId', email).then((userId) => {
             cy.task('createSubmissionBoxWithEmail', { submissionBoxTitle, email, userId })
         })
-
+        cy.reload()
         cy.visit('/dashboard')
         runWithRetry(() => {
             cy.get('[data-cy="My Boxes"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
@@ -57,7 +57,7 @@ describe('Recieving Dashboard Details Page Tests', () => {
                 })
             })
         })
-
+        cy.reload()
         cy.visit('/dashboard')
         runWithRetry(() => {
             cy.get('[data-cy="My Boxes"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
