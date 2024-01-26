@@ -28,6 +28,7 @@ export type SignUpFormInputsData = {
 
 export default function SignUpForm() {
     const router = useRouter()
+    // @ts-ignore
     const callbackUrl = useSearchParams().get('callbackUrl')
 
     const [passwordVisible, setPasswordVisible] = useState(false)
