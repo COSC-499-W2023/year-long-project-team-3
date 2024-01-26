@@ -79,12 +79,22 @@ jobs:
             -   name: Convert report file to markdown
                 run: |
                     npx mochawesome-json-to-md@0.7.2 -p cypress/reports/test_results.json -o cypress/reports/test_results.md --reportTitle="Component Test Results"
+            -   name: Try to find existing report comment
+                uses: peter-evans/find-comment@v3
+                id: find-comment
+                env:
+                    PR_ID: ${{ needs.cypress-component.outputs.PR_ID || github.event.number }}
+                with:
+                    issue-number: ${{ env.PR_ID }}
+                    body-includes: Component Test Results
+                    token: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
             -   name: Create report and post on PR
                 uses: peter-evans/create-or-update-comment@v3
                 continue-on-error: true
                 env:
                     PR_ID: ${{ needs.cypress-component.outputs.PR_ID || github.event.number }}
                 with:
+                    comment-id: ${{ steps.find-comment.outputs.comment-id }}
                     issue-number: ${{ env.PR_ID }}
                     body-path: cypress/reports/test_results.md
                     token: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
