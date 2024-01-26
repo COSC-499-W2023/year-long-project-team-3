@@ -5,7 +5,7 @@ import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import React, { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Logo from '@/components/Logo'
 import Link from '@mui/material/Link'
 import { useFormik } from 'formik'
@@ -28,6 +28,7 @@ export type SignUpFormInputsData = {
 
 export default function SignUpForm() {
     const router = useRouter()
+    const callbackUrl = useSearchParams().get('callbackUrl')
 
     const [passwordVisible, setPasswordVisible] = useState(false)
     const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false)
@@ -170,7 +171,7 @@ export default function SignUpForm() {
                 >
                     <Typography sx={{ mx: 6 }}>
                         Already have an account?{' '}
-                        <Link data-cy='link-to-login' href='/login'>
+                        <Link data-cy='link-to-login' href={'/login' + (callbackUrl ? `?callbackUrl=${ encodeURIComponent(callbackUrl) }` : '')}>
                             Go to login
                         </Link>
                     </Typography>
@@ -200,7 +201,7 @@ export default function SignUpForm() {
             if (response.status == 201) {
                 toast.success(`User ${ userInfo.user.email } successfully signed up`)
                 logger.info(`User ${ userInfo.user.email } successfully signed up`)
-                router.push('/login')
+                router.push('/login' + (callbackUrl ? `?callbackUrl=${ encodeURIComponent(callbackUrl) }` : ''))
                 router.refresh()
             } else {
                 toast.error(userInfo.error)

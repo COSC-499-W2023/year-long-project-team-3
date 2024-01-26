@@ -19,9 +19,11 @@ import { IconButton, InputAdornment } from '@mui/material'
 import { Visibility as VisibilityIconOn, VisibilityOff as VisibilityIconOff } from '@mui/icons-material'
 import GoogleSigninButton from '@/components/GoogleSigninButton'
 import HorizontalSeparator from 'src/components/HorizontalSeparator'
+import { useSearchParams } from 'next/navigation'
 
 export default function LoginForm() {
     const [passwordVisible, setPasswordVisible] = useState(false)
+    const callbackUrl = useSearchParams().get('callbackUrl')
 
     const handleClickShowPassword = () => {
         setPasswordVisible(!passwordVisible)
@@ -133,7 +135,7 @@ export default function LoginForm() {
                 >
                     <Typography sx={{ mx: 6 }}>
                         Don&apos;t have an account yet?{' '}
-                        <Link data-cy='link-to-signup' href='/signup'>
+                        <Link data-cy='link-to-signup' href={'/signup' + (callbackUrl ? `?callbackUrl=${ encodeURIComponent(callbackUrl) }` : '')}>
                             Sign up now
                         </Link>
                     </Typography>
