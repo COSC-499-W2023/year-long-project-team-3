@@ -141,7 +141,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         })
 
         // Send email invitations
-        await sendSubmissionInvitations(reqData.requestedEmails, owner.email, newSubmissionBox)
+        if (reqData.requestedEmails.length > 0) {
+            await sendSubmissionInvitations(reqData.requestedEmails, owner.email, newSubmissionBox)
+        }
 
         return NextResponse.json(newSubmissionBox, { status: 201 })
     } catch (err) {
