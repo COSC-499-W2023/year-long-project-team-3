@@ -39,14 +39,14 @@ describe('Test full submission box creation', () => {
                     cy.get('[data-cy=submission-box-title]').type(sb.title)
                     cy.get('[data-cy=description]').type(sb.description)
                     cy.get('.data-cy-date-time-picker').type(sb.closesAt.replaceAll(' ', ''))
-                    cy.get('[data-cy=next]').click()
+                    cy.get('[data-cy=Next]').click()
 
                     cy.get('[data-cy=title]').should('contain', 'Request Submissions')
 
                     cy.wrap(sb.requestedEmails).each((email: string) => {
                         cy.get('[data-cy=email]').type(email).type('{enter}')
                     })
-                    cy.get('[data-cy=next]').click()
+                    cy.get('[data-cy=Next]').click()
 
                     cy.get('[data-cy=title]').should('contain', 'Review & Create')
 
@@ -57,7 +57,7 @@ describe('Test full submission box creation', () => {
                         cy.get('[data-cy=requested-emails]').should('contain', email)
                     })
 
-                    cy.get('[data-cy=next]').click()
+                    cy.get('[data-cy=Create]').click()
 
                     cy.wait(DELAY.MEDIUM)
 
