@@ -6,8 +6,6 @@ WORKDIR /workers
 COPY ./workers/poll-worker/package*.json ./
 COPY ./prisma ./prisma
 
-ENV NODE_ENV production
-
 ARG $ARG_DATABASE_URL
 ENV DATABASE_URL $ARG_DATABASE_URL
 
