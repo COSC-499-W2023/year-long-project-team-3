@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid'
 export type TestVideoCreationData = {
     ownerId?: string
     title: string
+    description?: string
     submissionBoxId?: string
 }
 
@@ -11,7 +12,7 @@ export default async function createOneVideoAndRetrieveVideoId(
     testVideoCreationData: TestVideoCreationData
 ): Promise<string> {
     let ownerId = testVideoCreationData.ownerId
-    const { title } = testVideoCreationData
+    const { title, description } = testVideoCreationData
 
     if (!ownerId) {
         const fakeUser = await prisma.user.create({
@@ -30,9 +31,11 @@ export default async function createOneVideoAndRetrieveVideoId(
                 },
             },
             title: title,
+            description: description,
             s3Key: 'test',
             isCloudProcessed: true,
             processedVideoUrl: '/videos/lemons.mp4',
+            thumbnail: '/images/quagmire.jpeg',
         },
     })
 

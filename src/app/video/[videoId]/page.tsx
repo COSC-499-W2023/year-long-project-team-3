@@ -202,9 +202,12 @@ export default function VideoDetailedPage() {
                                                         }}
                                                         value={titleEdit}
                                                         onChange={(evt) => setTitleEdit(evt.target.value)}
+                                                        inputProps={{
+                                                            'data-cy': 'detail-video-title-edit',
+                                                        }}
                                                     />
                                                 ) : (
-                                                    <Typography variant='h3' sx={{ fontWeight: 'bold' }}>
+                                                    <Typography variant='h3' sx={{ fontWeight: 'bold' }} data-cy='detail-video-title'>
                                                         {video?.title}
                                                     </Typography>
                                                 )}
@@ -231,9 +234,12 @@ export default function VideoDetailedPage() {
                                                         }}
                                                         value={descriptionEdit}
                                                         onChange={(evt) => setDescriptionEdit(evt.target.value)}
+                                                        inputProps={{
+                                                            'data-cy': 'detail-video-description-edit',
+                                                        }}
                                                     />
                                                 ) : (
-                                                    <Typography>{video?.description}</Typography>
+                                                    <Typography data-cy='detail-video-description'>{video?.description}</Typography>
                                                 )}
                                             </Box>
                                             <Box
@@ -243,6 +249,7 @@ export default function VideoDetailedPage() {
                                                             ? 'block'
                                                             : 'none',
                                                 }}
+                                                data-cy='submission-box-chips-wrapper'
                                             >
                                                 <Typography sx={{ fontWeight: 'bold' }}>Submitted To</Typography>
                                                 {submissionBoxes.map((submissionBox, idx) => (
@@ -271,13 +278,15 @@ export default function VideoDetailedPage() {
                                         </Box>
                                         {isEditing &&
                                             (<Box display='flex' justifyContent='flex-end' gap={1}>
-                                                <Button variant='contained' color='inherit' onClick={onCancelEdit}>
+                                                <Button variant='contained' color='inherit' onClick={onCancelEdit} data-cy='detail-video-cancel-button'>
                                                     Cancel
                                                 </Button>
-                                                <Button variant='contained' onClick={onUpdateVideoInfo}>Update</Button>
+                                                <Button variant='contained' onClick={onUpdateVideoInfo} data-cy='detail-video-update-button'>
+                                                    Update
+                                                </Button>
                                             </Box>)}
                                         { !isEditing &&
-                                        <Box position='absolute' top='2rem' right='2rem' onClick={onEditStart}>
+                                        <Box position='absolute' top='2rem' right='2rem' onClick={onEditStart} data-cy='edit-icon'>
                                             <EditIcon sx={{
                                                 cursor: 'pointer',
                                             }} />
