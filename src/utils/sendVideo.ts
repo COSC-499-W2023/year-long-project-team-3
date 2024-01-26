@@ -39,7 +39,7 @@ export default async function sendVideo(rawVideo: File, owner: User): Promise<Vi
     const rawVideoBuffer = await rawVideo.arrayBuffer()
 
     const client = new S3Client({
-        region: process.env.AWS_UPLOAD_REGION,
+        region: process.env.AWS_UPLOAD_REGION_US,
     })
 
     const uploadS3 = new Upload({
