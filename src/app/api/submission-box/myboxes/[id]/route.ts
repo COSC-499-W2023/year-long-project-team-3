@@ -57,6 +57,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
         // If it is a user that has submitted to the box that is accessing the box
         if (requestedSubmissionUsers.includes(userId)) {
+
             const requestedSubmission = await prisma.submissionBox.findFirstOrThrow({
                 where: {
                     id: submissionBoxId,
@@ -76,7 +77,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             const requestedSubmissionId = requestedSubmission.requestedSubmissions.flat().map(({ id }) => id).flat()
 
             // Grab the video ids of all submissions
-            const videosId = await prisma.submittedVideo.findFirstOrThrow({
+            const videoId = await prisma.submittedVideo.findFirst({
                 where: {
                     requestedSubmissionId: {
                         in: [...requestedSubmissionId],
@@ -87,14 +88,17 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
                 },
             })
 
+            if (videoId === null) {
+                return NextResponse.json({ box: 'Requested', videos: null, submissionBoxInfo: submissionBox }, { status: 200 })
+            }
             // Get the videos themselves
-            const boxVideos = await prisma.video.findUniqueOrThrow({
+            const boxVideo = await prisma.video.findUnique({
                 where: {
-                    id: videosId.videoId,
+                    id: videoId.videoId,
                 },
             })
 
-            return NextResponse.json({ videos: boxVideos, submissionBoxInfo: submissionBox }, { status: 200 })
+            return NextResponse.json({ box: 'Requested', videos: boxVideo, submissionBoxInfo: submissionBox }, { status: 200 })
         } else {
             // Else if it is the supposed owner accessing the submission box
             // Grab the managed submission box that the user wants to view
@@ -148,7 +152,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
                 },
             })
 
-            return NextResponse.json({ videos: boxVideos, submissionBoxInfo: submissionBox }, { status: 200 })
+            return NextResponse.json({ box: 'Owned', videos: boxVideos, submissionBoxInfo: submissionBox }, { status: 200 })
         }
     } catch (err) {
         logger.error(err)
