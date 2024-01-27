@@ -61,7 +61,7 @@ describe('Submission box review and create tests', () => {
             cy.get('[data-cy="title"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Request Submissions')
         })
 
-        it.skip('Should allow user to click create', () => {
+        it('Should allow user to click create', () => {
             cy.get('[data-cy="Create"]').click()
 
             cy.url().should('include', '/dashboard')

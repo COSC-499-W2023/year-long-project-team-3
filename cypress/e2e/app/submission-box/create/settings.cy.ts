@@ -60,7 +60,7 @@ describe('Submission box settings tests', () => {
         })
 
         // Flaky test
-        it.skip('Should let the user return to the previous page using the return to dashboard button', () => {
+        it('Should let the user return to the previous page using the return to dashboard button', () => {
             cy.get('[data-cy="back-button"]').click()
 
             // TODO: change this to test for appropriate URL
