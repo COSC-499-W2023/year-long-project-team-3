@@ -6,12 +6,12 @@ import logger from '@/utils/logger'
 export async function PUT(req: NextRequest): Promise<NextResponse> {
     const session = await getServerSession()
     if (!session || !session.user?.email) {
-        return NextResponse.json({ error: 'You must be signed in to upload a video' }, { status: 401 })
+        return NextResponse.json({ error: 'You must be signed in to edit the video' }, { status: 401 })
     }
 
     const videoId = req.nextUrl.pathname.split('/').pop()
     if (!videoId) {
-        return NextResponse.json({ error: 'No videoId provided' }, { status: 500 })
+        return NextResponse.json({ error: 'No videoId provided' }, { status: 400 })
     }
 
     const { title, description } = await req.json()

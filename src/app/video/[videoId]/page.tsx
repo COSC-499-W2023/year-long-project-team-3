@@ -13,6 +13,7 @@ import ScalingReactPlayer from '@/components/ScalingReactPlayer'
 import PageLoadProgress from '@/components/PageLoadProgress'
 import BackButton from '@/components/BackButton'
 import EditIcon from '@mui/icons-material/Edit'
+import { theme } from '@/components/ThemeRegistry/theme'
 
 export default function VideoDetailedPage() {
     const session: SessionContextValue = useSession()
@@ -183,6 +184,7 @@ export default function VideoDetailedPage() {
                                                 display: 'flex',
                                                 flexDirection: 'column',
                                                 gap: '1rem',
+                                                color: theme.palette.text.secondary,
                                             }}
                                             overflow='auto'
                                             paddingRight='1rem'
@@ -289,6 +291,7 @@ export default function VideoDetailedPage() {
                                         <Box position='absolute' top='2rem' right='2rem' onClick={onEditStart} data-cy='edit-icon'>
                                             <EditIcon sx={{
                                                 cursor: 'pointer',
+                                                color: theme.palette.text.secondary,
                                             }} />
                                         </Box>
                                         }

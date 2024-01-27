@@ -36,7 +36,7 @@ export default function SubmissionBoxDetailPage() {
                     width='100%'
                 >
                     <VideoList
-                        videos={videos.map((video) => {
+                        videos={videos?.map((video) => {
                             return {
                                 title: video.title,
                                 videoId: video.id,
