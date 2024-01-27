@@ -7,8 +7,6 @@ import LandingPageButton from '@/components/LandingPageButton'
 import { type SessionContextValue, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 
-// PEEPORIOT
-
 export default function HomePage() {
     const session: SessionContextValue = useSession()
     const router = useRouter()
