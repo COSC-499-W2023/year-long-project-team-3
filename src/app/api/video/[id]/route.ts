@@ -13,7 +13,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
         const videoId = req.nextUrl.pathname.split('/').pop()
         if (!videoId) {
-            return NextResponse.json({ error: 'No videoId provided' }, { status: 500 })
+            return NextResponse.json({ error: 'No videoId provided' }, { status: 400 })
         }
 
         const user = await prisma.user.findUniqueOrThrow({

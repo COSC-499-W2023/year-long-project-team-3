@@ -14,7 +14,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     if (!videoId || typeof videoId !== 'string') {
         logger.error(`User ${ session.user.email } did not provide a videoId`)
-        return NextResponse.json({ error: 'No videoId provided' }, { status: 500 })
+        return NextResponse.json({ error: 'No videoId provided' }, { status: 400 })
     }
 
     if (!videoTitle || typeof videoTitle !== 'string') {
