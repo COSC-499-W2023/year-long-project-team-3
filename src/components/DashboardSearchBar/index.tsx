@@ -17,6 +17,7 @@ export default function DashboardSearchBar(props: DashboardSearchBarProps) {
                 <TextField
                     type='text'
                     placeholder='Search'
+                    autoComplete='off'
                     variant='outlined'
                     sx={{
                         '& .MuiInputBase-root.MuiOutlinedInput-root': {

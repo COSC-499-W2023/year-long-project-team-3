@@ -100,7 +100,7 @@ export default function UploadVideoPage() {
                             <VisuallyHiddenInput
                                 data-cy='test-input'
                                 type='file'
-                                accept='.mp4'
+                                accept='.mp4, .mov'
                                 onChange={handleFileChanged}
                             />
                         </Button>
