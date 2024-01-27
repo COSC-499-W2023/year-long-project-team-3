@@ -24,6 +24,7 @@ const nextConfig = () => {
             domains: process.env.NEXT_IMAGE_WHITELIST_HOSTNAMES.split(' '),
         },
         output: 'standalone',
+        reactStrictMode: false,
     }
 }
 

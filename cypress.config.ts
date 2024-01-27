@@ -17,8 +17,6 @@ import getVerificationToken from 'cypress/tasks/getVerificationToken'
 
 require('dotenv').config()
 
-console.log(process.env.NEXT_PUBLIC_CYPRESS_BASE_URL)
-
 export default defineConfig({
     e2e: {
         projectId: process.env.NEXT_PUBLIC_CYPRESS_PROJECT_ID,

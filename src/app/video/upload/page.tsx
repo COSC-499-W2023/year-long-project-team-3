@@ -51,7 +51,6 @@ export default function UploadVideoPage() {
             .then(async (res: Response) => {
                 const body = await res.json()
                 if (res.status !== 201) {
-                    console.log(body)
                     toast.error(body.error)
                     throw new Error(body.error)
                 }

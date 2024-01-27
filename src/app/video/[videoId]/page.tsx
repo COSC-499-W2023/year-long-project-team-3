@@ -14,6 +14,7 @@ import PageLoadProgress from '@/components/PageLoadProgress'
 import BackButton from '@/components/BackButton'
 import EditIcon from '@mui/icons-material/Edit'
 import { theme } from '@/components/ThemeRegistry/theme'
+import * as process from 'process'
 
 export default function VideoDetailedPage() {
     const session: SessionContextValue = useSession()
@@ -63,7 +64,6 @@ export default function VideoDetailedPage() {
                     throw new Error('Video not found')
                 }
                 setVideo(video)
-                console.log(video)
             })
             .catch((err) => {
                 logger.error(err.message)
@@ -192,7 +192,9 @@ export default function VideoDetailedPage() {
                                             paddingBottom='0.5rem'
                                         >
                                             <Box sx={{ overflowY: 'scroll', textOverflow: 'ellipsis' }}>
-                                                <Typography noWrap sx={{ fontWeight: 'bold' }}>Title</Typography>
+                                                <Typography noWrap sx={{ fontWeight: 'bold' }}>
+                                                    Title
+                                                </Typography>
                                                 {isEditing ? (
                                                     <TextField
                                                         variant='standard'
@@ -209,7 +211,11 @@ export default function VideoDetailedPage() {
                                                         }}
                                                     />
                                                 ) : (
-                                                    <Typography variant='h3' sx={{ fontWeight: 'bold' }} data-cy='detail-video-title'>
+                                                    <Typography
+                                                        variant='h3'
+                                                        sx={{ fontWeight: 'bold' }}
+                                                        data-cy='detail-video-title'
+                                                    >
                                                         {video?.title}
                                                     </Typography>
                                                 )}
@@ -241,7 +247,9 @@ export default function VideoDetailedPage() {
                                                         }}
                                                     />
                                                 ) : (
-                                                    <Typography data-cy='detail-video-description'>{video?.description}</Typography>
+                                                    <Typography data-cy='detail-video-description'>
+                                                        {video?.description}
+                                                    </Typography>
                                                 )}
                                             </Box>
                                             <Box
@@ -278,23 +286,41 @@ export default function VideoDetailedPage() {
                                                 </Typography>
                                             </Box>
                                         </Box>
-                                        {isEditing &&
-                                            (<Box display='flex' justifyContent='flex-end' gap={1}>
-                                                <Button variant='contained' color='inherit' onClick={onCancelEdit} data-cy='detail-video-cancel-button'>
+                                        {isEditing && (
+                                            <Box display='flex' justifyContent='flex-end' gap={1}>
+                                                <Button
+                                                    variant='contained'
+                                                    color='inherit'
+                                                    onClick={onCancelEdit}
+                                                    data-cy='detail-video-cancel-button'
+                                                >
                                                     Cancel
                                                 </Button>
-                                                <Button variant='contained' onClick={onUpdateVideoInfo} data-cy='detail-video-update-button'>
+                                                <Button
+                                                    variant='contained'
+                                                    onClick={onUpdateVideoInfo}
+                                                    data-cy='detail-video-update-button'
+                                                >
                                                     Update
                                                 </Button>
-                                            </Box>)}
-                                        { !isEditing &&
-                                        <Box position='absolute' top='2rem' right='2rem' onClick={onEditStart} data-cy='edit-icon'>
-                                            <EditIcon sx={{
-                                                cursor: 'pointer',
-                                                color: theme.palette.text.secondary,
-                                            }} />
-                                        </Box>
-                                        }
+                                            </Box>
+                                        )}
+                                        {!isEditing && (
+                                            <Box
+                                                position='absolute'
+                                                top='2rem'
+                                                right='2rem'
+                                                onClick={onEditStart}
+                                                data-cy='edit-icon'
+                                            >
+                                                <EditIcon
+                                                    sx={{
+                                                        cursor: 'pointer',
+                                                        color: theme.palette.text.secondary,
+                                                    }}
+                                                />
+                                            </Box>
+                                        )}
                                     </Box>
                                 </Box>
                             </Box>
@@ -304,7 +330,6 @@ export default function VideoDetailedPage() {
             </Box>
         </>
     )
-
 
     function onCancelEdit() {
         setIsEditing(false)
@@ -326,15 +351,18 @@ export default function VideoDetailedPage() {
                 title: titleEdit,
                 description: descriptionEdit,
             }),
-        }).then((res) => res.json()).then(data => {
-            if (!data.video) {
-                throw new Error('Could not update video')
-            }
-            setVideo(data.video)
-        }).catch((err) => {
-            logger.error(err.message)
-            toast.error('An unexpected error occurred!')
         })
+            .then((res) => res.json())
+            .then((data) => {
+                if (!data.video) {
+                    throw new Error('Could not update video')
+                }
+                setVideo(data.video)
+            })
+            .catch((err) => {
+                logger.error(err.message)
+                toast.error('An unexpected error occurred!')
+            })
     }
 
     function onEditStart() {
