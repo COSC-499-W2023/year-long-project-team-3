@@ -13,11 +13,6 @@ describe('Test Video Upload and Streaming Processing Pipeline', () => {
     })
 
     context('Logged in', () => {
-        if (!Cypress.env('CYPRESS_RUN_LOCAL_ONLY')) {
-            // TODO: Remove this when we have a way to get the video ID (aka using Cognito)
-            it.skip('Skipped in production', () => {})
-            return
-        }
         before(() => {
             cy.task('clearDB')
             cy.task('populateDB')
@@ -36,7 +31,9 @@ describe('Test Video Upload and Streaming Processing Pipeline', () => {
             /* Upload video from "file system" */
             cy.visit('/video/upload')
             cy.get('[data-cy=test-input]').selectFile('public/videos/lemons.mp4', { force: true })
-            cy.get('[data-cy=loading-circle-blur-background]', { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).should('be.visible')
+            cy.get('[data-cy=loading-circle-blur-background]', { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).should(
+                'be.visible'
+            )
 
             /* Check if the url changes and displays the loading icon */
             cy.url({ timeout: TIMEOUT.LONG }).should('contain', 'video/edit/')
@@ -54,7 +51,7 @@ describe('Test Video Upload and Streaming Processing Pipeline', () => {
             })
 
             /* Check that the processed video preview is displayed once we redirect to the edit page */
-            cy.get('[data-cy=video-player]', { timeout: 2*TIMEOUT.EXTRA_EXTRA_LONG }).should('be.visible')
+            cy.get('[data-cy=video-player]', { timeout: 2 * TIMEOUT.EXTRA_EXTRA_LONG }).should('be.visible')
         })
     })
 })
