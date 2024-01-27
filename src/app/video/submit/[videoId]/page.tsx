@@ -111,7 +111,7 @@ export default function SubmitVideoPage() {
                                         alignItems={'center'}
                                         position={'relative'}
                                         sx={{
-                                            borderRadius: '8px',
+                                            borderRadius: 20,
                                             backgroundColor: 'black',
                                         }}
                                     >
@@ -122,7 +122,7 @@ export default function SubmitVideoPage() {
                                                 alt='Video Thumbnail'
                                                 objectPosition={'center'}
                                                 objectFit={'cover'}
-                                                style={{ borderRadius: '4px' }}
+                                                style={{ borderRadius: 20 }}
                                             />
                                         )}
                                     </Box>
