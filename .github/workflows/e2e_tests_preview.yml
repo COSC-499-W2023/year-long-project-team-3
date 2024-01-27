@@ -136,6 +136,7 @@ jobs:
         permissions:
             pull-requests: write
             issues: write
+            contents: read
         steps:
             -   uses: actions/checkout@v4
             -   name: Download test results
@@ -155,7 +156,6 @@ jobs:
                 with:
                     issue-number: ${{ github.event.number }}
                     body-includes: E2E Test Results
-                    token: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
             -   name: Create report and post on PR
                 uses: peter-evans/create-or-update-comment@v3
                 with:

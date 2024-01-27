@@ -69,6 +69,7 @@ jobs:
         permissions:
             pull-requests: write
             issues: write
+            contents: read
         steps:
             -   uses: actions/checkout@v4
             -   name: Download test results
@@ -90,7 +91,6 @@ jobs:
                 with:
                     issue-number: ${{ env.PR_ID }}
                     body-includes: Component Test Results
-                    token: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
             -   name: Create report and post on PR
                 uses: peter-evans/create-or-update-comment@v3
                 continue-on-error: true
