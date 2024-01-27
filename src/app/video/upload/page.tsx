@@ -108,8 +108,8 @@ export default function UploadVideoPage() {
                                 pb: 3,
                             }}
                         >
-                            Do you want Harp Video to blur faces in your video? This means processing the video using
-                            Amazon Rekognition, and may lead to an increase in processing time.
+                            If you would like Harp Video to blur all faces in your video using Amazon Rekognition,
+                            please tick the checkbox below before uploading the file.
                         </Typography>
                         <FormControlLabel
                             control={<Checkbox checked={isFaceBlurChecked} onChange={handleFaceBlurChecked} />}
