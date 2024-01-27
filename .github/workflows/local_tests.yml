@@ -66,6 +66,9 @@ jobs:
         runs-on: ubuntu-latest
         if: always()
         needs: [ cypress-component ]
+        permissions:
+            pull-requests: write
+            issues: write
         steps:
             -   uses: actions/checkout@v4
             -   name: Download test results
@@ -97,5 +100,4 @@ jobs:
                     comment-id: ${{ steps.find-comment.outputs.comment-id }}
                     issue-number: ${{ env.PR_ID }}
                     body-path: cypress/reports/test_results.md
-                    token: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
                     edit-mode: replace
