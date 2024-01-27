@@ -111,7 +111,7 @@ export default function SubmitVideoPage() {
                                         alignItems={'center'}
                                         position={'relative'}
                                         sx={{
-                                            borderRadius: 20,
+                                            borderRadius: '20px',
                                             backgroundColor: 'black',
                                         }}
                                     >
