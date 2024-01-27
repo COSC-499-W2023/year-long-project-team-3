@@ -12,7 +12,6 @@ import ProgressDots from '@/components/ProgressDots'
 import PageLoadProgressBlurBackground from '@/components/PageLoadProgressBlurBackround'
 import logger from '@/utils/logger'
 import BackButton from '@/components/BackButton'
-import FaceBlurringDialog from '@/components/FaceBlurringDialog'
 
 const VisuallyHiddenInput = styled('input')({
     clipPath: 'inset(50%)',
@@ -31,18 +30,10 @@ export default function UploadVideoPage() {
 
     const [isUploadingVideo, setIsUploadingVideo] = useState(false)
 
-    const [open, setOpen] = React.useState(false)
-    const [isFaceBlurChecked, setIsFaceBlurChecked] = React.useState(false)
-    const handleClose = (value: boolean) => {
-        setOpen(false)
-        setIsFaceBlurChecked(value)
-    }
-
     const handleFileChanged = (event: ChangeEvent<HTMLInputElement>) => {
-        setOpen(true)
-        // if (!!event.target?.files) {
-        //     handleUploadVideo(event.target.files[0])
-        // }
+        if (!!event.target?.files) {
+            handleUploadVideo(event.target.files[0])
+        }
     }
 
     const handleUploadVideo = (uploadedFile: File) => {
@@ -116,12 +107,6 @@ export default function UploadVideoPage() {
                     </Box>
                 </Box>
             </>
-            <FaceBlurringDialog
-                isFaceBlurChecked={isFaceBlurChecked}
-                open={open}
-                onClose={handleClose}
-                onFaceBlurChecked={setIsFaceBlurChecked}
-            />
         </>
     )
 }
