@@ -49,6 +49,7 @@ export default function UploadVideoPage() {
         setIsUploadingVideo(true)
         const videoUploadForm = new FormData()
         videoUploadForm.append('video', uploadedFile!)
+        videoUploadForm.append('isFaceBlurChecked', `${ isFaceBlurChecked }`)
 
         fetch('/api/video/upload', {
             method: 'POST',
