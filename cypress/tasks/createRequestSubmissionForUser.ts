@@ -3,10 +3,11 @@ import { v4 as uuidv4 } from 'uuid'
 
 type CreateSubmissionBoxWithEmailData = {
     userId: string
+    title: string
 }
 
 export default async function createRequestSubmissionForUser(props: CreateSubmissionBoxWithEmailData): Promise<string> {
-    const { userId } = props
+    const { userId, title } = props
 
     const fakeUser = await prisma.user.create({
         data: {
@@ -16,7 +17,7 @@ export default async function createRequestSubmissionForUser(props: CreateSubmis
 
     const newSubBox = await prisma.submissionBox.create({
         data: {
-            title: 'Test Submission Box ' + uuidv4(),
+            title: props.title ?? 'Test Submission Box ' + uuidv4(),
         },
     })
 

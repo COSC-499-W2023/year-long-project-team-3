@@ -62,6 +62,7 @@ export default function SubmissionBoxDetailPage() {
                                 padding: '2rem',
                             }}>
                             <Box
+                                data-cy='videoHolder'
                                 sx={{
                                     display: 'flex',
                                     flexDirection: 'column',
@@ -83,6 +84,7 @@ export default function SubmissionBoxDetailPage() {
                                         />
                                     ) : (
                                         <Typography
+                                            data-cy='pending'
                                             variant={'h5'}
                                             color={'textSecondary'}>
                                           Submission Pending
@@ -90,6 +92,7 @@ export default function SubmissionBoxDetailPage() {
                                     )
                                 ) : (
                                     <Typography
+                                        data-cy='noSubmission'
                                         variant={'h5'}
                                         color={'textSecondary'}>
                                         No Current Submission
