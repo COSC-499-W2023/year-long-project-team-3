@@ -17,7 +17,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             return NextResponse.json({ error: 'No videoId provided' }, { status: 400 })
         }
 
-        if (await getWhitelistedUser(session.user.email, videoId)) {
+        if (!(await getWhitelistedUser(session.user.email, videoId))) {
             logger.error(`User ${ session.user.email } does not have permission to access video ${ videoId }`)
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
         }

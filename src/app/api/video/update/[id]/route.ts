@@ -26,7 +26,7 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
     }
 
     try {
-        if (await getWhitelistedUser(session.user.email, videoId)) {
+        if (!(await getWhitelistedUser(session.user.email, videoId))) {
             logger.error(`User ${ session.user.email } does not have permission to access video ${ videoId }`)
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
         }
