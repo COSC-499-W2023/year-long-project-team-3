@@ -113,7 +113,13 @@ export default function UploadVideoPage() {
                             please tick the checkbox below before uploading the file.
                         </Typography>
                         <FormControlLabel
-                            control={<Checkbox checked={isFaceBlurChecked} onChange={handleFaceBlurChecked} />}
+                            control={
+                                <Checkbox
+                                    checked={isFaceBlurChecked}
+                                    data-cy='faceblur-check'
+                                    onChange={handleFaceBlurChecked}
+                                />
+                            }
                             label='Yes, I want to blur all faces in my video'
                             sx={{ mb: 3 }}
                         />

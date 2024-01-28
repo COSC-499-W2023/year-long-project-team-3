@@ -18,6 +18,7 @@ describe('Test Video Upload and Streaming Processing Pipeline', () => {
             it.skip('Skipped in production', () => {})
             return
         }
+
         before(() => {
             cy.task('clearDB')
             cy.task('populateDB')
@@ -31,12 +32,36 @@ describe('Test Video Upload and Streaming Processing Pipeline', () => {
             })
         })
 
+        it('should allow the user to check the box to blur their face', () => {
+            cy.visit('/video/upload')
+
+            // // Check the checkbox
+            cy.get('[data-cy=faceblur-check]').should('be.visible').check()
+            // Check that the checkbox has been clicked
+            cy.get('[data-cy=faceblur-check]').should('be.visible').should('be.checked')
+        })
+
+        it('should allow the user to uncheck the box to blur their face', () => {
+            cy.visit('/video/upload')
+
+            // Check the checkbox
+            cy.get('[data-cy=faceblur-check]').should('be.visible').check()
+            // Check that the checkbox has been checked
+            cy.get('[data-cy=faceblur-check]').should('be.visible').should('be.checked')
+            // Check the checkbox
+            cy.get('[data-cy=faceblur-check]').should('be.visible').check()
+            // Check that the checkbox has been unchecked
+            cy.get('[data-cy=faceblur-check]').should('be.visible').should('not.be.checked')
+        })
+
         it('should upload and process video', () => {
             /* This is the happy path :) */
             /* Upload video from "file system" */
             cy.visit('/video/upload')
             cy.get('[data-cy=test-input]').selectFile('public/videos/lemons.mp4', { force: true })
-            cy.get('[data-cy=loading-circle-blur-background]', { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).should('be.visible')
+            cy.get('[data-cy=loading-circle-blur-background]', { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).should(
+                'be.visible'
+            )
 
             /* Check if the url changes and displays the loading icon */
             cy.url({ timeout: TIMEOUT.LONG }).should('contain', 'video/edit/')
@@ -54,7 +79,7 @@ describe('Test Video Upload and Streaming Processing Pipeline', () => {
             })
 
             /* Check that the processed video preview is displayed once we redirect to the edit page */
-            cy.get('[data-cy=video-player]', { timeout: 2*TIMEOUT.EXTRA_EXTRA_LONG }).should('be.visible')
+            cy.get('[data-cy=video-player]', { timeout: 2 * TIMEOUT.EXTRA_EXTRA_LONG }).should('be.visible')
         })
     })
 })
