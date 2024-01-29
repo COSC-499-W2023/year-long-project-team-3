@@ -5,11 +5,12 @@ import prisma from '@/lib/prisma'
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
     // API fetches all the videos sent to a specific submission box and fetches the title, date, and description of the submission box
+    // API has ability to fetch videos from either myBoxes or requestedBoxes
     const session = await getServerSession()
     if (!session || !session.user?.email) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
-
+    // Get submission box id
     const submissionBoxId = req.nextUrl.pathname.split('/').pop()
     if (!submissionBoxId) {
         return NextResponse.json({ error: 'No submissionBoxId provided' }, { status: 400 })
@@ -57,7 +58,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
         // If it is a user that has submitted to the box that is accessing the box
         if (requestedSubmissionUsers.includes(id)) {
-
+            // Then this user is accessing the submission box via a requested page so only load their video on to the page
             const requestedSubmission = await prisma.submissionBox.findFirstOrThrow({
                 where: {
                     id: submissionBoxId,
@@ -76,7 +77,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
             const requestedSubmissionId = requestedSubmission.requestedSubmissions.flat().map(({ id }) => id).flat()
 
-            // Grab the video ids of all submissions
+            // Grab the video id of the submission
             const videoId = await prisma.submittedVideo.findFirst({
                 where: {
                     requestedSubmissionId: {
@@ -87,11 +88,11 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
                     videoId: true,
                 },
             })
-
+            // If the user hasn't submitted a video yet
             if (videoId === null) {
                 return NextResponse.json({ box: 'Requested', videos: null, submissionBoxInfo: submissionBox }, { status: 200 })
             }
-            // Get the videos themselves
+            // Get the video itself
             const boxVideo = await prisma.video.findUnique({
                 where: {
                     id: videoId.videoId,
