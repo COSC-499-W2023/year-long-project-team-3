@@ -99,7 +99,7 @@ const ScalingReactPlayer = (props: ScalingReactPlayerProps) => {
         rescalePlayer()
 
         // Add event listeners
-        if (props.allowKeyDown) {
+        if (!!props.allowKeyDown || props.allowKeyDown === undefined) {
             window.addEventListener('keydown', keyboardControl)
         }
         window.addEventListener('resize', rescalePlayer)
