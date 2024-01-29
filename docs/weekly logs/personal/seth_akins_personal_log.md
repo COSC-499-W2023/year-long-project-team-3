@@ -318,3 +318,35 @@ will have to reconsider how we do that moving forwards.
 
 - Although the number of lines of code written this week was low, I put in a lot of time to work as all the AWS setup
   took substantial time and required extensive research and documentation reading.
+
+## Week 3 (22/01/2024 - 28/01/2024)
+
+![](imgs/seth-akins-term-2-week-3-tasks.png)
+
+### Goals
+
+- This week I finished setting up the staging deployment action, so on every PR that is ready for review, our code is
+  automatically compiled, built into a docker image, uploaded to AWS, and has all of our tests run on it.
+- I had to make a minor change to the action later in the week to fix the trigger, but now it only runs on PRs that are
+  either open and synchronized (new code is pushed to the branch) or when the PR is marked as ready for review (from
+  draft)
+- I also fixed a small issue where our dashboard search bar was trying to autofill from password managers.
+- Lastly, I made a production dockerfile for the poll worker, did a minor refactor on the local version, and manually
+  deployed the image I built of the poll worker on AWS.
+
+### Tasks
+
+#### Completed Tasks
+
+- [Deploy Poll Worker to AWS](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/327)
+- [Search bar should not autofill](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/323)
+- [Fix Staging Deployment](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/307)
+
+#### In-Progress Tasks
+
+- [Attempt to Fix Deployment Issues](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/278)
+
+### Additional Context
+
+- Some of these tasks were on AWS, so feel free to ask me and I can show you what I did so you can have proof of the
+  work.
