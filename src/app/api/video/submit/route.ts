@@ -42,41 +42,50 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
         }
 
-        const updatedRequestedSubmissionPromises = submissionBoxIds.map(
-            async (submissionBoxId: string): Promise<RequestedSubmission[]> => {
-                const requestedSubmissions: RequestedSubmission[] = (
-                    await prisma.requestedSubmission.findMany({
-                        where: {
-                            submissionBoxId: submissionBoxId,
-                            userId: whiteListedUser.whitelistedUserId,
-                        },
-                    })
-                ).flat()
+        const requestedSubmissions: string[] = (
+            await prisma.requestedSubmission.findMany({
+                where: {
+                    submissionBoxId: {
+                        in: submissionBoxIds,
+                    },
+                    userId: whiteListedUser.whitelistedUserId,
+                },
+            })
+        ).flat().map((requestedSubmission: RequestedSubmission) => requestedSubmission.id)
 
-                return await Promise.all(
-                    requestedSubmissions
-                        .map(
-                            (requestedSubmission: RequestedSubmission): Promise<RequestedSubmission> =>
-                                prisma.requestedSubmission.update({
-                                    where: {
-                                        id: requestedSubmission.id,
-                                    },
-                                    data: {
-                                        videoVersions: {
-                                            create: {
-                                                videoId: whiteListedUser.whitelistedVideoId,
-                                                submittedAt: new Date(),
-                                            },
+        await Promise.all(
+            requestedSubmissions.map(
+                async (requestedSubmissionId: string): Promise<RequestedSubmission> =>
+                    await prisma.requestedSubmission.update({
+                        where: {
+                            id: requestedSubmissionId,
+                        },
+                        data: {
+                            submittedAt: new Date(),
+                            videoVersions: {
+                                create: {
+                                    video: {
+                                        connect: {
+                                            id: videoId,
                                         },
                                     },
-                                })
-                        )
-                        .flat()
-                )
-            }
+                                },
+                            },
+                        },
+                    })
+            )
         )
 
-        await Promise.all(updatedRequestedSubmissionPromises)
+        await prisma.video.update({
+            where: {
+                id: videoId,
+            },
+            data: {
+                isSubmitted: true,
+                title: videoTitle,
+                description: videoDescription,
+            },
+        })
 
         return NextResponse.json({ message: `Successfully submitted ${ videoTitle }` }, { status: 201 })
     } catch (err) {
