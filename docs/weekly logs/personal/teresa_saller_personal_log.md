@@ -279,3 +279,30 @@ it.
 
 My code contributions for this week may look small, but that is because I spent so much time getting the pipeline to work.
 None of what I did can really be tested easily, and this is the reason why I have not added any tests this week.
+
+
+## Teresa Saller - Term 2: Week 3 (2024/01/22 - 2024/01/28)
+
+![teresa-saller-tasks-w3-t2.png](imgs/teresa-saller-tasks-w3-t2.png)
+
+### Tasks
+
+Completed:
+- [Fixed file name issue and allowing for .mov upload #331](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/331)
+- [Set up staging pipeline #332](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/332)
+- [Set up deployment pipeline #333](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/333)
+- [Fix aspect ratio of thumbnail in review submit #338](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/338)
+
+In progress:
+
+
+
+### Goals
+
+My goal for this week was to help my team reach the goals we set for the peer-review deadline, and to potentially 
+implement logic to give the user a choice of whether they want their face blurred. My goal for next week is to collect
+good feedback in our peer-testing session, and to start fixing whatever issues the session uncovers.
+
+### Additional Context
+
+Since I worked a lot on infrastructure and bug testing, I only have one PR with tests.
