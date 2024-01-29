@@ -42,7 +42,10 @@ function isVideoValidType(video: FormDataEntryValue | null): video is File {
 }
 
 function parseFormDataEntryValueToBoolean(input: FormDataEntryValue | null): boolean {
-    if (input == null) {throw new Error('isFaceBlurChecked is null')}
+    if (input == null) {
+        input = 'false'
+        logger.error('isFaceBlurChecked was null, set to false')
+    }
 
     input = input.toString()
     if (input.toLowerCase() === 'true') {

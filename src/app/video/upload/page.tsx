@@ -109,8 +109,8 @@ export default function UploadVideoPage() {
                                 pb: 3,
                             }}
                         >
-                            If you would like Harp Video to blur all faces in your video using Amazon Rekognition,
-                            please tick the checkbox below before uploading the file.
+                            If you would like Harp Video to blur all faces in your video, please tick the checkbox below
+                            before uploading the file.
                         </Typography>
                         <FormControlLabel
                             control={
