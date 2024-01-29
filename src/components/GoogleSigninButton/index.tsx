@@ -9,8 +9,7 @@ import logger from '@/utils/logger'
 import { useSearchParams } from 'next/navigation'
 
 export default function GoogleSignInButton() {
-    // @ts-ignore
-    const callbackUrl = useSearchParams().get('callbackUrl')
+    const callbackUrl = useSearchParams()!.get('callbackUrl')
 
     return (
         <button className={styles['gsi-material-button']} onClick={(e) => signInWithGoogle(e, callbackUrl)} data-cy='google-sign-in-btn'>

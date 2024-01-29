@@ -23,8 +23,7 @@ import { useSearchParams } from 'next/navigation'
 
 export default function LoginForm() {
     const [passwordVisible, setPasswordVisible] = useState(false)
-    // @ts-ignore
-    const callbackUrl = useSearchParams().get('callbackUrl')
+    const callbackUrl = useSearchParams()!.get('callbackUrl')
 
     const handleClickShowPassword = () => {
         setPasswordVisible(!passwordVisible)

@@ -12,8 +12,7 @@ export default function LoginPage() {
     const [isLoginPageVisible, setIsLoginPageVisible] = useState(false)
 
     const { status } = session
-    // @ts-ignore
-    const callbackUrl = useSearchParams().get('callbackUrl')
+    const callbackUrl = useSearchParams()!.get('callbackUrl')
 
     useEffect(() => {
         if (status === 'authenticated') {

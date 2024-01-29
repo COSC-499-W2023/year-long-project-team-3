@@ -11,8 +11,7 @@ export default function SignUpPage() {
     const { status } = session
     const router = useRouter()
     const [isSignUpPageVisible, setIsSignUpPageVisible] = useState(false)
-    // @ts-ignore
-    const callbackUrl = useSearchParams().get('callbackUrl')
+    const callbackUrl = useSearchParams()!.get('callbackUrl')
 
     useEffect(() => {
         if (status === 'authenticated') {
