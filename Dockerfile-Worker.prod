@@ -1,0 +1,38 @@
+FROM node:20-alpine AS builder
+
+# Create app directory
+WORKDIR /worker
+
+COPY ./workers/poll-worker/package*.json ./
+COPY ./prisma ./prisma
+
+# Install dependencies
+RUN npm ci
+
+# Get all the code needed to run the app
+COPY ./workers/poll-worker .
+
+RUN chown -R node:node node_modules/.prisma
+
+RUN npx prisma generate
+
+# Build the app
+RUN npm run build
+
+FROM node:20-alpine AS runner
+
+ENV NODE_ENV production
+WORKDIR /worker
+
+COPY ./workers/poll-worker/package*.json .
+COPY ./prisma ./prisma
+COPY ./workers/poll-worker/.env .
+
+RUN npm ci
+
+COPY --from=builder worker/dist .
+
+RUN chown -R node:node node_modules/.prisma
+RUN npx prisma generate
+
+CMD ["node", "app.js"]

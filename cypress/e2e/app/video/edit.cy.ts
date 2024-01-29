@@ -15,11 +15,6 @@ describe('Test video editing page', () => {
 
     // Skip this because there is no way to retrieve the video ID from the DB
     context('Logged in', () => {
-        if (!Cypress.env('CYPRESS_RUN_LOCAL_ONLY')) {
-            // TODO: Remove this when we have a way to get the video ID (aka using Cognito)
-            it.skip('Skipped in production', () => {})
-            return
-        }
         let videoUrl = ''
 
         beforeEach(() => {

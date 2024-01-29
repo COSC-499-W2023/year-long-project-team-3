@@ -2,7 +2,7 @@
 
 import Header from '@/components/Header'
 import SignUpForm from '@/components/SignUpForm'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useSession, type SessionContextValue } from 'next-auth/react'
 
@@ -11,17 +11,18 @@ export default function SignUpPage() {
     const { status } = session
     const router = useRouter()
     const [isSignUpPageVisible, setIsSignUpPageVisible] = useState(false)
+    const callbackUrl = useSearchParams()!.get('callbackUrl')
 
     useEffect(() => {
         if (status === 'authenticated') {
             setIsSignUpPageVisible(false)
-            router.push('/dashboard')
+            router.push(callbackUrl ? callbackUrl : '/dashboard')
         } else if (status === 'unauthenticated') {
             setIsSignUpPageVisible(true)
         } else {
             setIsSignUpPageVisible(false)
         }
-    }, [router, status])
+    }, [callbackUrl, router, status])
 
     return (
         isSignUpPageVisible && (

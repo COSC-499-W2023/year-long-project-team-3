@@ -14,6 +14,7 @@ import loadOutSubmissionBoxes from './cypress/tasks/loadOutSubmissionBoxes'
 import submitVideoToSubmissionBox from './cypress/tasks/submitVideoToSubmissionBox'
 import createRequestSubmissionForUser from './cypress/tasks/createRequestSubmissionForUser'
 import getVerificationToken from 'cypress/tasks/getVerificationToken'
+import verifyEmail from './cypress/tasks/verifyEmail'
 
 require('dotenv').config()
 
@@ -39,6 +40,7 @@ export default defineConfig({
                 loadOutSubmissionBoxes,
                 submitVideoToSubmissionBox,
                 createRequestSubmissionForUser,
+                verifyEmail,
             })
         },
         experimentalModifyObstructiveThirdPartyCode: true,
