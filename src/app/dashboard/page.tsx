@@ -57,7 +57,7 @@ export default function DashboardPage() {
         } else {
             setIsSearching(searchTerm.length > 0)
         }
-    }, [displayVideos.length, isVideoTabSelected, searchTerm, submissionBoxes.length])
+    }, [displayVideos.length, isVideoTabSelected, searchTerm, submissionBoxes.length, tempSubmissionBoxes.length, tempVideos.length])
 
     useEffect(() => {
         if (isVideoTabSelected) {
