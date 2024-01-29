@@ -15,17 +15,13 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
     }
 
     const { title, description, closesAt } = await req.json()
-    if (!title || typeof title !== 'string') {
+    if (!title || typeof title !== 'string' || title === '') {
         logger.error(`User ${ session.user.email } did not provide a title`)
         return NextResponse.json({ error: 'No title provided' }, { status: 500 })
     }
     if (typeof description !== 'string') {
         logger.error('Unexpected description type')
         return NextResponse.json({ error: 'Unexpected description type' }, { status: 500 })
-    }
-    if (new Date(closesAt) < new Date) {
-        logger.error('Invalid closing date')
-        return NextResponse.json({ error: 'Invalid closing date' }, { status: 500 })
     }
 
     try {
@@ -66,7 +62,6 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
             data: {
                 title: title,
                 description: description,
-                closesAt: new Date(closesAt),
             },
         })
 
