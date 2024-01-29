@@ -279,3 +279,32 @@ it.
 
 My code contributions for this week may look small, but that is because I spent so much time getting the pipeline to work.
 None of what I did can really be tested easily, and this is the reason why I have not added any tests this week.
+
+
+## Teresa Saller - Term 2: Week 3 (2024/01/22 - 2024/01/28)
+
+![teresa-saller-tasks-w3-t2.png](imgs/teresa-saller-tasks-w3-t2.png)
+
+### Tasks
+
+Completed:
+- [Video processing features #68](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/68)
+  - [Fixed file name issue and allowing for .mov upload #331](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/331)
+  - [Set up staging pipeline #332](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/332)
+  - [Set up deployment pipeline #333](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/333)
+  - [Allow user to choose whether to blur their face #342](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/342)
+- [Fix aspect ratio of thumbnail in review submit #338](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/338)
+
+In progress:
+- [Transferring videos between buckets times out for longer videos #343](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/343)
+
+### Goals
+
+My goal for this week was to help my team reach the goals we set for the peer-review deadline, and to potentially 
+implement logic to give the user a choice of whether they want their face blurred. My goal for next week is to collect
+good feedback in our peer-testing session, and to start fixing whatever issues the session uncovers. Also, I am currently
+working on enabling larger files to be transferred between our rekognition and streaming pipelines.
+
+### Additional Context
+
+Since I worked a lot on infrastructure and bug testing, I only have one PR with tests.
