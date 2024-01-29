@@ -6,7 +6,6 @@ import Link from '@mui/material/Link'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import React, { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { toast } from 'react-toastify'
 import Logo from '@/components/Logo'
@@ -20,11 +19,11 @@ import { IconButton, InputAdornment } from '@mui/material'
 import { Visibility as VisibilityIconOn, VisibilityOff as VisibilityIconOff } from '@mui/icons-material'
 import GoogleSigninButton from '@/components/GoogleSigninButton'
 import HorizontalSeparator from 'src/components/HorizontalSeparator'
+import { useSearchParams } from 'next/navigation'
 
 export default function LoginForm() {
-    const router = useRouter()
-
     const [passwordVisible, setPasswordVisible] = useState(false)
+    const callbackUrl = useSearchParams()!.get('callbackUrl')
 
     const handleClickShowPassword = () => {
         setPasswordVisible(!passwordVisible)
@@ -136,7 +135,7 @@ export default function LoginForm() {
                 >
                     <Typography sx={{ mx: 6 }}>
                         Don&apos;t have an account yet?{' '}
-                        <Link data-cy='link-to-signup' href='/signup'>
+                        <Link data-cy='link-to-signup' href={'/signup' + (callbackUrl ? `?callbackUrl=${ encodeURIComponent(callbackUrl) }` : '')}>
                             Sign up now
                         </Link>
                     </Typography>
@@ -166,26 +165,6 @@ export default function LoginForm() {
             } else {
                 toast.success(`User ${ userData.email } successfully logged in`)
                 logger.info(`User ${ userData.email } successfully logged in`)
-
-                // Check if the user's email is verified
-                fetch('/api/verify-email/is-verified').then(async (res) => {
-                    if (res.status === 200) {
-                        const { isVerified } = await res.json()
-                        if (isVerified !== undefined) {
-                            if (isVerified) {
-                                router.push('/dashboard')
-                            } else {
-                                router.push('/verify-email')
-                            }
-                        } else {
-                            toast.error('There was an error while checking if your email is verified')
-                            router.push('/verify-email')
-                        }
-                        router.refresh()
-                    } else {
-                        toast.error('There was an error while checking if your email is verified')
-                    }
-                })
             }
         } catch (err) {
             const errMessage = JSON.stringify(err, Object.getOwnPropertyNames(err))
