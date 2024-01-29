@@ -10,7 +10,7 @@ export type SubmissionBoxInfoProps = {
 export default function SubmissionBoxDetails(props: SubmissionBoxInfoProps) {
     return (
         <>
-            <Typography data-cy='submissionBoxTitleHeading' color={'textSecondary'} sx={{ m: 1 }}>
+            <Typography data-cy='submissionBoxTitleHeading' color={'textSecondary'} sx={{ m: 1, fontWeight: 'bold' }}>
                 Title
             </Typography>
             <Typography
@@ -22,7 +22,7 @@ export default function SubmissionBoxDetails(props: SubmissionBoxInfoProps) {
             >
                 {props.submissionBox ? props.submissionBox.title : 'N/A'}
             </Typography>
-            <Typography data-cy='submissionBoxDateHeading' color={'textSecondary'} sx={{ m: 1 }}>
+            <Typography data-cy='submissionBoxDateHeading' color={'textSecondary'} sx={{ m: 1, fontWeight: 'bold' }}>
                 Close Date:
             </Typography>
             <Typography
@@ -39,7 +39,7 @@ export default function SubmissionBoxDetails(props: SubmissionBoxInfoProps) {
                         : 'N/A'
                     : 'N/A'}
             </Typography>
-            <Typography data-cy='submissionBoxDescHeading' color={'textSecondary'} sx={{ m: 1 }}>
+            <Typography data-cy='submissionBoxDescHeading' color={'textSecondary'} sx={{ m: 1, fontWeight: 'bold' }}>
                 Description
             </Typography>
             <Typography

@@ -18,7 +18,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
     try {
         // Get user id
-        const id = (
+        const userId = (
             await prisma.user.findUniqueOrThrow({
                 where: {
                     email: session.user.email,
@@ -37,7 +37,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
         })
 
         // Grab all submissions to the submission box
-        const requestedSubmissions = await prisma.submissionBox.findMany({
+        const requestedSubmissions = await prisma.submissionBox.findUniqueOrThrow({
             where: {
                 id: submissionBoxId,
             },
@@ -51,13 +51,10 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             },
         })
 
-        const requestedSubmissionUsers: string[] = requestedSubmissions
-            .flat()
-            .map(({ requestedSubmissions }) => requestedSubmissions.map(({ userId }) => userId ?? ''))
-            .flat()
+        const requestedSubmissionUsers = requestedSubmissions.requestedSubmissions.map(({ userId }) => userId)
 
         // If it is a user that has submitted to the box that is accessing the box
-        if (requestedSubmissionUsers.includes(id)) {
+        if (requestedSubmissionUsers.includes(userId)) {
             // Then this user is accessing the submission box via a requested page so only load their video on to the page
             const requestedSubmission = await prisma.submissionBox.findFirstOrThrow({
                 where: {
@@ -66,7 +63,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
                 select: {
                     requestedSubmissions: {
                         where: {
-                            userId: id,
+                            userId: userId,
                         },
                         select: {
                             id: true,
@@ -75,7 +72,10 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
                 },
             })
 
-            const requestedSubmissionId = requestedSubmission.requestedSubmissions.flat().map(({ id }) => id).flat()
+            const requestedSubmissionId = requestedSubmission.requestedSubmissions
+                .flat()
+                .map(({ id }) => id)
+                .flat()
 
             // Grab the video id of the submission
             const videoId = await prisma.submittedVideo.findFirst({
@@ -90,7 +90,11 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             })
             // If the user hasn't submitted a video yet
             if (videoId === null) {
-                return NextResponse.json({ box: 'Requested', videos: null, submissionBoxInfo: submissionBox }, { status: 200 })
+                const boxStatus = 'requested'
+                return NextResponse.json(
+                    { box: boxStatus, videos: [], submissionBoxInfo: submissionBox },
+                    { status: 200 }
+                )
             }
             // Get the video itself
             const boxVideo = await prisma.video.findUnique({
@@ -98,8 +102,12 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
                     id: videoId.videoId,
                 },
             })
-
-            return NextResponse.json({ box: 'Requested', videos: boxVideo, submissionBoxInfo: submissionBox }, { status: 200 })
+            // TODO: implement video versioning
+            const boxStatus = 'requested'
+            return NextResponse.json(
+                { box: boxStatus, videos: [boxVideo], submissionBoxInfo: submissionBox },
+                { status: 200 }
+            )
         } else {
             // Else if it is the supposed owner accessing the submission box
             // Grab the managed submission box that the user wants to view
@@ -107,7 +115,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
                 where: {
                     // eslint-disable-next-line camelcase
                     userId_submissionBoxId: {
-                        userId: id,
+                        userId: userId,
                         submissionBoxId: submissionBoxId,
                     },
                 },
@@ -118,14 +126,11 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
             // Check if user is an owner of the managed submission box
             if (ownedSubmissionBox.viewPermission !== 'owner') {
-                logger.error(`User ${ id } does not have permission to access submission box ${ submissionBoxId }`)
+                logger.error(`User ${ userId } does not have permission to access submission box ${ submissionBoxId }`)
                 return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
             }
 
-            const requestedSubmissionIds: string[] = requestedSubmissions
-                .flat()
-                .map(({ requestedSubmissions }) => requestedSubmissions.map(({ id }) => id))
-                .flat()
+            const requestedSubmissionIds: string[] = requestedSubmissions.requestedSubmissions.map(({ id }) => id)
 
             // Grab the video ids of all submissions
             const requestedBoxVideosIds = await prisma.submittedVideo.findMany({
@@ -152,8 +157,11 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
                     },
                 },
             })
-
-            return NextResponse.json({ box: 'Owned', videos: boxVideos, submissionBoxInfo: submissionBox }, { status: 200 })
+            const boxStatus = 'owned'
+            return NextResponse.json(
+                { box: boxStatus, videos: boxVideos, submissionBoxInfo: submissionBox },
+                { status: 200 }
+            )
         }
     } catch (err) {
         logger.error(err)

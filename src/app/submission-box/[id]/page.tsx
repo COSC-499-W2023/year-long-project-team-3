@@ -10,12 +10,13 @@ import BackButton from '@/components/BackButton'
 import SubmissionBoxDetails from '@/components/SubmissionBoxDetails'
 import { Typography } from '@mui/material'
 import ScalingReactPlayer from '@/components/ScalingReactPlayer'
+import { BoxStatus } from '@/types/submission-box/boxStatus'
 
 export default function SubmissionBoxDetailPage() {
     const session: SessionContextValue = useSession()
     const pathname = usePathname()
-    const [boxType, setBoxType] = useState('')
-    const [video, setVideo] = useState<Video | null>(null)
+    const [boxType, setBoxType] = useState<BoxStatus>('requested')
+    const [videoUrl, setVideoUrl] = useState(null)
     const [videos, setVideos] = useState<Video[]>([])
     const [boxInfo, setBoxInfo] = useState<SubmissionBox | null>(null)
     const boxId = pathname?.split('/').pop()
@@ -24,13 +25,14 @@ export default function SubmissionBoxDetailPage() {
         fetchVideos(boxId)
     }, [boxId])
 
+    // @ts-ignore
     return (
         <>
             <Box height='100wv' width='100%'>
                 <Header {...session} />
                 <BackButton route={'/dashboard '} title={'Return to Dashboard'} />{' '}
                 <Box display='grid' gridTemplateColumns='3fr 1fr' height='100%' width='100%'>
-                    {boxType === 'Owned' && (
+                    {boxType === 'owned' && (
                         <Box
                             sx={{
                                 borderTopRightRadius: 25,
@@ -52,7 +54,7 @@ export default function SubmissionBoxDetailPage() {
                             />
                         </Box>
                     )}
-                    {boxType === 'Requested' &&(
+                    {boxType === 'requested' && (
                         <Box
                             sx={{
                                 display: 'flex',
@@ -60,41 +62,33 @@ export default function SubmissionBoxDetailPage() {
                                 height: '70vh',
                                 gap: '4rem',
                                 padding: '2rem',
-                            }}>
+                            }}
+                        >
                             <Box
                                 data-cy='videoHolder'
                                 sx={{
                                     display: 'flex',
                                     flexDirection: 'column',
                                     alignItems: 'center',
-                                    ...(video === null && {justifyContent: 'center'}),
+                                    ...(videos.length !== 1 && { justifyContent: 'center' }),
                                     flexGrow: 1,
                                     flexShrink: 1,
                                     minWidth: '20vh',
                                     width: '100%',
-                                    ...(video === null && {backgroundColor: 'secondary.lighter'}),
+                                    ...(videos.length !== 1 && { backgroundColor: 'secondary.lighter' }),
                                     borderRadius: 1,
                                 }}
                             >
-                                {video !== null ? (
-                                    video.processedVideoUrl !== null ? (
-                                        <ScalingReactPlayer
-                                            data-cy='scaling-react-player'
-                                            url={video?.processedVideoUrl}
-                                        />
+                                {videos.length !== 0 ? (
+                                    videoUrl !== null ? (
+                                        <ScalingReactPlayer data-cy='scaling-react-player' url={videoUrl} />
                                     ) : (
-                                        <Typography
-                                            data-cy='pending'
-                                            variant={'h5'}
-                                            color={'textSecondary'}>
-                                          Submission Pending
+                                        <Typography data-cy='pending' variant={'h5'} color={'textSecondary'}>
+                                            Submission Pending
                                         </Typography>
                                     )
                                 ) : (
-                                    <Typography
-                                        data-cy='noSubmission'
-                                        variant={'h5'}
-                                        color={'textSecondary'}>
+                                    <Typography data-cy='noSubmission' variant={'h5'} color={'textSecondary'}>
                                         No Current Submission
                                     </Typography>
                                 )}
@@ -114,10 +108,13 @@ export default function SubmissionBoxDetailPage() {
         const { box, videos, submissionBoxInfo } = await response.json()
         setBoxType(box)
         setBoxInfo(submissionBoxInfo)
-        if (box === 'Owned') {
-            setVideos(videos)
-        } else {
-            setVideo(videos)
+        setVideos(videos)
+        if (videos.length === 1) {
+            setVideoUrl(
+                videos?.map((video: { processedVideoUrl: any }) => {
+                    return video.processedVideoUrl
+                })
+            )
         }
     }
 }
