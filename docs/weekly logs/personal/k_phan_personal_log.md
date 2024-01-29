@@ -1,5 +1,18 @@
 # K Phan
 
+## Term 2 Week 3 (January 22, 2024 - January 28, 2024)
+
+### Week's Goals
+- Finish testing detailed video page (COMPLETE) <- 1 feature
+- Finish fixing the bug that causes the video to not play (COMPLETE) <- this tasks take really long
+
+### Tasks Worked On
+- Detailed page for video (https://github.com/COSC-499-W2023/year-long-project-team-3/pull/312)
+- Fix API bug that causes the video to not play (https://github.com/COSC-499-W2023/year-long-project-team-3/pull/312)
+
+### Teamformation Report
+![](./imgs/term-2-week-3-k-phan-tasks.png)
+
 ## Term 2 Week 2 (January 15, 2024 - January 21, 2024)
 
 ### Week's Goals
