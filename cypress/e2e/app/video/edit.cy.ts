@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid'
 describe('Test video editing page', () => {
     context('Not logged in', () => {
         beforeEach(() => {
-            cy.visit('/video/edit/randomVideoId')
+            cy.visit('/video/preview/randomVideoId')
         })
 
         it('should redirect to login', () => {
@@ -35,7 +35,7 @@ describe('Test video editing page', () => {
                 cy.task('getUserId', email).then((userId) => {
                     cy.task('createOneVideoAndRetrieveVideoId', { ownerId: userId, title: 'Test video' }).then(
                         (videoId) => {
-                            videoUrl = '/video/edit/' + videoId
+                            videoUrl = '/video/preview/' + videoId
                         }
                     )
                 })
