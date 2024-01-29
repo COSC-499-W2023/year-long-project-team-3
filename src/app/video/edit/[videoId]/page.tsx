@@ -12,6 +12,8 @@ import PageLoadProgress from '@/components/PageLoadProgress'
 import { toast } from 'react-toastify'
 import BackButton from '@/components/BackButton'
 import FormNavButton from '@/components/FormNavButton'
+import logger from '@/utils/logger'
+import EditIcon from '@mui/icons-material/Edit'
 
 export default function VideoPreviewPage() {
     const session: SessionContextValue = useSession()
@@ -73,7 +75,7 @@ export default function VideoPreviewPage() {
                     }
                 })
                 .catch((err) => {
-                    console.error(err)
+                    logger.error(err)
                     cleanUpVideoState()
                     router.push('/dashboard')
                     toast.error(
