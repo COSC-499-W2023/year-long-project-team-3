@@ -17,7 +17,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
     try {
         // Get user id
-        const userId = (
+        const id = (
             await prisma.user.findUniqueOrThrow({
                 where: {
                     email: session.user.email,
@@ -56,7 +56,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             .flat()
 
         // If it is a user that has submitted to the box that is accessing the box
-        if (requestedSubmissionUsers.includes(userId)) {
+        if (requestedSubmissionUsers.includes(id)) {
 
             const requestedSubmission = await prisma.submissionBox.findFirstOrThrow({
                 where: {
@@ -65,7 +65,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
                 select: {
                     requestedSubmissions: {
                         where: {
-                            userId: userId,
+                            userId: id,
                         },
                         select: {
                             id: true,
@@ -106,7 +106,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
                 where: {
                     // eslint-disable-next-line camelcase
                     userId_submissionBoxId: {
-                        userId: userId,
+                        userId: id,
                         submissionBoxId: submissionBoxId,
                     },
                 },
@@ -117,7 +117,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
             // Check if user is an owner of the managed submission box
             if (ownedSubmissionBox.viewPermission !== 'owner') {
-                logger.error(`User ${ userId } does not have permission to access submission box ${ submissionBoxId }`)
+                logger.error(`User ${ id } does not have permission to access submission box ${ submissionBoxId }`)
                 return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
             }
 
