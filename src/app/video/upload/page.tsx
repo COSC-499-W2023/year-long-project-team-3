@@ -115,8 +115,8 @@ export default function UploadVideoPage() {
                         <FormControlLabel
                             control={
                                 <Checkbox
+                                    data-cy='blur-checkbox'
                                     checked={isFaceBlurChecked}
-                                    data-cy='faceblur-check'
                                     onChange={handleFaceBlurChecked}
                                 />
                             }
