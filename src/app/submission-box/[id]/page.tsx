@@ -110,7 +110,7 @@ export default function SubmissionBoxDetailPage() {
     )
 
     async function fetchVideos(boxId: string | undefined) {
-        const response = await fetch(`/api/submission-box/myboxes/${ boxId }`)
+        const response = await fetch(`/api/submission-box/${ boxId }`)
         const { box, videos, submissionBoxInfo } = await response.json()
         setBoxType(box)
         setBoxInfo(submissionBoxInfo)
