@@ -165,14 +165,14 @@ export default function SubmissionBoxDetailPage() {
                                         variant='contained'
                                         color='inherit'
                                         onClick={onCancelEdit}
-                                        data-cy='detail-video-cancel-button'
+                                        data-cy='cancelButton'
                                     >
                                       Cancel
                                     </Button>
                                     <Button
                                         variant='contained'
                                         onClick={onUpdateVideoInfo}
-                                        data-cy='detail-video-update-button'
+                                        data-cy='updateButton'
                                     >
                                       Update
                                     </Button>
@@ -237,6 +237,9 @@ export default function SubmissionBoxDetailPage() {
         setBoxType(box)
         setBoxInfo(submissionBoxInfo)
         setVideos(videos)
+        setBoxTitleEdit(submissionBoxInfo.title)
+        setBoxDescriptionEdit(submissionBoxInfo.description)
+        setBoxDateEdit(submissionBoxInfo.closesAt)
         if (videos.length === 1) {
             setVideoUrl(
                 videos?.map((video: { processedVideoUrl: any }) => {

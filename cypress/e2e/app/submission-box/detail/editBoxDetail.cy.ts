@@ -15,8 +15,8 @@ describe('Recieving Dashboard Details Page Tests', () => {
         cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('not.contain', 'login')
     })
 
-    it('should display a submission box with no information inputted other than title', () => {
-        const submissionBoxTitle = 'Test Recieving'
+    it('should display a submission box and be able to change it\'s information', () => {
+        const submissionBoxTitle = 'Test Modification'
         cy.task('getUserId', email).then((userId) => {
             cy.task('createSubmissionBoxWithEmail', { submissionBoxTitle, email, userId })
         })
@@ -28,34 +28,27 @@ describe('Recieving Dashboard Details Page Tests', () => {
         })
         cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
 
-        cy.get('[data-cy="no-video-text"]', { timeout: TIMEOUT.EXTRA_LONG }).should(
-            'contain',
-            'You Do Not Have Any Videos'
-        )
         cy.get('[data-cy="submissionBoxTitle"]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain', submissionBoxTitle)
         cy.get('[data-cy="submissionBoxDate"]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'N/A')
         cy.get('[data-cy="submissionBoxDesc"]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'N/A')
+
+        cy.get('[data-cy="edit-icon"]').should('be.visible').click()
+        cy.get('[data-cy="submissionBoxTitleEdit"]').should('be.visible').click()
+
+        const newTitle = 'A new title for the submission box'
+        const newDescription = 'A new description for the submission box.'
+        cy.get('[data-cy="submissionBoxTitleEdit"]').should('have.value', submissionBoxTitle).clear().type(newTitle)
+        cy.get('[data-cy="submissionBoxDescEdit"]').should('have.value', '').type(newDescription)
+        cy.get('[data-cy="updateButton"]').should('be.visible').click()
+
+        cy.get('[data-cy="submissionBoxTitle"]').should('contain', newTitle)
+        cy.get('[data-cy="submissionBoxDesc"]').should('contain', newDescription)
     })
 
-    it('should display a submission box with all information inputted and videos', () => {
-        const submissionBoxTitle = 'Test Recieving with Data'
-        const submissionBoxDescription =
-      'This is a description that describes what users need to submit and have in their videos.  The description is a good tool to make sure that participants in the submission box are able to determine what is needed in their submissions and the ability for them to hit their goals. :)'
-        const videoTitle = ['Test video1', 'Test video2']
+    it('should display a submission box, start to change it\'s information, cancel the operation and revert the title and description to the original', () => {
+        const submissionBoxTitle = 'Test Modification'
         cy.task('getUserId', email).then((userId) => {
-            cy.task('createSubmissionBoxWithEmail', {
-                submissionBoxTitle,
-                email,
-                userId,
-                submissionBoxDescription,
-            }).then((submissionBoxId) => {
-                cy.task('createOneVideoAndRetrieveVideoId', { title: videoTitle[0] }).then((videoId) => {
-                    cy.task('submitVideoToSubmissionBox', { requestedSubmissionId: submissionBoxId, videoId })
-                })
-                cy.task('createOneVideoAndRetrieveVideoId', { title: videoTitle[1] }).then((videoId) => {
-                    cy.task('submitVideoToSubmissionBox', { requestedSubmissionId: submissionBoxId, videoId })
-                })
-            })
+            cy.task('createSubmissionBoxWithEmail', { submissionBoxTitle, email, userId })
         })
         cy.reload()
         cy.visit('/dashboard')
@@ -65,16 +58,20 @@ describe('Recieving Dashboard Details Page Tests', () => {
         })
         cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
 
-        cy.get('[data-cy="video-list"]', { timeout: TIMEOUT.EXTRA_LONG })
-            .should('be.visible')
-            .children()
-            .should('have.length', 2)
-
         cy.get('[data-cy="submissionBoxTitle"]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain', submissionBoxTitle)
         cy.get('[data-cy="submissionBoxDate"]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'N/A')
-        cy.get('[data-cy="submissionBoxDesc"]', { timeout: TIMEOUT.EXTRA_LONG }).should(
-            'contain',
-            'This is a description that describes what users need to submit and have in their videos.  The description is a good tool to make sure that participants in the submission box are able to determine what is needed in their submissions and the ability for them to hit their goals. :)'
-        )
+        cy.get('[data-cy="submissionBoxDesc"]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'N/A')
+
+        cy.get('[data-cy="edit-icon"]').should('be.visible').click()
+        cy.get('[data-cy="submissionBoxTitleEdit"]').should('be.visible').click()
+
+        const newTitle = 'A new title for the submission box'
+        const newDescription = 'A new description for the submission box.'
+        cy.get('[data-cy="submissionBoxTitleEdit"]').should('have.value', submissionBoxTitle).clear().type(newTitle).should('have.value', newTitle)
+        cy.get('[data-cy="submissionBoxDescEdit"]').should('have.value', '').type(newDescription).should('have.value', newDescription)
+        cy.get('[data-cy="cancelButton"]').should('be.visible').click()
+
+        cy.get('[data-cy="submissionBoxTitle"]').should('contain', submissionBoxTitle)
+        cy.get('[data-cy="submissionBoxDesc"]').should('contain', 'N/A')
     })
 })
