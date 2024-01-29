@@ -1,6 +1,5 @@
 import { TIMEOUT } from '../../../../utils/constants'
 import { v4 as uuidv4 } from 'uuid'
-import { timeout } from 'rxjs'
 
 describe('Submission box request submissions tests', () => {
     beforeEach(() => {

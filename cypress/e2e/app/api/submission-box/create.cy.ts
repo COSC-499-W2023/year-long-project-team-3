@@ -21,22 +21,20 @@ describe('Test submission box creation API', () => {
 
     context('Logged in', () => {
         beforeEach(() => {
-            cy.session('testuser', () => {
-                cy.task('clearDB')
+            cy.task('clearDB')
 
-                const email = 'user' + uuidv4() + '@example.com'
-                const password = 'Password1'
+            const email = 'user@example.com'
+            const password = 'Password1'
 
-                // Sign up
-                cy.task('createUser', { email, password })
+            // Sign up
+            cy.task('createUser', { email, password })
 
-                // Login
-                cy.visit('/login')
-                cy.get('[data-cy=email]').type(email)
-                cy.get('[data-cy=password]').type(password)
-                cy.get('[data-cy=submit]').click()
-                cy.url().should('not.contain', 'login')
-            })
+            // Login
+            cy.visit('/login')
+            cy.get('[data-cy=email]').type(email)
+            cy.get('[data-cy=password]').type(password)
+            cy.get('[data-cy=submit]').click()
+            cy.url().should('not.contain', 'login')
         })
 
         it('should accept valid request', () => {

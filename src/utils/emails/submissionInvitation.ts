@@ -1,13 +1,22 @@
-import { User } from '@prisma/client'
-import { sendEmail } from '@/utils/emails/sendEmail'
 import { Message } from '@aws-sdk/client-ses'
+import process from 'process'
+import { sendEmails } from '@/utils/emails/sendEmail'
+import { SubmissionBox } from '@prisma/client'
+import dayjs from 'dayjs'
 
-export async function sendSubmissionInvitation(user: User) {
-    let message = getSubmissionInvitationMessage('example.com')
-    return sendEmail(user.email, message)
+export async function sendSubmissionInvitations(emails: string[], ownerEmail: string, submissionBox: SubmissionBox) {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? 'https://harpvideo.ca'
+    const boxUrl = `${ baseUrl }/submission-box/${ submissionBox.id }`
+
+    const date = submissionBox.closesAt
+    const formattedDate = date && dayjs(date).format('dddd MMM D, h:mma')
+
+    const message = getSubmissionInvitationMessage(ownerEmail, boxUrl, submissionBox.title, formattedDate)
+    return sendEmails(emails, message)
 }
 
-function getSubmissionInvitationMessage(link: string): Message {
+function getSubmissionInvitationMessage(ownerEmail: string, link: string, title: string, closingDate: string | null): Message {
+    // noinspection all
     return {
         Body: {
             Html: {
@@ -273,7 +282,7 @@ function getSubmissionInvitationMessage(link: string): Message {
 
                               <div style="font-size: 14px; line-height: 160%; text-align: center; word-wrap: break-word;">
                                 <p style="font-size: 14px; line-height: 160%;"><span style="font-size: 22px; line-height: 35.2px;">Hi, </span></p>
-                                <p style="font-size: 14px; line-height: 160%;"><span style="font-size: 18px; line-height: 28.8px;">You've been invited to submit a video. Please click the button below to get started!</span></p>
+                                <p style="font-size: 14px; line-height: 160%;"><span style="font-size: 18px; line-height: 28.8px;">${ ownerEmail } has invited you to submit a video to "${ title }". ${ closingDate ? 'The deadline to submit is ' + closingDate + '. ' : '' }Please click the button below to get started!</span></p>
                               </div>
 
                             </td>
@@ -427,10 +436,7 @@ function getSubmissionInvitationMessage(link: string): Message {
                 Data: `
 Hi,
 
-You've been invited to submit a video. Please click the link below to get
-started!
-
-
+${ ownerEmail } has invited you to submit a video to "${ title }". ${ closingDate ? 'The deadline to submit is ' + closingDate + '. ' : '' }Please click the button below to get started!
 
 Thanks,
 Harp Video
@@ -442,7 +448,7 @@ Copyrights © Harp Video
         },
         Subject: {
             Charset: 'UTF-8',
-            Data: 'EMAIL_SUBJECT',
+            Data: `Submission Box Invitation - ${ title } - Harp Video`,
         },
     }
 }

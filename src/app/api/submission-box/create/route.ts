@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth'
 import prisma from '@/lib/prisma'
 import { getEmailRegex } from '@/utils/verification'
 import logger from '@/utils/logger'
+import { sendSubmissionInvitations } from '@/utils/emails/submissionInvitation'
 
 export type SubmissionBoxCreateData = {
     title: string
@@ -68,6 +69,21 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             return NextResponse.json({ error: 'Invalid Request' }, { status: 400 })
         }
 
+        const owner = await prisma.user.findUniqueOrThrow({
+            where: {
+                email: session.user?.email!,
+            },
+            select: {
+                id: true,
+                email: true,
+                emailVerified: true,
+            },
+        })
+
+        if (!owner.emailVerified) {
+            return NextResponse.json({ error: 'Your email must be verified to create a submission box' }, { status: 401 })
+        }
+
         // Create submission box
         const newSubmissionBox = await prisma.submissionBox.create({
             data: {
@@ -83,12 +99,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         const submissionBoxId = newSubmissionBox.id
 
         // Add logged-in user as manager
-        const owner = await prisma.user.findUniqueOrThrow({
-            where: {
-                email: session.user?.email!,
-            },
-        })
-
         await prisma.submissionBoxManager.create({
             data: {
                 userId: owner.id,
@@ -129,6 +139,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
                 }
             }),
         })
+
+        // Send email invitations
+        if (reqData.requestedEmails.length > 0) {
+            await sendSubmissionInvitations(reqData.requestedEmails, owner.email, newSubmissionBox)
+        }
 
         return NextResponse.json(newSubmissionBox, { status: 201 })
     } catch (err) {
