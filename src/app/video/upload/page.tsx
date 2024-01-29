@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Button } from '@mui/material'
+import { Box, Button, Checkbox, FormControlLabel } from '@mui/material'
 import { CloudUpload as CloudUploadIcon } from '@mui/icons-material'
 import { styled } from '@mui/material/styles'
 import React, { type ChangeEvent, useState } from 'react'
@@ -12,6 +12,7 @@ import ProgressDots from '@/components/ProgressDots'
 import PageLoadProgressBlurBackground from '@/components/PageLoadProgressBlurBackround'
 import logger from '@/utils/logger'
 import BackButton from '@/components/BackButton'
+import Typography from '@mui/material/Typography'
 
 const VisuallyHiddenInput = styled('input')({
     clipPath: 'inset(50%)',
@@ -29,6 +30,11 @@ export default function UploadVideoPage() {
     const router = useRouter()
 
     const [isUploadingVideo, setIsUploadingVideo] = useState(false)
+    const [isFaceBlurChecked, setIsFaceBlurChecked] = useState(false)
+
+    const handleFaceBlurChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setIsFaceBlurChecked(event.target.checked)
+    }
 
     const handleFileChanged = (event: ChangeEvent<HTMLInputElement>) => {
         if (!!event.target?.files) {
@@ -43,6 +49,7 @@ export default function UploadVideoPage() {
         setIsUploadingVideo(true)
         const videoUploadForm = new FormData()
         videoUploadForm.append('video', uploadedFile!)
+        videoUploadForm.append('isFaceBlurChecked', `${ isFaceBlurChecked }`)
 
         fetch('/api/video/upload', {
             method: 'POST',
@@ -94,6 +101,27 @@ export default function UploadVideoPage() {
                     </Box>
                     <Box display='flex' width='100%' flexDirection='column' alignItems='center'>
                         <h1>Upload Video</h1>
+                        <Typography
+                            sx={{
+                                maxWidth: '40%',
+                                textAlign: 'center',
+                                pb: 3,
+                            }}
+                        >
+                            If you would like Harp Video to blur all faces in your video, please tick the checkbox below
+                            before uploading the file.
+                        </Typography>
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    data-cy='blur-checkbox'
+                                    checked={isFaceBlurChecked}
+                                    onChange={handleFaceBlurChecked}
+                                />
+                            }
+                            label='Yes, I want to blur all faces in my video'
+                            sx={{ mb: 3 }}
+                        />
                         <Button component='label' variant='contained' startIcon={<CloudUploadIcon />}>
                             Upload
                             <VisuallyHiddenInput

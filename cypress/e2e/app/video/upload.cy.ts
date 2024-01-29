@@ -13,7 +13,7 @@ describe('Test Video Upload and Streaming Processing Pipeline', () => {
     })
 
     context('Logged in', () => {
-        before(() => {
+        beforeEach(() => {
             cy.task('clearDB')
             cy.task('populateDB')
 
@@ -24,6 +24,28 @@ describe('Test Video Upload and Streaming Processing Pipeline', () => {
                 cy.get('[data-cy=submit]').click()
                 cy.url().should('not.contain', 'login')
             })
+        })
+
+        it('should allow the user to check the box to blur their face', () => {
+            cy.visit('/video/upload')
+
+            // Click the span to simulate checking the checkbox
+            cy.get('[data-cy=blur-checkbox]').click()
+            // Check that the checkbox has been checked
+            cy.get('[data-cy=blur-checkbox]').should('have.class', 'Mui-checked')
+        })
+
+        it('should allow the user to uncheck the box to blur their face', () => {
+            cy.visit('/video/upload')
+
+            // Click the span to simulate checking the checkbox
+            cy.get('[data-cy=blur-checkbox]').should('be.visible').click()
+            // Check that the checkbox has been checked
+            cy.get('[data-cy=blur-checkbox]').should('be.visible').should('have.class', 'Mui-checked')
+            // Click the span to simulate un-checking the checkbox
+            cy.get('[data-cy=blur-checkbox]').should('be.visible').click()
+            // Check that the checkbox has been unchecked
+            cy.get('[data-cy=blur-checkbox]').should('be.visible').should('not.have.class', 'Mui-checked')
         })
 
         it('should upload and process video', () => {

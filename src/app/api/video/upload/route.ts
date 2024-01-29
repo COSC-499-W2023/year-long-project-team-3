@@ -18,6 +18,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             return NextResponse.json({ error: 'The input video is not valid' }, { status: 400 })
         }
 
+        const isFaceBlurChecked = parseFormDataEntryValueToBoolean(body.get('isFaceBlurChecked'))
+
         const userEmail = session?.user?.email as string
         const user: User = await prisma.user.findUniqueOrThrow({
             where: {
@@ -25,7 +27,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             },
         })
 
-        const newVideo: Video = await sendVideo(uploadedVideo, user)
+        const newVideo: Video = await sendVideo(uploadedVideo, user, isFaceBlurChecked)
 
         // Sending this does not mean the video is process successfully.
         return NextResponse.json({ video: newVideo }, { status: 201 })
@@ -37,4 +39,20 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
 function isVideoValidType(video: FormDataEntryValue | null): video is File {
     return video !== null && video.constructor.name === 'File'
+}
+
+function parseFormDataEntryValueToBoolean(input: FormDataEntryValue | null): boolean {
+    if (input == null) {
+        input = 'false'
+        logger.error('isFaceBlurChecked was null, set to false')
+    }
+
+    input = input.toString()
+    if (input.toLowerCase() === 'true') {
+        return true
+    } else if (input.toLowerCase() === 'false') {
+        return false
+    } else {
+        throw new Error('Invalid value for isFaceBlurChecked!')
+    }
 }
