@@ -14,7 +14,7 @@
 ### Goals for the coming week
 
 - We will need to address the feedback from the peer review testing #1
-- 
+- Other tasks will need to be decided later this week
 
 ### Additional Context
 
