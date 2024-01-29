@@ -104,20 +104,28 @@ export default function SubmitVideoPage() {
                         <Box display='flex'>
                             <Box width={300} height={200} display='flex' alignItems='start' justifyContent='end'>
                                 {!!video && !!video.thumbnail ? (
-                                    <Image
-                                        src={video.thumbnail}
-                                        alt='Video Thumbnail'
+                                    <Box
                                         width={300}
                                         height={200}
-                                        quality={50}
-                                        objectPosition={'100% 0'}
-                                        objectFit={'cover'}
-                                        style={{
-                                            borderRadius: 20,
-                                            maxWidth: '21vw',
-                                            maxHeight: '14vw',
+                                        display={'flex'}
+                                        alignItems={'center'}
+                                        position={'relative'}
+                                        sx={{
+                                            borderRadius: '20px',
+                                            backgroundColor: 'black',
                                         }}
-                                    />
+                                    >
+                                        {!!video.thumbnail && (
+                                            <Image
+                                                src={video.thumbnail}
+                                                layout={'fill'}
+                                                alt='Video Thumbnail'
+                                                objectPosition={'center'}
+                                                objectFit={'cover'}
+                                                style={{ borderRadius: 20 }}
+                                            />
+                                        )}
+                                    </Box>
                                 ) : (
                                     <Box
                                         component='span'
@@ -199,7 +207,7 @@ export default function SubmitVideoPage() {
                                 width: '35vw',
                             }}
                         >
-                            <Typography variant='h6' fontWeight='600'>
+                            <Typography variant='h6' fontWeight='600' color={'textSecondary'}>
                                 Choose boxes to submit to:
                             </Typography>
                             <Select

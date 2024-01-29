@@ -13,12 +13,6 @@ describe('Test Video Upload and Streaming Processing Pipeline', () => {
     })
 
     context('Logged in', () => {
-        if (!Cypress.env('CYPRESS_RUN_LOCAL_ONLY')) {
-            // TODO: Remove this when we have a way to get the video ID (aka using Cognito)
-            it.skip('Skipped in production', () => {})
-            return
-        }
-
         beforeEach(() => {
             cy.task('clearDB')
             cy.task('populateDB')
@@ -79,7 +73,7 @@ describe('Test Video Upload and Streaming Processing Pipeline', () => {
             })
 
             /* Check that the processed video preview is displayed once we redirect to the edit page */
-            cy.get('[data-cy=video-player]', { timeout: 2 * TIMEOUT.EXTRA_EXTRA_LONG }).should('be.visible')
+            cy.get('[data-cy=video-player]', { timeout: 4 * TIMEOUT.EXTRA_EXTRA_LONG }).should('be.visible')
         })
     })
 })

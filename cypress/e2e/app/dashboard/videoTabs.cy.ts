@@ -2,12 +2,6 @@ import { TIMEOUT } from '../../../utils/constants'
 import { v4 as uuidv4 } from 'uuid'
 
 describe('Dashboard Recent Videos Tests', () => {
-    if (!Cypress.env('CYPRESS_RUN_LOCAL_ONLY')) {
-        // TODO: Remove this when we have a way to get the video ID (aka using Cognito)
-        it.skip('Skipped in production', () => {})
-        return
-    }
-
     beforeEach(() => {
         cy.task('clearDB')
     })
@@ -77,14 +71,12 @@ describe('Dashboard Recent Videos Tests', () => {
             .should('be.visible')
             .should('have.css', 'background-color', 'rgb(225, 240, 255)') // Check if the tab is focused
 
-
         cy.get('[data-cy="video-list"]', { timeout: TIMEOUT.EXTRA_LONG })
             .should('be.visible')
             .children()
             .should('have.length', 1)
 
         cy.get('[data-cy="video-list"]').children().first().should('contain', videoTitle)
-
     })
 
     it('should display received videos when a user has received videos', () => {
@@ -126,6 +118,9 @@ describe('Dashboard Recent Videos Tests', () => {
             .should('be.visible')
             .should('have.css', 'background-color', 'rgb(225, 240, 255)') // Check if the tab is focused
 
-        cy.get('[data-cy="no-video-text"]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'You Do Not Have Any Videos')
+        cy.get('[data-cy="no-video-text"]', { timeout: TIMEOUT.EXTRA_LONG }).should(
+            'contain',
+            'You Do Not Have Any Videos'
+        )
     })
 })
