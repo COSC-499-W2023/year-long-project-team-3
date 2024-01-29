@@ -201,3 +201,24 @@
 ### Additional Context
 
 -   NA
+
+## Week 3 (22/01/2024 - 28/01/2024)
+
+![](imgs/term-2-week-3-erin-tasks.png)
+
+### Week Tasks
+
+-   Implement submission detail page for receiving submission boxes  #305 (Completed)
+-   Detail page for submission boxes  #303 (In Review)
+-   Detail page for submitted to submission boxes  #339 (In Review)
+-   Modifying submission boxes  #72 (In Progress)
+
+### Week Goals
+
+-   The 'My Submission Boxes' detail page(s) was reviewed, changes made, and merged this week
+-   For the 'Requested Submission Boxes' detail page(s) I completed coding and testing the task, it is in a review stage and changes have been started on.
+-   I also started the modifying submission boxes task that will include editing the title and description of the submission boxes.
+
+### Additional Context
+
+-   NA
