@@ -51,7 +51,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
                     userId: whiteListedUser.whitelistedUserId,
                 },
             })
-        ).flat().map((requestedSubmission: RequestedSubmission) => requestedSubmission.id)
+        )
+            .flat()
+            .map((requestedSubmission: RequestedSubmission) => requestedSubmission.id)
 
         await Promise.all(
             requestedSubmissions.map(
