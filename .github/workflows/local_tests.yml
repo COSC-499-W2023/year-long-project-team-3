@@ -1,9 +1,9 @@
 name: Cypress Local Tests
 
 on:
-    push:
-        branches-ignore:
-            - master
+    pull_request:
+        types:
+            - synchronize
         paths-ignore:
             - docs/**
             - '**/*.md'
