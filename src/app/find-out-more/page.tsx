@@ -10,6 +10,7 @@ import { type SessionContextValue, useSession } from 'next-auth/react'
 export default function FindOutMorePage() {
     const session: SessionContextValue = useSession()
 
+    // noinspection HtmlUnknownTarget
     return (
         <>
             <Header {...session} />
@@ -18,22 +19,24 @@ export default function FindOutMorePage() {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    overflow: 'hidden',
                     overflowY: 'scroll',
                     position: 'absolute',
-                    top: 80,
-                    bottom: 0,
-                    left: 0,
+                    width: '100%',
+                    height: '100%',
                 }}
             >
-                <Box sx={{ mt: 4 }}>
-                    <Logo fontSize={80} />
-                </Box>
                 <Box
                     sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
                         maxWidth: '45%',
+                        pb: '10rem',
                     }}
                 >
+                    <Box sx={{ mt: 4 }}>
+                        <Logo fontSize={80} />
+                    </Box>
                     <Typography
                         data-cy='title'
                         variant='h2'
@@ -134,7 +137,7 @@ export default function FindOutMorePage() {
                                 Submission Box you want to upload your video to.
                             </li>
                         </ol>
-                        <Typography sx={{ mb: 10 }}>
+                        <Typography>
                             After clicking Submit, you can see your video on your{' '}
                             <Link href='/dashboard'>Dashboard page</Link> under Recents and Submitted videos.
                         </Typography>
