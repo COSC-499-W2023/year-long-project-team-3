@@ -10,72 +10,132 @@ import { type SessionContextValue, useSession } from 'next-auth/react'
 export default function FindOutMorePage() {
     const session: SessionContextValue = useSession()
 
-    const missionStatement =
-        'The purpose of our software is to allow users to easily send and receive videos through their web\n' +
-        'browser. Users will be able to protect their privacy in those videos by optionally blurring their\n' +
-        'faces or their background. These privacy protection features will be implemented using AWS services.\n' +
-        'Our software will be a web app that is targeted at professional settings which require video\n' +
-        'submissions, such as recruiting or education. We are hoping to make it easier for our target\n' +
-        'demographic to send and receive videos, all while maintaining privacy by giving users the ability to\n' +
-        'blur their faces in recordings before submitting. What sets our solution apart from others is the\n' +
-        'amount of control users will have over their videos and video requests. Users will be able to either\n' +
-        'request videos or submit a video to a request. In order to request videos, they would open a\n' +
-        '“submission box,” where they can request videos from other users by entering their email addresses.\n' +
-        'These users would then receive an email notification of the submission request. To submit a video to\n' +
-        'the “submission box,” users would log into the system, where they could then record the video in the\n' +
-        'browser, or upload a pre-recorded video from their computer. The video would then be processed in\n' +
-        'our web app. For the processing, we will take advantage of different AWS APIs to enable e.g. face\n' +
-        'blurring on video recordings. Users will be able to play back their videos after processing, and\n' +
-        'once they’re satisfied, they can submit them. Once submitted, videos can still be retracted, and\n' +
-        'users can also set an expiry date on videos before submission. All of these features aim to put as\n' +
-        'much power as possible into the user’s hands, all while making the workflow as easy as possible.\n' +
-        'Ultimately, we will help professionals easily send and receive videos while protecting their privacy\n' +
-        'through the use of cloud technology.'
-
     return (
         <>
             <Header {...session} />
-            <Box sx={{ marginTop: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Logo fontSize={80} />
-            </Box>
             <Box
                 sx={{
-                    marginTop: 2,
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
+                    overflow: 'hidden',
+                    overflowY: 'scroll',
+                    position: 'absolute',
+                    top: 80,
+                    bottom: 0,
+                    left: 0,
                 }}
             >
-                <Typography
-                    data-cy='title'
-                    variant='h2'
+                <Box sx={{ mt: 4 }}>
+                    <Logo fontSize={80} />
+                </Box>
+                <Box
                     sx={{
-                        fontWeight: 'medium',
-                        maxWidth: {
-                            md: undefined,
-                            lg: '70%',
-                            xl: '45%',
-                        },
-                        textAlign: 'center',
-                        pb: 5,
+                        maxWidth: '45%',
                     }}
                 >
-                    Mission Statement
-                </Typography>
-                <Typography
-                    variant='body1'
-                    sx={{
-                        fontWeight: 'medium',
-                        maxWidth: {
-                            md: undefined,
-                            lg: '75%',
-                            xl: '50%',
-                        },
-                        textAlign: 'center',
-                    }}
-                >
-                    { missionStatement }
-                </Typography>
+                    <Typography
+                        data-cy='title'
+                        variant='h2'
+                        sx={{
+                            fontWeight: 'medium',
+                            textAlign: 'center',
+                            pb: 5,
+                        }}
+                    >
+                        How to use Harp Video
+                    </Typography>
+                    <Box>
+                        <Typography>
+                            The purpose of our software is to allow users to easily send and receive videos through
+                            their web browser. Users are able to protect their privacy in those videos by optionally
+                            blurring their face.
+                        </Typography>
+                    </Box>
+                    <Box>
+                        <Typography
+                            variant='h4'
+                            sx={{
+                                fontWeight: 'medium',
+                                my: 2,
+                            }}
+                        >
+                            Creating an Account
+                        </Typography>
+                        <ol>
+                            <li>Navigate to the Signup page and fill out the form, then click sign in</li>
+                            <li>
+                                You will be redirected to the Login page, login with the account you created at Signup
+                            </li>
+                            <li>
+                                If you are logging in for the first time, you will need to verify your email address.
+                                Check your emails and click on the link we have sent to you.
+                            </li>
+                        </ol>
+                        <Typography>
+                            If you follow these three steps, you should now have an account and be able to see your
+                            Dashboard page. Welcome to Harp!
+                        </Typography>
+                    </Box>
+                    <Box>
+                        <Typography
+                            variant='h4'
+                            sx={{
+                                fontWeight: 'medium',
+                                my: 2,
+                            }}
+                        >
+                            Creating a Submission Box
+                        </Typography>
+                        <ol>
+                            <li>Click on Create New under Submission Boxes on the Dashboard.</li>
+                            <li>
+                                If you are logging in for the first time, you will need to verify your email address.
+                                Check your emails and click on the link we have sent to you.
+                            </li>
+                            <li>
+                                Complete the multi-step form consisting of Box Settings, Request Submissions, and Review
+                                &amp; Create.
+                            </li>
+                        </ol>
+                        <Typography>
+                            After clicking Create, you can now navigate to My Boxes under Submission Boxes on the
+                            Dashboard to see the box you have created.
+                        </Typography>
+                    </Box>
+                    <Box>
+                        <Typography
+                            variant='h4'
+                            sx={{
+                                fontWeight: 'medium',
+                                my: 2,
+                            }}
+                        >
+                            Uploading a Video to a Submission Box
+                        </Typography>
+                        <ol>
+                            <li>
+                                Click on Upload New under Menu on the Dashboard. If you want to blur your face in the
+                                video, tick the checkbox on the Upload Video page before uploading a video from your
+                                computer.
+                            </li>
+                            <li>
+                                Once you have uploaded a video, it will be processed using AWS services. After
+                                processing is done, you will be redirected to the Preview page. There, you can playback
+                                your video to ensure it is what you want to submit.
+                            </li>
+                            <li>
+                                Upon clicking Next, you will find yourself on the Submit page, there you can see your
+                                video&apos;s thumbnail and enter a title and description. You will also choose the
+                                Submission Box you want to upload your video to.
+                            </li>
+                        </ol>
+                        <Typography sx={{ mb: 10 }}>
+                            After clicking Submit, you can see your video on your Dashboard page under Recents and
+                            Submitted videos.
+                        </Typography>
+                    </Box>
+                </Box>
             </Box>
         </>
     )
