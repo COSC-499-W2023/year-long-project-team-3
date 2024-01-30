@@ -89,6 +89,40 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             },
         })
 
+        // Add submission box owners as whitelisted to view this video
+        for (const submissionBoxId of submissionBoxIds) {
+            const owners = await prisma.submissionBoxManager.findMany({
+                where: {
+                    submissionBoxId,
+                },
+                select: {
+                    userId: true,
+                    viewPermission: true,
+                },
+            })
+
+            for (const owner of owners) {
+                const videoWhitelist = await prisma.videoWhitelist.findUniqueOrThrow({
+                    where: {
+                        videoId,
+                    },
+                })
+                await prisma.videoWhitelistedUser.upsert({
+                    where: {
+                        'whitelistedVideoId_whitelistedUserId': {
+                            whitelistedUserId: owner.userId,
+                            whitelistedVideoId: videoWhitelist.id,
+                        },
+                    },
+                    create: {
+                        whitelistedUserId: owner.userId,
+                        whitelistedVideoId: videoWhitelist.id,
+                    },
+                    update: {},
+                })
+            }
+        }
+
         return NextResponse.json({ message: `Successfully submitted ${ videoTitle }` }, { status: 201 })
     } catch (err) {
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })

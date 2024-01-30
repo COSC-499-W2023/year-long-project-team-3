@@ -62,7 +62,7 @@ export default function UploadVideoPage() {
                     throw new Error(body.error)
                 }
                 const videoId = body.video.id as string
-                router.push(`/video/edit/${ videoId }`)
+                router.push(`/video/preview/${ videoId }`)
             })
             .catch((err) => {
                 logger.error(err)
@@ -97,7 +97,7 @@ export default function UploadVideoPage() {
                             width: '70%',
                         }}
                     >
-                        <ProgressDots activeStep={0} numSteps={3} labels={['Upload', 'Edit', 'Submit']} />
+                        <ProgressDots activeStep={0} numSteps={3} labels={['Upload', 'Preview', 'Submit']} />
                     </Box>
                     <Box display='flex' width='100%' flexDirection='column' alignItems='center'>
                         <h1>Upload Video</h1>

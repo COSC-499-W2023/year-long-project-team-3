@@ -9,7 +9,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     try {
         const session = await getServerSession()
         if (!session || !session.user?.email) {
-            return NextResponse.json({ error: 'You must be signed in to upload a video' }, { status: 401 })
+            return NextResponse.json({ error: 'You must be signed in to view a video' }, { status: 401 })
         }
 
         const videoId = req.nextUrl.pathname.split('/').pop()
