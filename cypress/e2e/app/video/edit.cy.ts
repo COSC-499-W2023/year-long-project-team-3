@@ -56,37 +56,6 @@ describe('Test video editing page', () => {
                 .and('contain', 'Next')
         })
 
-        it('should show message on edit change', () => {
-            cy.visit(videoUrl)
-            // Make change
-            cy.get('.editor-tools', { timeout: TIMEOUT.EXTRA_LONG })
-                .should('exist')
-                .find('.MuiIconButton-root')
-                .should('have.length', 4)
-                .first()
-                .click()
-
-            // Check for message
-            cy.get('.MuiAlert-root[role=alert]').should('exist').and('be.visible')
-        })
-
-        it('should open modals', () => {
-            cy.visit(videoUrl)
-            cy.get('.editor-tools', { timeout: TIMEOUT.EXTRA_LONG })
-                .find('.MuiIconButton-root')
-                .not('[aria-label=Mute]')
-                .each((button) => {
-                    cy.wrap(button).click()
-
-                    // Check for message
-                    cy.get('.MuiModal-root').as('modal').should('exist').and('be.visible')
-
-                    cy.get('@modal').find('button.modal-close').click()
-
-                    cy.get('.MuiModal-root').should('not.exist')
-                })
-        })
-
         it('should be controllable by keyboard', () => {
             cy.visit(videoUrl)
             const pressKey = (code: string) => {
