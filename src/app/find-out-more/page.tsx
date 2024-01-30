@@ -2,7 +2,7 @@
 
 import React from 'react'
 import Header from '@/components/Header'
-import { Box } from '@mui/material'
+import { Box, Link } from '@mui/material'
 import Logo from '@/components/Logo'
 import Typography from '@mui/material/Typography'
 import { type SessionContextValue, useSession } from 'next-auth/react'
@@ -65,7 +65,8 @@ export default function FindOutMorePage() {
                         <ol>
                             <li>Navigate to the Signup page and fill out the form, then click sign in</li>
                             <li>
-                                You will be redirected to the Login page, login with the account you created at Signup
+                                You will be redirected to the <Link href='/login'>Login page</Link>, login with the
+                                account you created at <Link href='/signup'>Signup</Link>
                             </li>
                             <li>
                                 If you are logging in for the first time, you will need to verify your email address.
@@ -73,8 +74,8 @@ export default function FindOutMorePage() {
                             </li>
                         </ol>
                         <Typography>
-                            If you follow these three steps, you should now have an account and be able to see your
-                            Dashboard page. Welcome to Harp!
+                            If you follow these three steps, you should now have an account and be able to see your{' '}
+                            <Link href='/dashboard'>Dashboard page</Link>. Welcome to Harp!
                         </Typography>
                     </Box>
                     <Box>
@@ -88,7 +89,10 @@ export default function FindOutMorePage() {
                             Creating a Submission Box
                         </Typography>
                         <ol>
-                            <li>Click on Create New under Submission Boxes on the Dashboard.</li>
+                            <li>
+                                Click on Create New under Submission Boxes on the{' '}
+                                <Link href='/dashboard'>Dashboard</Link>.
+                            </li>
                             <li>
                                 If you are logging in for the first time, you will need to verify your email address.
                                 Check your emails and click on the link we have sent to you.
@@ -99,8 +103,8 @@ export default function FindOutMorePage() {
                             </li>
                         </ol>
                         <Typography>
-                            After clicking Create, you can now navigate to My Boxes under Submission Boxes on the
-                            Dashboard to see the box you have created.
+                            After clicking Create, you can now navigate to My Boxes under Submission Boxes on the{' '}
+                            <Link href='/dashboard'>Dashboard</Link> to see the box you have created.
                         </Typography>
                     </Box>
                     <Box>
@@ -115,9 +119,9 @@ export default function FindOutMorePage() {
                         </Typography>
                         <ol>
                             <li>
-                                Click on Upload New under Menu on the Dashboard. If you want to blur your face in the
-                                video, tick the checkbox on the Upload Video page before uploading a video from your
-                                computer.
+                                Click on Upload New under Menu on the <Link href='/dashboard'>Dashboard</Link>. If you
+                                want to blur your face in the video, tick the checkbox on the Upload Video page before
+                                uploading a video from your computer.
                             </li>
                             <li>
                                 Once you have uploaded a video, it will be processed using AWS services. After
@@ -131,8 +135,8 @@ export default function FindOutMorePage() {
                             </li>
                         </ol>
                         <Typography sx={{ mb: 10 }}>
-                            After clicking Submit, you can see your video on your Dashboard page under Recents and
-                            Submitted videos.
+                            After clicking Submit, you can see your video on your{' '}
+                            <Link href='/dashboard'>Dashboard page</Link> under Recents and Submitted videos.
                         </Typography>
                     </Box>
                 </Box>
