@@ -54,7 +54,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
         const requestedSubmissionUsers = requestedSubmissions.requestedSubmissions.map(({ userId }) => userId)
 
         // If it is a user that has submitted to the box that is accessing the box
-        if (requestedSubmissionUsers.includes(userId)) {
+        if (requestedSubmissionUsers && requestedSubmissionUsers.includes(userId)) {
             // Then this user is accessing the submission box via a requested page so only load their video on to the page
             const requestedSubmission = await prisma.submissionBox.findFirstOrThrow({
                 where: {
@@ -125,7 +125,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             })
 
             // Check if user is an owner of the managed submission box
-            if (ownedSubmissionBox.viewPermission !== 'owner') {
+            if (ownedSubmissionBox && ownedSubmissionBox.viewPermission !== 'owner') {
                 logger.error(`User ${ userId } does not have permission to access submission box ${ submissionBoxId }`)
                 return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
             }
