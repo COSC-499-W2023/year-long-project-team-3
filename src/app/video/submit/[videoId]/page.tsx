@@ -98,7 +98,7 @@ export default function SubmitVideoPage() {
                             width: '70%',
                         }}
                     >
-                        <ProgressDots activeStep={2} numSteps={3} labels={['Upload', 'Edit', 'Submit']} />
+                        <ProgressDots activeStep={2} numSteps={3} labels={['Upload', 'Preview', 'Submit']} />
                     </Box>
                     <Box display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
                         <Box display='flex'>

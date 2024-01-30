@@ -3,9 +3,8 @@ import React, { useEffect, useState } from 'react'
 import Header from '@/components/Header'
 import { SessionContextValue, useSession } from 'next-auth/react'
 import ProgressDots from '@/components/ProgressDots'
-import { Alert, Box } from '@mui/material'
+import { Box } from '@mui/material'
 import ScalingReactPlayer from '@/components/ScalingReactPlayer'
-import EditorTools from '@/components/EditorTools'
 import { useRouter, usePathname } from 'next/navigation'
 import VideoProcessing from '@/components/VideoProcessing'
 import PageLoadProgress from '@/components/PageLoadProgress'
@@ -13,14 +12,12 @@ import { toast } from 'react-toastify'
 import BackButton from '@/components/BackButton'
 import FormNavButton from '@/components/FormNavButton'
 import logger from '@/utils/logger'
-import EditIcon from '@mui/icons-material/Edit'
 
 export default function VideoPreviewPage() {
     const session: SessionContextValue = useSession()
     const router = useRouter()
     const pathname = usePathname()
 
-    const [changesMade, setChangesMade] = useState(false)
     const [streamingVideoUrl, setStreamingVideoUrl] = useState<string>('')
     const [isVideoVisible, setIsVideoVisible] = useState(false)
     const [isCloudProcessed, setIsCloudProcessed] = useState(false)
@@ -143,18 +140,12 @@ export default function VideoPreviewPage() {
                                         width: '70%',
                                     }}
                                 >
-                                    <ProgressDots activeStep={1} numSteps={3} labels={['Record', 'Edit', 'Submit']} />
+                                    <ProgressDots
+                                        activeStep={1}
+                                        numSteps={3}
+                                        labels={['Upload', 'Preview', 'Submit']}
+                                    />
                                 </Box>
-                                <Alert
-                                    severity='info'
-                                    sx={{
-                                        visibility: changesMade ? 'block' : 'hidden',
-                                        borderRadius: '1rem',
-                                    }}
-                                >
-                                    You have requested changes that will require the video to be processed. These
-                                    changes will be processed once you continue to the next page
-                                </Alert>
                                 <Box
                                     sx={{
                                         display: 'flex',
@@ -233,16 +224,6 @@ export default function VideoPreviewPage() {
                                                 ></FormNavButton>
                                             </Box>
                                         </Box>
-                                    </Box>
-                                    <Box
-                                        className='column-3'
-                                        sx={{
-                                            width: '20%',
-                                            p: '0 1rem',
-                                            borderRadius: '1rem',
-                                        }}
-                                    >
-                                        <EditorTools setIsEditorChanged={setChangesMade} />
                                     </Box>
                                 </Box>
                             </Box>

@@ -58,7 +58,7 @@ describe('Test Video Upload and Streaming Processing Pipeline', () => {
             )
 
             /* Check if the url changes and displays the loading icon */
-            cy.url({ timeout: TIMEOUT.LONG }).should('contain', 'video/edit/')
+            cy.url({ timeout: TIMEOUT.LONG }).should('contain', 'video/preview/')
             cy.get('[data-cy=loading-circle]', { timeout: TIMEOUT.LONG }).should('be.visible')
 
             /* Once the video is made, we should display the processing component */
@@ -69,7 +69,7 @@ describe('Test Video Upload and Streaming Processing Pipeline', () => {
 
             /* Make sure that the url is also correct */
             cy.task('getLatestVideo').then((response) => {
-                cy.url().should('contain', `video/edit/${ (<Video>response).id }`)
+                cy.url().should('contain', `video/preview/${ (<Video>response).id }`)
             })
 
             /* Check that the processed video preview is displayed once we redirect to the edit page */
