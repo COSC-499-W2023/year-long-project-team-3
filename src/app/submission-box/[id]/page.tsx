@@ -11,7 +11,6 @@ import SubmissionBoxDetails from '@/components/SubmissionBoxDetails'
 import ScalingReactPlayer from '@/components/ScalingReactPlayer'
 import { BoxStatus } from '@/types/submission-box/boxStatus'
 import { toast } from 'react-toastify'
-import logger from '@/utils/logger'
 
 export default function SubmissionBoxDetailPage() {
     const session: SessionContextValue = useSession()
@@ -24,7 +23,7 @@ export default function SubmissionBoxDetailPage() {
     const boxId = pathname?.split('/').pop()
 
     useEffect(() => {
-        fetchVideos(boxId)
+        fetchSubmissionBox(boxId)
     }, [boxId])
 
     // @ts-ignore
@@ -119,7 +118,7 @@ export default function SubmissionBoxDetailPage() {
         </>
     )
 
-    async function fetchVideos(boxId: string | undefined) {
+    async function fetchSubmissionBox(boxId: string | undefined) {
         const response = await fetch(`/api/submission-box/${ boxId }`)
         const { box, videos, submissionBoxInfo } = await response.json()
         if (!submissionBoxInfo) {

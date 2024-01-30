@@ -73,7 +73,6 @@ describe('Requested Dashboard Details Page Tests', () => {
         const submissionBoxTitle = 'Test Requested with Data'
         const submissionBoxDescription =
             'This is a description that describes what users need to submit and have in their videos.  The description is a good tool to make sure that participants in the submission box are able to determine what is needed in their submissions and the ability for them to hit their goals. :)'
-        const videoTitle = 'Test video'
         cy.task('getUserId', email).then((userId) => {
             cy.task('createRequestSubmissionForUser', { userId, submissionBoxTitle, submissionBoxDescription })
         })
