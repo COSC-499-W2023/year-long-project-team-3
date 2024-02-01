@@ -21,7 +21,7 @@ export function getEmailRegex(): RegExp {
 }
 
 export function isValidEmail(email: string): boolean {
-    return getEmailRegex().test(email)
+    return getEmailRegex().test(email.toLowerCase())
 }
 
 export function isValidPassword(password: string): boolean {

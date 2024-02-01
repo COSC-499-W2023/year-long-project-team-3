@@ -153,7 +153,7 @@ export default function LoginForm() {
     async function handleSubmit(userData: UserSignUpData) {
         try {
             const signInData = await signIn('credentials', {
-                email: userData.email,
+                email: userData.email.toLowerCase(),
                 password: userData.password,
                 redirect: false,
             })
@@ -163,8 +163,8 @@ export default function LoginForm() {
             } else if (signInData.error) {
                 toast.error(signInData.error)
             } else {
-                toast.success(`User ${ userData.email } successfully logged in`)
-                logger.info(`User ${ userData.email } successfully logged in`)
+                toast.success(`User ${ userData.email.toLowerCase() } successfully logged in`)
+                logger.info(`User ${ userData.email.toLowerCase() } successfully logged in`)
             }
         } catch (err) {
             const errMessage = JSON.stringify(err, Object.getOwnPropertyNames(err))

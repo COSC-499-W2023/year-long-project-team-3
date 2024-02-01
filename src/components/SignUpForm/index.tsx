@@ -192,15 +192,15 @@ export default function SignUpForm() {
             const response = await fetch('api/auth/signup', {
                 method: 'POST',
                 body: JSON.stringify({
-                    email: values.email,
+                    email: values.email.toLowerCase(),
                     password: values.password,
                 }),
             })
 
             const userInfo = await response.json()
             if (response.status == 201) {
-                toast.success(`User ${ userInfo.user.email } successfully signed up`)
-                logger.info(`User ${ userInfo.user.email } successfully signed up`)
+                toast.success(`User ${ userInfo.user.email.toLowerCase() } successfully signed up`)
+                logger.info(`User ${ userInfo.user.email.toLowerCase() } successfully signed up`)
                 router.push('/login' + (callbackUrl ? `?callbackUrl=${ encodeURIComponent(callbackUrl) }` : ''))
                 router.refresh()
             } else {
