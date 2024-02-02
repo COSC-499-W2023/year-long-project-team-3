@@ -1,0 +1,53 @@
+{
+  "family": "harp-website-production",
+  "containerDefinitions": [
+    {
+      "name": "website-production",
+      "image": "932748244514.dkr.ecr.ca-central-1.amazonaws.com/harp-production",
+      "cpu": 0,
+      "portMappings": [
+        {
+          "name": "website-production-80-tcp",
+          "containerPort": 3000,
+          "hostPort": 3000,
+          "protocol": "tcp",
+          "appProtocol": "http"
+        }
+      ],
+      "essential": true,
+      "environment": [],
+      "environmentFiles": [],
+      "mountPoints": [],
+      "volumesFrom": [],
+      "ulimits": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-create-group": "true",
+          "awslogs-group": "/ecs/harp-website-production",
+          "awslogs-region": "ca-central-1",
+          "awslogs-stream-prefix": "ecs"
+        },
+        "secretOptions": []
+      }
+    }
+  ],
+  "taskRoleArn": "arn:aws:iam::932748244514:role/ecsTaskExecutionRole",
+  "executionRoleArn": "arn:aws:iam::932748244514:role/ecsTaskExecutionRole",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "1024",
+  "memory": "3072",
+  "runtimePlatform": {
+    "cpuArchitecture": "X86_64",
+    "operatingSystemFamily": "LINUX"
+  },
+  "tags": [
+    {
+      "key": "production",
+      "value": ""
+    }
+  ]
+}
