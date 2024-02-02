@@ -144,7 +144,7 @@ describe('Login tests', () => {
 
     it('should use case insensitive email', () => {
         // User data
-        const email = 'TeSt@something.com'
+        const email = 'TeSt@someThing.coM'
         const password = 'P@ssw0rd'
 
         // Sign up
@@ -165,7 +165,7 @@ describe('Login tests', () => {
         cy.wait(2000)
 
         // We should be able to log in with differently capitalized email
-        const differentEmail = 'TEsT@something.com'
+        const differentEmail = 'TEsT@sOMething.cOm'
         cy.visit('/login')
         cy.get('[data-cy="email"]').type(differentEmail)
         cy.get('[data-cy="password"]').type(password)
