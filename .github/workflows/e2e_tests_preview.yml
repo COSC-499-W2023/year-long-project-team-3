@@ -13,8 +13,7 @@ env:
     ECS_CLUSTER: HarpVideoDeployment # set this to your Amazon ECS cluster name
     ECS_TASK_DEFINITION: .aws/amazon-ecs-preview-deployment-task-definition.json # set this to the path to your Amazon ECS task definition
     # file, e.g. .aws/task-definition.json
-    CONTAINER_NAME: harp-video # set this to the name of the container in the
-    # containerDefinitions section of your task definition
+    CONTAINER_NAME: harp-video # set this to the name of the container in the containerDefinitions section of your task definition
 
 permissions:
     id-token: write # This is required for requesting the JWT
