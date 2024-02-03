@@ -4,7 +4,11 @@ import prisma from '@/lib/prisma'
 import { isDateWithinLast24Hours } from '@/utils/verification'
 import logger from '@/utils/logger'
 
-export async function GET() {
+/**
+ * Handles a GET request to check if a user has an open verification token within the last 24 hours.
+ * @returns On success returns { hasOpenToken: boolean }
+ */
+export async function GET(){
     try {
         const session = await getServerSession()
         if (!session || !session.user?.email) {
@@ -22,7 +26,7 @@ export async function GET() {
             },
         })
 
-        const hasOpenToken = verificationTokens.some(token => isDateWithinLast24Hours(token.updatedAt))
+        const hasOpenToken = verificationTokens.some((token) => isDateWithinLast24Hours(token.updatedAt))
 
         logger.info('User has open token: ' + hasOpenToken)
 
