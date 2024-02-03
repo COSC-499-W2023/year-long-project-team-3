@@ -1,18 +1,19 @@
 name: Production Deployment
 
+#on:
+#    push:
+#        branches:
+#            - master
+#        paths-ignore:
+#            - docs/**
+#    pull_request:
+#        branches:
+#            - master
+#        paths-ignore:
+#            - docs/**
+#    workflow_dispatch:
 on:
     push:
-        branches:
-            - master
-        paths-ignore:
-            - '**.md'
-            - docs/**
-    pull_request:
-        branches:
-            - master
-        paths-ignore:
-            - docs/**
-    workflow_dispatch:
 
 env:
     AWS_REGION: ca-central-1 # set this to your preferred AWS region, e.g. us-west-1
