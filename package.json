@@ -8,7 +8,7 @@
         "dev:test": "dotenv -e .env.stagging.test.local next dev",
         "build": "next build",
         "start": "next start",
-        "lint": "next lint --fix && prettier . --write",
+        "lint": "next lint --fix",
         "prepare": "husky install",
         "cypress:open": "cypress open",
         "cypress:run": "cypress run",
