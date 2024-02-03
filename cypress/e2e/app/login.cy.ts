@@ -170,6 +170,6 @@ describe('Login tests', () => {
         cy.get('[data-cy="email"]').type(differentEmail)
         cy.get('[data-cy="password"]').type(password)
         cy.get('[data-cy="submit"]').click()
-        cy.url().should('not.contain', 'login')
+        cy.url().should('contain', 'verify-email')
     })
 })
