@@ -30,21 +30,9 @@ permissions:
     contents: read # This is required for actions/checkout
 
 jobs:
-    setup-production-db:
-        name: Set up Production database
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4
-            - name: Write environment variables
-              run: |
-                  echo "${{ secrets.ENV_PRODUCTION }}" > .env
-            - name: Migrate Database
-              run: npx prisma migrate dev &>-
-
     deploy-production:
         name: Deploy Production
         runs-on: ubuntu-latest
-        needs: [setup-production-db]
         environment: production
         concurrency:
             group: production
@@ -93,3 +81,15 @@ jobs:
                   service: ${{ env.ECS_SERVICE }}
                   cluster: ${{ env.ECS_CLUSTER }}
                   wait-for-service-stability: true
+
+    setup-production-db:
+        name: Set up Production database
+        runs-on: ubuntu-latest
+        needs: [deploy-production]
+        steps:
+            - uses: actions/checkout@v4
+            - name: Write environment variables
+              run: |
+                  echo "${{ secrets.ENV_PRODUCTION }}" > .env
+            - name: Migrate Database
+              run: npx prisma migrate dev &>-
