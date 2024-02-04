@@ -27,14 +27,14 @@ export default function SubmissionBoxDetails(props: SubmissionBoxInfoProps) {
             </Typography>
             <Typography
                 data-cy='submissionBoxDate'
-                variant='h6'
+                variant={validDate(props) ? 'h6' : 'subtitle2'}
                 color={'textSecondary'}
                 paddingBottom='2rem'
                 paddingLeft='1rem'
                 sx={{ m: 1 }}
             >
                 {props.submissionBox
-                    ? !!props.submissionBox.closesAt
+                    ? props.submissionBox.closesAt
                         ? new Date(props.submissionBox.closesAt).toDateString().slice(4)
                         : 'N/A'
                     : 'N/A'}
@@ -48,10 +48,22 @@ export default function SubmissionBoxDetails(props: SubmissionBoxInfoProps) {
                 color={'textSecondary'}
                 paddingBottom='2rem'
                 paddingLeft='1rem'
-                sx={{ m: 1 }}
+                sx={{ m: 1, maxHeight: '40vh', overflow: 'auto' }}
             >
                 {props.submissionBox ? props.submissionBox.description ?? 'N/A' : 'N/A'}
             </Typography>
         </>
     )
+}
+
+function validDate(props: SubmissionBoxInfoProps) {
+    if (props.submissionBox) {
+        if (!!props.submissionBox.closesAt) {
+            return true
+        } else {
+            return false
+        }
+    } else {
+        return false
+    }
 }

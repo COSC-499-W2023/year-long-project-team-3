@@ -68,4 +68,25 @@ describe('Requested Dashboard Details Page Tests', () => {
             submissionBoxDescription
         )
     })
+
+    it('should should direct users to the video submission page when the submission button is clicked', () => {
+        const submissionBoxTitle = 'Test Requested with Data'
+        const submissionBoxDescription =
+            'This is a description that describes what users need to submit and have in their videos.  The description is a good tool to make sure that participants in the submission box are able to determine what is needed in their submissions and the ability for them to hit their goals. :)'
+        cy.task('getUserId', email).then((userId) => {
+            cy.task('createRequestSubmissionForUser', { userId, submissionBoxTitle, submissionBoxDescription })
+        })
+
+        cy.reload()
+        cy.visit('/dashboard')
+        runWithRetry(() => {
+            cy.get('[data-cy="My Requests"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
+            cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
+        })
+        cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
+
+        cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'submission-box')
+        cy.get('[data-cy="submissionButton"]', { timeout: TIMEOUT.EXTRA_LONG }).should('be.visible').click()
+        cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'upload')
+    })
 })
