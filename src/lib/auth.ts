@@ -58,7 +58,7 @@ export const authOptions: NextAuthOptions = {
                         },
                     },
                 })
-                if (! existingUsers || existingUsers.length !== 1 || !existingUsers[0]) {
+                if (!existingUsers || existingUsers.length !== 1 || !existingUsers[0]) {
                     throw new Error(errorMessage)
                 }
                 const existingUser = existingUsers[0]
