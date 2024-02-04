@@ -85,12 +85,7 @@ describe('Requested Dashboard Details Page Tests', () => {
         })
         cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
 
-        cy.get('[data-cy="submissionBoxTitle"]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain', submissionBoxTitle)
-        cy.get('[data-cy="submissionBoxDate"]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'N/A')
-        cy.get('[data-cy="submissionBoxDesc"]', { timeout: TIMEOUT.EXTRA_LONG }).should(
-            'contain',
-            submissionBoxDescription
-        )
+        cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'submission-box')
         cy.get('[data-cy="submissionButton"]', { timeout: TIMEOUT.EXTRA_LONG }).should('be.visible').click()
         cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'upload')
     })

@@ -1,7 +1,7 @@
 import { TIMEOUT } from '../../../../utils/constants'
 import runWithRetry from '../../../../utils/runUntilExist'
 
-describe('Recieving Dashboard Details Page Tests', () => {
+describe('Receiving Dashboard Details Page Tests', () => {
     const email = 'requestedDetail@page.test'
     const fakeEmail = 'invalidUser@mail.com'
     const password = 'Pass1234'
@@ -18,7 +18,7 @@ describe('Recieving Dashboard Details Page Tests', () => {
     })
 
     it('should display a submission box with no information inputted other than title', () => {
-        const submissionBoxTitle = 'Test Recieving'
+        const submissionBoxTitle = 'Test Receiving'
         cy.task('getUserId', email).then((userId) => {
             cy.task('createSubmissionBoxWithEmail', { submissionBoxTitle, email, userId })
         })
@@ -32,7 +32,7 @@ describe('Recieving Dashboard Details Page Tests', () => {
 
         cy.get('[data-cy="no-video-text"]', { timeout: TIMEOUT.EXTRA_LONG }).should(
             'contain',
-            'You Do Not Have Any Videos'
+            'No Videos Have Been Submitted to Your Box'
         )
         cy.get('[data-cy="submissionBoxTitle"]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain', submissionBoxTitle)
         cy.get('[data-cy="submissionBoxDate"]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'N/A')
@@ -40,7 +40,7 @@ describe('Recieving Dashboard Details Page Tests', () => {
     })
 
     it('should display a submission box with all information inputted and videos', () => {
-        const submissionBoxTitle = 'Test Recieving with Data'
+        const submissionBoxTitle = 'Test Receiving with Data'
         const submissionBoxDescription =
             'This is a description that describes what users need to submit and have in their videos.  The description is a good tool to make sure that participants in the submission box are able to determine what is needed in their submissions and the ability for them to hit their goals. :)'
         const videoTitle = ['Test video1', 'Test video2']

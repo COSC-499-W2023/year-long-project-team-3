@@ -48,7 +48,7 @@ export default function SubmissionBoxDetails(props: SubmissionBoxInfoProps) {
                 color={'textSecondary'}
                 paddingBottom='2rem'
                 paddingLeft='1rem'
-                sx={{ m: 1 }}
+                sx={{ m: 1, maxHeight: '40vh', overflow: 'auto' }}
             >
                 {props.submissionBox ? props.submissionBox.description ?? 'N/A' : 'N/A'}
             </Typography>
