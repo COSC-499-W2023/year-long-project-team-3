@@ -19,13 +19,14 @@ permissions:
     id-token: write # This is required for requesting the JWT
     contents: read # This is required for actions/checkout
 
+concurrency: preview
+
 jobs:
     deploy-preview:
         name: Deploy
         runs-on: ubuntu-latest
         if: github.event.pull_request.draft == false
         environment: preview
-        concurrency: preview
 
         steps:
             - name: Checkout
