@@ -1,19 +1,20 @@
 'use client'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import Header from '@/components/Header'
 import React, { useEffect, useState } from 'react'
 import { SessionContextValue, useSession } from 'next-auth/react'
-import Box from '@mui/material/Box'
+import { Typography, Box, Button } from '@mui/material'
 import { SubmissionBox, Video } from '@prisma/client'
 import VideoList from '@/components/VideoList'
 import BackButton from '@/components/BackButton'
 import SubmissionBoxDetails from '@/components/SubmissionBoxDetails'
-import { Typography } from '@mui/material'
 import ScalingReactPlayer from '@/components/ScalingReactPlayer'
 import { BoxStatus } from '@/types/submission-box/boxStatus'
+import { toast } from 'react-toastify'
 
 export default function SubmissionBoxDetailPage() {
     const session: SessionContextValue = useSession()
+    const router = useRouter()
     const pathname = usePathname()
     const [boxType, setBoxType] = useState<BoxStatus>('requested')
     const [videoUrl, setVideoUrl] = useState(null)
@@ -22,7 +23,7 @@ export default function SubmissionBoxDetailPage() {
     const boxId = pathname?.split('/').pop()
 
     useEffect(() => {
-        fetchVideos(boxId)
+        fetchSubmissionBox(boxId)
     }, [boxId])
 
     // @ts-ignore
@@ -31,8 +32,8 @@ export default function SubmissionBoxDetailPage() {
             <Box height='100wv' width='100%'>
                 <Header {...session} />
                 <BackButton route={'/dashboard '} title={'Return to Dashboard'} />{' '}
-                <Box display='grid' gridTemplateColumns='3fr 1fr' height='100%' width='100%'>
-                    {boxType === 'owned' && (
+                {boxType === 'owned' && (
+                    <Box display='grid' gridTemplateColumns='3fr 1fr' height='100%' width='100%'>
                         <Box
                             sx={{
                                 borderTopRightRadius: 25,
@@ -53,8 +54,13 @@ export default function SubmissionBoxDetailPage() {
                                 isSearching={false}
                             />
                         </Box>
-                    )}
-                    {boxType === 'requested' && (
+                        <Box paddingLeft='1rem'>
+                            <SubmissionBoxDetails submissionBox={boxInfo} />
+                        </Box>
+                    </Box>
+                )}
+                {boxType === 'requested' && (
+                    <Box display='grid' gridTemplateColumns='3fr 1fr' height='100%' width='100%'>
                         <Box
                             sx={{
                                 display: 'flex',
@@ -94,22 +100,35 @@ export default function SubmissionBoxDetailPage() {
                                 )}
                             </Box>
                         </Box>
-                    )}
-                    <Box paddingLeft='1rem'>
-                        <SubmissionBoxDetails submissionBox={boxInfo} />
+                        <Box padding='1rem'>
+                            <SubmissionBoxDetails submissionBox={boxInfo} />
+                            <Box display='flex' flexDirection='row-reverse'>
+                                <Button
+                                    variant='contained'
+                                    onClick={() => router.push('/video/upload')}
+                                    data-cy='submissionButton'
+                                >
+                                    Create A Submission
+                                </Button>
+                            </Box>
+                        </Box>
                     </Box>
-                </Box>
+                )}
             </Box>
         </>
     )
 
-    async function fetchVideos(boxId: string | undefined) {
+    async function fetchSubmissionBox(boxId: string | undefined) {
         const response = await fetch(`/api/submission-box/${ boxId }`)
         const { box, videos, submissionBoxInfo } = await response.json()
+        if (!submissionBoxInfo) {
+            router.push('/dashboard')
+            toast.error('You do not have permission to view this submission box')
+        }
         setBoxType(box)
         setBoxInfo(submissionBoxInfo)
         setVideos(videos)
-        if (videos.length === 1) {
+        if (videos && videos.length === 1) {
             setVideoUrl(
                 videos?.map((video: { processedVideoUrl: any }) => {
                     return video.processedVideoUrl
