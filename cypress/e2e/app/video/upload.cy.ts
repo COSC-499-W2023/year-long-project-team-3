@@ -13,7 +13,7 @@ describe('Test Video Upload and Streaming Processing Pipeline', () => {
     })
 
     context('Logged in', () => {
-        before(() => {
+        beforeEach(() => {
             cy.task('clearDB')
             cy.task('populateDB')
 
@@ -26,6 +26,28 @@ describe('Test Video Upload and Streaming Processing Pipeline', () => {
             })
         })
 
+        it('should allow the user to check the box to blur their face', () => {
+            cy.visit('/video/upload')
+
+            // Click the span to simulate checking the checkbox
+            cy.get('[data-cy=blur-checkbox]').click()
+            // Check that the checkbox has been checked
+            cy.get('[data-cy=blur-checkbox]').should('have.class', 'Mui-checked')
+        })
+
+        it('should allow the user to uncheck the box to blur their face', () => {
+            cy.visit('/video/upload')
+
+            // Click the span to simulate checking the checkbox
+            cy.get('[data-cy=blur-checkbox]').should('be.visible').click()
+            // Check that the checkbox has been checked
+            cy.get('[data-cy=blur-checkbox]').should('be.visible').should('have.class', 'Mui-checked')
+            // Click the span to simulate un-checking the checkbox
+            cy.get('[data-cy=blur-checkbox]').should('be.visible').click()
+            // Check that the checkbox has been unchecked
+            cy.get('[data-cy=blur-checkbox]').should('be.visible').should('not.have.class', 'Mui-checked')
+        })
+
         it('should upload and process video', () => {
             /* This is the happy path :) */
             /* Upload video from "file system" */
@@ -36,7 +58,7 @@ describe('Test Video Upload and Streaming Processing Pipeline', () => {
             )
 
             /* Check if the url changes and displays the loading icon */
-            cy.url({ timeout: TIMEOUT.LONG }).should('contain', 'video/edit/')
+            cy.url({ timeout: TIMEOUT.LONG }).should('contain', 'video/preview/')
             cy.get('[data-cy=loading-circle]', { timeout: TIMEOUT.LONG }).should('be.visible')
 
             /* Once the video is made, we should display the processing component */
@@ -47,7 +69,7 @@ describe('Test Video Upload and Streaming Processing Pipeline', () => {
 
             /* Make sure that the url is also correct */
             cy.task('getLatestVideo').then((response) => {
-                cy.url().should('contain', `video/edit/${ (<Video>response).id }`)
+                cy.url().should('contain', `video/preview/${ (<Video>response).id }`)
             })
 
             /* Check that the processed video preview is displayed once we redirect to the edit page */

@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid'
 describe('Test video editing page', () => {
     context('Not logged in', () => {
         beforeEach(() => {
-            cy.visit('/video/edit/randomVideoId')
+            cy.visit('/video/preview/randomVideoId')
         })
 
         it('should redirect to login', () => {
@@ -35,7 +35,7 @@ describe('Test video editing page', () => {
                 cy.task('getUserId', email).then((userId) => {
                     cy.task('createOneVideoAndRetrieveVideoId', { ownerId: userId, title: 'Test video' }).then(
                         (videoId) => {
-                            videoUrl = '/video/edit/' + videoId
+                            videoUrl = '/video/preview/' + videoId
                         }
                     )
                 })
@@ -54,37 +54,6 @@ describe('Test video editing page', () => {
                 .should('have.length', 2)
                 .and('contain', 'Back')
                 .and('contain', 'Next')
-        })
-
-        it('should show message on edit change', () => {
-            cy.visit(videoUrl)
-            // Make change
-            cy.get('.editor-tools', { timeout: TIMEOUT.EXTRA_LONG })
-                .should('exist')
-                .find('.MuiIconButton-root')
-                .should('have.length', 4)
-                .first()
-                .click()
-
-            // Check for message
-            cy.get('.MuiAlert-root[role=alert]').should('exist').and('be.visible')
-        })
-
-        it('should open modals', () => {
-            cy.visit(videoUrl)
-            cy.get('.editor-tools', { timeout: TIMEOUT.EXTRA_LONG })
-                .find('.MuiIconButton-root')
-                .not('[aria-label=Mute]')
-                .each((button) => {
-                    cy.wrap(button).click()
-
-                    // Check for message
-                    cy.get('.MuiModal-root').as('modal').should('exist').and('be.visible')
-
-                    cy.get('@modal').find('button.modal-close').click()
-
-                    cy.get('.MuiModal-root').should('not.exist')
-                })
         })
 
         it('should be controllable by keyboard', () => {

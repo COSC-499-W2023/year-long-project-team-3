@@ -21,7 +21,7 @@ function isCompleteUpload(
     return (output as CompleteMultipartUploadCommandOutput).ETag !== undefined
 }
 
-export default async function sendVideo(rawVideo: File, owner: User): Promise<Video> {
+export default async function sendVideo(rawVideo: File, owner: User, isFaceBlurChecked: boolean): Promise<Video> {
     const newVideo: Video = await prisma.video.create({
         data: {
             owner: {
@@ -45,11 +45,20 @@ export default async function sendVideo(rawVideo: File, owner: User): Promise<Vi
     const uploadS3 = new Upload({
         client: client,
         params: {
-            Bucket: process.env.AWS_UPLOAD_BUCKET as string,
+            Bucket: getUploadBucket(),
             Key: s3Key,
             Body: Readable.from(Buffer.from(rawVideoBuffer)),
         },
     })
+
+    // Upload to Rekognition bucket if user wants their face blurred, upload to streaming bucket if not. If the video is
+    // uploaded to the Rekognition bucket, it will be transferred to the streaming bucket using a lambda on AWS, so the
+    // videos will all end up in the same bucket at the end
+    function getUploadBucket() {
+        return isFaceBlurChecked
+            ? (process.env.AWS_UPLOAD_BUCKET_REKOGNITION as string)
+            : (process.env.AWS_UPLOAD_BUCKET_STREAMING as string)
+    }
 
     const s3Data: CompleteMultipartUploadCommandOutput | AbortMultipartUploadCommandOutput = await uploadS3.done()
     if (!isCompleteUpload(s3Data) || s3Data.Location === undefined) {
@@ -87,28 +96,29 @@ export default async function sendVideo(rawVideo: File, owner: User): Promise<Vi
         },
     })
 
-    // TODO: Add this back in once we give the user choice on whether or not to blur their face
-    // Currently, we are generating the metadata json in the lambda that transfers videos from the rekognition output
-    // bucket to the streaming input bucket (transferBlurredVideosToStreamingPipeline)
-
-    // const metadataFile: string = JSON.stringify({
-    //     videoId: newVideo.id,
-    //     srcVideo: s3Key,
-    // })
-    // const uploadJson = new Upload({
-    //     client: client,
-    //     params: {
-    //         Bucket: process.env.AWS_UPLOAD_BUCKET as string,
-    //         Key: await makeS3Key(newVideo, 'json'),
-    //         Body: metadataFile,
-    //     },
-    // })
-    // const s3JsonData: CompleteMultipartUploadCommandOutput | AbortMultipartUploadCommandOutput = await uploadJson.done()
-    // if (!isCompleteUpload(s3JsonData) || s3JsonData.Location === undefined) {
-    //     logger.error(s3JsonData)
-    //     // TODO: Send email/notify to user there is an issue with uploading video
-    //     throw new Error(`Unexpected error while uploading video metadata file for video ${ rawVideo.name } to S3`)
-    // }
+    // We only need to generate the metadata json if we are not blurring the user's face. In the case where their face is
+    // blurred, the file is generated in the AWS transferring the video between the face-blurring and streaming pipelines
+    if (!isFaceBlurChecked) {
+        const metadataFile: string = JSON.stringify({
+            videoId: newVideo.id,
+            srcVideo: s3Key,
+        })
+        const uploadJson = new Upload({
+            client: client,
+            params: {
+                Bucket: process.env.AWS_UPLOAD_BUCKET_STREAMING as string,
+                Key: await makeS3Key(newVideo, 'json'),
+                Body: metadataFile,
+            },
+        })
+        const s3JsonData: CompleteMultipartUploadCommandOutput | AbortMultipartUploadCommandOutput =
+            await uploadJson.done()
+        if (!isCompleteUpload(s3JsonData) || s3JsonData.Location === undefined) {
+            logger.error(s3JsonData)
+            // TODO: Send email/notify to user there is an issue with uploading video
+            throw new Error(`Unexpected error while uploading video metadata file for video ${ rawVideo.name } to S3`)
+        }
+    }
 
     return newVideo
 }
