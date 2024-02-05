@@ -372,6 +372,7 @@ will have to reconsider how we do that moving forwards.
 
 - [Use Harp Domain for Production Instead](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/409)
 - [Add (optional) beside closing date](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/371)
+- [Deploy Poll Worker for Production](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/412)
 
 ### Additional Context
 
