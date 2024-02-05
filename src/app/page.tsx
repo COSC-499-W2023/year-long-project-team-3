@@ -50,7 +50,7 @@ export default function HomePage() {
                 </Typography>
                 <Box sx={{ display: 'flex', gap: '1rem' }}>
                     <LandingPageButton text='Get Started' handleOnClick={handleClickGetStarted} />
-                    <LandingPageButton text='Find Out More' handleOnClick={handleClickFindOutMore} />
+                    <LandingPageButton text='Learn More' handleOnClick={handleClickLearnMore} />
                 </Box>
             </Box>
         </>
@@ -60,7 +60,7 @@ export default function HomePage() {
         router.push('/dashboard')
     }
 
-    function handleClickFindOutMore() {
-        router.push('/find-out-more')
+    function handleClickLearnMore() {
+        router.push('/learn-more')
     }
 }
