@@ -139,11 +139,7 @@ export default function SubmissionBoxDetailPage() {
         setBoxInfo(submissionBoxInfo)
         setVideos(videos)
         if (videos && videos.length === 1) {
-            setVideoUrl(
-                videos?.map((video: { processedVideoUrl: any }) => {
-                    return video.processedVideoUrl
-                })
-            )
+            setVideoUrl(videos[0].processedVideoUrl)
         }
         setIsFetchingSubmissionBox(false)
     }
