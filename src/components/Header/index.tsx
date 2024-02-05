@@ -40,34 +40,30 @@ export default function Header(props: HeaderProps) {
                             Harp
                         </Typography>
                     </Box>
-                    {/*{status === 'authenticated' && (*/}
-                    <>
-                        <Box sx={{ width: '1px', height: '2rem', backgroundColor: 'grey.300' }} />
-                        <Typography
-                            color='primary'
-                            component='div'
-                            sx={{ fontWeight: 700, fontSize: '1.3rem' }}
-                            onClick={handleOnDashboardTabClick}
-                            data-cy='dashboard-tab'
-                        >
-                            Dashboard
-                        </Typography>
-                        <Box sx={{ width: '1px', height: '2rem', backgroundColor: 'grey.300' }} />
-                        <Typography
-                            color='primary'
-                            component='div'
-                            sx={{ fontWeight: 700, fontSize: '1.3rem' }}
-                            display='flex'
-                            justifyContent='center'
-                            alignItems='center'
-                            gap='0.5rem'
-                            onClick={handleOnLearnMoreTabClick}
-                            data-cy='learn-more-tab'
-                        >
-                            Learn More
-                        </Typography>
-                    </>
-                    {/*)}*/}
+                    <Box sx={{ width: '1px', height: '2rem', backgroundColor: 'grey.300' }} />
+                    <Typography
+                        color='primary'
+                        component='div'
+                        sx={{ fontWeight: 700, fontSize: '1.3rem' }}
+                        onClick={handleOnDashboardTabClick}
+                        data-cy='dashboard-tab'
+                    >
+                        Dashboard
+                    </Typography>
+                    <Box sx={{ width: '1px', height: '2rem', backgroundColor: 'grey.300' }} />
+                    <Typography
+                        color='primary'
+                        component='div'
+                        sx={{ fontWeight: 700, fontSize: '1.3rem' }}
+                        display='flex'
+                        justifyContent='center'
+                        alignItems='center'
+                        gap='0.5rem'
+                        onClick={handleOnLearnMoreTabClick}
+                        data-cy='learn-more-tab'
+                    >
+                        Learn More
+                    </Typography>
                 </Box>
                 <Box sx={{ flexGrow: 1 }} />
                 {status === 'authenticated' ? <HeaderSignOutButtons /> : <HeaderSignInButtons />}
