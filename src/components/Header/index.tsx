@@ -6,7 +6,6 @@ import { AppBar, Box, Toolbar, Typography } from '@mui/material'
 import HeaderLogo from '../HeaderLogo'
 import { type SessionContextValue, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { theme } from '@/components/ThemeRegistry/theme'
 
 export type HeaderProps = {} & SessionContextValue
 
