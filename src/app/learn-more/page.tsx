@@ -7,7 +7,7 @@ import Logo from '@/components/Logo'
 import Typography from '@mui/material/Typography'
 import { type SessionContextValue, useSession } from 'next-auth/react'
 
-export default function FindOutMorePage() {
+export default function LearnMorePage() {
     const session: SessionContextValue = useSession()
 
     // noinspection HtmlUnknownTarget
