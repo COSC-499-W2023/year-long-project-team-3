@@ -9,14 +9,6 @@ on:
             - '**.md'
             - '**.png'
             - '**.jpg'
-    pull_request:
-        branches:
-            - master
-        paths-ignore:
-            - docs/**
-            - '**.md'
-            - '**.png'
-            - '**.jpg'
     workflow_dispatch:
 
 env:
@@ -38,10 +30,30 @@ concurrency:
     cancel-in-progress: true
 
 jobs:
+    lint:
+        name: Lint
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v3
+              with:
+                  node-version: '18.18.0'
+            - name: Install dependencies
+              run: npm ci
+            - name: Write environment variables
+              run: |
+                  echo "${{ secrets.ENV_PRODUCTION }}" > .env
+                  echo "" > cypress.config.json
+            - name: ESLint
+              run: npm run lint
+            - name: Prettier
+              run: npx prettier . --check
+
     deploy-production:
         name: Deploy Production
         runs-on: ubuntu-latest
         environment: production
+        needs: [lint]
 
         steps:
             - name: Checkout
