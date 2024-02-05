@@ -1,5 +1,18 @@
 # K Phan
 
+## Term 2 Week 6 (January 29, 2024 - February 04, 2024)
+
+### Week's Goals
+- Understand the peer testing feedback
+- Split reviews into tasks and assign to team members
+
+### Tasks Worked On
+- Address one of the peer testing feedback (https://github.com/COSC-499-W2023/year-long-project-team-3/pull/405)
+- Team meeting for peer testing feedback analysis
+
+### Teamformation Report
+![](./imgs/term-2-week-4-k-phan-tasks.png)
+
 ## Term 2 Week 3 (January 22, 2024 - January 28, 2024)
 
 ### Week's Goals
