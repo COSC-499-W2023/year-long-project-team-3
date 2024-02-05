@@ -312,7 +312,7 @@ Since I worked a lot on infrastructure and bug testing, I only have one PR with 
 
 ## Teresa Saller - Term 2: Week 4 (2024/01/29 - 04/02/2024)
 
-![teresa-saller-tasks-w4-t2.png](imgs/teresa-saller-tasks-w3-t2.png)
+![teresa-saller-tasks-w4-t2.png](imgs/teresa-saller-tasks-w4-t2.png)
 
 ### Tasks
 
