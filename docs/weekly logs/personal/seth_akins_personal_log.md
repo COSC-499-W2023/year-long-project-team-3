@@ -350,3 +350,30 @@ will have to reconsider how we do that moving forwards.
 
 - Some of these tasks were on AWS, so feel free to ask me and I can show you what I did so you can have proof of the
   work.
+
+## Week 4 (29/01/2024 - 24/02/2024)
+
+![](imgs/seth-akins-term-2-week-4-tasks.png)
+
+### Goals
+
+- This week I worked on setup for peer testing, and on setting up a production deployment of the website on AWS.
+- I was able to set up an action so code merged to master is automatically deployed.
+- I started working on rerouting our custom domain to the DNS of the website, but I have not been able to get it
+  completely working yet.
+
+### Tasks
+
+#### Completed Tasks
+
+- [Automatically Deploy Production When Code Merged to Main](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/398)
+
+#### In-Progress Tasks
+
+- [Use Harp Domain for Production Instead](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/409)
+- [Add (optional) beside closing date](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/371)
+
+### Additional Context
+
+- Again, most of the tasks were on AWS, or involved trying to correctly configure the DNS settings on GoDaddy, so feel
+  free to ask me about any questions you have about the work that I did.
