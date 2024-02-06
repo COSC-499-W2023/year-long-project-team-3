@@ -54,7 +54,7 @@ export default function HomePage() {
                 </Box>
             </Box>
         </>
-    )
+    );
 
     function handleClickGetStarted() {
         router.push('/dashboard')
