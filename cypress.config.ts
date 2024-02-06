@@ -15,9 +15,12 @@ import submitVideoToSubmissionBox from './cypress/tasks/submitVideoToSubmissionB
 import createRequestSubmissionForUser from './cypress/tasks/createRequestSubmissionForUser'
 import getVerificationToken from 'cypress/tasks/getVerificationToken'
 import verifyEmail from './cypress/tasks/verifyEmail'
+import {deleteVerificationToken} from './cypress/tasks/deleteVerificationToken'
+import {editOrCreateVerificationToken} from './cypress/tasks/editOrCreateVerificationToken'
 
 require('dotenv').config()
 
+// noinspection JSUnusedLocalSymbols
 export default defineConfig({
     e2e: {
         projectId: process.env.NEXT_PUBLIC_CYPRESS_PROJECT_ID,
@@ -41,6 +44,8 @@ export default defineConfig({
                 submitVideoToSubmissionBox,
                 createRequestSubmissionForUser,
                 verifyEmail,
+                deleteVerificationToken,
+                editOrCreateVerificationToken,
             })
         },
         experimentalModifyObstructiveThirdPartyCode: true,

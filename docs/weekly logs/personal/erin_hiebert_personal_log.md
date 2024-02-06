@@ -222,3 +222,24 @@
 ### Additional Context
 
 -   NA
+
+## Week 4 (29/01/2024 - 04/02/2024)
+
+![](imgs/term-2-week-4-erin-tasks.png)
+
+### Week Tasks
+
+-   Detail page for submission boxes  #303 (In Review)
+-   Detail page for submitted to submission boxes  #339 (In Review)
+-   Modifying submission boxes  #72 (In Progress)
+
+### Week Goals
+
+-   For the 'Requested Submission Boxes' detail page(s) I completed some code review changes that were very much beyond my capibilities and knowledge at the time, spending 6+ hours on monday to try and merge this feature in time for the peer reviews, this did not end up happening.
+-   Modifying Submission Boxes was put on the back burner for this week as the detail pages took priority so only preparations for this PR was done.
+-   This week the team also completed the peer evalutations in class, I guided two users through the process and noted where our platform struggled.
+-   Our team also had a meeting this week to organize our peer evaluation results into tasks to improve our app.
+
+### Additional Context
+
+-   I ran into a lot of issues in regards to my knowledge in nextJS and the programming abilities I currently possess
