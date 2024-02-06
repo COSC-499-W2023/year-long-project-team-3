@@ -15,7 +15,7 @@ jobs:
                 with:
                     node-version: '20.0.0'
             -   name: Install dependencies
-                run: npm install eslint eslint-config-next
+                run: npm ci
             -   name: ESLint
                 run: npx eslint .
 
