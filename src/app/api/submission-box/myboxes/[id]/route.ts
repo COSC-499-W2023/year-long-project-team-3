@@ -4,8 +4,6 @@ import { getServerSession } from 'next-auth'
 import prisma from '@/lib/prisma'
 import { Video } from '@prisma/client'
 
-export type SubmissionBoxVideoViewPermission = 'owner' | 'submitter'
-
 export async function GET(req: NextRequest): Promise<NextResponse> {
     // API fetches all the videos sent to a specific submission box and fetches the title, date, and description of the submission box
     const session = await getServerSession()
@@ -30,8 +28,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
                 },
             })
         ).id
-
-        let submissionBoxVideoPermission: SubmissionBoxVideoViewPermission = 'submitter'
 
         // Grab the managed submission box that the user wants to view
         const ownedSubmissionBox = await prisma.submissionBoxManager.findUnique({
@@ -64,10 +60,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             }
         }
 
-        if (!!ownedSubmissionBox && ownedSubmissionBox.viewPermission === 'owner') {
-            submissionBoxVideoPermission = 'owner'
-        }
-
         // Get the submission box itself
         const submissionBox = await prisma.submissionBox.findUniqueOrThrow({
             where: {
@@ -76,22 +68,22 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
         })
 
         // Grab all submissions to the submission box
+        const doesUserOwnSubmissionBox = !!ownedSubmissionBox && ownedSubmissionBox.viewPermission === 'owner'
         const requestedSubmissions = await prisma.requestedSubmission.findMany({
             where: {
                 submissionBoxId: submissionBoxId,
-                userId: submissionBoxVideoPermission === 'owner' ? undefined : userId,
+                userId: doesUserOwnSubmissionBox ? undefined : userId,
             },
             select: {
                 id: true,
             },
         })
-        const requestedSubmissionIds = requestedSubmissions.map(({ id }) => id)
 
         // Grab the video ids of all submissions
         const requestedBoxVideosIds = await prisma.submittedVideo.findMany({
             where: {
                 requestedSubmissionId: {
-                    in: [...requestedSubmissionIds],
+                    in: requestedSubmissions.map(({ id }) => id),
                 },
             },
             select: {
