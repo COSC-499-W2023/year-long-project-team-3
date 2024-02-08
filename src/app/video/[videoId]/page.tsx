@@ -14,7 +14,6 @@ import PageLoadProgress from '@/components/PageLoadProgress'
 import BackButton from '@/components/BackButton'
 import EditIcon from '@mui/icons-material/Edit'
 import { theme } from '@/components/ThemeRegistry/theme'
-import * as process from 'process'
 
 export default function VideoDetailedPage() {
     const session: SessionContextValue = useSession()
@@ -29,10 +28,24 @@ export default function VideoDetailedPage() {
     const [submissionBoxes, setSubmissionBoxes] = useState<SubmissionBox[]>([])
     const [isFetchingSubmissionBoxes, setIsFetchingSubmissionBoxes] = useState(false)
 
+    const [userId, setUserId] = useState<string>()
+
     // Edit states
     const [isEditing, setIsEditing] = useState(false)
     const [titleEdit, setTitleEdit] = useState('')
     const [descriptionEdit, setDescriptionEdit] = useState('')
+
+    useEffect(() => {
+        if (!session?.data?.user?.email) {
+            return
+        }
+        getUserIdByEmail(session.data.user.email)
+            .then((userId) => setUserId(userId))
+            .catch((err) => {
+                logger.error(err)
+                toast.error('Unexpected error occurred')
+            })
+    }, [session?.data?.user?.email])
 
     useEffect(() => {
         if (!video) {
@@ -213,7 +226,10 @@ export default function VideoDetailedPage() {
                                                 ) : (
                                                     <Typography
                                                         variant='h3'
-                                                        sx={{ fontWeight: 'bold' }}
+                                                        sx={{
+                                                            fontWeight: 'bold',
+                                                            padding: '1px 0', // This prevents scroll bar in title
+                                                        }}
                                                         data-cy='detail-video-title'
                                                     >
                                                         {video?.title}
@@ -305,7 +321,7 @@ export default function VideoDetailedPage() {
                                                 </Button>
                                             </Box>
                                         )}
-                                        {!isEditing && (
+                                        {!isEditing && video?.ownerId === userId && (
                                             <Box
                                                 position='absolute'
                                                 top='2rem'
@@ -367,5 +383,18 @@ export default function VideoDetailedPage() {
 
     function onEditStart() {
         setIsEditing(true)
+    }
+
+
+    async function getUserIdByEmail(userEmail: string): Promise<string> {
+        const response = await fetch('/api/user/getUserIdByEmail', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userEmail }),
+        })
+        const { userId } = await response.json()
+        return userId
     }
 }
