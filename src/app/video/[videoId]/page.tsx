@@ -385,7 +385,6 @@ export default function VideoDetailedPage() {
         setIsEditing(true)
     }
 
-
     async function getUserIdByEmail(userEmail: string): Promise<string> {
         const response = await fetch('/api/user/getUserIdByEmail', {
             method: 'POST',
