@@ -10,7 +10,7 @@ import { useSession } from 'next-auth/react'
 import AddButton from '@/components/AddButton'
 
 interface FormValues {
-  email: string;
+  email: string
 }
 
 type RequestSubmissionProps = {
