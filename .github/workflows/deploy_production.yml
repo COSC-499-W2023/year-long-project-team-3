@@ -5,134 +5,102 @@ on:
         branches:
             - master
         paths-ignore:
+            - docs/**
             - '**.md'
-            - docs/**/*.md
+            - '**.png'
+            - '**.jpg'
+    workflow_dispatch:
+
+env:
+    AWS_REGION: ca-central-1 # set this to your preferred AWS region, e.g. us-west-1
+    ECR_REPOSITORY: harp-production # set this to your Amazon ECR repository name
+    ECS_SERVICE: production-service # set this to your Amazon ECS service name
+    ECS_CLUSTER: HarpVideoProduction # set this to your Amazon ECS cluster name
+    ECS_TASK_DEFINITION: aws/amazon-ecs-production-deployment-task-definition.json # set this to the path to your Amazon ECS task definition
+    # file, e.g. .aws/task-definition.json
+    CONTAINER_NAME: website-production # set this to the name of the container in the
+    # containerDefinitions section of your task definition
+
+permissions:
+    id-token: write # This is required for requesting the JWT
+    contents: read # This is required for actions/checkout
+
+concurrency:
+    group: production
+    cancel-in-progress: true
 
 jobs:
     lint:
         name: Lint
         runs-on: ubuntu-latest
         steps:
-            -   uses: actions/checkout@v4
-            -   uses: actions/setup-node@v3
-                with:
-                    node-version: '18.18.0'
-            -   name: Install dependencies
-                run: npm ci
-            -   name: Write environment variables
-                run: |
-                    echo "${{ secrets.ENV_PREVIEW }}" > .env
-                    echo "" > cypress.config.json
-            -   name: ESLint
-                run: npm run lint
-            -   name: Prettier
-                run: npx prettier . --check
-
-    deploy-preview:
-        name: Deploy Preview
-        runs-on: ubuntu-latest
-        needs: [ lint ]
-        env:
-            VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-            VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        steps:
-            -   uses: actions/checkout@v4
-            -   name: Install Vercel CLI
-                run: npm install --global vercel@latest
-            -   name: Pull Vercel Environment Information
-                run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
-            -   name: Write .env
-                run: |
-                    echo "${{ secrets.ENV_PREVIEW }}" > .env
-            -   name: Build Project Artifacts
-                run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
-            -   name: Deploy Project Artifacts to Vercel
-                run: |
-                    url="$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})"
-                    vercel alias --token=${{ secrets.VERCEL_TOKEN }} set "$url" ubco-capstone-team-3.vercel.app
-
-    setup-preview-db:
-        name: Set up Preview database
-        runs-on: ubuntu-latest
-        needs: [ deploy-preview ]
-        steps:
-            -   uses: actions/checkout@v4
-            -   name: Write environment variables
-                run: |
-                    echo "${{ secrets.ENV_PREVIEW }}" > .env
-            -   name: Migrate Database
-                run: npx prisma migrate deploy &> prisma_migrate.log
-
-    cypress-e2e:
-        name: Run cypress E2E tests on Preview deployment
-        runs-on: ubuntu-latest
-        needs: [ deploy-preview, setup-preview-db ]
-        steps:
-            -   uses: actions/checkout@v4
-            -   name: Write environment variables
-                run: |
-                    echo "${{ secrets.ENV_PREVIEW }}" > .env
-            -   name: Cypress Run E2E Tests
-                uses: cypress-io/github-action@v6
-                env:
-                    CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-                    GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
-                with:
-                    wait-on: ${{ secrets.CYPRESS_BASE_URL }}
-                    browser: chrome
-                    record: true
-                    headed: true
-                    config: baseUrl=${{ secrets.CYPRESS_BASE_URL }}
-                    group: 'E2E Tests on Production workflow'
-
-    cypress-component:
-        name: Cypress Run Component tests on Preview deployment
-        runs-on: ubuntu-latest
-        needs: [ deploy-preview, setup-preview-db ]
-        steps:
-            -   uses: actions/checkout@v4
-            -   name: Write environment variables
-                run: |
-                    echo "${{ secrets.ENV_PREVIEW }}" > .env
-            -   name: Run Component Tests
-                uses: cypress-io/github-action@v6
-                env:
-                    CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-                    GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_ACCESS_TOKEN }}
-                with:
-                    browser: chrome
-                    component: true
-
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v3
+              with:
+                  node-version: '20.11.0'
+            - name: Install dependencies
+              run: npm ci
+            - name: ESLint
+              run: npx eslint .
 
     deploy-production:
         name: Deploy Production
         runs-on: ubuntu-latest
-        needs: [ cypress-e2e, cypress-component ]
-        env:
-            VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-            VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        environment: production
+        needs: [lint]
+
         steps:
-            -   uses: actions/checkout@v4
-            -   name: Install Vercel CLI
-                run: npm install --global vercel@latest
-            -   name: Pull Vercel Environment Information
-                run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-            -   name: Write .env
-                run: |
-                    echo "${{ secrets.ENV_PRODUCTION }}" > .env
-            -   name: Build Project Artifacts
-                run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-            -   name: Deploy Project Artifacts to Vercel
-                run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Create env File
+              run: |
+                  echo "${{ secrets.ENV_PRODUCTION }}" > .env
+
+            - name: configure aws credentials
+              uses: aws-actions/configure-aws-credentials@v3
+              with:
+                  role-to-assume: arn:aws:iam::932748244514:role/GithubActionRole
+                  role-session-name: GithubActionRole
+                  aws-region: ${{ env.AWS_REGION }}
+            - name: Login to Amazon ECR
+              id: login-ecr
+              uses: aws-actions/amazon-ecr-login@62f4f872db3836360b72999f4b87f1ff13310f3a
+            - name: Build, tag, and push image to Amazon ECR
+              id: build-image
+              env:
+                  ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+                  IMAGE_TAG: ${{ github.sha }}
+              run: |
+                  # Build a docker container and
+                  # push it to ECR so that it can
+                  # be deployed to ECS.
+                  docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile.prod .
+                  docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+                  echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+            - name: Fill in the new image ID in the Amazon ECS task definition
+              id: task-def
+              uses: aws-actions/amazon-ecs-render-task-definition@c804dfbdd57f713b6c079302a4c01db7017a36fc
+              with:
+                  task-definition: ${{ env.ECS_TASK_DEFINITION }}
+                  container-name: ${{ env.CONTAINER_NAME }}
+                  image: ${{ steps.build-image.outputs.image }}
+            - name: Deploy Amazon ECS task definition
+              uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a
+              with:
+                  task-definition: ${{ steps.task-def.outputs.task-definition }}
+                  service: ${{ env.ECS_SERVICE }}
+                  cluster: ${{ env.ECS_CLUSTER }}
+                  wait-for-service-stability: true
 
     setup-production-db:
         name: Set up Production database
         runs-on: ubuntu-latest
-        needs: [ deploy-production ]
+        needs: [deploy-production]
         steps:
-            -   uses: actions/checkout@v4
-            -   name: Write environment variables
-                run: |
-                    echo "${{ secrets.ENV_PRODUCTION }}" > .env
-            -   name: Migrate Database
-                run: npx prisma migrate dev &>-
+            - uses: actions/checkout@v4
+            - name: Write environment variables
+              run: |
+                  echo "${{ secrets.ENV_PRODUCTION }}" > .env
+            - name: Migrate Database
+              run: npx prisma migrate deploy &>-

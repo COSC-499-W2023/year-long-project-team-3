@@ -22,7 +22,6 @@ Before submitting this pull request, please make sure of the following:
 -   [ ] I have resolved any merge conflicts with the latest `master` branch.
 -   [ ] I have labeled my PR
 -   [ ] I have assigned myself to the PR
--   [ ] I have run the E2E tests on my branch
 
 ## Screenshots or Visual Changes (if applicable):
 

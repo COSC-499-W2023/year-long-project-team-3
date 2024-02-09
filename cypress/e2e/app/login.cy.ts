@@ -141,4 +141,35 @@ describe('Login tests', () => {
         // After clicking again, the password input type should change back to 'password'
         cy.get('[data-cy=password] input').should('have.attr', 'type', 'password')
     })
+
+    it('should use case insensitive email', () => {
+        // User data
+        const email = 'TeSt@someThing.coM'
+        const password = 'P@ssw0rd'
+
+        // Sign up
+        cy.visit('/signup')
+        cy.get('[data-cy="email"]').type(email)
+        cy.get('[data-cy="password"]').type(password)
+        cy.get('[data-cy="passwordConfirmation"]').type(password)
+        cy.get('[data-cy="submit"]').click()
+
+        // We should be able to log in with same email
+        cy.url().should('include', '/login')
+        cy.get('[data-cy="email"]').type(email)
+        cy.get('[data-cy="password"]').type(password)
+        cy.get('[data-cy="submit"]').click()
+
+        // Log out
+        cy.get('[data-cy="sign-out-button"]').click({ force: true })
+        cy.wait(2000)
+
+        // We should be able to log in with differently capitalized email
+        const differentEmail = 'TEsT@sOMething.cOm'
+        cy.visit('/login')
+        cy.get('[data-cy="email"]').type(differentEmail)
+        cy.get('[data-cy="password"]').type(password)
+        cy.get('[data-cy="submit"]').click()
+        cy.url().should('contain', 'verify-email')
+    })
 })
