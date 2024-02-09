@@ -45,17 +45,28 @@ describe('Receiving Dashboard Details Page Tests', () => {
             'This is a description that describes what users need to submit and have in their videos.  The description is a good tool to make sure that participants in the submission box are able to determine what is needed in their submissions and the ability for them to hit their goals. :)'
         const videoTitle = ['Test video1', 'Test video2']
         cy.task('getUserId', email).then((userId) => {
-            cy.task('createSubmissionBoxWithEmail', {
+            cy.task('createSubmissionBoxForSubmissions', {
                 submissionBoxTitle,
-                email,
                 userId,
                 submissionBoxDescription,
             }).then((submissionBoxId) => {
-                cy.task('createOneVideoAndRetrieveVideoId', { title: videoTitle[0] }).then((videoId) => {
-                    cy.task('submitVideoToSubmissionBox', { requestedSubmissionId: submissionBoxId, videoId })
-                })
-                cy.task('createOneVideoAndRetrieveVideoId', { title: videoTitle[1] }).then((videoId) => {
-                    cy.task('submitVideoToSubmissionBox', { requestedSubmissionId: submissionBoxId, videoId })
+                cy.task('getUserId', fakeEmail).then((fakeUserId) => {
+                    cy.task('createRequestedBoxForSubmissionBox', {
+                        submissionBoxId: submissionBoxId,
+                        userId: fakeUserId,
+                    }).then((requestedSubmissionId) => {
+                        cy.task('createOneVideoAndRetrieveVideoId', { title: videoTitle[0] }).then((videoId) => {
+                            cy.task('submitVideoToSubmissionBox', {
+                                requestedSubmissionId: requestedSubmissionId,
+                                videoId,
+                            })
+                        })
+                    })
+                    cy.task('createRequestedBoxForSubmissionBox', {submissionBoxId: submissionBoxId, userId: fakeUserId}).then((requestedSubmissionId) => {
+                        cy.task('createOneVideoAndRetrieveVideoId', { title: videoTitle[1] }).then((videoId) => {
+                            cy.task('submitVideoToSubmissionBox', { requestedSubmissionId: requestedSubmissionId, videoId })
+                        })
+                    })
                 })
             })
         })
@@ -78,6 +89,48 @@ describe('Receiving Dashboard Details Page Tests', () => {
             'contain',
             'This is a description that describes what users need to submit and have in their videos.  The description is a good tool to make sure that participants in the submission box are able to determine what is needed in their submissions and the ability for them to hit their goals. :)'
         )
+    })
+
+    it('should only show the most recently submitted video that a user has submitted',() => {
+        const submissionBoxTitle = 'Test Multiple Submissions'
+        const videoTitle = ['Test video1', 'Test video2']
+
+        cy.task('getUserId', email).then((userId) => {
+            cy.task('createSubmissionBoxForSubmissions', {
+                submissionBoxTitle,
+                userId,
+            }).then((submissionBoxId) => {
+                cy.task('getUserId', fakeEmail).then((fakeUserId) => {
+                    cy.task('createRequestedBoxForSubmissionBox', {
+                        submissionBoxId: submissionBoxId,
+                        userId: fakeUserId,
+                    }).then((requestedSubmissionId) => {
+                        cy.task('createOneVideoAndRetrieveVideoId', { title: videoTitle[0] }).then((videoId) => {
+                            cy.task('submitVideoToSubmissionBox', {
+                                requestedSubmissionId: requestedSubmissionId,
+                                videoId,
+                            })
+                        })
+                        cy.task('createOneVideoAndRetrieveVideoId', { title: videoTitle[1] }).then((videoId) => {
+                            cy.task('submitVideoToSubmissionBox', { requestedSubmissionId: requestedSubmissionId, videoId })
+                        })
+                    })
+                })
+            })
+        })
+        cy.reload()
+        cy.visit('/dashboard')
+        runWithRetry(() => {
+            cy.get('[data-cy="My Boxes"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
+            cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
+        })
+        cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
+
+        cy.get('[data-cy="video-list"]', { timeout: TIMEOUT.EXTRA_LONG })
+            .should('be.visible')
+            .children()
+            .should('have.length', 1)
+        cy.get('[data-cy="video-list"]').children().first().should('contain', videoTitle[1])
     })
 
     it('should not allow a user to view a submission box that they do not have permission to', () => {

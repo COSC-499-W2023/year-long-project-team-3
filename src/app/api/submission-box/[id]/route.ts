@@ -134,7 +134,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
             const boxVideosIds = requestedBoxVideosIds
                 .map(({videoVersions}) => videoVersions[0].videoId)
-            console.log(boxVideosIds)
 
             // Get the videos themselves
             const boxVideos = await prisma.video.findMany({
