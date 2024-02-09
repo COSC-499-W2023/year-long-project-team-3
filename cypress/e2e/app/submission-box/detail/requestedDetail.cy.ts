@@ -3,11 +3,13 @@ import runWithRetry from '../../../../utils/runUntilExist'
 
 describe('Requested Dashboard Details Page Tests', () => {
     const email = 'requestedDetail@page.test'
+    const placeEmail = 'placeHolderUser@mail.com'
     const password = 'Pass1234'
     beforeEach(() => {
         cy.task('clearDB')
         // Can create the same user for each test, but need to create two separate submission boxes
         cy.task('createUser', { email, password })
+        cy.task('createUser', { email: placeEmail, password })
         cy.visit('/login')
         cy.get('[data-cy=email]').type(email)
         cy.get('[data-cy=password]').type(password)

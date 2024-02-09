@@ -52,7 +52,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
         })
 
         let requestedSubmissionUsers = requestedSubmissions.requestedSubmissions.map(({ userId }) => userId)
-        console.log('we made it to the start of the if statement')
+
         // If it is a user that has submitted to the box that is accessing the box
         if (requestedSubmissions && requestedSubmissionUsers && requestedSubmissionUsers.includes(userId)) {
             // Then this user is accessing the submission box via a requested page so only load their video on to the page
@@ -72,7 +72,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             })
 
             // If the user hasn't submitted a video yet
-            if (submission === null) {
+            if (submission === null || submission.videoVersions.length == 0) {
                 const boxStatus = 'requested'
                 return NextResponse.json(
                     { box: boxStatus, videos: [], submissionBoxInfo: submissionBox },
@@ -113,8 +113,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
                 logger.error(`User ${ userId } does not have permission to access submission box ${ submissionBoxId }`)
                 return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
             }
-            console.log(requestedSubmissions)
-            console.log(requestedSubmissionUsers)
+
             if (requestedSubmissionUsers) {
                 const requestedSubmissionIds: string[] = requestedSubmissions.requestedSubmissions.map(({ id }) => id)
 
