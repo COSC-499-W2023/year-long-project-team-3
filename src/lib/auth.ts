@@ -50,12 +50,20 @@ export const authOptions: NextAuthOptions = {
                 if (!credentials) {
                     throw new Error(errorMessage)
                 }
-                const existingUser = await prisma.user.findUnique({
-                    where: { email: credentials.email },
+                const existingUsers = await prisma.user.findMany({
+                    where: {
+                        email: {
+                            equals: credentials.email,
+                            mode: 'insensitive',
+                        },
+                    },
                 })
+                if (!existingUsers || existingUsers.length !== 1 || !existingUsers[0]) {
+                    throw new Error(errorMessage)
+                }
+                const existingUser = existingUsers[0]
                 // !existingUser.password is the case for Google logins
                 const isCredentialValid =
-                    !!existingUser &&
                     existingUser.password &&
                     (await passwordMatch(credentials.password, existingUser.password!))
                 if (!isCredentialValid) {
