@@ -51,10 +51,10 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             },
         })
 
-        const requestedSubmissionUsers = requestedSubmissions.requestedSubmissions.map(({ userId }) => userId)
-
+        let requestedSubmissionUsers = requestedSubmissions.requestedSubmissions.map(({ userId }) => userId)
+        console.log('we made it to the start of the if statement')
         // If it is a user that has submitted to the box that is accessing the box
-        if (requestedSubmissionUsers && requestedSubmissionUsers.includes(userId)) {
+        if (requestedSubmissions && requestedSubmissionUsers && requestedSubmissionUsers.includes(userId)) {
             // Then this user is accessing the submission box via a requested page so only load their video on to the page
             const submission = await prisma.requestedSubmission.findFirst({
                 where: {
@@ -94,6 +94,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
         } else {
             // Else if it is the supposed owner accessing the submission box
             // Grab the managed submission box that the user wants to view
+
             const ownedSubmissionBox = await prisma.submissionBoxManager.findUnique({
                 where: {
                     // eslint-disable-next-line camelcase
@@ -112,40 +113,49 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
                 logger.error(`User ${ userId } does not have permission to access submission box ${ submissionBoxId }`)
                 return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
             }
+            console.log(requestedSubmissions)
+            console.log(requestedSubmissionUsers)
+            if (requestedSubmissionUsers) {
+                const requestedSubmissionIds: string[] = requestedSubmissions.requestedSubmissions.map(({ id }) => id)
 
-            const requestedSubmissionIds: string[] = requestedSubmissions.requestedSubmissions.map(({ id }) => id)
-
-            // Grab the video ids of all submissions
-            const requestedBoxVideosIds = await prisma.requestedSubmission.findMany({
-                where: {
-                    id: {
-                        in: [...requestedSubmissionIds],
-                    },
-                },
-                select: {
-                    videoVersions: {
-                        orderBy: {
-                            submittedAt: 'desc',
+                // Grab the video ids of all submissions
+                const requestedBoxVideosIds = await prisma.requestedSubmission.findMany({
+                    where: {
+                        id: {
+                            in: [...requestedSubmissionIds],
                         },
-                        take: 1,
                     },
-                },
-            })
-
-            const boxVideosIds = requestedBoxVideosIds
-                .map(({videoVersions}) => videoVersions[0].videoId)
-
-            // Get the videos themselves
-            const boxVideos = await prisma.video.findMany({
-                where: {
-                    id: {
-                        in: [...boxVideosIds],
+                    select: {
+                        videoVersions: {
+                            orderBy: {
+                                submittedAt: 'desc',
+                            },
+                            take: 1,
+                        },
                     },
-                },
-            })
+                })
+
+                const boxVideosIds = requestedBoxVideosIds
+                    .map(({ videoVersions }) => videoVersions[0].videoId)
+
+                // Get the videos themselves
+                let boxVideos = await prisma.video.findMany({
+                    where: {
+                        id: {
+                            in: [...boxVideosIds],
+                        },
+                    },
+                })
+                const boxStatus = 'owned'
+                return NextResponse.json(
+                    { box: boxStatus, videos: boxVideos, submissionBoxInfo: submissionBox },
+                    { status: 200 }
+                )
+            }
+
             const boxStatus = 'owned'
             return NextResponse.json(
-                { box: boxStatus, videos: boxVideos, submissionBoxInfo: submissionBox },
+                { box: boxStatus, videos: [], submissionBoxInfo: submissionBox },
                 { status: 200 }
             )
         }

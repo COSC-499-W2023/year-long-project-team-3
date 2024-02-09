@@ -20,7 +20,7 @@ describe('Receiving Dashboard Details Page Tests', () => {
     it('should display a submission box with no information inputted other than title', () => {
         const submissionBoxTitle = 'Test Receiving'
         cy.task('getUserId', email).then((userId) => {
-            cy.task('createSubmissionBoxWithEmail', { submissionBoxTitle, email, userId })
+            cy.task('createSubmissionBoxForSubmissions', { submissionBoxTitle, userId })
         })
         cy.reload()
         cy.visit('/dashboard')
