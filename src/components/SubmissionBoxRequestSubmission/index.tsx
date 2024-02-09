@@ -85,7 +85,9 @@ export default function SubmissionBoxRequestSubmission({ emails, setEmails }: Re
                         helperText={formik.touched.email && formik.errors.email}
                         data-cy='email'
                     />
-                    <IconButton sx={{ backgroundColor: '#F5F5F5' }} type='submit' data-cy='add'>
+                    <IconButton sx={{ color: '#ffffff', backgroundColor: '#367bf4', '&:hover': {
+                        color: '#ffffff', backgroundColor: '#367bf4',
+                    }}} type='submit' data-cy='add'>
                         <Icon>
                             <Add />
                         </Icon>
