@@ -84,6 +84,7 @@ export default function SubmissionBoxSettings({
                     type='text'
                     label='Title'
                     name='title'
+                    required
                     value={formik.values.title}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
