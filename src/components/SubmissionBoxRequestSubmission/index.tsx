@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import TextField from '@mui/material/TextField'
 import SubmissionRequestedCard from '@/components/SubmissionRequestedCard'
 import React from 'react'
@@ -10,12 +10,12 @@ import { useSession } from 'next-auth/react'
 import AddButton from '@/components/AddButton'
 
 interface FormValues {
-    email: string
+  email: string;
 }
 
 type RequestSubmissionProps = {
-    emails: string[]
-    setEmails: React.Dispatch<React.SetStateAction<string[]>>
+  emails: string[]
+  setEmails: React.Dispatch<React.SetStateAction<string[]>>
 }
 
 export default function SubmissionBoxRequestSubmission({ emails, setEmails }: RequestSubmissionProps) {
@@ -35,10 +35,10 @@ export default function SubmissionBoxRequestSubmission({ emails, setEmails }: Re
             .default('') // set default for checking inside onBlur and errors
             .required('To request a submission from someone, enter their email') // this will show up as a help text, not an error
             .matches(getEmailRegex(), 'Enter a valid email')
-            .test('not-own-email', 'You cannot add your own email!', function (value) {
+            .test('not-own-email', 'You cannot add your own email!', function(value) {
                 return value !== ownerEmail
             })
-            .test('unique', 'This email has already been added!', function (value) {
+            .test('unique', 'This email has already been added!', function(value) {
                 return !emails.includes(value)
             }),
     })
@@ -85,7 +85,7 @@ export default function SubmissionBoxRequestSubmission({ emails, setEmails }: Re
                         helperText={formik.touched.email && formik.errors.email}
                         data-cy='email'
                     />
-                    <AddButton/>
+                    <AddButton />
                 </Box>
             </form>
             {/* This is a scrollable container for submission request cards */}
@@ -101,6 +101,7 @@ export default function SubmissionBoxRequestSubmission({ emails, setEmails }: Re
                     mb: 5,
                 }}
             >
+                {emails.length === 0 && <Typography sx={{ textAlign: 'center', pt: 13 }}>No one has been invited yet</Typography>}
                 {/* Add new cards for added submission requests and allow removal */}
                 {emails.map((email, index) => (
                     <SubmissionRequestedCard key={index} email={email} removeEmail={removeEmail} />
