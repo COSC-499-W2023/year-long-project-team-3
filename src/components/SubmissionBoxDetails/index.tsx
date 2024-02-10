@@ -59,10 +59,3 @@ export default function SubmissionBoxDetails(props: SubmissionBoxInfoProps) {
         </>
     )
 }
-
-function validDate(props: SubmissionBoxInfoProps) {
-    if (props.submissionBox) {
-        return !!props.submissionBox.closesAt
-    }
-    return false
-}

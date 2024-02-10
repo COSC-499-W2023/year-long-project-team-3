@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import logger from '@/utils/logger'
 import { getServerSession } from 'next-auth'
 import prisma from '@/lib/prisma'
-import { type SubmissionBox } from '@prisma/client'
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
     // API fetches all the videos sent to a specific submission box and fetches the title, date, and description of the submission box
