@@ -132,7 +132,7 @@ describe('Receiving Dashboard Details Page Tests', () => {
         cy.get('[data-cy="video-list"]').children().first().should('contain', videoTitle[1])
     })
 
-    it.skip('should not allow a user to view a submission box that they do not have permission to', () => {
+    it('should not allow a user to view a submission box that they do not have permission to', () => {
         const submissionBoxTitle = 'Test Invalid'
         cy.task('getUserId', email).then((userId) => {
             cy.task('createSubmissionBoxWithEmail', { submissionBoxTitle, email, userId })

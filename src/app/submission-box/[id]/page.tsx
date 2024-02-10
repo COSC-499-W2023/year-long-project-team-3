@@ -25,15 +25,30 @@ export default function SubmissionBoxDetailPage() {
 
     useEffect(() => {
         setIsFetchingSubmissionBox(true)
-        fetchSubmissionBox(boxId)
-    }, [boxId])
+
+        fetch(`/api/submission-box/${ boxId }`).then(async (res) => {
+            const { box, videos, submissionBoxInfo } = await res.json()
+            if (!submissionBoxInfo) {
+                router.push('/dashboard')
+                toast.error('You do not have permission to view this submission box')
+            }
+            setBoxType(box)
+            setBoxInfo(submissionBoxInfo)
+            setVideos(videos)
+        }).catch((err) => {
+            router.push('/dashboard')
+            toast.error('An error occurred trying to access submission box')
+        }).finally(() => {
+            setIsFetchingSubmissionBox(false)
+        })
+    }, [boxId, router])
 
     // @ts-ignore
     return (
         <>
             <Box height='100wv' width='100%'>
                 <Header {...session} />
-                <BackButton route={'/dashboard '} title={'Return to Dashboard'} />{' '}
+                <BackButton route={'/dashboard '} title={'Return to Dashboard'} />
                 {isFetchingSubmissionBox ? (
                     <PageLoadProgress />
                 ) : (
@@ -126,17 +141,4 @@ export default function SubmissionBoxDetailPage() {
             </Box>
         </>
     )
-
-    async function fetchSubmissionBox(boxId: string | undefined) {
-        const response = await fetch(`/api/submission-box/${ boxId }`)
-        const { box, videos, submissionBoxInfo } = await response.json()
-        if (!submissionBoxInfo) {
-            router.push('/dashboard')
-            toast.error('You do not have permission to view this submission box')
-        }
-        setBoxType(box)
-        setBoxInfo(submissionBoxInfo)
-        setVideos(videos)
-        setIsFetchingSubmissionBox(false)
-    }
 }
