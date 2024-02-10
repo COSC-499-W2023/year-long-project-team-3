@@ -1,7 +1,7 @@
 import { TIMEOUT } from '../../../../utils/constants'
 import runWithRetry from '../../../../utils/runUntilExist'
 
-describe('Recieving Dashboard Details Page Tests', () => {
+describe('Receiving Dashboard Details Page Tests', () => {
     const email = 'requestedDetail@page.test'
     const password = 'Pass1234'
     beforeEach(() => {
@@ -16,7 +16,7 @@ describe('Recieving Dashboard Details Page Tests', () => {
     })
 
     it('should display a submission box with no information inputted other than title', () => {
-        const submissionBoxTitle = 'Test Recieving'
+        const submissionBoxTitle = 'Test Receiving'
         cy.task('getUserId', email).then((userId) => {
             cy.task('createSubmissionBoxWithEmail', { submissionBoxTitle, email, userId })
         })
