@@ -1,9 +1,10 @@
 import prisma from '@/lib/prisma'
 
 type CreateSubmissionBoxForSubmissions = {
-  submissionBoxTitle?: string
-  submissionBoxDescription?: string
-  userId: string
+    submissionBoxTitle?: string
+    submissionBoxDescription?: string
+    userId: string
+    closesAt?: Date
 }
 
 export default async function createRequestedBoxForSubmissionBox(props: CreateSubmissionBoxForSubmissions) {
@@ -11,6 +12,7 @@ export default async function createRequestedBoxForSubmissionBox(props: CreateSu
         data: {
             title: props.submissionBoxTitle ?? 'Test Submission Box',
             description: props.submissionBoxDescription ?? null,
+            closesAt: props.closesAt ?? null,
         },
     })
 

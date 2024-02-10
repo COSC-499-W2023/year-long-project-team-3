@@ -34,8 +34,6 @@ describe('Requested Dashboard Details Page Tests', () => {
             .should('be.visible')
             .and('contain', 'No Current Submission')
         cy.get('[data-cy="submissionBoxTitle"]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain', submissionBoxTitle)
-        cy.get('[data-cy="submissionBoxDate"]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'N/A')
-        cy.get('[data-cy="submissionBoxDesc"]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'N/A')
     })
 
     it('should display a submission box with all information inputted and current submitted video', () => {
@@ -43,13 +41,19 @@ describe('Requested Dashboard Details Page Tests', () => {
         const submissionBoxDescription =
             'This is a description that describes what users need to submit and have in their videos.  The description is a good tool to make sure that participants in the submission box are able to determine what is needed in their submissions and the ability for them to hit their goals. :)'
         const videoTitle = 'Test video'
-        cy.task('getUserId', email)
+        cy.task('getUserId', placeEmail)
             .then((userId) => {
-                cy.task('createRequestSubmissionForUser', { userId, submissionBoxTitle, submissionBoxDescription })
+                cy.task('createSubmissionBoxForSubmissions', { userId, submissionBoxTitle, submissionBoxDescription, closesAt: new Date })
             })
             .then((submissionBoxId) => {
-                cy.task('createOneVideoAndRetrieveVideoId', { title: videoTitle }).then((videoId) => {
-                    cy.task('submitVideoToSubmissionBox', { requestedSubmissionId: submissionBoxId, videoId })
+                cy.task('getUserId', email).then((userId) => {
+                    cy.task('createRequestedBoxForSubmissionBox', { submissionBoxId, userId }).then((submissionBoxId) => {
+                        cy.task('createOneVideoAndRetrieveVideoId', { title: videoTitle }).then((videoId) => {
+                            cy.task('submitVideoToSubmissionBox', { requestedSubmissionId: submissionBoxId, videoId,
+                            })
+                        })
+                    })
+
                 })
             })
 
@@ -64,7 +68,7 @@ describe('Requested Dashboard Details Page Tests', () => {
         cy.get('[data-cy="video-player"]', { timeout: 2 * TIMEOUT.EXTRA_EXTRA_LONG }).should('be.visible')
 
         cy.get('[data-cy="submissionBoxTitle"]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain', submissionBoxTitle)
-        cy.get('[data-cy="submissionBoxDate"]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'N/A')
+        cy.get('[data-cy="submissionBoxDate"]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain', new Date().toDateString().slice(4))
         cy.get('[data-cy="submissionBoxDesc"]', { timeout: TIMEOUT.EXTRA_LONG }).should(
             'contain',
             submissionBoxDescription

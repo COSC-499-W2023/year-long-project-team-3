@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import logger from '@/utils/logger'
 import { getServerSession } from 'next-auth'
 import prisma from '@/lib/prisma'
+import { type SubmissionBox } from '@prisma/client'
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
     // API fetches all the videos sent to a specific submission box and fetches the title, date, and description of the submission box
@@ -29,19 +30,13 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             })
         ).id
 
-        // Get the submission box itself
+        // Get the submission box itself and grab all submissions to that box
+        // NOTE: for every submission only grab the most recently submitted video
         const submissionBox = await prisma.submissionBox.findUniqueOrThrow({
             where: {
                 id: submissionBoxId,
             },
-        })
-
-        // Grab all submissions to the submission box
-        const requestedSubmissions = await prisma.submissionBox.findUniqueOrThrow({
-            where: {
-                id: submissionBoxId,
-            },
-            select: {
+            include: {
                 requestedSubmissions: {
                     select: {
                         id: true,
@@ -51,12 +46,13 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             },
         })
 
-        let requestedSubmissionUsers = requestedSubmissions.requestedSubmissions.map(({ userId }) => userId)
+        const requestedSubmissions = submissionBox.requestedSubmissions
+        const requestedSubmissionUsers = requestedSubmissions?.map(({ userId }) => userId)
 
         // If it is a user that has submitted to the box that is accessing the box
-        if (requestedSubmissions && requestedSubmissionUsers && requestedSubmissionUsers.includes(userId)) {
+        if (requestedSubmissionUsers?.includes(userId)) {
             // Then this user is accessing the submission box via a requested page so only load their video on to the page
-            const submission = await prisma.requestedSubmission.findFirst({
+            const videoSubmission = await prisma.requestedSubmission.findFirst({
                 where: {
                     userId: userId,
                     submissionBoxId: submissionBoxId,
@@ -66,25 +62,25 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
                         orderBy: {
                             submittedAt: 'desc',
                         },
+                        select: {
+                            video: true,
+                        },
                         take: 1,
                     },
                 },
             })
 
+            // Get the video itself
+            const boxVideo = videoSubmission?.videoVersions[0]?.video
+
             // If the user hasn't submitted a video yet
-            if (submission === null || submission.videoVersions.length == 0) {
+            if (!boxVideo) {
                 const boxStatus = 'requested'
                 return NextResponse.json(
                     { box: boxStatus, videos: [], submissionBoxInfo: submissionBox },
                     { status: 200 }
                 )
             }
-            // Get the video itself
-            const boxVideo = await prisma.video.findUnique({
-                where: {
-                    id: submission.videoVersions[0].videoId,
-                },
-            })
 
             const boxStatus = 'requested'
             return NextResponse.json(
@@ -97,8 +93,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
             const ownedSubmissionBox = await prisma.submissionBoxManager.findUnique({
                 where: {
-                    // eslint-disable-next-line camelcase
-                    userId_submissionBoxId: {
+                    'userId_submissionBoxId': {
                         userId: userId,
                         submissionBoxId: submissionBoxId,
                     },
@@ -114,47 +109,42 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
                 return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
             }
 
-            if (requestedSubmissionUsers) {
-                const requestedSubmissionIds: string[] = requestedSubmissions.requestedSubmissions.map(({ id }) => id)
-
-                // Grab the video ids of all submissions
-                const requestedBoxVideosIds = await prisma.requestedSubmission.findMany({
-                    where: {
-                        id: {
-                            in: [...requestedSubmissionIds],
-                        },
-                    },
-                    select: {
-                        videoVersions: {
-                            orderBy: {
-                                submittedAt: 'desc',
-                            },
-                            take: 1,
-                        },
-                    },
-                })
-
-                const boxVideosIds = requestedBoxVideosIds
-                    .map(({ videoVersions }) => videoVersions[0].videoId)
-
-                // Get the videos themselves
-                let boxVideos = await prisma.video.findMany({
-                    where: {
-                        id: {
-                            in: [...boxVideosIds],
-                        },
-                    },
-                })
+            if (!requestedSubmissionUsers) {
                 const boxStatus = 'owned'
                 return NextResponse.json(
-                    { box: boxStatus, videos: boxVideos, submissionBoxInfo: submissionBox },
+                    { box: boxStatus, videos: [], submissionBoxInfo: submissionBox },
                     { status: 200 }
                 )
             }
 
+            const requestedSubmissionIds: string[] = requestedSubmissions.map(({ id }) => id)
+
+            // Grab the video ids of all submissions
+            const requestedBoxVideos = await prisma.requestedSubmission.findMany({
+                where: {
+                    id: {
+                        in: [...requestedSubmissionIds],
+                    },
+                },
+                select: {
+                    videoVersions: {
+                        orderBy: {
+                            submittedAt: 'desc',
+                        },
+                        select: {
+                            video: true,
+                        },
+                        take: 1,
+                    },
+                },
+            })
+
+            // Get the videos themselves
+            const boxVideos = requestedBoxVideos.map(({ videoVersions }) => videoVersions[0].video)
+
             const boxStatus = 'owned'
             return NextResponse.json(
-                { box: boxStatus, videos: [], submissionBoxInfo: submissionBox },
+                { box: boxStatus, videos: boxVideos, submissionBoxInfo: submissionBox },
                 { status: 200 }
             )
         }

@@ -19,7 +19,6 @@ export default function SubmissionBoxDetailPage() {
     const pathname = usePathname()
     const [isFetchingSubmissionBox, setIsFetchingSubmissionBox] = useState(true)
     const [boxType, setBoxType] = useState<BoxStatus>('requested')
-    const [videoUrl, setVideoUrl] = useState(null)
     const [videos, setVideos] = useState<Video[]>([])
     const [boxInfo, setBoxInfo] = useState<SubmissionBox | null>(null)
     const boxId = pathname?.split('/').pop()
@@ -93,9 +92,9 @@ export default function SubmissionBoxDetailPage() {
                                             borderRadius: 1,
                                         }}
                                     >
-                                        {videos.length !== 0 ? (
-                                            videoUrl !== null ? (
-                                                <ScalingReactPlayer data-cy='scaling-react-player' url={videoUrl} />
+                                        {videos?.length !== 0 ? (
+                                            videos[0]?.processedVideoUrl ? (
+                                                <ScalingReactPlayer data-cy='scaling-react-player' url={videos[0].processedVideoUrl} />
                                             ) : (
                                                 <Typography data-cy='pending' variant={'h5'} color={'textSecondary'}>
                                                 Submission Pending
@@ -138,9 +137,6 @@ export default function SubmissionBoxDetailPage() {
         setBoxType(box)
         setBoxInfo(submissionBoxInfo)
         setVideos(videos)
-        if (videos && videos.length === 1) {
-            setVideoUrl(videos[0].processedVideoUrl)
-        }
         setIsFetchingSubmissionBox(false)
     }
 }
