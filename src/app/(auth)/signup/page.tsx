@@ -1,6 +1,5 @@
 'use client'
 
-import Header from '@/components/Header'
 import SignUpForm from '@/components/SignUpForm'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -27,7 +26,6 @@ export default function SignUpPage() {
     return (
         isSignUpPageVisible && (
             <>
-                <Header {...session} />
                 <SignUpForm />
             </>
         )

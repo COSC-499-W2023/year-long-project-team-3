@@ -1,7 +1,5 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import Header from '@/components/Header'
-import { SessionContextValue, useSession } from 'next-auth/react'
 import ProgressDots from '@/components/ProgressDots'
 import { Box } from '@mui/material'
 import ScalingReactPlayer from '@/components/ScalingReactPlayer'
@@ -14,7 +12,6 @@ import FormNavButton from '@/components/FormNavButton'
 import logger from '@/utils/logger'
 
 export default function VideoPreviewPage() {
-    const session: SessionContextValue = useSession()
     const router = useRouter()
     const pathname = usePathname()
 
@@ -105,7 +102,6 @@ export default function VideoPreviewPage() {
                     height: '100vh',
                 }}
             >
-                <Header {...session} />
                 {!isVideoVisible ? (
                     <PageLoadProgress />
                 ) : (

@@ -1,19 +1,14 @@
 'use client'
 
 import React from 'react'
-import Header from '@/components/Header'
 import { Box, Link } from '@mui/material'
 import Logo from '@/components/Logo'
 import Typography from '@mui/material/Typography'
-import { type SessionContextValue, useSession } from 'next-auth/react'
 
 export default function LearnMorePage() {
-    const session: SessionContextValue = useSession()
-
     // noinspection HtmlUnknownTarget
     return (
         <>
-            <Header {...session} />
             <Box
                 sx={{
                     display: 'flex',

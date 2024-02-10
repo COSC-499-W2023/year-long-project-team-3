@@ -1,7 +1,6 @@
 'use client'
 
 import LoginForm from '../../../components/LoginForm'
-import Header from '@/components/Header'
 import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { type SessionContextValue, useSession } from 'next-auth/react'
@@ -37,7 +36,6 @@ export default function LoginPage() {
     return (
         isLoginPageVisible && (
             <>
-                <Header {...session} />
                 <LoginForm />
             </>
         )

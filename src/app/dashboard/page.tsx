@@ -149,8 +149,7 @@ export default function DashboardPage() {
 
     return (
         <>
-            <Header {...session} />
-            <Box display='grid' gridTemplateColumns='1fr 4fr' height='100%' width='100%'>
+            <Box display='grid' gridTemplateColumns='1fr 4fr' width='100%'>
                 <DashboardSidebar
                     sidebarSelectedOption={sidebarSelectedOption}
                     setSidebarSelectedOption={setSidebarSelectedOption}
@@ -171,8 +170,8 @@ export default function DashboardPage() {
                         sx={{
                             borderTopLeftRadius: 25,
                             borderBottomLeftRadius: 25,
-                            height: '100vh',
                             backgroundColor: 'secondary.lighter',
+                            height: '100%'
                         }}
                         borderColor={'secondary.lighter'}
                         width='100%'
@@ -180,7 +179,7 @@ export default function DashboardPage() {
                         {isFetching ? (
                             <PageLoadProgress />
                         ) : (
-                            <Box component='section' sx={{ height: '80vh', paddingTop: 5 }} width='100%'>
+                            <Box component='section' sx={{ height: '100%', paddingTop: 5 }} width='100%'>
                                 {isVideoTabSelected ? (
                                     <VideoList
                                         videos={displayVideos.map((video) => {

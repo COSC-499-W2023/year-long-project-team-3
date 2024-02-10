@@ -5,10 +5,8 @@ import { useMultiStepForm } from '@/utils/useMultiStepForm'
 import SubmissionBoxSettings, { validationSchema as settingsValidationSchema } from '@/components/SubmissionBoxSettings'
 import SubmissionBoxRequestSubmission from '@/components/SubmissionBoxRequestSubmission'
 import SubmissionBoxReviewAndCreate from '@/components/SubmissionBoxReviewAndCreate'
-import Header from '@/components/Header'
 import BackButton from '@/components/BackButton'
 import { Box } from '@mui/material'
-import { useSession } from 'next-auth/react'
 import ProgressDots from '@/components/ProgressDots'
 import Typography from '@mui/material/Typography'
 import logger from '@/utils/logger'
@@ -17,7 +15,6 @@ import { useRouter } from 'next/navigation'
 import FormNavButton from '@/components/FormNavButton'
 
 export default function SubmissionBox() {
-    const session = useSession()
     const router = useRouter()
 
     const [title, setTitle] = useState('')
@@ -54,7 +51,6 @@ export default function SubmissionBox() {
 
     return (
         <>
-            <Header {...session} />
             <BackButton route={'/dashboard'} title={'Return to Dashboard'} />{' '}
             {/* TODO: make this route to correct page */}
             <Box

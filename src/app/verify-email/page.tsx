@@ -2,12 +2,9 @@
 
 import { Box, Button, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
-import Header from '@/components/Header'
-import { useSession } from 'next-auth/react'
 import Logo from '@/components/Logo'
 
 export default function VerifyEmail() {
-    const session = useSession()
     const [buttonText, setButtonText] = useState('Resend Email')
 
     useEffect(() => {
@@ -32,7 +29,6 @@ export default function VerifyEmail() {
 
     return (
         <>
-            <Header {...session} />
             <Box
                 sx={{
                     display: 'flex',
