@@ -13,7 +13,8 @@ class PatternNotFoundException(Exception):
 
 
 class ObjectWrapper:
-    """Encapsulates S3 object actions."""
+    """Encapsulates S3 object actions. Code from
+    https://docs.aws.amazon.com/AmazonS3/latest/userguide/example_s3_CopyObject_section.html"""
 
     def __init__(self, s3_object):
         """
