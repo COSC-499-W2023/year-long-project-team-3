@@ -35,7 +35,7 @@ export default function SubmissionBoxDetailPage() {
             setBoxType(box)
             setBoxInfo(submissionBoxInfo)
             setVideos(videos)
-        }).catch((err) => {
+        }).catch(() => {
             router.push('/dashboard')
             toast.error('An error occurred trying to access submission box')
         }).finally(() => {
@@ -82,59 +82,64 @@ export default function SubmissionBoxDetailPage() {
                             </Box>
                         )}
                         {boxType === 'requested' && (
-                            <Box display='grid' gridTemplateColumns='3fr 1fr' height='100%' width='100%'>
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        width: '100wv',
-                                        height: '70vh',
-                                        gap: '4rem',
-                                        padding: '2rem',
-                                    }}
-                                >
+                            <>
+                                {videos?.length !== 0 && (
+                                    <Typography paddingTop='1rem' paddingLeft='5rem' data-cy='videoTitle' variant={'h5'} color={'textSecondary'} sx={{ fontWeight: 'bold' }}>{videos?.[0].title}</Typography>
+                                )}
+                                <Box display='grid' gridTemplateColumns='3fr 1fr' height='100%' width='100%'>
                                     <Box
-                                        data-cy='videoHolder'
                                         sx={{
                                             display: 'flex',
-                                            flexDirection: 'column',
-                                            alignItems: 'center',
-                                            ...(videos.length !== 1 && { justifyContent: 'center' }),
-                                            flexGrow: 1,
-                                            flexShrink: 1,
-                                            minWidth: '20vh',
-                                            width: '100%',
-                                            ...(videos.length !== 1 && { backgroundColor: 'secondary.lighter' }),
-                                            borderRadius: 1,
+                                            width: '100wv',
+                                            height: '70vh',
+                                            gap: '4rem',
+                                            padding: '2rem',
                                         }}
                                     >
-                                        {videos?.length !== 0 ? (
-                                            videos[0]?.processedVideoUrl ? (
-                                                <ScalingReactPlayer data-cy='scaling-react-player' url={videos[0].processedVideoUrl} />
-                                            ) : (
-                                                <Typography data-cy='pending' variant={'h5'} color={'textSecondary'}>
-                                                Submission Pending
-                                                </Typography>
-                                            )
-                                        ) : (
-                                            <Typography data-cy='noSubmission' variant={'h5'} color={'textSecondary'}>
-                                            No Current Submission
-                                            </Typography>
-                                        )}
-                                    </Box>
-                                </Box>
-                                <Box padding='1rem'>
-                                    <SubmissionBoxDetails submissionBox={boxInfo} />
-                                    <Box textAlign='center' padding='1rem'>
-                                        <Button
-                                            variant='contained'
-                                            onClick={() => router.push('/video/upload')}
-                                            data-cy='submissionButton'
+                                        <Box
+                                            data-cy='videoHolder'
+                                            sx={{
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                alignItems: 'center',
+                                                ...(videos.length !== 1 && { justifyContent: 'center' }),
+                                                flexGrow: 1,
+                                                flexShrink: 1,
+                                                minWidth: '20vh',
+                                                width: '100%',
+                                                ...(videos.length !== 1 && { backgroundColor: 'secondary.lighter' }),
+                                                borderRadius: 1,
+                                            }}
                                         >
+                                            {videos?.length !== 0 ? (
+                                                videos[0]?.processedVideoUrl ? (
+                                                    <ScalingReactPlayer data-cy='scaling-react-player' url={videos[0].processedVideoUrl} />
+                                                ) : (
+                                                    <Typography data-cy='pending' variant={'h5'} color={'textSecondary'}>
+                                                Submission Pending
+                                                    </Typography>
+                                                )
+                                            ) : (
+                                                <Typography data-cy='noSubmission' variant={'h5'} color={'textSecondary'}>
+                                            No Current Submission
+                                                </Typography>
+                                            )}
+                                        </Box>
+                                    </Box>
+                                    <Box padding='1rem'>
+                                        <SubmissionBoxDetails submissionBox={boxInfo} />
+                                        <Box textAlign='center' padding='1rem'>
+                                            <Button
+                                                variant='contained'
+                                                onClick={() => router.push('/video/upload')}
+                                                data-cy='submissionButton'
+                                            >
                                         Create A Submission
-                                        </Button>
+                                            </Button>
+                                        </Box>
                                     </Box>
                                 </Box>
-                            </Box>
+                            </>
                         )}
                     </>
                 )}
