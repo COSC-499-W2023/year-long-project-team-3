@@ -13,6 +13,7 @@ import { SidebarOption } from '@/types/dashboard/sidebar'
 import VideoList from '@/components/VideoList'
 import SubmissionBoxList from '@/components/SubmissionBoxList'
 import DashboardSearchBar from '@/components/DashboardSearchBar'
+import { Container, Grid } from '@mui/material'
 
 export default function DashboardPage() {
     const session = useSession()
@@ -149,7 +150,7 @@ export default function DashboardPage() {
 
     return (
         <>
-            <Box display='grid' gridTemplateColumns='1fr 4fr' width='100%'>
+            <Grid flexGrow='1' display='grid' gridTemplateColumns='1fr 4fr' width='100%'>
                 <DashboardSidebar
                     sidebarSelectedOption={sidebarSelectedOption}
                     setSidebarSelectedOption={setSidebarSelectedOption}
@@ -198,7 +199,7 @@ export default function DashboardPage() {
                         )}
                     </Box>
                 </Box>
-            </Box>
+            </Grid>
         </>
     )
 

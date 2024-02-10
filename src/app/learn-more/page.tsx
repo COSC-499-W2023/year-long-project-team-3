@@ -14,10 +14,6 @@ export default function LearnMorePage() {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    overflowY: 'scroll',
-                    position: 'absolute',
-                    width: '100%',
-                    height: '100%',
                 }}
             >
                 <Box
@@ -26,7 +22,7 @@ export default function LearnMorePage() {
                         flexDirection: 'column',
                         alignItems: 'center',
                         maxWidth: '45%',
-                        pb: '10rem',
+                        p: '1rem',
                     }}
                 >
                     <Box sx={{ mt: 4 }}>
