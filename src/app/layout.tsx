@@ -7,8 +7,8 @@ import React from 'react'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import NextAuthProvider from '@/app/context/nextAuthProvider'
-import Header from "@/components/Header";
-import { Box } from "@mui/material";
+import Header from '@/components/Header'
+import { Box } from '@mui/material'
 
 export const metadata: Metadata = {
     title: 'Harp: A Secure Platform for Anonymous Video Submission',
@@ -21,14 +21,14 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
     const session = await getServerSession(authOptions)
-        return (
+    return (
         <html lang='en'>
             <body>
                 <ThemeRegistry>
                     <NextAuthProvider session={session}>
                         <Box sx={{ margin: 0, display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-                        <Header />
-                        <Box sx={{ display: 'flex', flexGrow: '1', flexDirection: 'column'}}>{children}</Box>
+                            <Header />
+                            <Box sx={{ display: 'flex', flexGrow: '1', flexDirection: 'column'}}>{children}</Box>
                         </Box>
                     </NextAuthProvider>
                 </ThemeRegistry>

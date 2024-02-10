@@ -1,7 +1,7 @@
 import { Inter } from 'next/font/google'
 import { createTheme, Theme } from '@mui/material/styles'
 import { NextFont } from 'next/dist/compiled/@next/font'
-import { responsiveFontSizes } from "@mui/material";
+import { responsiveFontSizes } from '@mui/material'
 
 const inter: NextFont = Inter({ subsets: ['latin'] })
 
