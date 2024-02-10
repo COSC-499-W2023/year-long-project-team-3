@@ -66,6 +66,13 @@ describe('Submission box review and create tests', () => {
 
             cy.url().should('include', '/dashboard')
         })
+
+        it('Should show a warning if no one invited to the box', () => {
+            cy.get('[data-cy="title"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Review & Create')
+
+            cy.get('[data-cy="no-users-warning"]').contains('You have not invited anyone to your box')
+            // TODO: extend this test to check more details about the page
+        })
     })
 
     context('Not logged in', () => {

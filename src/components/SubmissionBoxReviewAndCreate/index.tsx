@@ -69,7 +69,7 @@ export default function SubmissionBoxReviewAndCreate({ title, description, closi
                             <Chip key={index} label={email} sx={{ m: 0.5, ml: 0 }} />
                         ))}
                     </Box>):
-                    (<Alert severity='warning'>You have not added any users to your box</Alert>)
+                    (<Alert data-cy='no-users-warning' severity='warning'>You have not invited anyone to your box</Alert>)
                 }
             </Box>
         </>
