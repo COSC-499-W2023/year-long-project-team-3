@@ -22,10 +22,10 @@ export default function LearnMorePage() {
                         flexDirection: 'column',
                         alignItems: 'center',
                         maxWidth: '45%',
-                        p: '1rem',
+                        py: '2rem',
                     }}
                 >
-                    <Box sx={{ mt: 4 }}>
+                    <Box>
                         <Logo fontSize={80} />
                     </Box>
                     <Typography

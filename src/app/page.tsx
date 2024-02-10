@@ -12,7 +12,7 @@ export default function HomePage() {
     return (
         <>
             <Box
-                sx={{ display: 'flex', flexGrow: 1, alignItems: 'center', flexDirection: 'column', gap: '2rem', p: 6 }}
+                sx={{ display: 'flex', flexGrow: 1, alignItems: 'center', flexDirection: 'column', gap: '2rem', py: '2rem' }}
             >
                 <Logo fontSize={200} />
                 <Typography
