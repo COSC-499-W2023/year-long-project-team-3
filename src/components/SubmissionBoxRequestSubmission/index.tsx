@@ -101,7 +101,7 @@ export default function SubmissionBoxRequestSubmission({ emails, setEmails }: Re
                     mb: 5,
                 }}
             >
-                {emails.length === 0 && <Typography sx={{ textAlign: 'center', pt: 13 }}>No one has been invited yet</Typography>}
+                {emails.length === 0 && <Typography data-cy='placeholder-text' sx={{ textAlign: 'center', pt: 13 }}>No one has been invited yet</Typography>}
                 {/* Add new cards for added submission requests and allow removal */}
                 {emails.map((email, index) => (
                     <SubmissionRequestedCard key={index} email={email} removeEmail={removeEmail} />
