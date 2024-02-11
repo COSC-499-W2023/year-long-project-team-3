@@ -3,7 +3,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import Header from '@/components/Header'
 import React, { useEffect, useState } from 'react'
 import { SessionContextValue, useSession } from 'next-auth/react'
-import { Typography, Box, Button } from '@mui/material'
+import { Typography, Box, Button, Link } from '@mui/material'
 import { SubmissionBox, Video } from '@prisma/client'
 import VideoList from '@/components/VideoList'
 import BackButton from '@/components/BackButton'
@@ -83,19 +83,31 @@ export default function SubmissionBoxDetailPage() {
                         )}
                         {boxType === 'requested' && (
                             <>
-                                {videos?.length !== 0 && (
-                                    <Typography paddingTop='1rem' paddingLeft='5rem' data-cy='videoTitle' variant={'h5'} color={'textSecondary'} sx={{ fontWeight: 'bold' }}>{videos?.[0].title}</Typography>
-                                )}
                                 <Box display='grid' gridTemplateColumns='3fr 1fr' height='100%' width='100%'>
                                     <Box
                                         sx={{
                                             display: 'flex',
+                                            flexDirection: 'column',
                                             width: '100wv',
                                             height: '70vh',
-                                            gap: '4rem',
                                             padding: '2rem',
+                                            flexGrow: 1,
+                                            flexShrink: 1,
                                         }}
                                     >
+                                        {videos?.length !== 0 && (
+                                            <Box
+                                                data-cy='videoTitleHolder'
+                                                sx={{
+                                                    display: 'flex',
+                                                    flexDirection: 'column',
+                                                    alignItems: 'center',
+                                                }}
+                                            >
+                                                <Typography data-cy='videoTitleHeader' variant='subtitle2' color={'textSecondary'}>Video Title</Typography>
+                                                <Link sx={{ fontWeight: 'bold' }} paddingBottom='1rem' data-cy='videoTitle' variant={'h5'} color={'textSecondary'} onClick={() => router.push(`/video/${ videos?.[0].id }`)}>{videos?.[0].title}</Link>
+                                            </Box>
+                                        )}
                                         <Box
                                             data-cy='videoHolder'
                                             sx={{
@@ -134,7 +146,7 @@ export default function SubmissionBoxDetailPage() {
                                                 onClick={() => router.push('/video/upload')}
                                                 data-cy='submissionButton'
                                             >
-                                        Create A Submission
+                                                { videos?.length === 0 ? 'Create A Submission' : 'Create A Resubmission' }
                                             </Button>
                                         </Box>
                                     </Box>
