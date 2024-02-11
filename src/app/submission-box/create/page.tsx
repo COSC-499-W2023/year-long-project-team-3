@@ -61,7 +61,7 @@ export default function SubmissionBox() {
                     gap: '1rem',
                     width: '100%',
                     height: '100%',
-                    pb: '2rem'
+                    pb: '2rem',
                 }}
             >
                 <Box

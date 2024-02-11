@@ -175,7 +175,6 @@ export default function DashboardPage() {
                             height: '100%',
                         }}
                         borderColor={'secondary.lighter'}
-                        width='100%'
                     >
                         {isFetching ? (
                             <PageLoadProgress />

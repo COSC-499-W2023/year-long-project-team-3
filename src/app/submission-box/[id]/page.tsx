@@ -20,11 +20,10 @@ export default function SubmissionBoxDetailPage() {
     return (
         <>
             <BackButton route={'/dashboard '} title={'Return to Dashboard'} />{' '}
-            <Box display='grid' gridTemplateColumns='4fr 1fr' height='100%' width='100%'>
+            <Box flexGrow='1' display='grid' gridTemplateColumns='4fr 1fr' height='100%' width='100%'>
                 <Box
                     sx={{
                         borderTopRightRadius: 25,
-                        height: '100vh',
                         backgroundColor: 'secondary.lighter',
                         paddingTop: 5,
                     }}

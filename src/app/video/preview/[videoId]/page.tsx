@@ -103,9 +103,9 @@ export default function VideoPreviewPage() {
                 }}
             >
                 {!isVideoVisible ? (
-                  <Box sx={{ flexGrow: 1, py: '2rem'}}>
-                    <PageLoadProgress />
-                  </Box>
+                    <Box sx={{ flexGrow: 1, py: '2rem'}}>
+                        <PageLoadProgress />
+                    </Box>
                 ) : (
                     <>
                         {isCloudProcessed ? (
