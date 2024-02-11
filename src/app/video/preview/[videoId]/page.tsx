@@ -98,12 +98,14 @@ export default function VideoPreviewPage() {
                     alignItems: 'stretch',
                     m: 0,
                     p: 0,
-                    width: '100vw',
-                    height: '100vh',
+                    width: '100%',
+                    height: '100%',
                 }}
             >
                 {!isVideoVisible ? (
+                  <Box sx={{ flexGrow: 1, py: '2rem'}}>
                     <PageLoadProgress />
+                  </Box>
                 ) : (
                     <>
                         {isCloudProcessed ? (
