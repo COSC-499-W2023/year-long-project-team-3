@@ -1,6 +1,5 @@
 'use client'
 
-import { type SessionContextValue, useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { SubmissionBox, Video } from '@prisma/client'
@@ -8,16 +7,13 @@ import logger from '@/utils/logger'
 import { toast } from 'react-toastify'
 import { Alert, Box, Button, Chip, TextField, Typography } from '@mui/material'
 
-import Header from '@/components/Header'
 import ScalingReactPlayer from '@/components/ScalingReactPlayer'
 import PageLoadProgress from '@/components/PageLoadProgress'
 import BackButton from '@/components/BackButton'
 import EditIcon from '@mui/icons-material/Edit'
 import { theme } from '@/components/ThemeRegistry/theme'
-import * as process from 'process'
 
 export default function VideoDetailedPage() {
-    const session: SessionContextValue = useSession()
     const router = useRouter()
     const pathname = usePathname()
 
@@ -105,11 +101,10 @@ export default function VideoDetailedPage() {
                     alignItems: 'stretch',
                     m: 0,
                     p: 0,
-                    width: '100vw',
-                    height: '100vh',
+                    width: '100%',
+                    height: '100%',
                 }}
             >
-                <Header {...session} />
                 {isFetchingVideo || isFetchingSubmissionBoxes ? (
                     <PageLoadProgress />
                 ) : (
@@ -121,14 +116,14 @@ export default function VideoDetailedPage() {
                                     flexDirection: 'column',
                                     alignItems: 'flex-start',
                                     m: 0,
-                                    width: '100vw',
+                                    width: '100%',
                                 }}
                             >
                                 <BackButton route={'/dashboard '} title={'Return to Dashboard'} />
                                 <Box
                                     sx={{
                                         display: 'flex',
-                                        width: '100vw',
+                                        width: '100%',
                                         alignItems: 'center',
                                         justifyContent: 'center',
                                     }}
@@ -143,7 +138,7 @@ export default function VideoDetailedPage() {
                                         You can only edit title and description
                                     </Alert>
                                 </Box>
-                                <Box display='flex' width='100vw' height='70vh' padding='2rem' gap='4rem'>
+                                <Box display='flex' width='100%' height='70vh' padding='2rem' gap='4rem'>
                                     <Box
                                         sx={{
                                             display: 'flex',

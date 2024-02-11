@@ -1,10 +1,10 @@
 'use client'
 
-import Header from '@/components/Header'
 import SignUpForm from '@/components/SignUpForm'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useSession, type SessionContextValue } from 'next-auth/react'
+import { Box } from '@mui/material'
 
 export default function SignUpPage() {
     const session: SessionContextValue = useSession()
@@ -27,8 +27,9 @@ export default function SignUpPage() {
     return (
         isSignUpPageVisible && (
             <>
-                <Header {...session} />
-                <SignUpForm />
+                <Box sx={{ py: '2rem'}}>
+                    <SignUpForm />
+                </Box>
             </>
         )
     )

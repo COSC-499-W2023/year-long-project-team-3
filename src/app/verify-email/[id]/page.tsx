@@ -1,7 +1,5 @@
 'use client'
 
-import Header from '@/components/Header'
-import { useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
 import { Box, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
@@ -11,7 +9,6 @@ import LandingPageButton from '@/components/LandingPageButton'
 type PageStatus = 'loading' | 'success' | 'error'
 
 export default function VerifyEmail() {
-    const session = useSession()
     const router = useRouter()
     const emailVerificationId = usePathname()?.split('/').pop()
     const [pageMsg, setPageMsg] = useState('')
@@ -55,7 +52,6 @@ export default function VerifyEmail() {
 
     return (
         <>
-            <Header {...session} />
             {/* Main Body */}
             <Box
                 sx={{
