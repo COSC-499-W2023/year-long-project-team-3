@@ -5,8 +5,6 @@ import { CloudUpload as CloudUploadIcon } from '@mui/icons-material'
 import { styled } from '@mui/material/styles'
 import React, { type ChangeEvent, useState } from 'react'
 import { toast } from 'react-toastify'
-import { useSession } from 'next-auth/react'
-import Header from '@/components/Header'
 import { useRouter } from 'next/navigation'
 import ProgressDots from '@/components/ProgressDots'
 import PageLoadProgressBlurBackground from '@/components/PageLoadProgressBlurBackround'
@@ -26,7 +24,6 @@ const VisuallyHiddenInput = styled('input')({
 })
 
 export default function UploadVideoPage() {
-    const session = useSession()
     const router = useRouter()
 
     const [isUploadingVideo, setIsUploadingVideo] = useState(false)
@@ -78,7 +75,6 @@ export default function UploadVideoPage() {
         <>
             <PageLoadProgressBlurBackground show={isUploadingVideo} />
             <>
-                <Header {...session} />
                 <BackButton route={'/dashboard '} title={'Return to Dashboard'} />{' '}
                 <Box
                     sx={{
