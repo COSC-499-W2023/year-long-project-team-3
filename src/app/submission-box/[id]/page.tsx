@@ -1,9 +1,7 @@
 'use client'
 
 import { usePathname, useRouter } from 'next/navigation'
-import Header from '@/components/Header'
 import React, { useEffect, useState } from 'react'
-import { SessionContextValue, useSession } from 'next-auth/react'
 import { Typography, Box, Button, Link } from '@mui/material'
 import { SubmissionBox, Video } from '@prisma/client'
 import VideoList from '@/components/VideoList'
