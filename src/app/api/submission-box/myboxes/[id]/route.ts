@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import logger from '@/utils/logger'
 import { getServerSession } from 'next-auth'
 import prisma from '@/lib/prisma'
-import { Video } from '@prisma/client'
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
     // API fetches all the videos sent to a specific submission box and fetches the title, date, and description of the submission box
@@ -30,7 +29,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
         ).id
 
         // Grab the managed submission box that the user wants to view
-        const ownedSubmissionBox = await prisma.submissionBoxManager.findUnique({
+        const ownedSubmissionBox = await prisma.submissionBoxManager.findUniqueOrThrow({
             where: {
                 // eslint-disable-next-line camelcase
                 userId_submissionBoxId: {
@@ -43,21 +42,10 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             },
         })
 
-        const requestedSubmission = await prisma.requestedSubmission.findMany({
-            where: {
-                userId: userId,
-                submissionBox: {
-                    id: submissionBoxId,
-                },
-            },
-        })
-
         // Check if user is an owner of the managed submission box
-        if (!!ownedSubmissionBox && ownedSubmissionBox.viewPermission !== 'owner') {
-            if (requestedSubmission.length === 0) {
-                logger.error(`User ${ userId } does not have permission to access submission box ${ submissionBoxId }`)
-                return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
-            }
+        if (ownedSubmissionBox.viewPermission !== 'owner') {
+            logger.error(`User ${ userId } does not have permission to access submission box ${ submissionBoxId }`)
+            return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
         }
 
         // Get the submission box itself
@@ -68,30 +56,48 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
         })
 
         // Grab all submissions to the submission box
-        const doesUserOwnSubmissionBox = !!ownedSubmissionBox && ownedSubmissionBox.viewPermission === 'owner'
-        const requestedSubmissions = await prisma.requestedSubmission.findMany({
+        const requestedSubmissions = await prisma.submissionBox.findMany({
             where: {
-                submissionBoxId: submissionBoxId,
-                userId: doesUserOwnSubmissionBox ? undefined : userId,
+                id: submissionBoxId,
             },
             select: {
-                id: true,
+                requestedSubmissions: {
+                    select: {
+                        id: true,
+                    },
+                },
             },
         })
+
+        const requestedSubmissionIds: string[] = requestedSubmissions
+            .flat()
+            .map(({ requestedSubmissions }) => requestedSubmissions.map(({ id }) => id))
+            .flat()
 
         // Grab the video ids of all submissions
         const requestedBoxVideosIds = await prisma.submittedVideo.findMany({
             where: {
                 requestedSubmissionId: {
-                    in: requestedSubmissions.map(({ id }) => id),
+                    in: [...requestedSubmissionIds],
                 },
             },
             select: {
-                video: true,
+                videoId: true,
             },
         })
 
-        const boxVideos: Video[] = requestedBoxVideosIds.map(({ video }) => video)
+        const boxVideosIds = requestedBoxVideosIds
+            .flat()
+            .map(({ videoId }) => videoId)
+            .flat()
+        // Get the videos themselves
+        const boxVideos = await prisma.video.findMany({
+            where: {
+                id: {
+                    in: [...boxVideosIds],
+                },
+            },
+        })
 
         return NextResponse.json({ videos: boxVideos, submissionBoxInfo: submissionBox }, { status: 200 })
     } catch (err) {
