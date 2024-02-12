@@ -39,6 +39,63 @@ describe('Submission box request submissions tests', () => {
             cy.get('[data-cy="title"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Request Submissions')
         })
 
+        it('Should give popup if user enters email and doesn\'t add it before clicking next and let user cancel', () => {
+            const requestedEmail = 'requested@mail.com'
+
+            // Entering email without adding it
+            cy.get('[data-cy="email"]').type(requestedEmail)
+
+            // Popup should be visible and user should still be on same page after clicking next
+
+            // Double click is a known issue, cypress is not acting correctly on browser preview deployment
+            cy.get('[data-cy="Next"]').click()
+
+            // We should still be on the request submission step
+            cy.get('[data-cy="title"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Request Submissions')
+
+            // Check that the pop-up is visible
+            cy.get('[data-cy="pop-up"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Continue without adding the entered email?').should('be.visible')
+
+            // Click: No on pop-up
+            cy.get('[data-cy="close"]').click()
+
+            // We should still be on the request submission step
+            cy.get('[data-cy="title"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Request Submissions')
+
+            // It should let the user add the email
+            cy.get('[data-cy="add"]').click()
+
+            // The email should populate
+            cy.get('[data-cy="requested-email"]').should('contain', requestedEmail)
+        })
+
+        it('Should give popup if user enters email and doesn\'t add it before clicking next and let user move on', () => {
+            const requestedEmail = 'requested@mail.com'
+
+            // Entering email without adding it
+            cy.get('[data-cy="email"]').type(requestedEmail)
+
+            // Popup should be visible and user should still be on same page after clicking next
+
+            // Double click is a known issue, cypress is not acting correctly on browser preview deployment
+            cy.get('[data-cy="Next"]').click()
+
+            // We should still be on the request submission step
+            cy.get('[data-cy="title"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Request Submissions')
+
+            // Check that the pop-up is visible
+            cy.get('[data-cy="pop-up"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Continue without adding the entered email?').should('be.visible')
+
+            // Click: Yes, I am sure on pop-up
+            cy.get('[data-cy="agree"]', ).click()
+
+            // We should now be on the Review & Create step
+            cy.get('[data-cy="title"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Review & Create')
+
+            // There should not be any emails added and the warning should be present
+            cy.get('[data-cy="no-users-warning"]').contains('You have not invited anyone to your box')
+        })
+
         it('Should allow user to click next', () => {
             cy.get('[data-cy="Next"]').click()
 

@@ -106,6 +106,7 @@ export default function SubmissionBox() {
                 aria-labelledby='alert-dialog-title'
                 aria-describedby='alert-dialog-description'
                 sx={{ pt: 21 }}
+                data-cy='pop-up'
             >
                 <DialogTitle id='alert-dialog-title'>
                     {'Continue without adding the entered email?'}
@@ -117,8 +118,8 @@ export default function SubmissionBox() {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>No</Button>
-                    <Button onClick={handleAgree} autoFocus>Yes, I am sure</Button>
+                    <Button data-cy='close' onClick={handleClose}>No</Button>
+                    <Button data-cy='agree' onClick={handleAgree} autoFocus>Yes, I am sure</Button>
                 </DialogActions>
             </Dialog>
         </>
@@ -133,11 +134,7 @@ export default function SubmissionBox() {
                 return next(validationResult)
             } else if (currentStepIndex === 1) {
                 // On SubmissionBoxRequestSubmission, check whether there is text in the email field
-                console.log('HERE')
-                console.log(emailFieldText)
-                console.log(popUpVisible)
                 const emailFieldHasText = emailFieldText.trim() == ''
-                console.log(!emailFieldHasText)
                 setPopupVisible(!emailFieldHasText)
                 return next(emailFieldHasText)
             }
