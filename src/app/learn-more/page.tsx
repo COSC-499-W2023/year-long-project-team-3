@@ -1,28 +1,19 @@
 'use client'
 
 import React from 'react'
-import Header from '@/components/Header'
 import { Box, Link } from '@mui/material'
 import Logo from '@/components/Logo'
 import Typography from '@mui/material/Typography'
-import { type SessionContextValue, useSession } from 'next-auth/react'
 
 export default function LearnMorePage() {
-    const session: SessionContextValue = useSession()
-
     // noinspection HtmlUnknownTarget
     return (
         <>
-            <Header {...session} />
             <Box
                 sx={{
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    overflowY: 'scroll',
-                    position: 'absolute',
-                    width: '100%',
-                    height: '100%',
                 }}
             >
                 <Box
@@ -31,10 +22,10 @@ export default function LearnMorePage() {
                         flexDirection: 'column',
                         alignItems: 'center',
                         maxWidth: '45%',
-                        pb: '10rem',
+                        py: '2rem',
                     }}
                 >
-                    <Box sx={{ mt: 4 }}>
+                    <Box>
                         <Logo fontSize={80} />
                     </Box>
                     <Typography

@@ -3,8 +3,8 @@ import { Box, CircularProgress } from '@mui/material'
 export default function PageLoadProgress() {
     return (
         <Box
-            width='100%'
-            height='100%'
+            width='100vh'
+            height='100vh'
             display='flex'
             justifyContent='center'
             alignItems='center'
