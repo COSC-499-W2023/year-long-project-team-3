@@ -351,7 +351,7 @@ will have to reconsider how we do that moving forwards.
 - Some of these tasks were on AWS, so feel free to ask me and I can show you what I did so you can have proof of the
   work.
 
-## Week 4 (29/01/2024 - 24/02/2024)
+## Week 4 (29/01/2024 - 4/02/2024)
 
 ![](imgs/seth-akins-term-2-week-4-tasks.png)
 
@@ -378,3 +378,35 @@ will have to reconsider how we do that moving forwards.
 
 - Again, most of the tasks were on AWS, or involved trying to correctly configure the DNS settings on GoDaddy, so feel
   free to ask me about any questions you have about the work that I did.
+
+## Week 5 (12/02/2024 - 11/02/2024)
+
+![](imgs/seth-akins-term-2-week-5-tasks.png)
+
+### Goals
+
+- This week, I finished configuring our production deployment. The production poll worker is running now, so the
+  production version of the website is finished now.
+- I also made a small change to better indicate which fields are required when making a submission box.
+- Lastly, I made a significant refactor which fixed our website so that pages which are too big to fit on one screen now
+  scroll correctly. As part of this change, I also changed the website base layout so the header renders automatically
+  on every page instead of being manually placed on each page. The text on the website also now dynamically adjusts
+  based on screen size.
+
+### Tasks
+
+#### Completed Tasks
+
+- [Deploy Poll Worker for Production](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/412)
+- [Add scrolling where needed (main page, signup page)](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/382)\
+- [Add (optional) beside closing date](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/371)
+
+#### In-Progress Tasks
+
+- N/A
+
+### Additional Context
+
+- We decided not to use the custom domain we purchased for our production deployment because the client does not allow
+  us to manage our domain on AWS, which prevents the load balancer which determines the domain for our website from
+  using the custom domain.
