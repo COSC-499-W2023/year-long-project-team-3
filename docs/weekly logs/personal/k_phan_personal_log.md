@@ -1,6 +1,21 @@
 # K Phan
 
-## Term 2 Week 6 (January 29, 2024 - February 04, 2024)
+## Term 2 Week 5 (February 05, 2024 - February 11, 2024)
+
+### Week's Goals
+- Fix permission issue with Video Detail Page (COMPLETE)
+- Fix scroll bar issue on Video Detail Page (COMPLETE)
+
+### Tasks Worked On
+- Fix permission issue with Video Detail Page (https://github.com/COSC-499-W2023/year-long-project-team-3/pull/415)
+- Fix scroll bar issue on Video Detail Page (https://github.com/COSC-499-W2023/year-long-project-team-3/pull/415)
+- Additional: refactor videos API + Submission box API (https://github.com/COSC-499-W2023/year-long-project-team-3/pull/415)
+- Additional: fix videos API return duplicate videos (https://github.com/COSC-499-W2023/year-long-project-team-3/pull/415)
+
+### Teamformation Report
+![](./imgs/term-2-week-5-k-phan-tasks.png)
+
+## Term 2 Week 4 (January 29, 2024 - February 04, 2024)
 
 ### Week's Goals
 - Understand the peer testing feedback
