@@ -36,7 +36,7 @@ export default function VideoDetailedPage() {
     const [descriptionEdit, setDescriptionEdit] = useState('')
 
     useEffect(() => {
-        if (!session?.data?.user?.email) {
+        if (!session || !session?.data?.user?.email) {
             return
         }
         getUserIdByEmail(session.data.user.email)
