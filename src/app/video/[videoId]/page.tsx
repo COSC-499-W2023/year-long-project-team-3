@@ -1,6 +1,6 @@
 'use client'
 
-import { type SessionContextValue, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { SubmissionBox, Video } from '@prisma/client'
@@ -16,7 +16,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import { theme } from '@/components/ThemeRegistry/theme'
 
 export default function VideoDetailedPage() {
-    const session: SessionContextValue = useSession()
+    const session = useSession()
     const router = useRouter()
     const pathname = usePathname()
 
