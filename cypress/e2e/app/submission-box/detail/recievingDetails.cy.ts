@@ -1,7 +1,7 @@
 import { TIMEOUT } from '../../../../utils/constants'
 import runWithRetry from '../../../../utils/runUntilExist'
 
-describe('Recieving Dashboard Details Page Tests', () => {
+describe('Receiving Dashboard Details Page Tests', () => {
     const email = 'requestedDetail@page.test'
     const password = 'Pass1234'
     beforeEach(() => {
@@ -16,21 +16,21 @@ describe('Recieving Dashboard Details Page Tests', () => {
     })
 
     it('should display a submission box with no information inputted other than title', () => {
-        const submissionBoxTitle = 'Test Recieving'
+        const submissionBoxTitle = 'Test Receiving'
         cy.task('getUserId', email).then((userId) => {
             cy.task('createSubmissionBoxWithEmail', { submissionBoxTitle, email, userId })
         })
         cy.reload()
         cy.visit('/dashboard')
         runWithRetry(() => {
-            cy.get('[data-cy="My Boxes"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
+            cy.get('[data-cy="My Invitations"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
             cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
         })
         cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
 
         cy.get('[data-cy="no-video-text"]', { timeout: TIMEOUT.EXTRA_LONG }).should(
             'contain',
-            'You Do Not Have Any Videos'
+            'You do not have any videos'
         )
         cy.get('[data-cy="submissionBoxTitle"]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain', submissionBoxTitle)
         cy.get('[data-cy="submissionBoxDate"]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'N/A')
@@ -38,7 +38,7 @@ describe('Recieving Dashboard Details Page Tests', () => {
     })
 
     it('should display a submission box with all information inputted and videos', () => {
-        const submissionBoxTitle = 'Test Recieving with Data'
+        const submissionBoxTitle = 'Test Receiving with Data'
         const submissionBoxDescription =
             'This is a description that describes what users need to submit and have in their videos.  The description is a good tool to make sure that participants in the submission box are able to determine what is needed in their submissions and the ability for them to hit their goals. :)'
         const videoTitle = ['Test video1', 'Test video2']
@@ -60,7 +60,7 @@ describe('Recieving Dashboard Details Page Tests', () => {
         cy.reload()
         cy.visit('/dashboard')
         runWithRetry(() => {
-            cy.get('[data-cy="My Boxes"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
+            cy.get('[data-cy="My Invitations"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
             cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
         })
         cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()

@@ -1,7 +1,6 @@
 'use client'
 
 import { useSession } from 'next-auth/react'
-import Header from '@/components/Header'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import React, { useEffect, useState } from 'react'
@@ -103,7 +102,7 @@ export default function DashboardPage() {
             setPageTitle('Manage Boxes')
 
             setIsFetching(true)
-            fetchMyBoxes()
+            fetchMyRequests()
                 .then((submissionBoxes) => {
                     setTempSubmissionBoxes(submissionBoxes)
                 })
@@ -114,7 +113,7 @@ export default function DashboardPage() {
             setPageTitle('My Invitations')
 
             setIsFetching(true)
-            fetchMyRequests()
+            fetchMyBoxes()
                 .then((submissionBoxes) => {
                     setTempSubmissionBoxes(submissionBoxes)
                 })
@@ -176,7 +175,7 @@ export default function DashboardPage() {
                                     <SubmissionBoxList
                                         submissionBoxes={submissionBoxes}
                                         isSearching={isSearching}
-                                        emptyMessage={sidebarSelectedOption === 'submission_boxes_manage_boxes' ? 'You do own any submission boxes' : 'You have not been invited to any submission boxes'}
+                                        emptyMessage={sidebarSelectedOption === 'submission_boxes_manage_boxes' ? 'You do not own any submission boxes' : 'You have not been invited to any submission boxes'}
                                     />
                                 )}
                             </Box>
