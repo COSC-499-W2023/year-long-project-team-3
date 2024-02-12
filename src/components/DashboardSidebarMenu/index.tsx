@@ -21,7 +21,7 @@ export default function DashboardSidebarMenu(props: DashboardMenuSidebarProps) {
     const { sidebarSelectedOption } = props
 
     return (
-        <Box marginTop='4rem' display='flex' flexDirection='column' gap='0.5rem'>
+        <Box display='flex' flexDirection='column' gap='0.5rem'>
             <Typography
                 color={theme.palette.text.secondary}
                 fontSize={'20px'}
