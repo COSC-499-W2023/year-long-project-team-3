@@ -45,7 +45,7 @@ export default function VideoDetailedPage() {
                 logger.error(err)
                 toast.error('Unexpected error occurred')
             })
-    }, [session?.data?.user?.email])
+    }, [session])
 
     useEffect(() => {
         if (!video) {
