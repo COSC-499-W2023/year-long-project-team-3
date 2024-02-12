@@ -174,7 +174,11 @@ export default function DashboardPage() {
                                         isSearching={isSearching}
                                     />
                                 ) : (
-                                    <SubmissionBoxList submissionBoxes={submissionBoxes} isSearching={isSearching} />
+                                    <SubmissionBoxList
+                                        submissionBoxes={submissionBoxes}
+                                        isSearching={isSearching}
+                                        emptyMessage={sidebarSelectedOption === 'submission_boxes_manage_boxes' ? 'You do own any submission boxes' : 'You have not been invited to any submission boxes'}
+                                    />
                                 )}
                             </Box>
                         )}
@@ -185,7 +189,7 @@ export default function DashboardPage() {
     )
 
     async function fetchAllVideos(): Promise<Video[]> {
-        const response = await fetch('/api/videos')
+        const response = await fetch('/api/my-videos')
         const { videos } = await response.json()
         return videos
     }
