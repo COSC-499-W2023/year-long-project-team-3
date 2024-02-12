@@ -232,7 +232,6 @@ export default function VideoDetailedPage() {
                                                             overflowY: 'hidden',
                                                         }}
                                                         whiteSpace='nowrap'
-                                                        // noWrap
                                                         data-cy='detail-video-title'
                                                     >
                                                         {video?.title}
