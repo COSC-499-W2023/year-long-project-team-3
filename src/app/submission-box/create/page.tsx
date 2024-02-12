@@ -127,7 +127,6 @@ export default function SubmissionBox() {
 
     async function handleNext() {
         if (!isLastStep) {
-            console.log(currentStepIndex)
             if (currentStepIndex === 0) {
                 const validationResult = await validateFormData()
                 setIsTitleError(!validationResult)
