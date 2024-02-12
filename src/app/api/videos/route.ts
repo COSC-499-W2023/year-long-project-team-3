@@ -38,52 +38,41 @@ export async function GET(): Promise<NextResponse> {
             },
         })
 
-        const allRequestedSubmissions = await Promise.all(
-            ownedSubmissionBoxIds.map(({ submissionBoxId }) => {
-                return prisma.submissionBox.findMany({
-                    where: {
-                        id: submissionBoxId,
-                    },
-                    select: {
-                        requestedSubmissions: {
-                            select: {
-                                id: true,
-                            },
-                        },
-                    },
-                })
-            })
-        )
+        const allRequestedSubmissions = await prisma.requestedSubmission.findMany({
+            where: {
+                submissionBoxId: {
+                    in: ownedSubmissionBoxIds.map(({ submissionBoxId }) => submissionBoxId),
+                },
+            },
+            select: {
+                id: true,
+            },
+        })
 
-        const allRequestedSubmissionIds: string[] = allRequestedSubmissions
-            .flat()
-            .map(({ requestedSubmissions }) => requestedSubmissions.map(({ id }) => id))
-            .flat()
+        const uniqueRequestedSubmissions = Array.from(new Set(allRequestedSubmissions.map(({ id }) => id)))
 
-        const allSubmittedVideoToRequestedSubmissions = await Promise.all(
-            allRequestedSubmissionIds.map((requestedSubmissionId) =>
-                prisma.submittedVideo.findMany({
-                    where: {
-                        requestedSubmissionId: requestedSubmissionId,
-                    },
-                    select: {
-                        videoId: true,
-                    },
-                })
-            )
-        )
+        const submittedVideos: Video[] = (await prisma.submittedVideo.findMany({
+            where: {
+                requestedSubmissionId: {
+                    in: uniqueRequestedSubmissions,
+                },
+            },
+            select: {
+                video: true,
+            },
+        })).map(({ video }) => video)
 
-        const allSubmittedVideoIds: string[] = allSubmittedVideoToRequestedSubmissions
-            .flat()
-            .map(({ videoId }) => videoId)
-
-        const submittedVideos: Video[] = await Promise.all(
-            allSubmittedVideoIds.map((videoId) => prisma.video.findUniqueOrThrow({ where: { id: videoId } }))
-        )
-
+        const videoIdSet = new Set<string>()
         const allVideos: Video[] = ownedVideos.concat(submittedVideos)
+        const uniqueVideos: Video[] = allVideos.filter((video) => {
+            if (videoIdSet.has(video.id)) {
+                return false
+            }
+            videoIdSet.add(video.id)
+            return true
+        })
 
-        return NextResponse.json({ videos: allVideos }, { status: 200 })
+        return NextResponse.json({ videos: uniqueVideos }, { status: 200 })
     } catch (err) {
         logger.error(err)
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
