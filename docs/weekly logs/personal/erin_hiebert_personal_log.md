@@ -243,3 +243,24 @@
 ### Additional Context
 
 -   I ran into a lot of issues in regards to my knowledge in nextJS and the programming abilities I currently possess
+
+## Week 5 (05/02/2024 - 11/02/2024)
+
+![](imgs/term-2-week-5-erin-tasks.png)
+
+### Week Tasks
+
+-   Detail page for submission boxes  #303 (Completed)
+-   Detail page for submitted to submission boxes  #339 (Completed)
+-   Modifying submission boxes  #72 (In Progress)
+
+### Week Goals
+
+-   More requested changes were made on Detail page for submitted to submission boxes, with a lot of work into restructuring the API and figuring out more advanced techniques with APIs
+-   Some tests were modified and changed slightly in the Detailed submission boxes pages
+-   The team also met this week to go over our website's logic pathing, we discussed UI changes and page progression changes
+-   Modifying Submission Boxes had no new commits for this week
+
+### Additional Context
+
+-   NA
