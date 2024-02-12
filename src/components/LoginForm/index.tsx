@@ -44,7 +44,7 @@ export default function LoginForm() {
 
     return (
         <>
-            <Box sx={{ mt: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Logo fontSize={80} />
             </Box>
             <Box

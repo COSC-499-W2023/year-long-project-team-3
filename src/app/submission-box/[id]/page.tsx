@@ -1,8 +1,6 @@
 'use client'
 import { usePathname } from 'next/navigation'
-import Header from '@/components/Header'
 import React, { useEffect, useState } from 'react'
-import { SessionContextValue, useSession } from 'next-auth/react'
 import Box from '@mui/material/Box'
 import { SubmissionBox, Video } from '@prisma/client'
 import VideoList from '@/components/VideoList'
@@ -10,7 +8,6 @@ import BackButton from '@/components/BackButton'
 import SubmissionBoxDetails from '@/components/SubmissionBoxDetails'
 
 export default function SubmissionBoxDetailPage() {
-    const session: SessionContextValue = useSession()
     const pathname = usePathname()
     const [videos, setVideos] = useState<Video[]>([])
     const [boxInfo, setBoxInfo] = useState<SubmissionBox | null>(null)
@@ -22,13 +19,11 @@ export default function SubmissionBoxDetailPage() {
 
     return (
         <>
-            <Header {...session} />
             <BackButton route={'/dashboard '} title={'Return to Dashboard'} />{' '}
-            <Box display='grid' gridTemplateColumns='4fr 1fr' height='100%' width='100%'>
+            <Box flexGrow='1' display='grid' gridTemplateColumns='4fr 1fr' height='100%' width='100%'>
                 <Box
                     sx={{
                         borderTopRightRadius: 25,
-                        height: '100vh',
                         backgroundColor: 'secondary.lighter',
                         paddingTop: 5,
                     }}
