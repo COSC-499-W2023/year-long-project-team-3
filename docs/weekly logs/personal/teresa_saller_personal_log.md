@@ -349,10 +349,10 @@ Lot of work on infrastructure and planning
 Completed:
 - [Transferring videos between buckets times out for longer videos #343](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/343)
 - [Go to dashboard button after email verification is odd size #407](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/407)
-- [Submission box email addition fixes #422](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/422)
 
 In progress:
-
+- [Submission box email addition fixes #422](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/422)
+  - Couldn't merge today because we didn't have time to wait on the E2E tests again, hoping to merge tomorrow
 
 ### Goals
 
