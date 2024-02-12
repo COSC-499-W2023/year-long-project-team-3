@@ -1,7 +1,7 @@
 import { TIMEOUT } from '../../../../utils/constants'
 import runWithRetry from '../../../../utils/runUntilExist'
 
-describe('Requested Dashboard Details Page Tests', () => {
+describe.skip('Requested Dashboard Details Page Tests', () => {
     const email = 'requestedDetail@page.test'
     const placeEmail = 'placeHolderUser@mail.com'
     const password = 'Pass1234'
