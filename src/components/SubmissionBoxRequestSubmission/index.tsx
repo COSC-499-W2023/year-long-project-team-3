@@ -16,9 +16,10 @@ interface FormValues {
 type RequestSubmissionProps = {
   emails: string[]
   setEmails: React.Dispatch<React.SetStateAction<string[]>>
+  setEmailFieldText: React.Dispatch<React.SetStateAction<string>>
 }
 
-export default function SubmissionBoxRequestSubmission({ emails, setEmails }: RequestSubmissionProps) {
+export default function SubmissionBoxRequestSubmission({ emails, setEmails, setEmailFieldText }: RequestSubmissionProps) {
     const session = useSession()
 
     const ownerEmail: string = session.data?.user?.email!
@@ -75,6 +76,7 @@ export default function SubmissionBoxRequestSubmission({ emails, setEmails }: Re
                         value={formik.values.email}
                         onChange={(e) => {
                             formik.handleChange(e)
+                            setEmailFieldText(e.target.value)
                         }}
                         onBlur={() => handleBlur()}
                         error={

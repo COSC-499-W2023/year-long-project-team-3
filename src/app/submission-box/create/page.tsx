@@ -25,6 +25,7 @@ export default function SubmissionBox() {
     const [description, setDescription] = useState<string | undefined>()
     const [closingDate, setClosingDate] = useState<Date | null>(null)
     const [emails, setEmails] = useState<string[]>([])
+    const [emailFieldText, setEmailFieldText] = useState<string>('')
 
     const { steps, currentStepIndex, step, stepTitles, currentStepTitle, isFirstStep, isLastStep, back, next } =
         useMultiStepForm(
@@ -40,7 +41,7 @@ export default function SubmissionBox() {
                     isTitleError={isTitleError}
                     setIsTitleError={setIsTitleError}
                 />,
-                <SubmissionBoxRequestSubmission key='step2' emails={emails} setEmails={setEmails} />,
+                <SubmissionBoxRequestSubmission key='step2' emails={emails} setEmails={setEmails} setEmailFieldText={setEmailFieldText}/>,
                 <SubmissionBoxReviewAndCreate
                     key='step3'
                     title={title}
@@ -110,7 +111,15 @@ export default function SubmissionBox() {
                 const validationResult = await validateFormData()
                 setIsTitleError(!validationResult)
                 return next(validationResult)
+            } else if (currentStepIndex === 1) {
+                // On SubmissionBoxRequestSubmission, check whether there is text in the email field
+                const emailFieldHasText = emailFieldText.trim() == ''
+                // TODO: Make popup to ask user if they would like to continue
+                return next(emailFieldHasText)
             }
+
+            // reset state storing text in email field
+            setEmailFieldText('')
 
             // TODO: Handle other steps
             return next(true)
