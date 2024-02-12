@@ -1,5 +1,6 @@
 'use client'
 
+import { useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { SubmissionBox, Video } from '@prisma/client'
@@ -14,6 +15,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import { theme } from '@/components/ThemeRegistry/theme'
 
 export default function VideoDetailedPage() {
+    const session = useSession()
     const router = useRouter()
     const pathname = usePathname()
 
@@ -25,10 +27,24 @@ export default function VideoDetailedPage() {
     const [submissionBoxes, setSubmissionBoxes] = useState<SubmissionBox[]>([])
     const [isFetchingSubmissionBoxes, setIsFetchingSubmissionBoxes] = useState(false)
 
+    const [userId, setUserId] = useState<string>()
+
     // Edit states
     const [isEditing, setIsEditing] = useState(false)
     const [titleEdit, setTitleEdit] = useState('')
     const [descriptionEdit, setDescriptionEdit] = useState('')
+
+    useEffect(() => {
+        if (!session || !session?.data?.user?.email) {
+            return
+        }
+        getUserIdByEmail(session.data.user.email)
+            .then((userId) => setUserId(userId))
+            .catch((err) => {
+                logger.error(err)
+                toast.error('Unexpected error occurred')
+            })
+    }, [session])
 
     useEffect(() => {
         if (!video) {
@@ -186,7 +202,7 @@ export default function VideoDetailedPage() {
                                             paddingTop='1rem'
                                             paddingBottom='0.5rem'
                                         >
-                                            <Box sx={{ overflowY: 'scroll', textOverflow: 'ellipsis' }}>
+                                            <Box>
                                                 <Typography noWrap sx={{ fontWeight: 'bold' }}>
                                                     Title
                                                 </Typography>
@@ -208,7 +224,12 @@ export default function VideoDetailedPage() {
                                                 ) : (
                                                     <Typography
                                                         variant='h3'
-                                                        sx={{ fontWeight: 'bold' }}
+                                                        sx={{
+                                                            fontWeight: 'bold',
+                                                            overflowX: 'auto',
+                                                            overflowY: 'hidden',
+                                                        }}
+                                                        whiteSpace='nowrap'
                                                         data-cy='detail-video-title'
                                                     >
                                                         {video?.title}
@@ -300,7 +321,7 @@ export default function VideoDetailedPage() {
                                                 </Button>
                                             </Box>
                                         )}
-                                        {!isEditing && (
+                                        {!isEditing && video?.ownerId === userId && (
                                             <Box
                                                 position='absolute'
                                                 top='2rem'
@@ -362,5 +383,17 @@ export default function VideoDetailedPage() {
 
     function onEditStart() {
         setIsEditing(true)
+    }
+
+    async function getUserIdByEmail(userEmail: string): Promise<string> {
+        const response = await fetch('/api/user/getUserIdByEmail', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userEmail }),
+        })
+        const { userId } = await response.json()
+        return userId
     }
 }
