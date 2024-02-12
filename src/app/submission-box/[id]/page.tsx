@@ -40,6 +40,7 @@ export default function SubmissionBoxDetailPage() {
         })
     }, [boxId, router])
 
+    // @ts-ignore
     return (
         <>
             <Box height='100wv' width='100%'>

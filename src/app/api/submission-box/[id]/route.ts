@@ -117,11 +117,10 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             }
 
             const requestedSubmissionIds: string[] = requestedSubmissions.map(({ id }) => id)
-            const doesUserOwnSubmissionBox = ownedSubmissionBox.viewPermission === 'owner'
+
             // Grab the video ids of all submissions
             const requestedBoxVideos = await prisma.requestedSubmission.findMany({
                 where: {
-                    userId: doesUserOwnSubmissionBox ? undefined : userId,
                     id: {
                         in: requestedSubmissionIds,
                     },
@@ -140,7 +139,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             })
 
             // Get the videos themselves
-            const boxVideos = requestedBoxVideos.filter(({ videoVersions }) => videoVersions?.[0]).map(({ videoVersions }) => videoVersions[0].video)
+            const boxVideos = requestedBoxVideos.filter(function({ videoVersions }) { return videoVersions?.[0]}).map(({ videoVersions }) => videoVersions?.[0].video)
 
             return NextResponse.json(
                 { box: boxStatus, videos: boxVideos, submissionBoxInfo: submissionBox },
