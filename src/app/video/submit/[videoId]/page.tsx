@@ -1,9 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
-import Header from '@/components/Header'
 import { Box, Select, Typography, Chip, MenuItem } from '@mui/material'
 import ProgressDots from '@/components/ProgressDots'
 import type { SubmissionBox, Video } from '@prisma/client'
@@ -25,7 +23,6 @@ type FormValues = {
 }
 
 export default function SubmitVideoPage() {
-    const session = useSession()
     const router = useRouter()
     const pathname = usePathname()
 
@@ -79,7 +76,6 @@ export default function SubmitVideoPage() {
         <>
             <PageLoadProgressBlurBackground show={isLoading && !video} />
             <>
-                <Header {...session} />
                 <BackButton route={'/dashboard '} title={'Return to Dashboard'} />{' '}
                 <Box
                     sx={{
