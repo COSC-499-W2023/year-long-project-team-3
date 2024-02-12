@@ -32,7 +32,7 @@ describe('Dashboard Recent Videos Tests', () => {
             .and('contain', 'You do not have any videos')
     })
 
-    it.only('should display uploaded videos', () => {
+    it('should display uploaded videos', () => {
         const email = 'user' + uuidv4() + '@example.com'
         const password = 'randomPasswordCool1'
 

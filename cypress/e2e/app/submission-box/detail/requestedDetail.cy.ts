@@ -1,7 +1,7 @@
 import { TIMEOUT } from '../../../../utils/constants'
 import runWithRetry from '../../../../utils/runUntilExist'
 
-describe.skip('Requested Dashboard Details Page Tests', () => {
+describe('Requested Dashboard Details Page Tests', () => {
     const email = 'requestedDetail@page.test'
     const placeEmail = 'placeHolderUser@mail.com'
     const password = 'Pass1234'
@@ -25,7 +25,7 @@ describe.skip('Requested Dashboard Details Page Tests', () => {
         cy.reload()
         cy.visit('/dashboard')
         runWithRetry(() => {
-            cy.get('[data-cy="My Requests"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
+            cy.get('[data-cy="My Invitations"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
             cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
         })
         cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
@@ -60,7 +60,7 @@ describe.skip('Requested Dashboard Details Page Tests', () => {
         cy.reload()
         cy.visit('/dashboard')
         runWithRetry(() => {
-            cy.get('[data-cy="My Requests"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
+            cy.get('[data-cy="My Invitations"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
             cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
         })
         cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
@@ -86,7 +86,7 @@ describe.skip('Requested Dashboard Details Page Tests', () => {
         cy.reload()
         cy.visit('/dashboard')
         runWithRetry(() => {
-            cy.get('[data-cy="My Requests"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
+            cy.get('[data-cy="My Invitations"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
             cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
         })
         cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()

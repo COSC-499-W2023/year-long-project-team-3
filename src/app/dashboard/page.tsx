@@ -102,7 +102,7 @@ export default function DashboardPage() {
             setPageTitle('Manage Boxes')
 
             setIsFetching(true)
-            fetchMyRequests()
+            fetchMyBoxes()
                 .then((submissionBoxes) => {
                     setTempSubmissionBoxes(submissionBoxes)
                 })
@@ -113,7 +113,7 @@ export default function DashboardPage() {
             setPageTitle('My Invitations')
 
             setIsFetching(true)
-            fetchMyBoxes()
+            fetchMyRequests()
                 .then((submissionBoxes) => {
                     setTempSubmissionBoxes(submissionBoxes)
                 })

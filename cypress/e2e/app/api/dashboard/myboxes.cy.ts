@@ -54,7 +54,7 @@ describe('Test my submission boxes API', () => {
             const isPublic = false
 
             // Load database
-            cy.task('loadInSubmissionBoxes')
+            cy.task('loadManagedSubmissionBox')
             // Login
             cy.visit('/login')
             cy.get('[data-cy=email]').type(email)
