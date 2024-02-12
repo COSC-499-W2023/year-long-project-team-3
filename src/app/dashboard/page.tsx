@@ -190,18 +190,6 @@ export default function DashboardPage() {
         return videos
     }
 
-    async function getUserIdByEmail(userEmail: string): Promise<string> {
-        const response = await fetch('/api/user/getUserIdByEmail', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ userEmail }),
-        })
-        const { userId } = await response.json()
-        return userId
-    }
-
     async function fetchMyBoxes(): Promise<SubmissionBox[]> {
         const response = await fetch('/api/submission-box/myboxes')
         const { submissionBoxes } = await response.json()
