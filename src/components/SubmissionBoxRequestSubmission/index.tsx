@@ -121,6 +121,7 @@ export default function SubmissionBoxRequestSubmission({ emails, setEmails, setE
     }
 
     async function handleSubmit(values: FormValues) {
+        setEmailFieldText('')
         setEmails([...emails, values.email])
         formik.resetForm()
     }

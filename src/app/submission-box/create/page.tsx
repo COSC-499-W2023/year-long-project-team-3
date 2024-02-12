@@ -7,7 +7,7 @@ import SubmissionBoxRequestSubmission from '@/components/SubmissionBoxRequestSub
 import SubmissionBoxReviewAndCreate from '@/components/SubmissionBoxReviewAndCreate'
 import Header from '@/components/Header'
 import BackButton from '@/components/BackButton'
-import { Box } from '@mui/material'
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import ProgressDots from '@/components/ProgressDots'
 import Typography from '@mui/material/Typography'
@@ -20,12 +20,13 @@ export default function SubmissionBox() {
     const session = useSession()
     const router = useRouter()
 
-    const [title, setTitle] = useState('')
-    const [isTitleError, setIsTitleError] = useState(false)
+    const [title, setTitle] = useState<string>('')
+    const [isTitleError, setIsTitleError] = useState<boolean>(false)
     const [description, setDescription] = useState<string | undefined>()
     const [closingDate, setClosingDate] = useState<Date | null>(null)
     const [emails, setEmails] = useState<string[]>([])
     const [emailFieldText, setEmailFieldText] = useState<string>('')
+    const [popUpVisible, setPopupVisible] = useState<boolean>(false)
 
     const { steps, currentStepIndex, step, stepTitles, currentStepTitle, isFirstStep, isLastStep, back, next } =
         useMultiStepForm(
@@ -102,19 +103,44 @@ export default function SubmissionBox() {
                     </Box>
                 </Box>
             </Box>
+            <Dialog
+                open={popUpVisible}
+                onClose={handleClose}
+                aria-labelledby='alert-dialog-title'
+                aria-describedby='alert-dialog-description'
+            >
+                <DialogTitle id='alert-dialog-title'>
+                    {'Continue without adding the entered email?'}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id='alert-dialog-description'>
+                      You have not added the email you entered into the email addresses field. Are you sure you want to
+                      move on to the next page without adding it?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>No</Button>
+                    <Button onClick={handleAgree} autoFocus>Yes, I am sure</Button>
+                </DialogActions>
+            </Dialog>
         </>
     )
 
     async function handleNext() {
         if (!isLastStep) {
+            console.log(currentStepIndex)
             if (currentStepIndex === 0) {
                 const validationResult = await validateFormData()
                 setIsTitleError(!validationResult)
                 return next(validationResult)
             } else if (currentStepIndex === 1) {
                 // On SubmissionBoxRequestSubmission, check whether there is text in the email field
+                console.log('HERE')
+                console.log(emailFieldText)
+                console.log(popUpVisible)
                 const emailFieldHasText = emailFieldText.trim() == ''
-                // TODO: Make popup to ask user if they would like to continue
+                console.log(!emailFieldHasText)
+                setPopupVisible(!emailFieldHasText)
                 return next(emailFieldHasText)
             }
 
@@ -164,5 +190,16 @@ export default function SubmissionBox() {
         }
 
         return settingsValidationSchema.isValid(formData)
+    }
+
+    // If the user clicks: No in the popup
+    function handleClose() {
+        setPopupVisible(false)
+    }
+
+    // If the user clicks: Yes, I am sure in the popup
+    function handleAgree() {
+        setPopupVisible(false)
+        return next(true)
     }
 }
