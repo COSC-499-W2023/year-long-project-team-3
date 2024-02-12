@@ -1,5 +1,28 @@
 # Weekly Individual Log - Justin Schoenit
 
+## Week 5 (Feb 5 - Feb 11)
+
+### Tasks
+
+![](imgs/week-5-t2-tasks-justin.png)
+
+### My Contributions this week
+
+- I reconfigured our linting as it had some issues
+  - Commits took a long time due to husky running pre-commit checks on our ever-growing code base. I just removed it since GitHub Actions already checks the linting 
+  - Prettier (a code formatter) was conflicting with eslint on a couple rules making local linting not work as intended. Upon review, prettier was not actually needed, so it was removed as well
+  - I fixed the lint GitHub Actions to not check the prettier formatting, which, it turns out, never worked anyway (the eslint action worked though)
+- We had a brainstorming session to work out a few kinks in the user experience of the site which resulted in more tasks, and a couple page redesigns and workflow changes
+- I implemented one of those changes which was a redesign of the dashboard sidebar to use different wording to make the purpose of each tab clearer. This meant I had to change the functionality of each tab so that it shows the intended stuff. A lot of tests had to be fixed after these changes (25% of them).
+
+### Goals for the coming week
+
+- I will keep pulling from our list of things to be fixed based on our peer testing feedback and our redesign
+
+### Additional Context
+
+Some of my progress was blocked due to dependency on the submission boxes not being merged yet, so I was a bit less productive on the coding front than I had hoped. But that is now merged, so I will be able to continue those tasks this coming week.
+
 ## Week 4 (Jan 29 - Feb 04)
 
 ### Tasks
