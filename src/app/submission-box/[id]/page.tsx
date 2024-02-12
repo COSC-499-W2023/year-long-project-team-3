@@ -1,4 +1,5 @@
 'use client'
+
 import { usePathname, useRouter } from 'next/navigation'
 import Header from '@/components/Header'
 import React, { useEffect, useState } from 'react'
@@ -14,7 +15,6 @@ import { BoxStatus } from '@/types/submission-box/boxStatus'
 import { toast } from 'react-toastify'
 
 export default function SubmissionBoxDetailPage() {
-    const session: SessionContextValue = useSession()
     const router = useRouter()
     const pathname = usePathname()
     const [isFetchingSubmissionBox, setIsFetchingSubmissionBox] = useState(true)
@@ -47,7 +47,6 @@ export default function SubmissionBoxDetailPage() {
     return (
         <>
             <Box height='100wv' width='100%'>
-                <Header {...session} />
                 <BackButton route={'/dashboard '} title={'Return to Dashboard'} />
                 {isFetchingSubmissionBox ? (
                     <PageLoadProgress />

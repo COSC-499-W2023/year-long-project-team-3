@@ -7,15 +7,13 @@ import HeaderLogo from '../HeaderLogo'
 import { type SessionContextValue, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 
-export type HeaderProps = {} & SessionContextValue
-
-export default function Header(props: HeaderProps) {
+export default function Header() {
     const session = useSession()
-    const { status } = props
+    const { status } = session
     const router = useRouter()
 
     return (
-        <AppBar data-cy='landing-page-app-bar' position='static' sx={{ backgroundColor: 'white' }}>
+        <AppBar data-cy='landing-page-app-bar' position='sticky' sx={{ backgroundColor: 'white' }}>
             <Toolbar disableGutters>
                 <Box
                     sx={{
