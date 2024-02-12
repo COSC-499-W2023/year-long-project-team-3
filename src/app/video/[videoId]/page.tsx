@@ -228,7 +228,7 @@ export default function VideoDetailedPage() {
                                                         variant='h3'
                                                         sx={{
                                                             fontWeight: 'bold',
-                                                            overflowX: 'scroll',
+                                                            overflowX: 'auto',
                                                             overflowY: 'hidden',
                                                         }}
                                                         whiteSpace='nowrap'
