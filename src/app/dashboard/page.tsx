@@ -125,10 +125,10 @@ export default function DashboardPage() {
 
     return (
         <>
-            <Header {...session} />
             <Box sx={{
                 display: 'flex',
                 flexDirection: 'row',
+                flexGrow: 1,
                 height: '100%',
                 width: '100%',
             }}>
@@ -152,16 +152,15 @@ export default function DashboardPage() {
                         sx={{
                             borderTopLeftRadius: 25,
                             borderBottomLeftRadius: 25,
-                            height: '100vh',
                             backgroundColor: 'secondary.lighter',
+                            height: '100%',
                         }}
                         borderColor={'secondary.lighter'}
-                        width='100%'
                     >
                         {isFetching ? (
                             <PageLoadProgress />
                         ) : (
-                            <Box component='section' sx={{ height: '80vh', paddingTop: 5 }} width='100%'>
+                            <Box component='section' sx={{ height: '100%', paddingTop: 5 }} width='100%'>
                                 {isVideoTabSelected ? (
                                     <VideoList
                                         videos={displayVideos.map((video) => {
