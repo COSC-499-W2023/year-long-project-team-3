@@ -30,7 +30,11 @@ Run the following to lint and format the project
 
 ```bash
 npm run lint
+# Or
+next lint
 ```
+
+Add `--fix` to automatically fix linting problems
 
 ## Testing the Project
 
