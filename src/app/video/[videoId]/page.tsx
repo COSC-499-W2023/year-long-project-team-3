@@ -204,7 +204,7 @@ export default function VideoDetailedPage() {
                                             paddingTop='1rem'
                                             paddingBottom='0.5rem'
                                         >
-                                            <Box sx={{ overflowY: 'scroll', textOverflow: 'ellipsis' }}>
+                                            <Box>
                                                 <Typography noWrap sx={{ fontWeight: 'bold' }}>
                                                     Title
                                                 </Typography>
@@ -228,8 +228,11 @@ export default function VideoDetailedPage() {
                                                         variant='h3'
                                                         sx={{
                                                             fontWeight: 'bold',
-                                                            padding: '1px 0', // This prevents scroll bar in title
+                                                            overflowX: 'scroll',
+                                                            overflowY: 'hidden',
                                                         }}
+                                                        whiteSpace='nowrap'
+                                                        // noWrap
                                                         data-cy='detail-video-title'
                                                     >
                                                         {video?.title}
