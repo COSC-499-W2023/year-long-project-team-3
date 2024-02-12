@@ -31,7 +31,7 @@ export const theme: Theme = responsiveFontSizes(createTheme({
             lighter: '#7dc3ff',
         },
         secondary: {
-            main: '#f50057',
+            main: '#0064c9',
             light: '#cad5e1',
             lighter: '#edf1f5',
         },

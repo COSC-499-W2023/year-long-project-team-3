@@ -16,7 +16,7 @@ function _getBackgroundColor(isDisabled: boolean, isAddButton: boolean, isSelect
         return 'transparent'
     }
     if (isAddButton) {
-        return '#007dfc'
+        return theme.palette.secondary.main
     }
     if (isSelected) {
         return lighten(theme.palette.primary.light, 0.85)
@@ -32,7 +32,7 @@ function _getTitleColor(isDisabled: boolean, isAddButton: boolean, isSelected: b
         return 'white'
     }
     if (isSelected) {
-        return theme.palette.primary.dark
+        return theme.palette.secondary.main
     }
     return theme.palette.text.secondary
 }
@@ -42,7 +42,7 @@ function _getHoverBackgroundColor(isDisabled: boolean, isAddButton: boolean) {
         return 'transparent'
     }
     if (isAddButton) {
-        return '#007dfc'
+        return theme.palette.secondary.main
     }
     return lighten(theme.palette.primary.light, 0.75)
 }
@@ -54,7 +54,7 @@ function _getHoverTitleColor(isDisabled: boolean, isAddButton: boolean) {
     if (isAddButton) {
         return 'white'
     }
-    return theme.palette.primary.dark
+    return theme.palette.secondary.main
 }
 
 function _getBoxShadow(isDisabled: boolean, isAddButton: boolean) {
