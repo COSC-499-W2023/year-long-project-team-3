@@ -56,7 +56,7 @@ describe('Test requested submission API', () => {
             const isPublic = false
 
             // Load database
-            cy.task('loadOutSubmissionBoxes', { email, password, title })
+            cy.task('loadInvitedSubmissionBox', { email, password, title })
 
             // Login
             cy.visit('/login')

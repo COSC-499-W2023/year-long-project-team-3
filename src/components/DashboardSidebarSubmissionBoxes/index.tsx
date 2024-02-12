@@ -2,10 +2,10 @@ import Typography from '@mui/material/Typography'
 import { theme } from '@/components/ThemeRegistry/theme'
 import DashboardSidePanelOption from '@/components/DashboardSidePanelOption'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
-import InboxIcon from '@mui/icons-material/Inbox'
 import SendIcon from '@mui/icons-material/Send'
 import Box from '@mui/material/Box'
 import React from 'react'
+import EditIcon from '@mui/icons-material/Edit'
 import { SidebarOption } from '@/types/dashboard/sidebar'
 
 export type DashboardSidebarSubmissionBoxesProps = {
@@ -20,37 +20,44 @@ export default function DashboardSidebarSubmissionBoxes(props: DashboardSidebarS
     const { sidebarSelectedOption } = props
 
     return (
-        <Box marginTop='3rem' display='flex' flexDirection='column' gap='0.5rem'>
-            <Typography color={theme.palette.text.secondary} fontSize={'25px'} fontWeight={600} marginBottom={'1rem'}>
+        <>
+            <Box marginTop='2rem' display='flex' flexDirection='column' gap='0.5rem'>
+                <Typography color={theme.palette.text.secondary} fontSize={'20px'} fontWeight={600}>
                 Submission Boxes
-            </Typography>
-            <DashboardSidePanelOption
-                title={'Create new'}
-                icon={<AddCircleIcon sx={{ color: 'white' }} />}
-                onClick={handleCreateNewClick}
-                isSelected={sidebarSelectedOption === 'submission_boxes_create_new'}
-                isDisabled={false}
-                isAddButton={true}
-            />
-            <DashboardSidePanelOption
-                title={'My Boxes'}
-                icon={<InboxIcon />}
-                onClick={handleSubmissionInboxClick}
-                isSelected={sidebarSelectedOption === 'submission_boxes_my_boxes'}
-                isDisabled={false}
-                isAddButton={false}
-                data-cy='My Boxes'
-            />
-            <DashboardSidePanelOption
-                title={'My Requests'}
-                icon={<SendIcon />}
-                onClick={handleSubmissionOutboxClick}
-                isSelected={sidebarSelectedOption === 'submission_boxes_my_requests'}
-                isDisabled={false}
-                isAddButton={false}
-                data-cy='My Requests'
-            />
-        </Box>
+                </Typography>
+                <DashboardSidePanelOption
+                    title={'Create new'}
+                    icon={<AddCircleIcon fontSize='small' sx={{ color: 'white' }} />}
+                    onClick={handleCreateNewClick}
+                    isSelected={sidebarSelectedOption === 'submission_boxes_create_new'}
+                    isDisabled={false}
+                    isAddButton={true}
+                />
+                <DashboardSidePanelOption
+                    title={'Manage Boxes'}
+                    icon={<EditIcon fontSize='small'/>}
+                    onClick={handleManageBoxesClick}
+                    isSelected={sidebarSelectedOption === 'submission_boxes_manage_boxes'}
+                    isDisabled={false}
+                    isAddButton={false}
+                    data-cy='My Boxes'
+                />
+            </Box>
+            <Box marginTop='2rem' display='flex' flexDirection='column' gap='0.5rem'>
+                <Typography noWrap color={theme.palette.text.secondary} fontSize={'20px'} fontWeight={600} >
+                Submission Invitations
+                </Typography>
+                <DashboardSidePanelOption
+                    title={'My Invitations'}
+                    icon={<SendIcon fontSize='small'/>}
+                    onClick={handleMyInvitationsClick}
+                    isSelected={sidebarSelectedOption === 'submission_boxes_my_invitations'}
+                    isDisabled={false}
+                    isAddButton={false}
+                    data-cy='My Requests'
+                />
+            </Box>
+        </>
     )
 
     function handleCreateNewClick() {
@@ -58,15 +65,15 @@ export default function DashboardSidebarSubmissionBoxes(props: DashboardSidebarS
         props.onCreateNewClick()
     }
 
-    function handleSubmissionInboxClick() {
-        props.setSidebarSelectedOption('submission_boxes_my_boxes')
+    function handleManageBoxesClick() {
+        props.setSidebarSelectedOption('submission_boxes_manage_boxes')
         if (!!props.onSubmissionInboxClick) {
             props.onSubmissionInboxClick()
         }
     }
 
-    function handleSubmissionOutboxClick() {
-        props.setSidebarSelectedOption('submission_boxes_my_requests')
+    function handleMyInvitationsClick() {
+        props.setSidebarSelectedOption('submission_boxes_my_invitations')
         if (!!props.onSubmissionOutboxClick) {
             props.onSubmissionOutboxClick()
         }

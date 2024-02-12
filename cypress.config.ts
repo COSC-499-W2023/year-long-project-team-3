@@ -9,8 +9,8 @@ import getSubmissionBoxes from './cypress/tasks/getSubmissionBoxes'
 import getSubmissionBoxManagers from './cypress/tasks/getSubmissionBoxManagers'
 import getRequestedSubmissions from './cypress/tasks/getRequestedSubmissions'
 import createSubmissionBoxWithEmail from './cypress/tasks/createSubmissionBoxWithEmail'
-import loadInSubmissionBoxes from './cypress/tasks/loadInSubmissionBoxes'
-import loadOutSubmissionBoxes from './cypress/tasks/loadOutSubmissionBoxes'
+import loadManagedSubmissionBox from './cypress/tasks/loadManagedSubmissionBox'
+import loadInvitedSubmissionBox from './cypress/tasks/loadInvitedSubmissionBox'
 import submitVideoToSubmissionBox from './cypress/tasks/submitVideoToSubmissionBox'
 import createRequestSubmissionForUser from './cypress/tasks/createRequestSubmissionForUser'
 import getVerificationToken from 'cypress/tasks/getVerificationToken'
@@ -41,8 +41,8 @@ export default defineConfig({
                 createSubmissionBoxWithEmail,
                 populateDB,
                 getLatestVideo,
-                loadInSubmissionBoxes,
-                loadOutSubmissionBoxes,
+                loadManagedSubmissionBox,
+                loadInvitedSubmissionBox,
                 submitVideoToSubmissionBox,
                 createRequestSubmissionForUser,
                 verifyEmail,
