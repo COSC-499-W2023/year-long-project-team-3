@@ -32,7 +32,7 @@ describe('Dashboard Recent Videos Tests', () => {
             .and('contain', 'You do not have any videos')
     })
 
-    it('should display sent videos when a user has sent videos', () => {
+    it.only('should display uploaded videos', () => {
         const email = 'user' + uuidv4() + '@example.com'
         const password = 'randomPasswordCool1'
 
@@ -42,11 +42,7 @@ describe('Dashboard Recent Videos Tests', () => {
         // Create submission box and submit video
         const videoTitle = 'Test Video Title ' + uuidv4()
         cy.task('getUserId', email).then((userId) => {
-            cy.task('createRequestSubmissionForUser', { userId }).then((submissionBoxId) => {
-                cy.task('createOneVideoAndRetrieveVideoId', { ownerId: userId, title: videoTitle }).then((videoId) => {
-                    cy.task('submitVideoToSubmissionBox', { requestedSubmissionId: submissionBoxId, videoId })
-                })
-            })
+            cy.task('createOneVideoAndRetrieveVideoId', { ownerId: userId, title: videoTitle })
         })
 
         // Login
