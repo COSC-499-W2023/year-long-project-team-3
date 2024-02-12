@@ -108,6 +108,7 @@ export default function SubmissionBox() {
                 onClose={handleClose}
                 aria-labelledby='alert-dialog-title'
                 aria-describedby='alert-dialog-description'
+                sx={{ pt: 21 }}
             >
                 <DialogTitle id='alert-dialog-title'>
                     {'Continue without adding the entered email?'}
@@ -144,10 +145,10 @@ export default function SubmissionBox() {
                 return next(emailFieldHasText)
             }
 
-            // reset state storing text in email field
+            // Reset state storing text in email field
             setEmailFieldText('')
 
-            // TODO: Handle other steps
+            // Handle other steps
             return next(true)
         }
         handleCreate().then()
