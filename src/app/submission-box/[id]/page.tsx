@@ -43,18 +43,17 @@ export default function SubmissionBoxDetailPage() {
 
     return (
         <>
-            <Box height='100wv' width='100%'>
                 <BackButton route={'/dashboard '} title={'Return to Dashboard'} />
                 {isFetchingSubmissionBox ? (
                     <PageLoadProgress />
                 ) : (
                     <>
                         {boxType === 'owned' && (
-                            <Box display='grid' gridTemplateColumns='3fr 1fr' height='100%' width='100%'>
+                            <Box flexGrow='1' display='grid' gridTemplateColumns='3fr 1fr' height='100%' width='100%'>
                                 <Box
                                     sx={{
                                         borderTopRightRadius: 25,
-                                        height: '100vh',
+                                        height: '100%',
                                         backgroundColor: 'secondary.lighter',
                                         paddingTop: 5,
                                     }}
@@ -84,8 +83,7 @@ export default function SubmissionBoxDetailPage() {
                                         sx={{
                                             display: 'flex',
                                             flexDirection: 'column',
-                                            width: '100wv',
-                                            height: '70vh',
+                                            width: '100%',
                                             padding: '2rem',
                                             flexGrow: 1,
                                             flexShrink: 1,
@@ -113,7 +111,6 @@ export default function SubmissionBoxDetailPage() {
                                                 ...(videos.length !== 1 && { justifyContent: 'center' }),
                                                 flexGrow: 1,
                                                 flexShrink: 1,
-                                                minWidth: '20vh',
                                                 width: '100%',
                                                 ...(videos.length !== 1 && { backgroundColor: 'secondary.lighter' }),
                                                 borderRadius: 1,
@@ -151,7 +148,6 @@ export default function SubmissionBoxDetailPage() {
                         )}
                     </>
                 )}
-            </Box>
         </>
     )
 }
