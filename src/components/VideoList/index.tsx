@@ -4,6 +4,7 @@ import { Box, Typography } from '@mui/material'
 export type VideoListProps = {
     videos: VideoCardProps[]
     isSearching: boolean
+    emptyMessage?: string
 }
 
 export default function VideoList(props: VideoListProps) {
@@ -37,8 +38,10 @@ export default function VideoList(props: VideoListProps) {
                 sx={{ mt: 20 }}
             >
                 { props.isSearching
-                    ? 'There Are No Videos That Match This Search'
-                    : 'You Do Not Have Any Videos' }
+                    ? 'You do not have any videos that match this search'
+                    : props.emptyMessage
+                        ? props.emptyMessage
+                        :'You do not have any videos' }
             </Typography>
         </Box>
     )

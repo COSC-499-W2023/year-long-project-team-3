@@ -22,20 +22,41 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
         }
 
-        const submittedVideos = await prisma.submittedVideo.findMany({
+        const { owner } = await prisma.video.findUniqueOrThrow({
             where: {
-                videoId: videoId,
+                id: videoId,
+            },
+            select: {
+                owner: {
+                    select: {
+                        email: true,
+                    },
+                },
             },
         })
 
-        const requestedSubmissionIds = submittedVideos.map(({ requestedSubmissionId }) => requestedSubmissionId)
+        if (!owner?.email) {
+            logger.error(`Video ${ videoId } does not have an author`)
+            return NextResponse.json({ error: 'An unexpected error occurred' }, { status: 500 })
+        }
 
         const submissionBoxes = await prisma.submissionBox.findMany({
             where: {
                 requestedSubmissions: {
                     some: {
-                        id: {
-                            in: [...requestedSubmissionIds],
+                        videoVersions: {
+                            some: {
+                                video: {
+                                    id: videoId,
+                                },
+                            },
+                        },
+                    },
+                },
+                submissionBoxManagers: {
+                    some: {
+                        user: {
+                            email: owner.email !== session.user.email ? session.user.email : undefined,
                         },
                     },
                 },

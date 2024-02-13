@@ -19,7 +19,6 @@ export default async function createSubmissionBoxWithEmail(props: CreateSubmissi
         data: {
             submissionBoxId: newSubBox.id,
             email: props.email ?? '',
-            userId: props.userId,
         },
     })
 

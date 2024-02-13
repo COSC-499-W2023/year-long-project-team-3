@@ -22,12 +22,12 @@ describe('Dashboard My Submission Boxes Tests', () => {
 
         cy.visit('/dashboard')
         runWithRetry(() => {
-            cy.get('[data-cy="My Boxes"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
+            cy.get('[data-cy="Manage Boxes"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
             cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
         })
         cy.get('[data-cy="no-submission-text"]', { timeout: TIMEOUT.EXTRA_LONG })
             .should('be.visible')
-            .and('contain', 'You Do Not Have Any Submission Boxes')
+            .and('contain', 'You do not own any submission boxes')
     })
 
     it('should display incoming submission boxes for a user that has incoming submission boxes', () => {
@@ -35,7 +35,7 @@ describe('Dashboard My Submission Boxes Tests', () => {
         const password = 'submissionIn1'
 
         // Load database
-        cy.task('loadInSubmissionBoxes')
+        cy.task('loadManagedSubmissionBox')
         // Login
         cy.visit('/login')
         cy.get('[data-cy=email]').type(email)
@@ -45,7 +45,7 @@ describe('Dashboard My Submission Boxes Tests', () => {
 
         cy.visit('/dashboard')
         runWithRetry(() => {
-            cy.get('[data-cy="My Boxes"]', { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
+            cy.get('[data-cy="Manage Boxes"]', { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
             cy.url({ timeout: TIMEOUT.EXTRA_EXTRA_LONG }).should('contain', 'dashboard')
         })
         cy.get('[data-cy="Incoming Submission Box"]', { timeout: TIMEOUT.EXTRA_EXTRA_LONG })

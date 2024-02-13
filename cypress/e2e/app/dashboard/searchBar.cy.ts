@@ -67,7 +67,7 @@ describe('Dashboard Search Bar', () => {
     it('should display different string when no videos are found', () => {
         cy.visit('/dashboard')
 
-        cy.get('[data-cy="no-video-text"]', { timeout: TIMEOUT.EXTRA_LONG }).should('be.visible').should('contain', 'You Do Not Have Any Videos')
+        cy.get('[data-cy="no-video-text"]', { timeout: TIMEOUT.EXTRA_LONG }).should('be.visible').should('contain', 'You do not have any videos')
 
         const videoShouldNotBeDisplayed = 'Not Display' + uuidv4()
         cy.task('getUserId', email).then((userId) => {
@@ -88,6 +88,6 @@ describe('Dashboard Search Bar', () => {
 
         cy.get('[data-cy="dashboard-search-bar"]').type('Random String')
 
-        cy.get('[data-cy="no-video-text"]', { timeout: TIMEOUT.EXTRA_LONG }).should('be.visible').should('contain', 'There Are No Videos That Match This Search')
+        cy.get('[data-cy="no-video-text"]', { timeout: TIMEOUT.EXTRA_LONG }).should('be.visible').should('contain', 'You do not have any videos that match this search')
     })
 })

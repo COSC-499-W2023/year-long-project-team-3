@@ -16,7 +16,18 @@ export default function DashboardSidePanel(props: DashboardSidePanelProps) {
     const router = useRouter()
 
     return (
-        <Box display='flex' flexDirection='column' margin={'0 2rem'} minWidth={200} maxWidth={260} height='100%'>
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                my: 0,
+                mx: '2rem',
+                pt: '4rem',
+                pb: '2rem',
+                width: '14rem',
+                height: '100%',
+            }}
+        >
             <DashboardSidebarMenu
                 onRecordNewClick={handleOnRecordNewClick}
                 sidebarSelectedOption={props.sidebarSelectedOption}
