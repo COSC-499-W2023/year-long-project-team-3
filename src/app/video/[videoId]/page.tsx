@@ -224,7 +224,7 @@ export default function VideoDetailedPage() {
                                                     />
                                                 ) : (
                                                     <Typography
-                                                        variant='h3'
+                                                        variant='h4'
                                                         sx={{
                                                             fontWeight: 'bold',
                                                             overflowX: 'auto',
