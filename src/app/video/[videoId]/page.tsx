@@ -13,6 +13,7 @@ import PageLoadProgress from '@/components/PageLoadProgress'
 import BackButton from '@/components/BackButton'
 import EditIcon from '@mui/icons-material/Edit'
 import { theme } from '@/components/ThemeRegistry/theme'
+import dayjs from 'dayjs'
 
 export default function VideoDetailedPage() {
     const session = useSession()
@@ -289,15 +290,15 @@ export default function VideoDetailedPage() {
                                             <Box>
                                                 <Typography sx={{ fontWeight: 'bold' }}>Other information</Typography>
                                                 <Typography>
-                                                    Created At:{' '}
+                                                    Created at:{' '}
                                                     {!!video?.createdAt
-                                                        ? new Date(video?.createdAt).toLocaleString('en-GB', { timeZone: 'PST' })
+                                                        ? dayjs(video?.createdAt).format('MMM D, h:mma')
                                                         : 'N/A'}
                                                 </Typography>
                                                 <Typography>
-                                                    Updated At:{' '}
+                                                    Updated at:{' '}
                                                     {!!video?.updatedAt
-                                                        ? new Date(video?.updatedAt).toLocaleString('en-GB', { timeZone: 'PST' })
+                                                        ? dayjs(video?.updatedAt).format('MMM D, h:mma')
                                                         : 'N/A'}
                                                 </Typography>
                                             </Box>
