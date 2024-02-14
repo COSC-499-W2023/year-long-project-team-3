@@ -24,7 +24,7 @@ describe('Submission box review and create tests', () => {
             })
 
             cy.visit('/dashboard')
-            cy.get('[data-cy="Create new"]').click()
+            cy.get('[data-cy="Create New"]').click()
 
             const title = 'My Test Title'
 

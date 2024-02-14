@@ -23,7 +23,7 @@ describe('Submission box settings tests', () => {
                 cy.url().should('not.contain', 'login')
             })
             cy.visit('/dashboard')
-            cy.get('[data-cy="Create new"]').click()
+            cy.get('[data-cy="Create New"]').click()
         })
 
         it('Should not allow the user to go to the next step without entering a title', () => {
