@@ -153,6 +153,10 @@ export default function DashboardPage() {
                             borderBottomLeftRadius: 25,
                             backgroundColor: 'secondary.lighter',
                             height: '100%',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            position: 'relative',
                         }}
                         borderColor={'secondary.lighter'}
                     >
