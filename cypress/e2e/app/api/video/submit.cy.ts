@@ -1,4 +1,4 @@
-import {RequestedSubmission} from '@prisma/client'
+import { RequestedSubmission, Video } from '@prisma/client'
 
 describe('Test that the API can submit and unsubmit videos to submission boxes', () => {
     const email = 'testuser@harpvideo.ca'
@@ -23,51 +23,193 @@ describe('Test that the API can submit and unsubmit videos to submission boxes',
         })
     })
 
-    it.only('should submit video to single box', () => {
-        let submissionBoxId = null
-        cy.task('getUserId', email).then((userId) => {
-            cy.task<string>('createOneVideoAndRetrieveVideoId', { ownerId: userId, title: 'Hi Seth' }).then((videoId) => {
-                cy.task<RequestedSubmission[]>('getRequestedSubmissions', email).then((requestedSubmissions) => {
-                    submissionBoxId = requestedSubmissions[0]?.submissionBoxId
+    context('Submit', () => {
+        it('should submit video to single box', () => {
+            cy.task('getUserId', email).then((userId) => {
+                cy.task<string>('createOneVideoAndRetrieveVideoId', {
+                    ownerId: userId,
+                    title: 'Hi Seth',
+                }).then((videoId) => {
+                    cy.task<RequestedSubmission[]>('getRequestedSubmissions', email).then((requestedSubmissions) => {
+                        const submissionBoxId = requestedSubmissions[0]?.submissionBoxId
 
-                    fetch('/api/video/submit/new', {
-                        method: 'POST',
-                        body: JSON.stringify({
-                            videoId,
-                            submissionBoxIds: [submissionBoxId],
-                        }),
-                    }).then((res) => {
-                        expect(res.status).to.eq(201)
+                        fetch('/api/video/submit/new', {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                videoId,
+                                submissionBoxIds: [submissionBoxId],
+                            }),
+                        }).then((res) => {
+                            expect(res.ok).to.eq(true)
+                        })
+                    })
+                })
+            })
+
+            cy.visit('/dashboard')
+            cy.get('[data-cy="video-list"]').children().first().click()
+
+            cy.url().should('contain', '/video/')
+
+            cy.get('[data-cy="submission-box-chips-wrapper"]').find('div.MuiChip-root').should('have.length', 1)
+        })
+
+        it('should submit video to multiple boxes', () => {
+            cy.task('getUserId', email).then((userId) => {
+                cy.task<string>('createOneVideoAndRetrieveVideoId', {
+                    ownerId: userId,
+                    title: 'Hi Seth',
+                }).then((videoId) => {
+                    cy.task<RequestedSubmission[]>('getRequestedSubmissions', email).then((requestedSubmissions) => {
+                        const submissionBoxIds = requestedSubmissions.map((requestedSubmission) => requestedSubmission.submissionBoxId)
+
+                        fetch('/api/video/submit/new', {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                videoId,
+                                submissionBoxIds,
+                            }),
+                        }).then((res) => {
+                            expect(res.ok).to.eq(true)
+                        })
+                    })
+                })
+            })
+
+            cy.visit('/dashboard')
+            cy.get('[data-cy="video-list"]').children().first().click()
+
+            cy.url().should('contain', '/video/')
+
+            cy.get('[data-cy="submission-box-chips-wrapper"]').find('div.MuiChip-root').should('have.length', 3)
+        })
+    })
+
+    context('Unsubmit', () => {
+        beforeEach(() => {
+            // Submit video to all three boxes
+            cy.task('getUserId', email).then((userId) => {
+                cy.task<string>('createOneVideoAndRetrieveVideoId', {
+                    ownerId: userId,
+                    title: 'Hi Seth',
+                }).then((videoId) => {
+                    cy.task<RequestedSubmission[]>('getRequestedSubmissions', email).then((requestedSubmissions) => {
+                        const submissionBoxIds = requestedSubmissions.map((requestedSubmission) => requestedSubmission.submissionBoxId)
+
+                        fetch('/api/video/submit/new', {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                videoId,
+                                submissionBoxIds,
+                            }),
+                        }).then((res) => {
+                            expect(res.ok).to.eq(true)
+                        })
                     })
                 })
             })
         })
 
-        cy.visit('/dashboard')
-        cy.get('[data-cy="video-list"]').children().first().click()
+        it('should unsubmit to single box', () => {
+            cy.task<Video>('getLatestVideo').then((video) => {
+                cy.task<RequestedSubmission[]>('getRequestedSubmissions', email).then((requestedSubmissions) => {
+                    const submissionBoxId = requestedSubmissions[0]?.submissionBoxId
 
-        cy.url().should('contain', '/video/')
+                    fetch('/api/video/submit/new', {
+                        method: 'DELETE',
+                        body: JSON.stringify({
+                            videoId: video.id,
+                            submissionBoxIds: [submissionBoxId],
+                        }),
+                    }).then((res) => {
+                        expect(res.ok).to.eq(true)
+                    })
+                })
+            })
 
-        cy.get('div.MuiChip-root').should('have.length', 1)
-    })
+            cy.visit('/dashboard')
+            cy.get('[data-cy="video-list"]').children().first().click()
 
-    it('should submit video to multiple boxes', () => {
+            cy.url().should('contain', '/video/')
 
-    })
+            cy.get('[data-cy="submission-box-chips-wrapper"]').find('div.MuiChip-root').should('have.length', 2)
+        })
 
-    it('should unsubmit to single box', () => {
+        it('should unsubmit video to multiple boxes', () => {
+            cy.task<Video>('getLatestVideo').then((video) => {
+                cy.task<RequestedSubmission[]>('getRequestedSubmissions', email).then((requestedSubmissions) => {
+                    const submissionBoxIds = requestedSubmissions.map((requestedSubmission) => requestedSubmission.submissionBoxId)
 
-    })
+                    fetch('/api/video/submit/new', {
+                        method: 'DELETE',
+                        body: JSON.stringify({
+                            videoId: video.id,
+                            submissionBoxIds,
+                        }),
+                    }).then((res) => {
+                        expect(res.ok).to.eq(true)
+                    })
+                })
+            })
 
-    it('should unsubmit video to multiple boxes', () => {
+            cy.visit('/dashboard')
+            cy.get('[data-cy="video-list"]').children().first().click()
 
+            cy.url().should('contain', '/video/')
+
+            cy.get('[data-cy="submission-box-chips-wrapper"]').find('div.MuiChip-root').should('have.length', 0)
+        })
     })
 
     it('should fail when user doesn\'t own video', () => {
+        cy.task<string>('createOneVideoAndRetrieveVideoId', {
+            title: 'This ain\'t my video',
+        }).then((videoId) => {
+            cy.task<RequestedSubmission[]>('getRequestedSubmissions', email).then((requestedSubmissions) => {
+                const submissionBoxIds = requestedSubmissions.map((requestedSubmission) => requestedSubmission.submissionBoxId)
 
+                fetch('/api/video/submit/new', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        videoId,
+                        submissionBoxIds,
+                    }),
+                }).then((res) => {
+                    expect(res.ok).to.eq(false)
+                })
+            })
+        })
+
+        // Check one of the boxes to see if the video was submitted
+        cy.visit('/dashboard')
+        cy.get('[data-cy="My Invitations"]').click()
+        cy.get('li').first().click()
+        cy.url().should('contain', '/submission-box/')
+        cy.get('[data-cy="videoHolder"]').should('contain', 'No Current Submission')
     })
 
     it('should fail when user isn\'t invited to box', () => {
+        cy.task('getUserId', email).then((userId) => {
+            cy.task<string>('createOneVideoAndRetrieveVideoId', {
+                ownerId: userId,
+                title: 'Hi Seth',
+            }).then((videoId) => {
+                fetch('/api/video/submit/new', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        videoId,
+                        submissionBoxIds: ['fakeSubmissionBoxId'],
+                    }),
+                }).then((res) => {
+                    expect(res.ok).to.eq(false)
+                })
+            })
+        })
 
+        // Check video to see if it was submitted
+        cy.visit('/dashboard')
+        cy.get('[data-cy="video-list"]').children().first().click()
+        cy.url().should('contain', '/video/')
+        cy.get('[data-cy="submission-box-chips-wrapper"]').find('div.MuiChip-root').should('have.length', 0)
     })
 })
