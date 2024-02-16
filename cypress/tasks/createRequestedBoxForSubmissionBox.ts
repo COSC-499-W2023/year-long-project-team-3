@@ -7,13 +7,26 @@ type CreateRequestedBoxForSubmissionBox = {
 }
 
 export default async function createRequestedBoxForSubmissionBox(props: CreateRequestedBoxForSubmissionBox) {
-    const requestedSubmission = await prisma.requestedSubmission.create({
-        data: {
-            email: props.email ?? '',
-            userId: props.userId,
-            submissionBoxId: props.submissionBoxId,
-        },
-    })
+    try {
+        return (await prisma.requestedSubmission.create({
+            data: {
+                email: props.email ?? '',
+                userId: props.userId,
+                submissionBoxId: props.submissionBoxId,
+            },
+        })).id
+    } catch (e) {
+        const userEmail = props.email ?? (await prisma.user.findUniqueOrThrow({ where: { id: props.userId } })).email
 
-    return requestedSubmission.id
+        return (
+            await prisma.requestedSubmission.findUniqueOrThrow({
+                where: {
+                    'email_submissionBoxId': {
+                        submissionBoxId: props.submissionBoxId,
+                        email: userEmail,
+                    },
+                },
+            })
+        ).id
+    }
 }
