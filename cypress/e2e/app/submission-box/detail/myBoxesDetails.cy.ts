@@ -49,22 +49,20 @@ describe('Receiving Dashboard Details Page Tests', () => {
                 submissionBoxDescription,
                 closesAt: new Date,
             }).then((submissionBoxId) => {
-                cy.task('getUserId', fakeEmail).then((fakeUserId) => {
-                    cy.task('createRequestedBoxForSubmissionBox', {
-                        submissionBoxId: submissionBoxId,
-                        userId: fakeUserId,
-                    }).then((requestedSubmissionId) => {
-                        cy.task('createOneVideoAndRetrieveVideoId', { title: videoTitle[0] }).then((videoId) => {
-                            cy.task('submitVideoToSubmissionBox', {
-                                requestedSubmissionId: requestedSubmissionId,
-                                videoId,
-                            })
+                cy.task('createRequestedBoxForSubmissionBox', {
+                    submissionBoxId: submissionBoxId,
+                    email: fakeEmail,
+                }).then((requestedSubmissionId) => {
+                    cy.task('createOneVideoAndRetrieveVideoId', { title: videoTitle[0] }).then((videoId) => {
+                        cy.task('submitVideoToSubmissionBox', {
+                            requestedSubmissionId: requestedSubmissionId,
+                            videoId,
                         })
                     })
-                    cy.task('createRequestedBoxForSubmissionBox', {submissionBoxId: submissionBoxId, userId: fakeUserId}).then((requestedSubmissionId) => {
-                        cy.task('createOneVideoAndRetrieveVideoId', { title: videoTitle[1] }).then((videoId) => {
-                            cy.task('submitVideoToSubmissionBox', { requestedSubmissionId: requestedSubmissionId, videoId })
-                        })
+                })
+                cy.task('createRequestedBoxForSubmissionBox', {submissionBoxId: submissionBoxId, email: 'other@fake.email'}).then((requestedSubmissionId) => {
+                    cy.task('createOneVideoAndRetrieveVideoId', { title: videoTitle[1] }).then((videoId) => {
+                        cy.task('submitVideoToSubmissionBox', { requestedSubmissionId: requestedSubmissionId, videoId })
                     })
                 })
             })

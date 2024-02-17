@@ -56,11 +56,9 @@ describe('Detail video page', () => {
         // Get the second children
         cy.get('[data-cy="submission-box-chips-wrapper"]')
             .should('be.visible')
-            .children()
-            .last()
-            .children()
+            .find('div.MuiChip-root')
             .should('have.length', 1)
-            .should('contain', submissionBoxTitle)
+            .should('contain', submissionBoxTitle) // TODO
     })
 
 
@@ -98,11 +96,9 @@ describe('Detail video page', () => {
         // Get the second children
         cy.get('[data-cy="submission-box-chips-wrapper"]')
             .should('be.visible')
-            .children()
-            .last()
-            .children()
+            .find('div.MuiChip-root')
             .should('have.length', 1)
-            .should('contain', submissionBoxTitle)
+            .should('contain', submissionBoxTitle) // TODO
     })
 
     it('Should be able to edit the video\'s title and description', () => {
