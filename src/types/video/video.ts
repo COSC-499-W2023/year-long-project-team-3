@@ -1,6 +1,6 @@
 export type VideoUploadData = {
     title: string,
     description: string,
-    video: any,
+    file: File | null,
     blurFace: boolean,
 }
