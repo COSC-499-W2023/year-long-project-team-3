@@ -1,5 +1,6 @@
 import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material'
 import { useRouter } from 'next/navigation'
+import { theme } from '@/components/ThemeRegistry/theme'
 
 export type VideoCardProps = {
     videoId: string
@@ -26,12 +27,15 @@ export default function VideoCard(props: VideoCardProps) {
                 </Box>
             )}
             <Box sx={{width: 40}}></Box>
-            <CardContent sx={{display: 'flex', justifyContent: 'space-between',  width: '100%'}}>
+            <CardContent sx={{display: 'flex', width: '100%', flexDirection: 'column', justifyContent: 'space-between'}}>
                 <Box>
-                    <Typography variant='h5'>{props.title}</Typography>
+                    <Box sx={{display: 'flex', justifyContent: 'space-between',  width: '100%', mb: 2}}>
+                        <Typography variant='h5' color={theme.palette.secondary.main} sx={{ fontWeight: 'bold'}}>{props.title}</Typography>
+                        <Typography sx={{whiteSpace: 'nowrap'}}>Uploaded on: {getDateString()}</Typography>
+                    </Box>
                     <Typography>{props.description}</Typography>
                 </Box>
-                <Typography>Uploaded on: {getDateString()}</Typography>
+                {props.isSubmitted? <Typography>Submitted to: </Typography>:<Typography color={theme.palette.secondary.main} sx={{ fontWeight: 600}}>Not Submitted</Typography>}
             </CardContent>
         </Card>
     )
