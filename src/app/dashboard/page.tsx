@@ -168,6 +168,8 @@ export default function DashboardPage() {
                                                 videoId: video.id,
                                                 thumbnailUrl: video.thumbnail,
                                                 description: video.description,
+                                                isSubmitted: video.isSubmitted,
+                                                createdDate: video.createdAt,
                                             }
                                         })}
                                         isSearching={isSearching}

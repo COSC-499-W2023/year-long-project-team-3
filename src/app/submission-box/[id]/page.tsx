@@ -66,6 +66,8 @@ export default function SubmissionBoxDetailPage() {
                                             videoId: video.id,
                                             thumbnailUrl: video.thumbnail,
                                             description: video.description,
+                                            isSubmitted: video.isSubmitted,
+                                            createdDate: video.createdAt,
                                         }
                                     })}
                                     isSearching={false}
