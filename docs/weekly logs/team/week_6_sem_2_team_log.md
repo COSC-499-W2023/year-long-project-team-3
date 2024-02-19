@@ -80,4 +80,4 @@ UI/UX Redesign
 
 ### Additional Context
 
-Nothing was merged this week. There are number of tasks in progress that are larger than one week's worth of work.
+There were two small PRs merged this week. There are number of tasks in progress that are larger than one week's worth of work. Many people in the group had a number of midterms this week, so progress was slightly slowed.
