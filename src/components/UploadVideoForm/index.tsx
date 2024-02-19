@@ -8,7 +8,7 @@ import { useFormik } from 'formik'
 import { ObjectSchema } from 'yup'
 import * as yup from 'yup'
 import { VideoUploadData } from '@/types/video/video'
-import { StyledDropzone } from '../Dropzone'
+import { VideoUploadDropzone } from '../VideoUploadDropzone'
 // TODO: Add tests for this component
 export default function UploadVideoForm() {
     const formik = useFormik<VideoUploadData>({
@@ -76,7 +76,7 @@ export default function UploadVideoForm() {
                         helperText={formik.touched.description && formik.errors.description}
                         data-cy='description'
                     />
-                    <StyledDropzone flexGrow='1' file={formik.values.file} setFieldValue={formik.setFieldValue} touchedFile={formik.touched.file} errorMessage={formik.errors.file} />
+                    <VideoUploadDropzone flexGrow='1' file={formik.values.file} setFieldValue={formik.setFieldValue} touchedFile={formik.touched.file} errorMessage={formik.errors.file} />
                     <FormControlLabel
                         control={
                             <Checkbox

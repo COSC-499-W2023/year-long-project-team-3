@@ -35,7 +35,7 @@ const Container = styled.div`
   transition: border .24s ease-in-out;
 `
 
-export function StyledDropzone(props: any) {
+export function VideoUploadDropzone(props: any) {
     const { file, setFieldValue, touchedFile, errorMessage } = props
     const {
         getRootProps,
