@@ -1,19 +1,19 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import {useDropzone} from 'react-dropzone'
 import styled from 'styled-components'
 import { CloudUpload as CloudUploadIcon } from '@mui/icons-material'
-import { Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { theme } from '../ThemeRegistry/theme'
-
+// TODO: Fix prop types in this file
 const getColor = (props) => {
     if (props.isDragAccept) {
-        return '#00e676'
+        return theme.palette.success.main
     }
     if (props.isDragReject) {
-        return '#ff1744'
+        return theme.palette.error.main
     }
     if (props.isFocused) {
-        return '#2196f3'
+        return theme.palette.secondary.main
     }
     return '#eeeeee'
 }
@@ -21,6 +21,7 @@ const getColor = (props) => {
 const Container = styled.div`
   flex: 1;
   display: flex;
+  width: 100%;
   flex-direction: column;
   align-items: center;
   padding: 20px;
@@ -35,7 +36,7 @@ const Container = styled.div`
 `
 
 export function StyledDropzone(props: any) {
-    const { setFieldValue } = props
+    const { file, setFieldValue, touchedFile, errorMessage } = props
     const {
         getRootProps,
         getInputProps,
@@ -49,8 +50,26 @@ export function StyledDropzone(props: any) {
     return (
         <Container {...getRootProps({isFocused, isDragAccept, isDragReject})}>
             <input {...getInputProps()} />
-            <Typography color={theme.palette.secondary.main}>Drag and drop some files here, or click to select files</Typography>
-            <CloudUploadIcon color='secondary' />
+            {file?
+                <Box sx={{display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
+                    <Typography color={theme.palette.success.main}>File {file.name} successfully uploaded</Typography>
+                    <CloudUploadIcon color='success' />
+                </Box>:
+                <Box>
+                    {
+                        touchedFile && errorMessage?
+                            <Box sx={{display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
+                                <Typography color={theme.palette.error.main}>{errorMessage}</Typography>
+                                <CloudUploadIcon color='error' />
+                            </Box>:
+                            <Box  sx={{display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
+                                <Typography color={theme.palette.secondary.main}>Drag and drop some files here, or click to select files</Typography>
+                                <Typography color={theme.palette.secondary.main}>(Note that only .mp4 and .mov files are accepted)</Typography>
+                                <CloudUploadIcon color='secondary' />
+                            </Box>
+                    }
+                </Box>
+            }
         </Container>
     )
 }
