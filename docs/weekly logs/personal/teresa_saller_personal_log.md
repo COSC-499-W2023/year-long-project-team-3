@@ -362,3 +362,26 @@ address some of the feedback we received from the peer testing. My goal for this
 new cards for our dashboard.
 
 ### Additional Context
+
+## Teresa Saller - Term 2: Week 5 (2024/02/05 - 2024/02/11)
+
+![teresa-saller-tasks-w6-t2.png](imgs/teresa-saller-tasks-w6-t2.png)
+
+### Tasks
+
+Completed:
+- [Create Mocks for Video Cards on Figma #437](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/437)
+  - Designed a new card and improved it through team feedback
+
+In progress:
+- [Submission box email addition fixes #422](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/422)
+  - Done but cannot merge due to issue with tests in staging (tests pass locally)
+- [Implement new video cards #449](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/449)
+  - Need to change API to make this work
+
+### Goals
+
+My goal for this week was to look at designing new cards for our dashboard. My goal for this upcoming week is to enjoy
+reading break. After that, I am hoping to finish the PRs I currently have in progress.
+
+### Additional Context
