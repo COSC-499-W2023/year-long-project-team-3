@@ -379,7 +379,7 @@ will have to reconsider how we do that moving forwards.
 - Again, most of the tasks were on AWS, or involved trying to correctly configure the DNS settings on GoDaddy, so feel
   free to ask me about any questions you have about the work that I did.
 
-## Week 5 (12/02/2024 - 11/02/2024)
+## Week 5 (5/02/2024 - 11/02/2024)
 
 ![](imgs/seth-akins-term-2-week-5-tasks.png)
 
@@ -410,3 +410,32 @@ will have to reconsider how we do that moving forwards.
 - We decided not to use the custom domain we purchased for our production deployment because the client does not allow
   us to manage our domain on AWS, which prevents the load balancer which determines the domain for our website from
   using the custom domain.
+
+## Week 6 (12/02/2024 - 18/02/2024)
+
+![](imgs/seth-akins-term-2-week-6-tasks.png)
+
+### Goals
+
+- This week I worked on fixing some minor bugs with the UI. Due to layout changes on the website, some items are 
+  scrolling or rendering incorrectly. I fixed the scrolling on one of the pages and started fixing the loading icon
+  positioning.
+- The other task I started was designing and implementing a new form to upload videos onto our website. In the PR I 
+  included screenshots of the form I made in the different states (initial, error, success). The UI portion of it is 
+  done, there is just some minor code cleanup needed, and then I need to write tests for it.
+
+
+### Tasks
+
+#### Completed Tasks
+
+- [Fix Manage Submission Box Page Scrolling](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/436)
+
+#### In-Progress Tasks
+
+- [Fix Position of Loading Wheel](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/440)
+- [New Upload Video Form Frontend](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/417)
+
+### Additional Context
+
+- N/A
