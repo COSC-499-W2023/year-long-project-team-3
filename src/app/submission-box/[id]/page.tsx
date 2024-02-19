@@ -65,6 +65,7 @@ export default function SubmissionBoxDetailPage() {
                                             title: video.title,
                                             videoId: video.id,
                                             thumbnailUrl: video.thumbnail,
+                                            description: video.description,
                                         }
                                     })}
                                     isSearching={false}

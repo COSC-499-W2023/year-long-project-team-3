@@ -167,6 +167,7 @@ export default function DashboardPage() {
                                                 title: video.title,
                                                 videoId: video.id,
                                                 thumbnailUrl: video.thumbnail,
+                                                description: video.description,
                                             }
                                         })}
                                         isSearching={isSearching}
