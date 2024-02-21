@@ -2,7 +2,7 @@
 
 import { useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import { SubmissionBox, Video } from '@prisma/client'
 import logger from '@/utils/logger'
 import { toast } from 'react-toastify'
@@ -14,7 +14,7 @@ import BackButton from '@/components/BackButton'
 import EditIcon from '@mui/icons-material/Edit'
 import { theme } from '@/components/ThemeRegistry/theme'
 import dayjs from 'dayjs'
-import SubmissionBoxesSelector from '@/components/SubmisionBoxesSeletor'
+import SubmissionBoxesSelector, { MinifiedSubmissionBox } from '@/components/SubmisionBoxesSeletor'
 
 export default function VideoDetailedPage() {
     const session = useSession()
@@ -150,6 +150,26 @@ export default function VideoDetailedPage() {
                 }
             })
     }, [router, videoId])
+
+    const onSubmit = useCallback((boxes: MinifiedSubmissionBox[]) => {
+        fetch('/api/video/submit/new', {
+            method: 'POST',
+            body: JSON.stringify({
+                videoId,
+                submissionBoxIds: boxes.map((box) => box.id),
+            }),
+        }).then(_ => {})
+    }, [videoId])
+
+    const onUnsubmit = useCallback((boxes: MinifiedSubmissionBox[]) => {
+        fetch('/api/video/submit/new', {
+            method: 'DELETE',
+            body: JSON.stringify({
+                videoId,
+                submissionBoxIds: boxes.map((box) => box.id),
+            }),
+        }).then(_ => {})
+    }, [videoId])
 
     return (
         <>
@@ -323,6 +343,8 @@ export default function VideoDetailedPage() {
                                                     <SubmissionBoxesSelector
                                                         allSubmissionBoxes={toMinimizedBoxes(requestedSubmissionBoxes)}
                                                         submittedBoxes={toMinimizedBoxes(submittedToSubmissionBoxes)}
+                                                        onSubmit={onSubmit}
+                                                        onUnsubmit={onUnsubmit}
                                                     />
                                                 </Box>
                                             </Box>

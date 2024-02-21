@@ -1,26 +1,47 @@
 import {Box, Chip, FormControl, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent} from '@mui/material'
 import {useState} from 'react'
 
-type MinifiedSubmissionBox = {
+export type MinifiedSubmissionBox = {
     id: string
     title: string
 }
 
-type SubmissionBoxesSelectorProps = {
+export type SubmissionBoxesSelectorProps = {
     allSubmissionBoxes: MinifiedSubmissionBox[]
     submittedBoxes: MinifiedSubmissionBox[]
+    onSubmit: (box: MinifiedSubmissionBox[]) => void
+    onUnsubmit: (box: MinifiedSubmissionBox[]) => void
 }
 
 export default function SubmissionBoxesSelector(props: SubmissionBoxesSelectorProps) {
-    const {allSubmissionBoxes, submittedBoxes} = props
-    const [selectedBoxes, setSelectedBoxes] = useState<MinifiedSubmissionBox[]>(submittedBoxes)
+    const {allSubmissionBoxes, submittedBoxes, onSubmit, onUnsubmit} = props
+    // I know storing this as JSON is sus, but the selector doesn't seem to work with objects. See https://github.com/mui/material-ui/issues/16775
+    const [selectedBoxes, setSelectedBoxes] = useState<string[]>(submittedBoxes.map((box) => JSON.stringify(box)))
 
-    const handleChange = (event: SelectChangeEvent<MinifiedSubmissionBox[]>) => {
+    const handleChange = (event: SelectChangeEvent<string[]>) => {
         const {
             target: { value },
         } = event
+
+        console.log(event)
+
         // String case only happens on autofill, which is disabled
-        typeof value !== 'string' && setSelectedBoxes(value)
+        if (typeof value === 'string') {
+            return
+        }
+
+        const addedBoxes = value.filter((box) => !selectedBoxes.includes(box))
+        const removedBoxes = selectedBoxes.filter((box) => !value.includes(box))
+        if (addedBoxes.length > 0) {
+            // Convert JSON to objects
+            onSubmit(addedBoxes.map((box) => JSON.parse(box)))
+        }
+        if (removedBoxes.length > 0) {
+            // Convert JSON to objects
+            onUnsubmit(removedBoxes.map((box) => JSON.parse(box)))
+        }
+
+        setSelectedBoxes(value)
     }
 
     return (
@@ -40,9 +61,12 @@ export default function SubmissionBoxesSelector(props: SubmissionBoxesSelectorPr
                             gap: 0.5,
                         }}
                     >
-                        {selected.map((_box, index, boxes) => (
-                            <Chip key={index} label={`${ boxes[index] }`} />
-                        ))}
+                        {selected.map((boxJSON) => {
+                            const box = JSON.parse(boxJSON)
+                            return (
+                                <Chip key={box.id} label={ box.title } />
+                            )
+                        })}
                     </Box>
                 )}
                 MenuProps={{
@@ -54,7 +78,10 @@ export default function SubmissionBoxesSelector(props: SubmissionBoxesSelectorPr
                 }}
             >
                 {allSubmissionBoxes.map((box) => (
-                    <MenuItem key={box.id} value={box.title}>
+                    <MenuItem
+                        key={box.id}
+                        value={JSON.stringify(box)}
+                    >
                         {box.title}
                     </MenuItem>
                 ))}
