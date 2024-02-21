@@ -21,10 +21,13 @@ export async function POST(req: NextRequest) {
 
         // Check data validity
         if (!videoId || typeof videoId !== 'string') {
+            logger.error('Malformed request in api/video/submit: ' + JSON.stringify(req.body))
             return NextResponse.json({ error: 'Missing/malformed videoId' }, { status: 400 })
         } else if (typeof submissionBoxIds !== 'object' || !Array.isArray(submissionBoxIds)) {
+            logger.error('Malformed request in api/video/submit: ' + JSON.stringify(req.body))
             return NextResponse.json({ error: 'Missing/malformed submissionBoxIds' }, { status: 400 })
         } else if (submissionBoxIds.some((submissionBoxId: any) => typeof submissionBoxId !== 'string')) {
+            logger.error('Malformed request in api/video/submit: ' + JSON.stringify(req.body))
             return NextResponse.json({ error: 'Malformed submissionBoxIds' }, { status: 400 })
         }
 
@@ -42,6 +45,7 @@ export async function POST(req: NextRequest) {
             },
         })
         if (!video) {
+            logger.error('Video not found in api/video/submit: ' + videoId)
             return NextResponse.json({ error: 'Video not found' }, { status: 404 })
         } else if (video.owner.email !== sessionEmail) {
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
@@ -60,6 +64,7 @@ export async function POST(req: NextRequest) {
             },
         })).map((rs) => rs.id)
         if (submissionBoxIds.length !== requestedSubmissionIds.length) {
+            logger.error('Forbidden request in api/video/submit: ' + JSON.stringify(req.body))
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
         }
 
@@ -98,10 +103,13 @@ export async function DELETE(req: NextRequest) {
 
         // Check data validity
         if (!videoId || typeof videoId !== 'string') {
+            logger.error('Malformed request in api/video/submit: ' + JSON.stringify(req.body))
             return NextResponse.json({ error: 'Missing/malformed videoId' }, { status: 400 })
         } else if (typeof submissionBoxIds !== 'object' || !Array.isArray(submissionBoxIds)) {
+            logger.error('Malformed request in api/video/submit: ' + JSON.stringify(req.body))
             return NextResponse.json({ error: 'Missing/malformed submissionBoxIds' }, { status: 400 })
         } else if (submissionBoxIds.some((submissionBoxId: any) => typeof submissionBoxId !== 'string')) {
+            logger.error('Malformed request in api/video/submit: ' + JSON.stringify(req.body))
             return NextResponse.json({ error: 'Malformed submissionBoxIds' }, { status: 400 })
         }
 
@@ -119,8 +127,10 @@ export async function DELETE(req: NextRequest) {
             },
         })
         if (!video) {
+            logger.error('Video not found in api/video/submit: ' + videoId)
             return NextResponse.json({ error: 'Video not found' }, { status: 404 })
         } else if (video.owner.email !== sessionEmail) {
+            logger.error('Forbidden request in api/video/submit: ' + JSON.stringify(req.body))
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
         }
 
@@ -137,6 +147,7 @@ export async function DELETE(req: NextRequest) {
             },
         })).map((rs) => rs.id)
         if (submissionBoxIds.length !== requestedSubmissionIds.length) {
+            logger.error('Forbidden request in api/video/submit: ' + JSON.stringify(req.body))
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
         }
 
