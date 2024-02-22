@@ -11,6 +11,7 @@ import ScalingReactPlayer from '@/components/ScalingReactPlayer'
 import PageLoadProgress from '@/components/PageLoadProgress'
 import { BoxStatus } from '@/types/submission-box/boxStatus'
 import { toast } from 'react-toastify'
+import SelectVideoForSubmission from '@/components/SelectVideoForSubmission'
 
 export default function SubmissionBoxDetailPage() {
     const router = useRouter()
@@ -128,9 +129,7 @@ export default function SubmissionBoxDetailPage() {
                                                     </Typography>
                                                 )
                                             ) : (
-                                                <Typography data-cy='noSubmission' variant={'h5'} color={'textSecondary'}>
-                                            No Current Submission
-                                                </Typography>
+                                                <SelectVideoForSubmission />
                                             )}
                                         </Box>
                                     </Box>
