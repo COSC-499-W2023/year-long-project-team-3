@@ -69,6 +69,9 @@ export default function SelectVideoForSubmission() {
                                 title: video.title,
                                 videoId: video.id,
                                 thumbnailUrl: video.thumbnail,
+                                description: video.description,
+                                isSubmitted: video.isSubmitted,
+                                createdDate: video.createdAt,
                             }
                         })}
                     />

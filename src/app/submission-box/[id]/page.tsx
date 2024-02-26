@@ -82,12 +82,21 @@ export default function SubmissionBoxDetailPage() {
                     )}
                     {boxType === 'requested' && (
                         <>
-                            <Box display='grid' gridTemplateColumns='3fr 1fr' height='100%' width='100%'>
+                            <Box
+                                sx={{
+                                    display: 'grid',
+                                    gridTemplateColumns: '3fr 1fr',
+                                    flexGrow: 1,
+                                    height: '100%',
+                                    width: '100%',
+                                }}
+                            >
                                 <Box
                                     sx={{
                                         display: 'flex',
                                         flexDirection: 'column',
                                         width: '100%',
+                                        height: '100%',
                                         padding: '2rem',
                                         flexGrow: 1,
                                         flexShrink: 1,
@@ -118,6 +127,7 @@ export default function SubmissionBoxDetailPage() {
                                             width: '100%',
                                             ...(videos.length !== 1 && { backgroundColor: 'secondary.lighter' }),
                                             borderRadius: 1,
+                                            maxHeight: '75%',
                                         }}
                                     >
                                         {videos?.length !== 0 ? (
