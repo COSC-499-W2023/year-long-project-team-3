@@ -135,15 +135,6 @@ export default function SubmissionBoxDetailPage() {
                                     </Box>
                                     <Box padding='1rem'>
                                         <SubmissionBoxDetails submissionBox={boxInfo} />
-                                        <Box textAlign='center' padding='1rem'>
-                                            <Button
-                                                variant='contained'
-                                                onClick={() => router.push('/video/upload')}
-                                                data-cy='submissionButton'
-                                            >
-                                                { videos?.length === 0 ? 'Create A Submission' : 'Create A Resubmission' }
-                                            </Button>
-                                        </Box>
                                     </Box>
                                 </Box>
                             </>
