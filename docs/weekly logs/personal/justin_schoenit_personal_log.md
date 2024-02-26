@@ -1,5 +1,23 @@
 # Weekly Individual Log - Justin Schoenit
 
+## Week 6 (Feb 12 - Feb 18)
+
+### Tasks
+
+![](imgs/week-6-t2-tasks-justin.png)
+
+### My Contributions this week
+
+- I worked on part of the redesign this week that allows the user to submit a video from both the video page and the submission box page. The changes I focussed on this week were on the backend side of things by re-writing the API that allows us to submit a video to a submission box. The old API was not flexible enough to achieve what we want with the new API. I also wrote a bunch of tests for my new API.
+
+### Goals for the coming week
+
+- Finish the frontend portion of the change I worked on in the last week.
+
+### Additional Context
+
+N/A
+
 ## Week 5 (Feb 5 - Feb 11)
 
 ### Tasks

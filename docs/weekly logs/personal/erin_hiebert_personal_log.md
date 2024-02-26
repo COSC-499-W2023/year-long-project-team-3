@@ -264,3 +264,19 @@
 ### Additional Context
 
 -   NA
+
+## Week 6 (12/02/2024 - 18/02/2024)
+
+![](imgs/term-2-week-6-erin-tasks.png)
+
+### Week Tasks
+
+-   Modifying submission boxes  #72 (In Progress)
+
+### Week Goals
+
+-   No work for capstone was done by me this week
+
+### Additional Context
+
+-   I had a midterm and 2 tests this week in my other courses along with multiple assignment due so capstone wasn't a huge priority for me.  I plan to do work on capstone during the reading break and will include it in the week after the break's log.
