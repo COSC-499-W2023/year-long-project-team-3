@@ -4,12 +4,14 @@ import runWithRetry from '../../../../utils/runUntilExist'
 describe('Receiving Dashboard Details Page Tests', () => {
     const email = 'requestedDetail@page.test'
     const fakeEmail = 'invalidUser@mail.com'
+    const moreFakeEmail = 'wowsuchuser@person.com'
     const password = 'Pass1234'
     beforeEach(() => {
         cy.task('clearDB')
         // Can create the same user for each test, but need to create two separate submission boxes
         cy.task('createUser', { email, password })
         cy.task('createUser', { email: fakeEmail, password })
+        cy.task('createUser', { email: moreFakeEmail, password })
         cy.visit('/login')
         cy.get('[data-cy=email]').type(email)
         cy.get('[data-cy=password]').type(password)
@@ -61,9 +63,17 @@ describe('Receiving Dashboard Details Page Tests', () => {
                             })
                         })
                     })
-                    cy.task('createRequestedBoxForSubmissionBox', {submissionBoxId: submissionBoxId, userId: fakeUserId}).then((requestedSubmissionId) => {
+                })
+                cy.task('getUserId', moreFakeEmail).then((moreFakeUserId) => {
+                    cy.task('createRequestedBoxForSubmissionBox', {
+                        submissionBoxId: submissionBoxId,
+                        userId: moreFakeUserId,
+                    }).then((requestedSubmissionId) => {
                         cy.task('createOneVideoAndRetrieveVideoId', { title: videoTitle[1] }).then((videoId) => {
-                            cy.task('submitVideoToSubmissionBox', { requestedSubmissionId: requestedSubmissionId, videoId })
+                            cy.task('submitVideoToSubmissionBox', {
+                                requestedSubmissionId: requestedSubmissionId,
+                                videoId,
+                            })
                         })
                     })
                 })
@@ -162,5 +172,49 @@ describe('Receiving Dashboard Details Page Tests', () => {
         })
         cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'submission-box')
         cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
+    })
+
+    it('should allow user to go back to submission box after clicking video', () => {
+        const videoTitle = 'Test video'
+        const submissionBoxTitle = 'Test Box'
+
+        cy.task('getUserId', email).then((userId) => {
+            cy.task('createSubmissionBoxForSubmissions', {
+                submissionBoxTitle,
+                userId,
+            }).then((submissionBoxId) => {
+                cy.task('getUserId', fakeEmail).then((fakeUserId) => {
+                    cy.task('createRequestedBoxForSubmissionBox', {
+                        submissionBoxId: submissionBoxId,
+                        userId: fakeUserId,
+                    }).then((requestedSubmissionId) => {
+                        cy.task('createOneVideoAndRetrieveVideoId', { title: videoTitle }).then((videoId) => {
+                            cy.task('submitVideoToSubmissionBox', {
+                                requestedSubmissionId: requestedSubmissionId,
+                                videoId,
+                            })
+                        })
+                    })
+                })
+            })
+        })
+
+        // Go to dashboard to navigate to submission box
+        cy.visit('/dashboard')
+        runWithRetry(() => {
+            cy.get('[data-cy="Manage Boxes"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
+            cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
+        })
+        cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
+
+        // Click on video to go to video page
+        cy.wait(1000)  // Wait for page to fully load
+        cy.get('[data-cy="video-list"]', { timeout: TIMEOUT.EXTRA_LONG }).children().first().click()
+        cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'video')
+
+        // Go back to submission box
+        cy.wait(1000)  // Wait for page to fully load
+        cy.get('[data-cy="back-button"]').should('exist').and('be.visible').click()
+        cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'submission-box')
     })
 })
