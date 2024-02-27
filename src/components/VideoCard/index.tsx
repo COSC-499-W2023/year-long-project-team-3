@@ -1,6 +1,7 @@
 import { Box, Card, CardContent, CardMedia, Chip, Typography } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import { theme } from '@/components/ThemeRegistry/theme'
+import { toast } from 'react-toastify'
 
 export type VideoCardProps = {
     videoId: string
@@ -17,16 +18,16 @@ export default function VideoCard(props: VideoCardProps) {
 
     return (
         <Card sx={{ display: 'flex', width: '100%', height: 200, mb: 2, px: 1, cursor: 'pointer' }} onClick={handleOnClick}>
-            {!!props.thumbnailUrl && (
-                <Box display={'flex'} alignItems={'center'} maxWidth={300} minWidth={300} paddingLeft={2}>
+            <Box display={'flex'} alignItems={'center'} maxWidth={300} minWidth={300} paddingLeft={2}>
+                {!!props.thumbnailUrl? (
                     <CardMedia
                         component='img'
                         src={props.thumbnailUrl}
                         alt={props.title}
                         style={{ objectFit: 'cover' }}
-                    />
-                </Box>
-            )}
+                    />):(<Box  width={300} height={160} sx={{backgroundColor: 'black'}}></Box>)
+                }
+            </Box>
             <Box sx={{ width: 40 }}></Box>
             <CardContent sx={{ display: 'flex', width: '100%', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <Box>
@@ -51,7 +52,7 @@ export default function VideoCard(props: VideoCardProps) {
     )
 
     function getDateString() {
-    // doing this to fix: https://stackoverflow.com/questions/57007749/date-getdate-is-not-a-function-typescript
+        // doing this to fix: https://stackoverflow.com/questions/57007749/date-getdate-is-not-a-function-typescript
         const myDate: Date = new Date(props.createdDate)
 
         const day = myDate.getDate()
@@ -62,6 +63,10 @@ export default function VideoCard(props: VideoCardProps) {
     }
 
     function handleOnClick() {
-        router.push(`/video/${ props.videoId }`)
+        if (props.thumbnailUrl) {
+            router.push(`/video/${ props.videoId }`)
+        } else {
+            toast.error('This video has not finished processing yet! Come back later')
+        }
     }
 }
