@@ -9,7 +9,7 @@ import { ObjectSchema } from 'yup'
 import * as yup from 'yup'
 import { VideoUploadData } from '@/types/video/video'
 import { VideoUploadDropzone } from '../VideoUploadDropzone'
-// TODO: Add tests for this component
+
 export default function UploadVideoForm() {
     const formik = useFormik<VideoUploadData>({
         initialValues: {
@@ -76,7 +76,7 @@ export default function UploadVideoForm() {
                         helperText={formik.touched.description && formik.errors.description}
                         data-cy='description'
                     />
-                    <VideoUploadDropzone flexGrow='1' file={formik.values.file} setFieldValue={formik.setFieldValue} touchedFile={formik.touched.file} errorMessage={formik.errors.file} />
+                    <VideoUploadDropzone file={formik.values.file} setFieldValue={formik.setFieldValue} touchedFile={formik.touched.file} errorMessage={formik.errors.file} />
                     <FormControlLabel
                         control={
                             <Checkbox
@@ -108,10 +108,9 @@ async function handleSubmit(videoUploadData: VideoUploadData) {
     console.log(videoUploadData)
 }
 
-// TODO: Fix this type
 const validationSchema: ObjectSchema<VideoUploadData> = yup.object().shape({
     title: yup.string().required('Video title is required'),
-    description: yup.string().notRequired(),
-    file: yup.mixed().required('You must select a file to upload'),
+    description: yup.string().default(''),
+    file: yup.mixed<File>().required('You must select a file to upload'),
     blurFace: yup.boolean().required(),
 })

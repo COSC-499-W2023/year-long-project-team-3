@@ -1,41 +1,31 @@
 import React from 'react'
 import {useDropzone} from 'react-dropzone'
-import styled from 'styled-components'
 import { CloudUpload as CloudUploadIcon } from '@mui/icons-material'
 import { Box, Typography } from '@mui/material'
 import { theme } from '../ThemeRegistry/theme'
-// TODO: Fix prop types in this file
-const getColor = (props) => {
-    if (props.isDragAccept) {
+
+const borderColor = (isDragAccept: boolean, isDragReject: boolean, isFocused: boolean) => {
+    if (isDragAccept) {
         return theme.palette.success.main
     }
-    if (props.isDragReject) {
+    if (isDragReject) {
         return theme.palette.error.main
     }
-    if (props.isFocused) {
+    if (isFocused) {
         return theme.palette.secondary.main
     }
     return '#eeeeee'
 }
 
-const Container = styled.div`
-  flex: 1;
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  border-width: 2px;
-  border-radius: 38px;
-  border-color: ${ props => getColor(props) };
-  border-style: dashed;
-  background-color: #fafafa;
-  color: #bdbdbd;
-  outline: none;
-  transition: border .24s ease-in-out;
-`
+type VideoUploadDropzoneProps = {
+    file: File | undefined
+    setFieldValue: (field: string, value: any) => void
+    touchedFile: boolean | undefined
+    errorMessage: string | undefined
+}
 
-export function VideoUploadDropzone(props: any) {
+
+export function VideoUploadDropzone(props: VideoUploadDropzoneProps) {
     const { file, setFieldValue, touchedFile, errorMessage } = props
     const {
         getRootProps,
@@ -48,21 +38,37 @@ export function VideoUploadDropzone(props: any) {
     }})
 
     return (
-        <Container {...getRootProps({isFocused, isDragAccept, isDragReject})}>
+        <Box {...getRootProps()} sx={{
+            flex: 1,
+            display: 'flex',
+            width: '100%',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: '20px',
+            borderWidth: '2px',
+            borderRadius: '38px',
+            borderColor: borderColor(isDragAccept, isDragReject, isFocused),
+            borderStyle: 'dashed',
+            backgroundColor: '#fafafa',
+            color: '#bdbdbd',
+            outline: 'none',
+            transition: 'border .24s ease-in-out',
+        }}>
             <input {...getInputProps()} />
             {file?
-                <Box sx={{display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
+                <Box sx={{display: 'flex', alignItems: 'center', flexDirection: 'column', textAlign: 'center'}}>
                     <Typography color={theme.palette.success.main}>File {file.name} successfully uploaded</Typography>
                     <CloudUploadIcon color='success' />
                 </Box>:
                 <Box>
                     {
                         touchedFile && errorMessage?
-                            <Box sx={{display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
+                            <Box sx={{display: 'flex', alignItems: 'center', flexDirection: 'column',  textAlign: 'center'}}>
                                 <Typography color={theme.palette.error.main}>{errorMessage}</Typography>
+                                <Typography color={theme.palette.error.main}>(Note that only .mp4 and .mov files are accepted)</Typography>
                                 <CloudUploadIcon color='error' />
                             </Box>:
-                            <Box  sx={{display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
+                            <Box  sx={{display: 'flex', alignItems: 'center', flexDirection: 'column', textAlign: 'center'}}>
                                 <Typography color={theme.palette.secondary.main}>Drag and drop some files here, or click to select files</Typography>
                                 <Typography color={theme.palette.secondary.main}>(Note that only .mp4 and .mov files are accepted)</Typography>
                                 <CloudUploadIcon color='secondary' />
@@ -70,6 +76,6 @@ export function VideoUploadDropzone(props: any) {
                     }
                 </Box>
             }
-        </Container>
+        </Box>
     )
 }
