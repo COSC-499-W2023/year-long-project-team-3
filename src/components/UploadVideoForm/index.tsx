@@ -53,6 +53,7 @@ export default function UploadVideoForm() {
                         label='Title'
                         name='title'
                         data-cy='title'
+                        required
                         value={formik.values.title}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
