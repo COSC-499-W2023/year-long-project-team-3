@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { Typography, Box, Button, Link } from '@mui/material'
 import { SubmissionBox, Video } from '@prisma/client'
 import VideoList from '@/components/VideoList'
-import BackButton from '@/components/BackButton'
+import BackButtonWithLink from 'src/components/BackButtonWithLink'
 import SubmissionBoxDetails from '@/components/SubmissionBoxDetails'
 import ScalingReactPlayer from '@/components/ScalingReactPlayer'
 import PageLoadProgress from '@/components/PageLoadProgress'
@@ -43,7 +43,7 @@ export default function SubmissionBoxDetailPage() {
 
     return (
         <>
-            <BackButton route={'/dashboard '} title={'Return to Dashboard'} />
+            <BackButtonWithLink route={'/dashboard '} title={'Return to Dashboard'} />
             {isFetchingSubmissionBox ? (
                 <PageLoadProgress />
             ) : (
