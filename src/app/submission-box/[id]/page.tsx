@@ -11,13 +11,14 @@ import ScalingReactPlayer from '@/components/ScalingReactPlayer'
 import PageLoadProgress from '@/components/PageLoadProgress'
 import { BoxStatus } from '@/types/submission-box/boxStatus'
 import { toast } from 'react-toastify'
+import { VideoSubmission } from '@/app/api/my-videos/route'
 
 export default function SubmissionBoxDetailPage() {
     const router = useRouter()
     const pathname = usePathname()
     const [isFetchingSubmissionBox, setIsFetchingSubmissionBox] = useState(true)
     const [boxType, setBoxType] = useState<BoxStatus>('requested')
-    const [videos, setVideos] = useState<Video[]>([])
+    const [videos, setVideos] = useState<(Video & VideoSubmission)[]>([])
     const [boxInfo, setBoxInfo] = useState<SubmissionBox | null>(null)
     const boxId = pathname?.split('/').pop()
 
@@ -68,6 +69,7 @@ export default function SubmissionBoxDetailPage() {
                                             description: video.description,
                                             isSubmitted: video.isSubmitted,
                                             createdDate: video.createdAt,
+                                            submissionBoxes: video.submissions.map(submission => submission.requestedSubmission.submissionBox.title),
                                         }
                                     })}
                                     isSearching={false}
