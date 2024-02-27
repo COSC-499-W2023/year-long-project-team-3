@@ -1,5 +1,5 @@
 import VideoCard, { type VideoCardProps } from '@/components/VideoCard'
-import { Box, Card, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 
 export type VideoListProps = {
     videos: VideoCardProps[]
@@ -8,7 +8,6 @@ export type VideoListProps = {
 }
 
 export default function VideoList(props: VideoListProps) {
-    console.log(props.videos)
     return !!props.videos && props.videos.length > 0 ? (
         <Box
             justifyContent={'center'}
