@@ -12,14 +12,15 @@ import { SidebarOption } from '@/types/dashboard/sidebar'
 import VideoList from '@/components/VideoList'
 import SubmissionBoxList from '@/components/SubmissionBoxList'
 import DashboardSearchBar from '@/components/DashboardSearchBar'
+import { VideoSubmission } from '@/app/api/my-videos/route'
 
 export default function DashboardPage() {
     const session = useSession()
 
     // Videos
-    const [allVideos, setAllVideos] = useState<Video[]>([])
-    const [tempVideos, setTempVideos] = useState<Video[]>([])
-    const [displayVideos, setDisplayVideos] = useState<Video[]>([])
+    const [allVideos, setAllVideos] = useState<(Video & VideoSubmission)[]>([])
+    const [tempVideos, setTempVideos] = useState<(Video & VideoSubmission)[]>([])
+    const [displayVideos, setDisplayVideos] = useState<(Video & VideoSubmission)[]>([])
 
     // Submission Boxes
     const [submissionBoxes, setSubmissionBoxes] = useState<SubmissionBox[]>([])
@@ -41,7 +42,7 @@ export default function DashboardPage() {
     useEffect(() => {
         setIsFetching(true)
         fetchAllVideos()
-            .then((videos: Video[]) => setAllVideos(videos))
+            .then((videos: (Video & VideoSubmission)[]) => setAllVideos(videos))
             .catch((error) => toast.error(error))
             .finally(() => setIsFetching(false))
     }, [])
@@ -170,6 +171,7 @@ export default function DashboardPage() {
                                                 description: video.description,
                                                 isSubmitted: video.isSubmitted,
                                                 createdDate: video.createdAt,
+                                                submissionBoxes: video.submissions.map(submission => submission.requestedSubmission.submissionBox.title),
                                             }
                                         })}
                                         isSearching={isSearching}
@@ -189,10 +191,21 @@ export default function DashboardPage() {
         </>
     )
 
-    async function fetchAllVideos(): Promise<Video[]> {
+    async function fetchAllVideos(): Promise<(Video & VideoSubmission)[]> {
         const response = await fetch('/api/my-videos')
-        const { videos } = await response.json()
-        return videos
+        const data = await response.json()
+
+        // Map video submission objects to extract necessary properties
+        // TODO: Fix type error
+        return data.videoSubmission.map((submittedVideo) => ({
+            title: submittedVideo.title,
+            videoId: submittedVideo.id,
+            thumbnail: submittedVideo.thumbnail,
+            description: submittedVideo.description,
+            isSubmitted: submittedVideo.isSubmitted,
+            createdAt: submittedVideo.createdAt,
+            submissions: submittedVideo.submissions,
+        }))
     }
 
     async function fetchMyBoxes(): Promise<SubmissionBox[]> {

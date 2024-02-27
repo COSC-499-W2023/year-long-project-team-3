@@ -8,7 +8,6 @@ export type VideoListProps = {
 }
 
 export default function VideoList(props: VideoListProps) {
-    console.log(props.videos)
     return !!props.videos && props.videos.length > 0 ? (
         <Box
             justifyContent={'center'}
