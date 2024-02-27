@@ -28,7 +28,7 @@ describe('Test Video Upload and Streaming Processing Pipeline', () => {
         it('should allow the user to check the box to blur their face', () => {
             cy.visit('/new/video/upload')
             // Click the span to simulate checking the checkbox
-            cy.get('[data-cy=blur-checkbox]').click().click()
+            cy.get('[data-cy=blur-checkbox]').wait(1000).click()
             // Check that the checkbox has been checked
             cy.get('[data-cy=blur-checkbox]').should('have.class', 'Mui-checked')
         })
