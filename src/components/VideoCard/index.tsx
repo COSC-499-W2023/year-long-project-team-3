@@ -34,7 +34,7 @@ export default function VideoCard(props: VideoCardProps) {
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', mb: 2 }}>
                         <Typography noWrap variant='h5' color={theme.palette.secondary.main}
                             sx={{ fontWeight: 'bold', width: '48rem' }}>{props.title}</Typography>
-                        <Typography noWrap>Uploaded on: {getDateString()}</Typography>
+                        <Typography noWrap>{!!props.thumbnailUrl? 'Uploaded on: ' + getDateString() : 'Upload in progress'}</Typography>
                     </Box>
                     <Typography sx={{ maxHeight: '4.5rem', overflow: 'hidden' }}>{props.description}</Typography>
                 </Box>

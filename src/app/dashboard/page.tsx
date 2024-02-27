@@ -196,8 +196,7 @@ export default function DashboardPage() {
         const data = await response.json()
 
         // Map video submission objects to extract necessary properties
-        // TODO: Fix type error
-        return data.videoSubmission.map((submittedVideo) => ({
+        return data.videoSubmission.map((submittedVideo: { title: string; id: string; thumbnail: string | null; description: string | null; isSubmitted: boolean; createdAt: Date; submissions: any }) => ({
             title: submittedVideo.title,
             videoId: submittedVideo.id,
             thumbnail: submittedVideo.thumbnail,
