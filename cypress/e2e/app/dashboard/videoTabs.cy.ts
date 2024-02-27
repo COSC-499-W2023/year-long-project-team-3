@@ -1,6 +1,23 @@
 import { TIMEOUT } from '../../../utils/constants'
 import { v4 as uuidv4 } from 'uuid'
 
+function getCurrentDateFormatted() {
+    // Get the current date
+    const currentDate = new Date()
+
+    // Array of month names
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+    // Get the month, day, and year
+    const month = monthNames[currentDate.getMonth()]
+    const day = currentDate.getDate()
+    const year = currentDate.getFullYear()
+
+    // Format the date
+    return `${ month } ${ day }, ${ year }`
+}
+
 describe('Dashboard Recent Videos Tests', () => {
     beforeEach(() => {
         cy.task('clearDB')
@@ -59,7 +76,11 @@ describe('Dashboard Recent Videos Tests', () => {
             .children()
             .should('have.length', 1)
 
-        cy.get('[data-cy="video-list"]').children().first().should('contain', videoTitle)
+        const firstVideo = cy.get('[data-cy="video-list"]').children().first()
+
+        firstVideo.should('contain', videoTitle)
+        firstVideo.should('contain', 'Not Submitted')
+        firstVideo.should('contain', 'Uploaded on: ' + getCurrentDateFormatted())
     })
 
     it('should not display received videos when a user has received videos', () => {
