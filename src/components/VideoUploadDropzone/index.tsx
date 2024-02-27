@@ -38,38 +38,42 @@ export function VideoUploadDropzone(props: VideoUploadDropzoneProps) {
     }})
 
     return (
-        <Box {...getRootProps()} sx={{
-            flex: 1,
-            display: 'flex',
-            width: '100%',
-            flexDirection: 'column',
-            alignItems: 'center',
-            padding: '20px',
-            borderWidth: '2px',
-            borderRadius: '38px',
-            borderColor: borderColor(isDragAccept, isDragReject, isFocused),
-            borderStyle: 'dashed',
-            backgroundColor: '#fafafa',
-            color: '#bdbdbd',
-            outline: 'none',
-            transition: 'border .24s ease-in-out',
-        }}>
-            <input {...getInputProps()} />
+        <Box
+            {...getRootProps()}
+            data-cy='video-upload-dropzone'
+            sx={{
+                flex: 1,
+                display: 'flex',
+                width: '100%',
+                flexDirection: 'column',
+                alignItems: 'center',
+                padding: '20px',
+                borderWidth: '2px',
+                borderRadius: '38px',
+                borderColor: borderColor(isDragAccept, isDragReject, isFocused),
+                borderStyle: 'dashed',
+                backgroundColor: '#fafafa',
+                color: '#bdbdbd',
+                outline: 'none',
+                transition: 'border .24s ease-in-out',
+            }}
+        >
+            <input data-cy='dropzone-file-input' {...getInputProps()} />
             {file?
                 <Box sx={{display: 'flex', alignItems: 'center', flexDirection: 'column', textAlign: 'center'}}>
-                    <Typography color={theme.palette.success.main}>File {file.name} successfully uploaded</Typography>
+                    <Typography data-cy='dropbox-success-message' color={theme.palette.success.main}>File {file.name} successfully uploaded</Typography>
                     <CloudUploadIcon color='success' />
                 </Box>:
                 <Box>
                     {
                         touchedFile && errorMessage?
                             <Box sx={{display: 'flex', alignItems: 'center', flexDirection: 'column',  textAlign: 'center'}}>
-                                <Typography color={theme.palette.error.main}>{errorMessage}</Typography>
+                                <Typography data-cy='dropbox-error-message' color={theme.palette.error.main}>{errorMessage}</Typography>
                                 <Typography color={theme.palette.error.main}>(Note that only .mp4 and .mov files are accepted)</Typography>
                                 <CloudUploadIcon color='error' />
                             </Box>:
                             <Box  sx={{display: 'flex', alignItems: 'center', flexDirection: 'column', textAlign: 'center'}}>
-                                <Typography color={theme.palette.secondary.main}>Drag and drop some files here, or click to select files</Typography>
+                                <Typography data-cy='dropbox-neutral-message' color={theme.palette.secondary.main}>Drag and drop some files here, or click to select files</Typography>
                                 <Typography color={theme.palette.secondary.main}>(Note that only .mp4 and .mov files are accepted)</Typography>
                                 <CloudUploadIcon color='secondary' />
                             </Box>
