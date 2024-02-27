@@ -78,7 +78,7 @@ export default function UploadVideoForm() {
                         FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
                         helperText={formik.touched.description && formik.errors.description}
                     />
-                    <VideoUploadDropzone file={formik.values.file} setFieldValue={formik.setFieldValue} touchedFile={formik.touched.file} errorMessage={formik.errors.file} />
+                    <VideoUploadDropzone file={formik.values.file} setFieldValue={formik.setFieldValue} isFileTouched={formik.touched.file} errorMessage={formik.errors.file} />
                     <FormControlLabel
                         control={
                             <Checkbox
@@ -108,7 +108,7 @@ export default function UploadVideoForm() {
 }
 
 async function handleSubmit(videoUploadData: VideoUploadData) {
-    console.log(videoUploadData)
+    // TODO: Implement call to refactored backend api for video upload
 }
 
 const validationSchema: ObjectSchema<VideoUploadData> = yup.object().shape({

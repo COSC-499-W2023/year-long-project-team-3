@@ -20,20 +20,20 @@ const borderColor = (isDragAccept: boolean, isDragReject: boolean, isFocused: bo
 type VideoUploadDropzoneProps = {
     file: File | undefined
     setFieldValue: (field: string, value: any) => void
-    touchedFile: boolean | undefined
+    isFileTouched: boolean | undefined
     errorMessage: string | undefined
 }
 
 
 export function VideoUploadDropzone(props: VideoUploadDropzoneProps) {
-    const { file, setFieldValue, touchedFile, errorMessage } = props
+    const { file, setFieldValue, isFileTouched, errorMessage } = props
     const {
         getRootProps,
         getInputProps,
         isFocused,
         isDragAccept,
         isDragReject,
-    } = useDropzone({accept: {'video/*': ['.mp4', '.mob']}, maxFiles: 1, onDrop: acceptedFiles => {
+    } = useDropzone({accept: {'video/*': ['.mp4', '.mov']}, maxFiles: 1, onDrop: acceptedFiles => {
         setFieldValue('file', acceptedFiles[0])
     }})
 
@@ -66,7 +66,7 @@ export function VideoUploadDropzone(props: VideoUploadDropzoneProps) {
                 </Box>:
                 <Box>
                     {
-                        touchedFile && errorMessage?
+                        isFileTouched && errorMessage?
                             <Box sx={{display: 'flex', alignItems: 'center', flexDirection: 'column',  textAlign: 'center'}}>
                                 <Typography data-cy='dropbox-error-message' color={theme.palette.error.main}>{errorMessage}</Typography>
                                 <Typography color={theme.palette.error.main}>(Note that only .mp4 and .mov files are accepted)</Typography>
