@@ -136,7 +136,7 @@ export default function DashboardPage() {
                     sidebarSelectedOption={sidebarSelectedOption}
                     setSidebarSelectedOption={setSidebarSelectedOption}
                 />
-                <Box width='100%' display='flex' flexDirection='column'>
+                <Box width='80%' display='flex' flexDirection='column'>
                     <Box display='flex' justifyContent='space-between' alignItems='center' paddingRight='3rem'>
                         <Typography
                             data-cy='title'

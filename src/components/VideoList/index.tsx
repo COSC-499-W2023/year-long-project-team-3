@@ -13,7 +13,6 @@ export default function VideoList(props: VideoListProps) {
             justifyContent={'center'}
             justifyItems={'center'}
             rowGap={'55px'}
-            columnGap={'.8rem'}
             padding={'0 30px'}
             width={'100%'}
             height={'100%'}

@@ -18,7 +18,7 @@ export default function VideoCard(props: VideoCardProps) {
 
     return (
         <Card sx={{ display: 'flex', width: '100%', height: 200, mb: 2, px: 1, cursor: 'pointer' }} onClick={handleOnClick}>
-            <Box display={'flex'} alignItems={'center'} maxWidth={300} minWidth={300} paddingLeft={2}>
+            <Box display={'flex'} alignItems={'center'} maxWidth='25%' minWidth='25%' pl='1rem'>
                 {!!props.thumbnailUrl? (
                     <CardMedia
                         component='img'
@@ -28,17 +28,16 @@ export default function VideoCard(props: VideoCardProps) {
                     />):(<Box  width={300} height={160} sx={{backgroundColor: 'black'}}></Box>)
                 }
             </Box>
-            <Box sx={{ width: 40 }}></Box>
-            <CardContent sx={{ display: 'flex', width: '100%', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <CardContent sx={{ ml: '1rem', display: 'flex', width: '75%', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <Box>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', mb: 2 }}>
                         <Typography noWrap variant='h5' color={theme.palette.secondary.main}
-                            sx={{ fontWeight: 'bold', width: '48rem' }}>{props.title}</Typography>
-                        <Typography noWrap>{!!props.thumbnailUrl? 'Uploaded on: ' + getDateString() : 'Upload in progress'}</Typography>
+                            sx={{ fontWeight: 'bold', width: '73%' }}>{props.title}</Typography>
+                        <Typography noWrap width={'27%'}>{!!props.thumbnailUrl? 'Uploaded on: ' + getDateString() : 'Upload in progress'}</Typography>
                     </Box>
-                    <Typography sx={{ maxHeight: '4.5rem', overflow: 'hidden' }}>{props.description}</Typography>
+                    <Typography sx={{ maxHeight: '4.5rem', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>{props.description}</Typography>
                 </Box>
-                {props.isSubmitted ? <><Box sx={{ display: 'flex', alignItems: 'center' }}><Typography sx={{ mr: 1 }}>Submitted to: </Typography>
+                {props.isSubmitted ? <><Box sx={{ display: 'flex', alignItems: 'center', overflow: 'hidden', whiteSpace: 'nowrap', width: '75%' }}><Typography sx={{ mr: 1 }}>Submitted to: </Typography>
                     {props.submissionBoxes.map((submissionBox, idx) => (
                         <Chip
                             sx={{ m: 0.5, ml: 0 }}

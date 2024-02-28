@@ -24,7 +24,7 @@ export default function DashboardSidePanel(props: DashboardSidePanelProps) {
                 mx: '2rem',
                 pt: '4rem',
                 pb: '2rem',
-                width: '14rem',
+                width: '20%',
                 height: '100%',
             }}
         >
