@@ -1,7 +1,7 @@
 import { Box, Card, CardContent, CardMedia, Chip, Typography } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import { theme } from '@/components/ThemeRegistry/theme'
-import { toast } from 'react-toastify'
+import dayjs from 'dayjs'
 
 export type VideoCardProps = {
     videoId: string
@@ -54,19 +54,10 @@ export default function VideoCard(props: VideoCardProps) {
     function getDateString() {
         // doing this to fix: https://stackoverflow.com/questions/57007749/date-getdate-is-not-a-function-typescript
         const myDate: Date = new Date(props.createdDate)
-
-        const day = myDate.getDate()
-        const year = myDate.getFullYear()
-        const month = myDate.toLocaleString('default', { month: 'short' })
-
-        return month + ' ' + day + ', ' + year
+        return myDate && dayjs(myDate).format('MMM D, YYYY')
     }
 
     function handleOnClick() {
-        if (props.thumbnailUrl) {
-            router.push(`/video/${ props.videoId }`)
-        } else {
-            toast.error('This video has not finished processing yet! Come back later')
-        }
+        router.push(`/video/${ props.videoId }`)
     }
 }

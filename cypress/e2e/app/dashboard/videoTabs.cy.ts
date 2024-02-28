@@ -1,21 +1,11 @@
 import { TIMEOUT } from '../../../utils/constants'
 import { v4 as uuidv4 } from 'uuid'
+import dayjs from 'dayjs'
 
 function getCurrentDateFormatted() {
     // Get the current date
     const currentDate = new Date()
-
-    // Array of month names
-    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-
-    // Get the month, day, and year
-    const month = monthNames[currentDate.getMonth()]
-    const day = currentDate.getDate()
-    const year = currentDate.getFullYear()
-
-    // Format the date
-    return `${ month } ${ day }, ${ year }`
+    return currentDate && dayjs(currentDate).format('MMM D, YYYY')
 }
 
 describe('Dashboard Recent Videos Tests', () => {
