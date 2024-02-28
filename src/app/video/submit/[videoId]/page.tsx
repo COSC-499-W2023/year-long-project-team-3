@@ -14,7 +14,7 @@ import * as yup from 'yup'
 import { toast } from 'react-toastify'
 import logger from '@/utils/logger'
 import PageLoadProgressBlurBackground from '@/components/PageLoadProgressBlurBackround'
-import BackButton from '@/components/BackButton'
+import BackButtonWithLink from '@/components/BackButtonWithLink'
 import FormNavButton from '@/components/FormNavButton'
 
 type FormValues = {
@@ -76,7 +76,7 @@ export default function SubmitVideoPage() {
         <>
             <PageLoadProgressBlurBackground show={isLoading && !video} />
             <>
-                <BackButton route={'/dashboard '} title={'Return to Dashboard'} />{' '}
+                <BackButtonWithLink route={'/dashboard '} title={'Return to Dashboard'} />{' '}
                 <Box
                     sx={{
                         display: 'flex',

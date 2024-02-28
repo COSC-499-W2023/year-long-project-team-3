@@ -7,7 +7,7 @@ import { useRouter, usePathname } from 'next/navigation'
 import VideoProcessing from '@/components/VideoProcessing'
 import PageLoadProgress from '@/components/PageLoadProgress'
 import { toast } from 'react-toastify'
-import BackButton from '@/components/BackButton'
+import BackButtonWithLink from '@/components/BackButtonWithLink'
 import FormNavButton from '@/components/FormNavButton'
 import logger from '@/utils/logger'
 
@@ -129,7 +129,7 @@ export default function VideoPreviewPage() {
                                         m: 0,
                                     }}
                                 >
-                                    <BackButton route={'/dashboard '} title={'Return to Dashboard'} />
+                                    <BackButtonWithLink route={'/dashboard '} title={'Return to Dashboard'} />
                                 </Box>
                                 {/*Main Body*/}
                                 <Box
