@@ -14,7 +14,7 @@ import * as yup from 'yup'
 import { toast } from 'react-toastify'
 import logger from '@/utils/logger'
 import PageLoadProgressBlurBackground from '@/components/PageLoadProgressBlurBackround'
-import BackButtonWithLink from 'src/components/BackButtonWithLink'
+import BackButtonWithLink from '@/components/BackButtonWithLink'
 import FormNavButton from '@/components/FormNavButton'
 
 type FormValues = {

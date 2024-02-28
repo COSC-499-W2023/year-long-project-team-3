@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation'
 import ProgressDots from '@/components/ProgressDots'
 import PageLoadProgressBlurBackground from '@/components/PageLoadProgressBlurBackround'
 import logger from '@/utils/logger'
-import BackButtonWithLink from 'src/components/BackButtonWithLink'
+import BackButtonWithLink from '@/components/BackButtonWithLink'
 import Typography from '@mui/material/Typography'
 
 const VisuallyHiddenInput = styled('input')({

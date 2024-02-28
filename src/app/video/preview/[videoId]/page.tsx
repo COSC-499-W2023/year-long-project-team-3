@@ -7,7 +7,7 @@ import { useRouter, usePathname } from 'next/navigation'
 import VideoProcessing from '@/components/VideoProcessing'
 import PageLoadProgress from '@/components/PageLoadProgress'
 import { toast } from 'react-toastify'
-import BackButtonWithLink from 'src/components/BackButtonWithLink'
+import BackButtonWithLink from '@/components/BackButtonWithLink'
 import FormNavButton from '@/components/FormNavButton'
 import logger from '@/utils/logger'
 
