@@ -139,7 +139,6 @@ export async function uploadVideo(videoData: VideoUploadData, user: User, fileEx
     })
 
     const s3uploadedVideoKey = await makeS3Key(uploadedVideo, fileExtension)
-    const videoBuffer = await videoData.file!.arrayBuffer()
 
     const client = new S3Client({
         region: process.env.AWS_UPLOAD_REGION_US,
@@ -150,7 +149,7 @@ export async function uploadVideo(videoData: VideoUploadData, user: User, fileEx
         params: {
             Bucket: getUploadBucket(videoData.blurFace),
             Key: s3uploadedVideoKey,
-            Body: Readable.from(Buffer.from(videoBuffer)),
+            Body: videoData.file,
         },
     })
 
