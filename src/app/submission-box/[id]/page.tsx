@@ -69,7 +69,8 @@ export default function SubmissionBoxDetailPage() {
                                             description: video.description,
                                             isSubmitted: video.isSubmitted,
                                             createdDate: video.createdAt,
-                                            submissionBoxes: video.submissions.map(submission => submission.requestedSubmission.submissionBox.title),
+                                            // Not passing submission boxes when video is viewed in submission box
+                                            submissionBoxes: [],
                                         }
                                     })}
                                     isSearching={false}

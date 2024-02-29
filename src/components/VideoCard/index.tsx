@@ -32,12 +32,12 @@ export default function VideoCard(props: VideoCardProps) {
                 <Box>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', mb: 2 }}>
                         <Typography noWrap variant='h5' color={theme.palette.secondary.main}
-                            sx={{ fontWeight: 'bold', width: '73%' }}>{props.title}</Typography>
-                        <Typography noWrap width={'27%'}>{!!props.thumbnailUrl? 'Uploaded on: ' + getDateString() : 'Upload in progress'}</Typography>
+                            sx={{ fontWeight: 'bold', width: '70%' }}>{props.title}</Typography>
+                        <Typography noWrap width={'30%'}>{!!props.thumbnailUrl? 'Uploaded on: ' + getDateString() : 'Upload in progress'}</Typography>
                     </Box>
                     <Typography sx={{ maxHeight: '4.5rem', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>{props.description}</Typography>
                 </Box>
-                {props.isSubmitted ? <><Box sx={{ display: 'flex', alignItems: 'center', overflow: 'hidden', whiteSpace: 'nowrap', width: '75%' }}><Typography sx={{ mr: 1 }}>Submitted to: </Typography>
+                {props.isSubmitted ? props.submissionBoxes.length > 0  && <><Box sx={{ display: 'flex', alignItems: 'center', overflow: 'hidden', whiteSpace: 'nowrap', width: '75%' }}><Typography sx={{ mr: 1 }}>Submitted to: </Typography>
                     {props.submissionBoxes.map((submissionBox, idx) => (
                         <Chip
                             sx={{ m: 0.5, ml: 0 }}
