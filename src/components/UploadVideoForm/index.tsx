@@ -9,8 +9,12 @@ import { ObjectSchema } from 'yup'
 import * as yup from 'yup'
 import { VideoUploadData } from '@/types/video/video'
 import { VideoUploadDropzone } from '../VideoUploadDropzone'
+import { toast } from 'react-toastify'
+import logger from '@/utils/logger'
+import { useRouter } from 'next/navigation'
 
 export default function UploadVideoForm() {
+    const router = useRouter()
     const formik = useFormik<VideoUploadData>({
         initialValues: {
             title: '',
@@ -21,6 +25,27 @@ export default function UploadVideoForm() {
         validationSchema: validationSchema,
         onSubmit: (values: VideoUploadData) => handleSubmit(values),
     })
+
+    async function handleSubmit(videoUploadData: VideoUploadData) {
+        fetch('/api/new/video/upload', {
+            method: 'POST',
+            body: JSON.stringify(videoUploadData),
+        })
+            .then(async (res: Response) => {
+                const body = await res.json()
+                if (res.status !== 201) {
+                    toast.error(body.error)
+                    throw new Error(body.error)
+                }
+                const videoId = body.video.id as string
+                router.push(`/video/preview/${ videoId }`)
+            })
+            .catch((err) => {
+                logger.error(err)
+                toast.error('Unexpected error occurred when uploading your video')
+                router.push('/dashboard')
+            })
+    }
 
     return (
         <Box
@@ -105,10 +130,6 @@ export default function UploadVideoForm() {
             </form>
         </Box>
     )
-}
-
-async function handleSubmit(videoUploadData: VideoUploadData) {
-    // TODO: Implement call to refactored backend api for video upload
 }
 
 const validationSchema: ObjectSchema<VideoUploadData> = yup.object().shape({
