@@ -33,7 +33,7 @@ describe('Submission box request submissions tests', () => {
             cy.get('[data-cy="submission-box-title"]').type(title)
 
             // Double click is a known issue, cypress is not acting correctly on browser preview deployment
-            cy.get('[data-cy="Next"]').click().click()
+            cy.get('[data-cy="Next"]').wait(1000).click()
 
             // We should be on the request submission step
             cy.get('[data-cy="title"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Request Submissions')

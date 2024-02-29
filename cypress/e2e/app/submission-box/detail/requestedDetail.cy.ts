@@ -28,7 +28,7 @@ describe('Requested Dashboard Details Page Tests', () => {
             cy.get('[data-cy="My Invitations"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
             cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
         })
-        cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
+        cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).wait(1000).click()
 
         cy.get('[data-cy="noSubmission"]', { timeout: TIMEOUT.EXTRA_LONG })
             .should('be.visible')
@@ -63,7 +63,7 @@ describe('Requested Dashboard Details Page Tests', () => {
             cy.get('[data-cy="My Invitations"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
             cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
         })
-        cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
+        cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).wait(1000).click()
 
         cy.get('[data-cy="video-player"]', { timeout: 2 * TIMEOUT.EXTRA_EXTRA_LONG }).should('be.visible')
 
@@ -89,7 +89,7 @@ describe('Requested Dashboard Details Page Tests', () => {
             cy.get('[data-cy="My Invitations"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
             cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
         })
-        cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
+        cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).wait(1000).click()
 
         cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'submission-box')
         cy.get('[data-cy="submissionButton"]', { timeout: TIMEOUT.EXTRA_LONG }).should('be.visible').click()
