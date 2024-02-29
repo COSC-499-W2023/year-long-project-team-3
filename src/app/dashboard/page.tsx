@@ -198,7 +198,7 @@ export default function DashboardPage() {
         // Map video submission objects to extract necessary properties
         return data.videoSubmission.map((submittedVideo: { title: string; id: string; thumbnail: string | null; description: string | null; isSubmitted: boolean; createdAt: Date; submissions: any }) => ({
             title: submittedVideo.title,
-            videoId: submittedVideo.id,
+            id: submittedVideo.id,
             thumbnail: submittedVideo.thumbnail,
             description: submittedVideo.description,
             isSubmitted: submittedVideo.isSubmitted,
