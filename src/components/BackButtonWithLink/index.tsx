@@ -6,12 +6,17 @@ import Typography from '@mui/material/Typography'
 import React from 'react'
 import { useRouter } from 'next/navigation'
 
-export type BackButtonProps = {
+export type BackButtonWithLinkProps = {
+    route: string
     title: string
 }
 
-export default function BackButton(props: BackButtonProps) {
+export default function BackButtonWithLink(props: BackButtonWithLinkProps) {
     const router = useRouter()
+
+    function handleGoBack() {
+        router.push(props.route)
+    }
 
     return (
         <Box
@@ -23,7 +28,7 @@ export default function BackButton(props: BackButtonProps) {
                 cursor: 'pointer',
                 color: '#757575',
             }}
-            onClick={() => router.back()}
+            onClick={handleGoBack}
             data-cy='back-button'
         >
             <ArrowBack />
