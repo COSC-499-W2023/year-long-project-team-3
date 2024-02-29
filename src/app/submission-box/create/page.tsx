@@ -5,7 +5,7 @@ import { useMultiStepForm } from '@/utils/useMultiStepForm'
 import SubmissionBoxSettings, { validationSchema as settingsValidationSchema } from '@/components/SubmissionBoxSettings'
 import SubmissionBoxRequestSubmission from '@/components/SubmissionBoxRequestSubmission'
 import SubmissionBoxReviewAndCreate from '@/components/SubmissionBoxReviewAndCreate'
-import BackButton from '@/components/BackButton'
+import BackButtonWithLink from '@/components/BackButtonWithLink'
 import { Box } from '@mui/material'
 import ProgressDots from '@/components/ProgressDots'
 import Typography from '@mui/material/Typography'
@@ -51,7 +51,7 @@ export default function SubmissionBox() {
 
     return (
         <>
-            <BackButton route={'/dashboard'} title={'Return to Dashboard'} />{' '}
+            <BackButtonWithLink route={'/dashboard'} title={'Return to Dashboard'} />{' '}
             {/* TODO: make this route to correct page */}
             <Box
                 sx={{

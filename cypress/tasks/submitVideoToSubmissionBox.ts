@@ -22,5 +22,36 @@ export default async function submitVideoToSubmissionBox(props: SubmitVideoToSub
         },
     })
 
+    // Add owner of box as allowed to view the video
+    const requestedSubmission = await prisma.requestedSubmission.findUniqueOrThrow({
+        where: {
+            id: requestedSubmissionId,
+        },
+    })
+
+    const owners = await prisma.submissionBoxManager.findMany({
+        where: {
+            submissionBoxId: requestedSubmission.submissionBoxId,
+        },
+        select: {
+            userId: true,
+        },
+    })
+
+    const videoWhitelist = await prisma.videoWhitelist.findUniqueOrThrow({
+        where: {
+            videoId,
+        },
+    })
+
+    for (const owner of owners) {
+        await prisma.videoWhitelistedUser.create({
+            data: {
+                whitelistedUserId: owner.userId,
+                whitelistedVideoId: videoWhitelist.id,
+            },
+        })
+    }
+
     return video.id
 }

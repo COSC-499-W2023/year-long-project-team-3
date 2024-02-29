@@ -2,12 +2,13 @@ import { withAuth } from 'next-auth/middleware'
 import { NextRequest, NextResponse } from 'next/server'
 import logger from '@/utils/logger'
 
+const protectedPages = ['/dashboard', '/submission-box', '/video', '/new']
+
 export default withAuth(
     async function middleware(request: NextRequest) {
         // Check if we should redirect when a user's email isn't verified
         const cookies = request.cookies
         const isLoggedIn = cookies.has('next-auth.session-token')
-        const protectedPages = ['/dashboard', '/submission-box', '/video']
         if (
             isLoggedIn &&
             protectedPages.some(page => request.nextUrl.pathname.startsWith(page))
@@ -35,7 +36,6 @@ export default withAuth(
         secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET,
         callbacks: {
             authorized: ({ req, token }) => {
-                const protectedPages = ['/dashboard', '/submission-box', '/video']
                 return !(token === null && protectedPages.some((page) => req.nextUrl.pathname.startsWith(page)))
             },
         },
