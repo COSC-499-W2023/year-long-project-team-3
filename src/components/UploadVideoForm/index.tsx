@@ -27,9 +27,16 @@ export default function UploadVideoForm() {
     })
 
     async function handleSubmit(videoUploadData: VideoUploadData) {
+        const videoUploadFormData = new FormData()
+        videoUploadFormData.append('title', videoUploadData.title)
+        videoUploadFormData.append('description', videoUploadData.description)
+        if(videoUploadData.file) {
+            videoUploadFormData.append('file', videoUploadData.file)
+        }
+        videoUploadFormData.append('blurFace', videoUploadData.blurFace.toString())
         fetch('/api/new/video/upload', {
             method: 'POST',
-            body: JSON.stringify(videoUploadData),
+            body: videoUploadFormData,
         })
             .then(async (res: Response) => {
                 const body = await res.json()
@@ -38,7 +45,7 @@ export default function UploadVideoForm() {
                     throw new Error(body.error)
                 }
                 const videoId = body.video.id as string
-                router.push(`/video/preview/${ videoId }`)
+                router.push(`/video/${ videoId }`)
             })
             .catch((err) => {
                 logger.error(err)

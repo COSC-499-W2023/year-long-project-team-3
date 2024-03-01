@@ -152,7 +152,6 @@ export async function uploadVideo(videoData: VideoUploadData, user: User, fileEx
             Body: videoData.file,
         },
     })
-
     const s3VideoUploadResult: CompleteMultipartUploadCommandOutput | AbortMultipartUploadCommandOutput = await s3VideoUpload.done()
     if (!isCompleteUpload(s3VideoUploadResult) || s3VideoUploadResult.Location === undefined) {
         logger.error(s3VideoUploadResult)

@@ -13,26 +13,38 @@ export async function POST(req: NextRequest) {
         if (!session || !session.user?.email) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
-        const videoData: VideoUploadData = await req.json()
-
-        if (!videoData.title) {
+        const videoFormBody = await req.formData()
+        const title = videoFormBody.get('title')
+        const description = videoFormBody.get('description')
+        const file = videoFormBody.get('file')
+        const blurFace = videoFormBody.get('blurFace')
+        if (!title || typeof title !== 'string') {
             return NextResponse.json({ error: 'Video title is required' }, { status: 400 })
         }
-
-        if (!videoData.file) {
+        if (!file || !(file instanceof File)) {
             return NextResponse.json({ error: 'Video file is required' }, { status: 400 })
         }
-        const fileExtension: FileExtension | undefined = (await fileTypeFromBlob(videoData.file))?.ext
+        const fileExtension: FileExtension | undefined = (await fileTypeFromBlob(file))?.ext
         if(!fileExtension || (fileExtension !== 'mov' && fileExtension !== 'mp4')) {
             return NextResponse.json({ error: 'Video must be an mp4 or mov file' }, { status: 400 })
         }
 
-        if(!videoData.description) {
-            videoData.description = ''
+        if (blurFace === undefined || blurFace === null || typeof blurFace !== 'string') {
+            return NextResponse.json({ error: 'Face blur selection is required' }, { status: 400 })
         }
 
-        if (videoData.blurFace === undefined || videoData.blurFace === null) {
-            return NextResponse.json({ error: 'Face blur selection is required' }, { status: 400 })
+        if(typeof description !== 'string') {
+            return NextResponse.json({ error: 'Description must be a string' }, { status: 400 })
+        }
+        const isFaceBlur = blurFace.toLowerCase() === 'true' ? true : blurFace.toLowerCase() === 'false' ? false : undefined
+        if (isFaceBlur === undefined)
+        {return NextResponse.json({ error: 'Face blur selection must be a boolean value' }, { status: 400 })}
+
+        const videoData: VideoUploadData = {
+            title: title,
+            description: description ? description : '',
+            file: file,
+            blurFace: isFaceBlur,
         }
 
         const userEmail = session?.user?.email as string
