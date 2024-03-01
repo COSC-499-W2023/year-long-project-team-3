@@ -27,7 +27,7 @@ describe('Receiving Dashboard Details Page Tests', () => {
         cy.reload()
         cy.visit('/dashboard')
         runWithRetry(() => {
-            cy.get('[data-cy="Manage Boxes"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
+            cy.get('[data-cy="Manage Boxes"]', { timeout: TIMEOUT.EXTRA_LONG }).wait(1000).click()
             cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
         })
         cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).wait(1000).click()
@@ -205,7 +205,7 @@ describe('Receiving Dashboard Details Page Tests', () => {
             cy.get('[data-cy="Manage Boxes"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
             cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
         })
-        cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
+        cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).wait(1000).click()
 
         // Click on video to go to video page
         cy.wait(1000)  // Wait for page to fully load

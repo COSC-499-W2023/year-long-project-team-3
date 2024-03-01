@@ -25,7 +25,7 @@ describe('Requested Dashboard Details Page Tests', () => {
         cy.reload()
         cy.visit('/dashboard')
         runWithRetry(() => {
-            cy.get('[data-cy="My Invitations"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
+            cy.get('[data-cy="My Invitations"]', { timeout: TIMEOUT.EXTRA_LONG }).wait(1000).click()
             cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
         })
         cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).wait(1000).click()
@@ -86,7 +86,7 @@ describe('Requested Dashboard Details Page Tests', () => {
         cy.reload()
         cy.visit('/dashboard')
         runWithRetry(() => {
-            cy.get('[data-cy="My Invitations"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
+            cy.get('[data-cy="My Invitations"]', { timeout: TIMEOUT.EXTRA_LONG }).wait(1000).click()
             cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
         })
         cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).wait(1000).click()
