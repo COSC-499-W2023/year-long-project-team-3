@@ -396,10 +396,22 @@ export default function VideoDetailedPage() {
                             width: '100%',
                         }}
                     >
-                        <Button variant='contained' color='inherit' className='modal-close' onClick={handleModalClose}>
+                        <Button
+                            variant='contained'
+                            color='inherit'
+                            className='modal-close'
+                            onClick={handleModalClose}
+                            data-cy='detail-video-delete-cancel-button'
+                        >
                             Cancel
                         </Button>
-                        <Button variant='contained' color='error' className='modal-close' onClick={handleDeleteVideo}>
+                        <Button
+                            variant='contained'
+                            color='error'
+                            className='modal-close'
+                            onClick={handleDeleteVideo}
+                            data-cy='detail-video-delete-confirm-button'
+                        >
                             Confirm Delete
                         </Button>
                     </Box>
