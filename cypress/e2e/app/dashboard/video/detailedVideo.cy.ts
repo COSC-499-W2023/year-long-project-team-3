@@ -252,7 +252,7 @@ describe('Detail video page', () => {
 
                         cy.get('[data-cy="video-list"]').children().first().should('contain', videoTitle).click()
 
-                        cy.url().should('contain', `/video/${videoId}`, { timeout: TIMEOUT.EXTRA_LONG })
+                        cy.url().should('contain', `/video/${ videoId }`, { timeout: TIMEOUT.EXTRA_LONG })
                     }
                 )
             })
