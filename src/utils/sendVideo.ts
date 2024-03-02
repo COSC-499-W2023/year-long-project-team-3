@@ -93,6 +93,7 @@ export default async function sendVideo(rawVideo: File, owner: User, isFaceBlurC
         data: {
             s3Key: s3Key,
             rawVideoUrl: s3Data.Location,
+            isFaceblurFeatureEnabled: isFaceBlurChecked,
         },
     })
 
