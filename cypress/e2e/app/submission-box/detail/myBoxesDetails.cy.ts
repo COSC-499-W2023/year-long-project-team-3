@@ -209,12 +209,12 @@ describe('Receiving Dashboard Details Page Tests', () => {
 
         // Click on video to go to video page
         cy.wait(1000)  // Wait for page to fully load
-        cy.get('[data-cy="video-list"]', { timeout: TIMEOUT.EXTRA_LONG }).children().first().click()
+        cy.get('[data-cy="video-list"]', { timeout: TIMEOUT.EXTRA_LONG }).children().first().wait(1000).click()
         cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'video')
 
         // Go back to submission box
         cy.wait(1000)  // Wait for page to fully load
-        cy.get('[data-cy="back-button"]').should('exist').and('be.visible').click()
+        cy.get('[data-cy="back-button"]').should('exist').and('be.visible').wait(1000).click()
         cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'submission-box')
     })
 })
