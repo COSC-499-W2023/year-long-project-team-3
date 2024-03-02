@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
         if (!title || typeof title !== 'string') {
             return NextResponse.json({ error: 'Video title is required' }, { status: 400 })
         }
-        if (!file || !(file instanceof File)) {
+        if (!isVideoValidType(file)) {
             return NextResponse.json({ error: 'Video file is required' }, { status: 400 })
         }
         const fileExtension: FileExtension | undefined = (await fileTypeFromBlob(file))?.ext
@@ -61,4 +61,8 @@ export async function POST(req: NextRequest) {
         logger.error(err)
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }
+}
+
+function isVideoValidType(video: FormDataEntryValue | null): video is File {
+    return video !== null && video.constructor.name === 'File'
 }
