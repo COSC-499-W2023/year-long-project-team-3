@@ -9,6 +9,7 @@ import logger from './logger'
 import prisma from '@/lib/prisma'
 import { Readable } from 'stream'
 import { makeS3Key } from './s3Key'
+import { getS3UploadBucket } from '@/utils/getS3UploadBucket'
 
 export function removeFileExtension(filename: string): string {
     return filename.replace(/\.[^/.]+$/, '')
@@ -45,20 +46,11 @@ export default async function sendVideo(rawVideo: File, owner: User, isFaceBlurC
     const uploadS3 = new Upload({
         client: client,
         params: {
-            Bucket: getUploadBucket(),
+            Bucket: getS3UploadBucket(isFaceBlurChecked),
             Key: s3Key,
             Body: Readable.from(Buffer.from(rawVideoBuffer)),
         },
     })
-
-    // Upload to Rekognition bucket if user wants their face blurred, upload to streaming bucket if not. If the video is
-    // uploaded to the Rekognition bucket, it will be transferred to the streaming bucket using a lambda on AWS, so the
-    // videos will all end up in the same bucket at the end
-    function getUploadBucket() {
-        return isFaceBlurChecked
-            ? (process.env.AWS_UPLOAD_BUCKET_REKOGNITION as string)
-            : (process.env.AWS_UPLOAD_BUCKET_STREAMING as string)
-    }
 
     const s3Data: CompleteMultipartUploadCommandOutput | AbortMultipartUploadCommandOutput = await uploadS3.done()
     if (!isCompleteUpload(s3Data) || s3Data.Location === undefined) {

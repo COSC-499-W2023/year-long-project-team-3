@@ -303,22 +303,34 @@ export default function VideoDetailedPage() {
                                             </Box>
                                         </Box>
                                         {isEditing && (
-                                            <Box display='flex' justifyContent='flex-end' gap={1}>
-                                                <Button
-                                                    variant='contained'
-                                                    color='inherit'
-                                                    onClick={onCancelEdit}
-                                                    data-cy='detail-video-cancel-button'
-                                                >
-                                                    Cancel
-                                                </Button>
-                                                <Button
-                                                    variant='contained'
-                                                    onClick={onUpdateVideoInfo}
-                                                    data-cy='detail-video-update-button'
-                                                >
-                                                    Update
-                                                </Button>
+                                            <Box display='flex' justifyContent='space-between' gap={1}>
+                                                <Box>
+                                                    <Button
+                                                        variant='contained'
+                                                        color='error'
+                                                        onClick={onDeleteVideo}
+                                                        data-cy='detail-video-delete-button'
+                                                    >
+                                                        Delete
+                                                    </Button>
+                                                </Box>
+                                                <Box display='flex' gap={1}>
+                                                    <Button
+                                                        variant='contained'
+                                                        color='inherit'
+                                                        onClick={onCancelEdit}
+                                                        data-cy='detail-video-cancel-button'
+                                                    >
+                                                        Cancel
+                                                    </Button>
+                                                    <Button
+                                                        variant='contained'
+                                                        onClick={onUpdateVideoInfo}
+                                                        data-cy='detail-video-update-button'
+                                                    >
+                                                        Update
+                                                    </Button>
+                                                </Box>
                                             </Box>
                                         )}
                                         {!isEditing && video?.ownerId === userId && (
@@ -395,5 +407,25 @@ export default function VideoDetailedPage() {
         })
         const { userId } = await response.json()
         return userId
+    }
+
+    async function onDeleteVideo() {
+        try {
+            const response = await fetch(`/api/video/delete/${ videoId }`, {
+                method: 'DELETE',
+            })
+            if (!response.ok) {
+                logger.error(response.statusText)
+                toast.error('An unexpected error occurred!')
+            } else {
+                router.push('/dashboard')
+                toast.success('Video deleted successfully!')
+            }
+        } catch (error) {
+            if (error instanceof Error) {
+                logger.error(error.message)
+            }
+            toast.error('An unexpected error occurred!')
+        }
     }
 }
