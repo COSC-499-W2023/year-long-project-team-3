@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react'
 import { SubmissionBox, Video } from '@prisma/client'
 import logger from '@/utils/logger'
 import { toast } from 'react-toastify'
-import { Alert, Box, Button, Chip, TextField, Typography } from '@mui/material'
+import { Alert, Box, Button, Chip, Modal, TextField, Typography } from '@mui/material'
 
 import ScalingReactPlayer from '@/components/ScalingReactPlayer'
 import PageLoadProgress from '@/components/PageLoadProgress'
@@ -33,6 +33,23 @@ export default function VideoDetailedPage() {
     const [isEditing, setIsEditing] = useState(false)
     const [titleEdit, setTitleEdit] = useState('')
     const [descriptionEdit, setDescriptionEdit] = useState('')
+
+    // Delete confirm modal
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+
+
+    const modalStyle = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '25vw',
+        minWidth: '20rem',
+        backgroundColor: 'background.default',
+        borderRadius: '1rem',
+        boxShadow: 24,
+        p: '1rem 2rem',
+    }
 
     useEffect(() => {
         if (!session || !session?.data?.user?.email) {
@@ -308,7 +325,7 @@ export default function VideoDetailedPage() {
                                                     <Button
                                                         variant='contained'
                                                         color='error'
-                                                        onClick={onDeleteVideo}
+                                                        onClick={onDeleteButtonClicked}
                                                         data-cy='detail-video-delete-button'
                                                     >
                                                         Delete
@@ -356,6 +373,38 @@ export default function VideoDetailedPage() {
                     </>
                 )}
             </Box>
+
+            <Modal open={isDeleteModalOpen} onClose={handleModalClose}>
+                <Box sx={{
+                    ...modalStyle,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '1rem',
+                }}>
+                    <Typography
+                        component='div'
+                        sx={{
+                            textAlign: 'center',
+                        }}
+                    >
+                        Are you sure you want to delete video?
+                    </Typography>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'space-around',
+                            width: '100%',
+                        }}
+                    >
+                        <Button variant='contained' color='inherit' className='modal-close' onClick={handleModalClose}>
+                            Cancel
+                        </Button>
+                        <Button variant='contained' color='error' className='modal-close' onClick={handleDeleteVideo}>
+                            Confirm Delete
+                        </Button>
+                    </Box>
+                </Box>
+            </Modal>
         </>
     )
 
@@ -409,7 +458,8 @@ export default function VideoDetailedPage() {
         return userId
     }
 
-    async function onDeleteVideo() {
+    async function handleDeleteVideo() {
+        handleModalClose()
         try {
             const response = await fetch(`/api/video/delete/${ videoId }`, {
                 method: 'DELETE',
@@ -427,5 +477,13 @@ export default function VideoDetailedPage() {
             }
             toast.error('An unexpected error occurred!')
         }
+    }
+
+    function onDeleteButtonClicked() {
+        setIsDeleteModalOpen(true)
+    }
+
+    function handleModalClose() {
+        setIsDeleteModalOpen(false)
     }
 }
