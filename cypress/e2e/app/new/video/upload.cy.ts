@@ -56,5 +56,20 @@ describe('Test Video Upload and Streaming Processing Pipeline', () => {
             cy.contains('Video title is required').should('not.exist')
             cy.get('[data-cy=dropbox-error-message]').should('not.exist')
         })
+
+        it('should create video and redirect page to video details', () => {
+            cy.visit('/new/video/upload')
+            const videoTitle: string = 'I got a lot of lemons'
+            const videoDescription: string = 'TOO MANY LEMONS'
+            cy.get('[data-cy=title]').type(videoTitle)
+            cy.get('[data-cy=description]').type(videoDescription)
+            cy.get('[data-cy=dropzone-file-input]').selectFile('public/videos/lemons.mp4', { force: true })
+            cy.get('[data-cy=submit-upload-button]').wait(1000).click()
+
+            cy.url().should('not.contain', '/new/video/upload')
+
+            cy.get('[data-cy="detail-video-title"]').should('contain', videoTitle)
+            cy.get('[data-cy="detail-video-description"]').should('be.visible').should('contain', videoDescription)
+        })
     })
 })
