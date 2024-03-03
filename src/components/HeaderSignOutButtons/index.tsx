@@ -3,8 +3,10 @@
 import { Box, Button } from '@mui/material'
 import { signOut } from 'next-auth/react'
 import logger from '@/utils/logger'
+import { useRouter } from 'next/navigation'
 
 export default function HeaderSignOutButtons() {
+    const router = useRouter()
     return (
         <Box sx={{ m: 2, display: 'flex', flexDirection: 'row', gap: '16px' }}>
             <Button
@@ -19,7 +21,7 @@ export default function HeaderSignOutButtons() {
     )
 
     function handleSignOut() {
-        signOut().catch((err) => {
+        signOut({ callbackUrl: '/login' }).catch((err) => {
             const errMessage = JSON.stringify(err, Object.getOwnPropertyNames(err))
             logger.error(errMessage)
         })
