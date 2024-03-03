@@ -17,6 +17,8 @@ import * as yup from 'yup'
 import { useFormik } from 'formik'
 import { ObjectSchema } from 'yup'
 import { SubmissionModificationData } from '@/types/submission-box/submissionModificationData'
+import dayjs from 'dayjs'
+import { DateTimePicker } from '@mui/x-date-pickers'
 
 export default function SubmissionBoxDetailPage() {
     const router = useRouter()
@@ -25,15 +27,12 @@ export default function SubmissionBoxDetailPage() {
     const [boxType, setBoxType] = useState<BoxStatus>('requested')
     const [videos, setVideos] = useState<Video[]>([])
     const [boxInfo, setBoxInfo] = useState<SubmissionBox | null>(null)
-    const [boxTitleEdit, setBoxTitleEdit] = useState('')
-    const [boxDescriptionEdit, setBoxDescriptionEdit] = useState('')
-    const [boxDateEdit, setBoxDateEdit] = useState<Date|null>()
     const [isEditing, setIsEditing] = useState(false)
 
     const boxId = pathname?.split('/').pop()
     const formik = useFormik<SubmissionModificationData>({
         initialValues: {
-            title: '',
+            title: 'Title',
             description: null,
             closesAt: null,
         },
@@ -44,8 +43,8 @@ export default function SubmissionBoxDetailPage() {
     async function handleSubmit(submissionModificationData: SubmissionModificationData) {
         const submissionModificationForm = new FormData()
         submissionModificationForm.set('title', submissionModificationData.title)
-        submissionModificationForm.set('description', submissionModificationData.description)
-        submissionModificationForm.set('closesAt', submissionModificationData.closesAt)
+        //submissionModificationForm.set('description', submissionModificationData.description)
+        //submissionModificationForm.set('closesAt', submissionModificationData.closesAt)
         setIsEditing(false)
         setIsFetchingSubmissionBox(true)
         fetch(`/api/submission-box/update/${ boxId }`, {
@@ -124,7 +123,7 @@ export default function SubmissionBoxDetailPage() {
                                     emptyMessage={'No Videos Have Been Submitted to Your Box'}
                                 />
                             </Box>
-                            <Box paddingLeft='1rem'>
+                            <Box paddingLeft='1rem' paddingRight='1rem'>
                                 {!isEditing && (
                                     <Box
                                         top='2rem'
@@ -147,22 +146,76 @@ export default function SubmissionBoxDetailPage() {
                                 ) : (
                                     <>
                                         <form onSubmit={formik.handleSubmit} noValidate>
-                                            <Box display='flex' justifyContent='flex-end' gap={1} padding='1rem'>
-                                                <Button
-                                                    variant='contained'
-                                                    color='inherit'
-                                                    onClick={onCancelEdit}
-                                                    data-cy='cancelButton'
-                                                >
-                                                    Cancel
-                                                </Button>
-                                                <Button
-                                                    type='submit'
-                                                    variant='contained'
-                                                    data-cy='updateButton'
-                                                >
-                                                    Update
-                                                </Button>
+                                            <Box>
+                                                <Typography data-cy='submissionBoxTitleHeading' color={'textSecondary'} sx={{ m: 1, fontWeight: 'bold' }}>
+                                                    Title
+                                                </Typography>
+                                                <TextField
+                                                    type='text'
+                                                    name='title'
+                                                    sx={{ color: 'textSecondary', fontWeight: 'bold', width: '100%' }}
+                                                    onChange={formik.handleChange}
+                                                    onBlur={formik.handleBlur}
+                                                    value={formik.values.title}
+                                                />
+                                                <Typography data-cy='submissionBoxDateHeading' color={'textSecondary'} sx={{ m: 1, fontWeight: 'bold' }}>
+                                                    Close Date:
+                                                </Typography>
+                                                <DateTimePicker
+                                                    className='data-cy-date-time-picker' // regular data-cy wasn't working
+                                                    disablePast
+                                                    sx={{ width: '100% '}}
+                                                    value={formik.values.closesAt ? dayjs(formik.values.closesAt) : null}
+                                                    onChange={(e) => {
+                                                        formik.setFieldValue('closingDate', e)
+                                                    }}
+                                                    format='YYYY/MM/DD hh:mm A'
+                                                    defaultValue={null}
+                                                    // @ts-ignore
+                                                    textField={(props) => (
+                                                        <TextField
+                                                            margin='normal'
+                                                            variant='outlined'
+                                                            name='submissionBoxClosesAt'
+                                                            onBlur={formik.handleBlur}
+                                                            error={formik.touched.closesAt && Boolean(formik.errors.closesAt)}
+                                                            FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
+                                                            helperText={formik.touched.closesAt && formik.errors.closesAt}
+                                                            data-cy='submissionBoxClosesAt'
+                                                            {...props}
+                                                        />
+                                                    )}
+                                                />
+                                                <Typography data-cy='submissionBoxDescHeading' color={'textSecondary'} sx={{ m: 1, fontWeight: 'bold' }}>
+                                                    Description
+                                                </Typography>
+                                                <TextField
+                                                    type='text'
+                                                    name='description'
+                                                    multiline
+                                                    rows={8}
+                                                    sx={{ color: 'textSecondary', width: '100%' }}
+                                                    onChange={formik.handleChange}
+                                                    onBlur={formik.handleBlur}
+                                                    value={formik.values.description}
+                                                />
+                                                <Box display='flex' justifyContent='flex-end' gap={1} padding='1rem'>
+                                                    <Button
+                                                        variant='contained'
+                                                        color='inherit'
+                                                        onClick={onCancelEdit}
+                                                        data-cy='cancelButton'
+                                                    >
+                                                        Cancel
+                                                    </Button>
+                                                    <Button
+                                                        type='submit'
+                                                        variant='contained'
+                                                        data-cy='updateButton'
+                                                    >
+                                                        Update
+                                                    </Button>
+                                                </Box>
                                             </Box>
                                         </form>
                                     </>
@@ -249,9 +302,7 @@ export default function SubmissionBoxDetailPage() {
     function onCancelEdit() {
         setIsEditing(false)
         if (!!boxInfo) {
-            setBoxTitleEdit(boxInfo.title)
-            setBoxDescriptionEdit(boxInfo.description ?? '')
-            setBoxDateEdit(boxInfo.closesAt)
+            setBoxInfo(boxInfo)
         }
     }
 
