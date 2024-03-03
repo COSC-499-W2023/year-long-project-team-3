@@ -8,6 +8,9 @@ import prisma from '@/lib/prisma'
 import { uploadVideo } from '@/utils/sendVideo'
 
 export async function POST(req: NextRequest) {
+    /*
+    *   This API creates a new video object based on the information provided, and uploads a submitted video file to AWS.
+    */
     try {
         const session = await getServerSession()
         if (!session || !session.user?.email) {
@@ -33,12 +36,13 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'Face blur selection is required' }, { status: 400 })
         }
 
-        if(typeof description !== 'string') {
+        if(typeof description !== 'string' && description) {
             return NextResponse.json({ error: 'Description must be a string' }, { status: 400 })
         }
         const isFaceBlur = blurFace.toLowerCase() === 'true' ? true : blurFace.toLowerCase() === 'false' ? false : undefined
-        if (isFaceBlur === undefined)
-        {return NextResponse.json({ error: 'Face blur selection must be a boolean value' }, { status: 400 })}
+        if (isFaceBlur === undefined) {
+            return NextResponse.json({ error: 'Face blur selection must be a boolean value' }, { status: 400 })
+        }
 
         const videoData: VideoUploadData = {
             title: title,

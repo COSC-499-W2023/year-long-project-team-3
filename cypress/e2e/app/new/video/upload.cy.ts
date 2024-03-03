@@ -66,7 +66,7 @@ describe('Test Video Upload and Streaming Processing Pipeline', () => {
             cy.get('[data-cy=dropzone-file-input]').selectFile('public/videos/lemons.mp4', { force: true })
             cy.get('[data-cy=submit-upload-button]').wait(1000).click()
 
-            cy.url().should('not.contain', '/new/video/upload')
+            cy.url().should('not.contain', '/new/video/upload').and('contains', '/video/')
 
             cy.get('[data-cy="detail-video-title"]').should('contain', videoTitle)
             cy.get('[data-cy="detail-video-description"]').should('be.visible').should('contain', videoDescription)

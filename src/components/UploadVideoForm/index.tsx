@@ -41,15 +41,14 @@ export default function UploadVideoForm() {
             .then(async (res: Response) => {
                 const body = await res.json()
                 if (res.status !== 201) {
-                    toast.error(body.error)
                     throw new Error(body.error)
                 }
                 const videoId = body.video.id as string
                 router.push(`/video/${ videoId }`)
             })
-            .catch((err) => {
-                logger.error(err)
-                toast.error('Unexpected error occurred when uploading your video')
+            .catch((error) => {
+                logger.error(error)
+                toast.error(error)
                 router.push('/dashboard')
             })
     }
