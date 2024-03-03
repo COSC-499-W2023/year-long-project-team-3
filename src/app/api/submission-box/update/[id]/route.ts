@@ -65,7 +65,7 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
             },
         })
 
-        return NextResponse.json({ submissionBox: updatedSubmissionBox }, { status: 200 })
+        return NextResponse.json({ submissionBox: updatedSubmissionBox }, { status: 204 })
     } catch (error) {
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }

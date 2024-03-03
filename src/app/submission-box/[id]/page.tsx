@@ -13,6 +13,10 @@ import { BoxStatus } from '@/types/submission-box/boxStatus'
 import { toast } from 'react-toastify'
 import EditIcon from '@mui/icons-material/Edit'
 import logger from '@/utils/logger'
+import * as yup from 'yup'
+import { useFormik } from 'formik'
+import { ObjectSchema } from 'yup'
+import { SubmissionModificationData } from '@/types/submission-box/submissionModificationData'
 
 export default function SubmissionBoxDetailPage() {
     const router = useRouter()
@@ -27,25 +31,67 @@ export default function SubmissionBoxDetailPage() {
     const [isEditing, setIsEditing] = useState(false)
 
     const boxId = pathname?.split('/').pop()
+    const formik = useFormik<SubmissionModificationData>({
+        initialValues: {
+            title: '',
+            description: '',
+            closesAt: new Date(),
+        },
+        validationSchema: validationSchema,
+        onSubmit: (values: SubmissionModificationData) => handleSubmit(values),
+    })
+
+    async function handleSubmit(submissionModificationData: SubmissionModificationData) {
+        const submissionModificationForm = new FormData()
+        submissionModificationForm.set('title', submissionModificationData.title)
+        submissionModificationForm.set('description', submissionModificationData.description)
+        submissionModificationForm.set('closesAt', submissionModificationData.closesAt)
+        setIsEditing(false)
+        setIsFetchingSubmissionBox(true)
+        fetch(`/api/submission-box/update/${ boxId }`, {
+            method: 'POST',
+            body: submissionModificationForm,
+        })
+            .then(async (res: Response) => {
+                const body = await res.json()
+                if (res.status !== 204) {
+                    throw new Error(body.error)
+                }
+                if (!body.submissionBox) {
+                    throw new Error('Could not update submission box')
+                }
+                setBoxInfo(body.submissionBox)
+            })
+            .catch((err) => {
+                logger.error(err.message)
+                toast.error('An unexpected error occurred')
+            })
+            .finally(() => {
+                setIsFetchingSubmissionBox(false)
+            })
+    }
 
     useEffect(() => {
         setIsFetchingSubmissionBox(true)
 
-        fetch(`/api/submission-box/${ boxId }`).then(async (res) => {
-            const { box, videos, submissionBoxInfo } = await res.json()
-            if (!submissionBoxInfo) {
+        fetch(`/api/submission-box/${ boxId }`)
+            .then(async (res) => {
+                const { box, videos, submissionBoxInfo } = await res.json()
+                if (!submissionBoxInfo) {
+                    router.push('/dashboard')
+                    toast.error('You do not have permission to view this submission box')
+                }
+                setBoxType(box)
+                setBoxInfo(submissionBoxInfo)
+                setVideos(videos)
+            })
+            .catch(() => {
                 router.push('/dashboard')
-                toast.error('You do not have permission to view this submission box')
-            }
-            setBoxType(box)
-            setBoxInfo(submissionBoxInfo)
-            setVideos(videos)
-        }).catch(() => {
-            router.push('/dashboard')
-            toast.error('An error occurred trying to access submission box')
-        }).finally(() => {
-            setIsFetchingSubmissionBox(false)
-        })
+                toast.error('An error occurred trying to access submission box')
+            })
+            .finally(() => {
+                setIsFetchingSubmissionBox(false)
+            })
     }, [boxId, router])
 
     return (
@@ -280,34 +326,13 @@ export default function SubmissionBoxDetailPage() {
         }
     }
 
-    function onUpdateVideoInfo() {
-        setIsEditing(false)
-
-        fetch(`/api/submission-box/update/${ boxId }`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                title: boxTitleEdit,
-                description: boxDescriptionEdit,
-                closesAt: boxDateEdit,
-            }),
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                if (!data.submissionBox) {
-                    throw new Error('Could not update submission box')
-                }
-                setBoxInfo(data.submissionBox)
-            })
-            .catch((err) => {
-                logger.error(err.message)
-                toast.error('An unexpected error occurred!')
-            })
-    }
-
     function onEditStart() {
         setIsEditing(true)
     }
 }
+
+const validationSchema: ObjectSchema<SubmissionModificationData> = yup.object().shape({
+    title: yup.string().required('Submission box title is required'),
+    description: yup.string().nullable().default(null),
+    closesAt: yup.date().typeError('Please enter a valid date').nullable().default(null),
+})
