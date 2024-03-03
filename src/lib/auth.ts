@@ -6,6 +6,8 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import logger from '@/utils/logger'
 import { compare } from 'bcrypt'
 
+const prismaAdapter = PrismaAdapter(prisma)
+
 export const authOptions: NextAuthOptions = {
     logger: {
         debug: (msg, metadata) => {
@@ -23,7 +25,25 @@ export const authOptions: NextAuthOptions = {
     pages: {
         signIn: '/login',
     },
-    adapter: PrismaAdapter(prisma),
+    adapter: {
+        ...prismaAdapter,
+        createUser: async (user) => {
+            // @ts-ignore
+            const newUser = await prismaAdapter.createUser(user)
+
+            // Check requested submission and link it to the user
+            await prisma.requestedSubmission.updateMany({
+                where: {
+                    email: user.email,
+                },
+                data: {
+                    userId: newUser.id,
+                },
+            })
+
+            return newUser
+        },
+    },
     session: {
         strategy: 'jwt',
     },
