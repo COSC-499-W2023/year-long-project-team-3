@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
 
         const videoData: VideoUploadData = {
             title: title,
-            description: description ? description : '',
+            description: description ?? null,
             file: file,
             blurFace: isFaceBlur,
         }
