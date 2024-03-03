@@ -34,8 +34,10 @@ export const authOptions: NextAuthOptions = {
             // Check requested submission and link it to the user
             await prisma.requestedSubmission.updateMany({
                 where: {
-                    email: user.email,
-                    mode: 'insensitive'
+                    email: {
+                        contains: user.email,
+                        mode: 'insensitive',
+                    },
                 },
                 data: {
                     userId: newUser.id,
