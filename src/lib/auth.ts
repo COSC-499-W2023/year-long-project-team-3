@@ -35,6 +35,7 @@ export const authOptions: NextAuthOptions = {
             await prisma.requestedSubmission.updateMany({
                 where: {
                     email: user.email,
+                    mode: 'insensitive'
                 },
                 data: {
                     userId: newUser.id,
