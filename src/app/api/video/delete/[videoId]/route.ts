@@ -40,7 +40,11 @@ export async function DELETE(_: NextRequest, { params }: VideoDeleteParams): Pro
         }
 
         if (isCloudProcessed) {
-            await deleteS3StreamingVideo(getS3StreamingBucket(), s3Key)
+            // Even when deleting video on s3 is failed, we still delete the video from database
+            deleteS3StreamingVideo(getS3StreamingBucket(), s3Key)
+                .catch((error) => {
+                    logger.error(error)
+                })
         }
 
         await prisma.videoWhitelistedUser.deleteMany({

@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 import { TIMEOUT } from '../../../../utils/constants'
+import runWithRetry from "../../../../utils/runUntilExist";
 
 describe('Detail video page', () => {
     let email: string
@@ -253,15 +254,21 @@ describe('Detail video page', () => {
                         cy.get('[data-cy="video-list"]').children().first().should('contain', videoTitle).click()
 
                         cy.url().should('contain', `/video/${ videoId }`, { timeout: TIMEOUT.EXTRA_LONG })
+
+                        cy.get('[data-cy="edit-icon"]').click()
+                        cy.get('[data-cy="detail-video-delete-button"]').click()
+                        cy.get('[data-cy="detail-video-delete-confirm-button"]').click()
+                        cy.url().should('include', '/dashboard', { timeout: TIMEOUT.EXTRA_LONG })
+                        cy.get('[data-cy="video-list"]', { timeout: TIMEOUT.EXTRA_LONG }).should('not.exist')
+
+                        runWithRetry(() => {
+                            cy.visit(`/video/${ videoId }`)
+                            cy.url().should('include', '/dashboard', { timeout: TIMEOUT.EXTRA_LONG })
+                            cy.reload()
+                        })
                     }
                 )
             })
         })
-
-        cy.get('[data-cy="edit-icon"]').click()
-        cy.get('[data-cy="detail-video-delete-button"]').click()
-        cy.get('[data-cy="detail-video-delete-confirm-button"]').click()
-        cy.url().should('include', '/dashboard', { timeout: TIMEOUT.EXTRA_LONG })
-        cy.get('[data-cy="video-list"]', { timeout: TIMEOUT.EXTRA_LONG }).should('not.exist')
     })
 })

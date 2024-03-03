@@ -80,47 +80,25 @@ export default function VideoDetailedPage() {
             router.push('/')
         }
 
-        fetch(`/api/video/${ videoId }`)
-            .then((res) => {
-                if (!res.ok) {
-                    throw new Error('Could not fetch video')
+        Promise.all([
+            fetch(`/api/video/${ videoId }`),
+            fetch(`/api/submission-box/video/${ videoId }`),
+        ])
+            .then(async ([videoRes, submissionBoxesRes]) => [await videoRes.json(), await submissionBoxesRes.json()])
+            .then(([videoData, submissionBoxesData]) => {
+                if (!videoData.video || !submissionBoxesData.submissionBoxes) {
+                    throw new Error('Could not fetch video or submission boxes')
                 }
-                return res
-            })
-            .then((res) => res.json())
-            .then(({ video }: { video: Video }) => {
-                if (!video) {
-                    throw new Error('Video not found')
-                }
-                setVideo(video)
+                setVideo(videoData.video)
+                setSubmissionBoxes(submissionBoxesData.submissionBoxes)
             })
             .catch((err) => {
                 logger.error(err.message)
                 toast.error('An unexpected error occurred!')
+                router.push('/dashboard')
             })
             .finally(() => {
                 setIsFetchingVideo(false)
-            })
-
-        fetch(`/api/submission-box/video/${ videoId }`)
-            .then((res) => {
-                if (!res.ok) {
-                    throw new Error('Could not fetch submission boxes')
-                }
-                return res
-            })
-            .then((res) => res.json())
-            .then(({ submissionBoxes }: { submissionBoxes: SubmissionBox[] }) => {
-                if (!submissionBoxes) {
-                    throw new Error('Submission boxes not found')
-                }
-                setSubmissionBoxes(submissionBoxes)
-            })
-            .catch((err) => {
-                logger.error(err.message)
-                toast.error('An unexpected error occurred!')
-            })
-            .finally(() => {
                 setIsFetchingSubmissionBoxes(false)
             })
     }, [router, videoId])
@@ -320,7 +298,7 @@ export default function VideoDetailedPage() {
                                             </Box>
                                         </Box>
                                         {isEditing && (
-                                            <Box display='flex' justifyContent='space-between' gap={1}>
+                                            <Box display='flex' justifyContent='space-between' gap={1} marginBottom={1}>
                                                 <Box>
                                                     <Button
                                                         variant='contained'
@@ -385,6 +363,8 @@ export default function VideoDetailedPage() {
                         component='div'
                         sx={{
                             textAlign: 'center',
+                            marginTop: '1rem',
+                            marginBottom: '1.5rem',
                         }}
                     >
                         Are you sure you want to delete video?
@@ -392,7 +372,7 @@ export default function VideoDetailedPage() {
                     <Box
                         sx={{
                             display: 'flex',
-                            justifyContent: 'space-around',
+                            justifyContent: 'space-between',
                             width: '100%',
                         }}
                     >
@@ -412,7 +392,7 @@ export default function VideoDetailedPage() {
                             onClick={handleDeleteVideo}
                             data-cy='detail-video-delete-confirm-button'
                         >
-                            Confirm Delete
+                            Delete
                         </Button>
                     </Box>
                 </Box>
@@ -450,7 +430,7 @@ export default function VideoDetailedPage() {
             })
             .catch((err) => {
                 logger.error(err.message)
-                toast.error('An unexpected error occurred!')
+                toast.error('An unexpected error occurred while trying to delete your video!')
             })
     }
 
