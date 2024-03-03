@@ -153,7 +153,7 @@ export async function uploadVideo(videoData: VideoUploadData, user: User, fileEx
         },
     })
     const s3VideoUploadResult: CompleteMultipartUploadCommandOutput | AbortMultipartUploadCommandOutput = await s3VideoUpload.done()
-    if (!isCompleteUpload(s3VideoUploadResult) || s3VideoUploadResult.Location === undefined) {
+    if (!isCompleteUpload(s3VideoUploadResult) || !s3VideoUploadResult?.Location) {
         logger.error(s3VideoUploadResult)
         // TODO: Send email/notify to user there is an issue with uploading video
         throw new Error(`Unexpected error while uploading video ${ videoData.title } to S3`)
