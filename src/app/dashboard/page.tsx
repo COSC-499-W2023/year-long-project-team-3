@@ -151,7 +151,6 @@ export default function DashboardPage() {
                     <Box
                         sx={{
                             borderTopLeftRadius: 25,
-                            borderBottomLeftRadius: 25,
                             backgroundColor: 'secondary.lighter',
                             height: '100%',
                         }}
@@ -160,7 +159,15 @@ export default function DashboardPage() {
                         {isFetching ? (
                             <PageLoadProgress />
                         ) : (
-                            <Box component='section' sx={{ height: '100%', paddingTop: 5 }} width='100%'>
+                            <Box
+                                component='section'
+                                sx={{
+                                    height: 'calc(100vh - 200px)',
+                                    overflowY: 'auto',
+                                    paddingTop: 2,
+                                }}
+                                width='100%'
+                            >
                                 {isVideoTabSelected ? (
                                     <VideoList
                                         videos={displayVideos.map((video) => {
