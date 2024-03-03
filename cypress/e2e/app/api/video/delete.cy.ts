@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
-import runWithRetry from "../../../../utils/runUntilExist";
+import runWithRetry from '../../../../utils/runUntilExist'
 
 describe('Test video deletion API', () => {
     it('should reject if not DELETE method', () => {
