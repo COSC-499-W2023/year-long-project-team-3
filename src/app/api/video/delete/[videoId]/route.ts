@@ -33,13 +33,13 @@ export async function DELETE(_: NextRequest, { params }: VideoDeleteParams): Pro
         })
 
         const { s3Key, isCloudProcessed, isSubmitted } = video
-        if (!s3Key) {
-            // If cloud processed, but no s3Key, then it's a bug
-            logger.error('Video is cloud processed but has no s3Key')
-            return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
-        }
 
         if (isCloudProcessed) {
+            if (!s3Key) {
+                // If cloud processed, but no s3Key, then it's a bug
+                logger.error('Video is cloud processed but has no s3Key')
+                return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+            }
             // Even when deleting video on s3 is failed, we still delete the video from database
             deleteS3StreamingVideo(getS3StreamingBucket(), s3Key)
                 .catch((error) => {

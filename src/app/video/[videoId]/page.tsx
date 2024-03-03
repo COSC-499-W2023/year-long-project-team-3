@@ -43,7 +43,7 @@ export default function VideoDetailedPage() {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: '25vw',
+        width: '25rem',
         minWidth: '20rem',
         backgroundColor: 'background.default',
         borderRadius: '1rem',
@@ -357,6 +357,8 @@ export default function VideoDetailedPage() {
                     ...modalStyle,
                     display: 'flex',
                     flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                     gap: '1rem',
                 }}>
                     <Typography
@@ -364,38 +366,40 @@ export default function VideoDetailedPage() {
                         sx={{
                             textAlign: 'center',
                             marginTop: '1rem',
-                            marginBottom: '1.5rem',
+                            width: 'max-content',
                         }}
                     >
                         Are you sure you want to delete video?
+
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                width: '100%',
+                                marginTop: '1.5rem',
+                                marginBottom: '.5rem',
+                            }}
+                        >
+                            <Button
+                                variant='contained'
+                                color='inherit'
+                                className='modal-close'
+                                onClick={handleModalClose}
+                                data-cy='detail-video-delete-cancel-button'
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                variant='contained'
+                                color='error'
+                                className='modal-close'
+                                onClick={handleDeleteVideo}
+                                data-cy='detail-video-delete-confirm-button'
+                            >
+                                Delete
+                            </Button>
+                        </Box>
                     </Typography>
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            width: '100%',
-                            marginBottom: '.5rem',
-                        }}
-                    >
-                        <Button
-                            variant='contained'
-                            color='inherit'
-                            className='modal-close'
-                            onClick={handleModalClose}
-                            data-cy='detail-video-delete-cancel-button'
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            variant='contained'
-                            color='error'
-                            className='modal-close'
-                            onClick={handleDeleteVideo}
-                            data-cy='detail-video-delete-confirm-button'
-                        >
-                            Delete
-                        </Button>
-                    </Box>
                 </Box>
             </Modal>
         </>
