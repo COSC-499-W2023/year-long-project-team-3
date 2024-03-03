@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 import { TIMEOUT } from '../../../../utils/constants'
-import runWithRetry from "../../../../utils/runUntilExist";
+import runWithRetry from '../../../../utils/runUntilExist'
 
 describe('Detail video page', () => {
     let email: string
