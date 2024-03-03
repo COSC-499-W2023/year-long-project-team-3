@@ -374,6 +374,7 @@ export default function VideoDetailedPage() {
                             display: 'flex',
                             justifyContent: 'space-between',
                             width: '100%',
+                            marginBottom: '.5rem',
                         }}
                     >
                         <Button
