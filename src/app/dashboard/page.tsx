@@ -1,7 +1,6 @@
 'use client'
 
 import { useSession } from 'next-auth/react'
-import Header from '@/components/Header'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import React, { useEffect, useState } from 'react'
@@ -27,8 +26,8 @@ export default function DashboardPage() {
     const [tempSubmissionBoxes, setTempSubmissionBoxes] = useState<SubmissionBox[]>([])
 
     // Page component controls
-    const [sidebarSelectedOption, setSidebarSelectedOption] = useState<SidebarOption>('menu_recent')
-    const [pageTitle, setPageTitle] = useState('Recent')
+    const [sidebarSelectedOption, setSidebarSelectedOption] = useState<SidebarOption>('menu_my_videos')
+    const [pageTitle, setPageTitle] = useState('My Videos')
     const [isVideoTabSelected, setIsVideoTabSelected] = useState(true)
 
     // Page load controls
@@ -88,9 +87,9 @@ export default function DashboardPage() {
             return
         }
 
-        if (sidebarSelectedOption === 'menu_recent') {
+        if (sidebarSelectedOption === 'menu_my_videos') {
             setIsVideoTabSelected(true)
-            setPageTitle('Recent')
+            setPageTitle('My Videos')
             const sortedVideos =
                 allVideos?.toSorted((video, otherVideo) => {
                     const videoUpdatedAt = new Date(video?.updatedAt).getTime() ?? 0
@@ -98,33 +97,9 @@ export default function DashboardPage() {
                     return otherVideoUpdatedAt - videoUpdatedAt
                 }) || []
             setTempVideos(sortedVideos)
-        } else if (sidebarSelectedOption === 'menu_submitted_videos') {
-            setIsVideoTabSelected(true)
-            setPageTitle('Submitted Videos')
-
-            setIsFetching(true)
-            getUserIdByEmail(session.data.user.email)
-                .then((userId) => {
-                    const ownedVideos = allVideos.filter((video) => video.ownerId === userId)
-                    setTempVideos(ownedVideos)
-                })
-                .catch((error) => toast.error(error))
-                .finally(() => setIsFetching(false))
-        } else if (sidebarSelectedOption === 'menu_starred') {
-            setIsVideoTabSelected(true)
-            setPageTitle('Starred')
-
-            // TODO: Added isStarred field to Video model
-            setTempVideos([])
-        } else if (sidebarSelectedOption === 'menu_trash') {
-            setIsVideoTabSelected(true)
-            setPageTitle('Trash')
-
-            // TODO: Added isDeleted field to Video model
-            setTempVideos([])
-        } else if (sidebarSelectedOption === 'submission_boxes_my_boxes') {
+        } else if (sidebarSelectedOption === 'submission_boxes_manage_boxes') {
             setIsVideoTabSelected(false)
-            setPageTitle('Submission Boxes')
+            setPageTitle('Manage Boxes')
 
             setIsFetching(true)
             fetchMyBoxes()
@@ -133,9 +108,9 @@ export default function DashboardPage() {
                 })
                 .catch((error) => toast.error(error))
                 .finally(() => setIsFetching(false))
-        } else if (sidebarSelectedOption === 'submission_boxes_my_requests') {
+        } else if (sidebarSelectedOption === 'submission_boxes_my_invitations') {
             setIsVideoTabSelected(false)
-            setPageTitle('Requested Submissions')
+            setPageTitle('My Invitations')
 
             setIsFetching(true)
             fetchMyRequests()
@@ -149,8 +124,13 @@ export default function DashboardPage() {
 
     return (
         <>
-            <Header {...session} />
-            <Box display='grid' gridTemplateColumns='1fr 4fr' height='100%' width='100%'>
+            <Box sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                flexGrow: 1,
+                height: '100%',
+                width: '100%',
+            }}>
                 <DashboardSidebar
                     sidebarSelectedOption={sidebarSelectedOption}
                     setSidebarSelectedOption={setSidebarSelectedOption}
@@ -159,9 +139,9 @@ export default function DashboardPage() {
                     <Box display='flex' justifyContent='space-between' alignItems='center' paddingRight='3rem'>
                         <Typography
                             data-cy='title'
-                            variant='h5'
+                            variant='h6'
                             color={'textSecondary'}
-                            sx={{ m: 2, fontWeight: 'bold', py: '1rem', marginTop: '1rem' }}
+                            sx={{ m: '1rem', mb: 0, fontWeight: 'bold', py: '1rem' }}
                         >
                             {pageTitle}
                         </Typography>
@@ -171,16 +151,15 @@ export default function DashboardPage() {
                         sx={{
                             borderTopLeftRadius: 25,
                             borderBottomLeftRadius: 25,
-                            height: '100vh',
                             backgroundColor: 'secondary.lighter',
+                            height: '100%',
                         }}
                         borderColor={'secondary.lighter'}
-                        width='100%'
                     >
                         {isFetching ? (
                             <PageLoadProgress />
                         ) : (
-                            <Box component='section' sx={{ height: '80vh', paddingTop: 5 }} width='100%'>
+                            <Box component='section' sx={{ height: '100%', paddingTop: 5 }} width='100%'>
                                 {isVideoTabSelected ? (
                                     <VideoList
                                         videos={displayVideos.map((video) => {
@@ -193,7 +172,11 @@ export default function DashboardPage() {
                                         isSearching={isSearching}
                                     />
                                 ) : (
-                                    <SubmissionBoxList submissionBoxes={submissionBoxes} isSearching={isSearching} />
+                                    <SubmissionBoxList
+                                        submissionBoxes={submissionBoxes}
+                                        isSearching={isSearching}
+                                        emptyMessage={sidebarSelectedOption === 'submission_boxes_manage_boxes' ? 'You do not own any submission boxes' : 'You have not been invited to any submission boxes'}
+                                    />
                                 )}
                             </Box>
                         )}
@@ -204,21 +187,9 @@ export default function DashboardPage() {
     )
 
     async function fetchAllVideos(): Promise<Video[]> {
-        const response = await fetch('/api/videos')
+        const response = await fetch('/api/my-videos')
         const { videos } = await response.json()
         return videos
-    }
-
-    async function getUserIdByEmail(userEmail: string): Promise<string> {
-        const response = await fetch('/api/user/getUserIdByEmail', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ userEmail }),
-        })
-        const { userId } = await response.json()
-        return userId
     }
 
     async function fetchMyBoxes(): Promise<SubmissionBox[]> {

@@ -8,14 +8,11 @@ import { type SessionContextValue, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 
 export default function HomePage() {
-    const session: SessionContextValue = useSession()
     const router = useRouter()
-
     return (
         <>
-            <Header {...session} />
             <Box
-                sx={{ display: 'flex', flexGrow: 1, alignItems: 'center', flexDirection: 'column', gap: '2rem', p: 6 }}
+                sx={{ display: 'flex', flexGrow: 1, alignItems: 'center', flexDirection: 'column', gap: '2rem', py: '2rem' }}
             >
                 <Logo fontSize={200} />
                 <Typography
@@ -50,7 +47,7 @@ export default function HomePage() {
                 </Typography>
                 <Box sx={{ display: 'flex', gap: '1rem' }}>
                     <LandingPageButton text='Get Started' handleOnClick={handleClickGetStarted} />
-                    <LandingPageButton text='Find Out More' handleOnClick={handleClickFindOutMore} />
+                    <LandingPageButton text='Learn More' handleOnClick={handleClickLearnMore} />
                 </Box>
             </Box>
         </>
@@ -60,7 +57,7 @@ export default function HomePage() {
         router.push('/dashboard')
     }
 
-    function handleClickFindOutMore() {
-        router.push('/find-out-more')
+    function handleClickLearnMore() {
+        router.push('/learn-more')
     }
 }

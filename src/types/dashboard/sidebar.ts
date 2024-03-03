@@ -1,9 +1,6 @@
 export type SidebarOption =
     | 'menu_record_new'
-    | 'menu_recent'
-    | 'menu_submitted_videos'
-    | 'menu_starred'
-    | 'menu_trash'
+    | 'menu_my_videos'
     | 'submission_boxes_create_new'
-    | 'submission_boxes_my_boxes'
-    | 'submission_boxes_my_requests'
+    | 'submission_boxes_manage_boxes'
+    | 'submission_boxes_my_invitations'

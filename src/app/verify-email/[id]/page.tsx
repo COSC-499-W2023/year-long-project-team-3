@@ -1,16 +1,14 @@
 'use client'
 
-import Header from '@/components/Header'
-import { useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
-import { Box, Button, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import PageLoadProgress from '@/components/PageLoadProgress'
+import LandingPageButton from '@/components/LandingPageButton'
 
 type PageStatus = 'loading' | 'success' | 'error'
 
 export default function VerifyEmail() {
-    const session = useSession()
     const router = useRouter()
     const emailVerificationId = usePathname()?.split('/').pop()
     const [pageMsg, setPageMsg] = useState('')
@@ -39,20 +37,21 @@ export default function VerifyEmail() {
     }, [callCount, emailVerificationId])
 
     const resendEmail = () => {
-        fetch('/api/verify-email/send-email').then((res) => {
-            if (res.status === 200) {
-                setButtonText('Email Sent!')
-            } else {
+        fetch('/api/verify-email/send-email')
+            .then((res) => {
+                if (res.status === 200) {
+                    setButtonText('Email Sent!')
+                } else {
+                    setButtonText('Failed to send. Try again')
+                }
+            })
+            .catch(() => {
                 setButtonText('Failed to send. Try again')
-            }
-        }).catch(() => {
-            setButtonText('Failed to send. Try again')
-        })
+            })
     }
 
     return (
         <>
-            <Header {...session} />
             {/* Main Body */}
             <Box
                 sx={{
@@ -75,12 +74,13 @@ export default function VerifyEmail() {
                         >
                             {pageMsg}
                         </Typography>
-                        <Button variant='contained' data-cy='dashboard-button' onClick={() => router.push('/dashboard')}>
-                    Proceed to Dashboard
-                        </Button>
-                        {pageStatus === 'error' && (
-                            <Button onClick={resendEmail} variant='contained'>{buttonText}</Button>
+                        {pageStatus !== 'error' && (
+                            <LandingPageButton
+                                handleOnClick={() => router.push('/dashboard')}
+                                text='Proceed to Dashboard'
+                            />
                         )}
+                        {pageStatus === 'error' && <LandingPageButton handleOnClick={resendEmail} text={buttonText} />}
                     </>
                 )}
             </Box>

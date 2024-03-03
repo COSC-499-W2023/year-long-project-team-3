@@ -32,7 +32,7 @@ function _getTitleColor(isDisabled: boolean, isAddButton: boolean, isSelected: b
         return 'white'
     }
     if (isSelected) {
-        return theme.palette.primary.dark
+        return theme.palette.secondary.main
     }
     return theme.palette.text.secondary
 }
@@ -54,7 +54,15 @@ function _getHoverTitleColor(isDisabled: boolean, isAddButton: boolean) {
     if (isAddButton) {
         return 'white'
     }
-    return theme.palette.primary.dark
+    return theme.palette.secondary.main
+}
+
+function _getBoxShadow(isDisabled: boolean, isAddButton: boolean) {
+    if (isAddButton) {
+        return 2
+    } else {
+        return 0
+    }
 }
 
 export default function DashboardSidePanelOption(props: DashboardSidePanelOptionProps) {
@@ -66,21 +74,25 @@ export default function DashboardSidePanelOption(props: DashboardSidePanelOption
     const hoverBackgroundColor = _getHoverBackgroundColor(isDisabled, isAddButton)
     const hoverTitleColor = _getHoverTitleColor(isDisabled, isAddButton)
 
+    const boxShadow = _getBoxShadow(isDisabled, isAddButton)
+
     return (
         <Box
             display='flex'
             gap='1rem'
-            padding={'8px 24px'}
+            padding={'7px 16px'}
             borderRadius={60}
             bgcolor={backgroundColor}
             alignItems='center'
             data-cy={props.title}
             sx={{
-                fontSize: '15px',
+                fontSize: '8px',
                 color: titleColor,
+                boxShadow: boxShadow,
                 '&:hover': {
                     cursor: props.isDisabled ? 'auto' : 'pointer',
                     backgroundColor: hoverBackgroundColor,
+                    boxShadow: boxShadow * 1.5,
                     color: hoverTitleColor,
                     '> *': {
                         color: hoverTitleColor,
@@ -90,7 +102,7 @@ export default function DashboardSidePanelOption(props: DashboardSidePanelOption
             onClick={props.isDisabled ? () => {} : props.onClick}
         >
             {props.icon}
-            <Typography fontWeight={600}>{props.title}</Typography>
+            <Typography fontWeight={600} fontSize='14px'>{props.title}</Typography>
         </Box>
     )
 }

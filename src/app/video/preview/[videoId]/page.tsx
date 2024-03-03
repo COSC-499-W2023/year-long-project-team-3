@@ -1,7 +1,5 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import Header from '@/components/Header'
-import { SessionContextValue, useSession } from 'next-auth/react'
 import ProgressDots from '@/components/ProgressDots'
 import { Box } from '@mui/material'
 import ScalingReactPlayer from '@/components/ScalingReactPlayer'
@@ -9,12 +7,11 @@ import { useRouter, usePathname } from 'next/navigation'
 import VideoProcessing from '@/components/VideoProcessing'
 import PageLoadProgress from '@/components/PageLoadProgress'
 import { toast } from 'react-toastify'
-import BackButton from '@/components/BackButton'
+import BackButtonWithLink from '@/components/BackButtonWithLink'
 import FormNavButton from '@/components/FormNavButton'
 import logger from '@/utils/logger'
 
 export default function VideoPreviewPage() {
-    const session: SessionContextValue = useSession()
     const router = useRouter()
     const pathname = usePathname()
 
@@ -101,13 +98,14 @@ export default function VideoPreviewPage() {
                     alignItems: 'stretch',
                     m: 0,
                     p: 0,
-                    width: '100vw',
-                    height: '100vh',
+                    width: '100%',
+                    height: '100%',
                 }}
             >
-                <Header {...session} />
                 {!isVideoVisible ? (
-                    <PageLoadProgress />
+                    <Box sx={{ flexGrow: 1, py: '2rem'}}>
+                        <PageLoadProgress />
+                    </Box>
                 ) : (
                     <>
                         {isCloudProcessed ? (
@@ -131,7 +129,7 @@ export default function VideoPreviewPage() {
                                         m: 0,
                                     }}
                                 >
-                                    <BackButton route={'/dashboard '} title={'Return to Dashboard'} />
+                                    <BackButtonWithLink route={'/dashboard '} title={'Return to Dashboard'} />
                                 </Box>
                                 {/*Main Body*/}
                                 <Box

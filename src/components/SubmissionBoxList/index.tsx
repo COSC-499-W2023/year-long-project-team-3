@@ -12,6 +12,7 @@ import { theme } from '@/components/ThemeRegistry/theme'
 export type SubmissionBoxListProps = {
     submissionBoxes: SubmissionBox[]
     isSearching: boolean
+    emptyMessage: string
 }
 
 export default function SubmissionBoxList(props: SubmissionBoxListProps) {
@@ -64,8 +65,8 @@ export default function SubmissionBoxList(props: SubmissionBoxListProps) {
                 sx={{ mt: 20 }}
             >
                 { props.isSearching
-                    ? 'There Are No Submission Boxes That Match This Search'
-                    : 'You Do Not Have Any Submission Boxes' }
+                    ? props.emptyMessage + ' that match this search'
+                    : props.emptyMessage }
             </Typography>
         </Box>
     )

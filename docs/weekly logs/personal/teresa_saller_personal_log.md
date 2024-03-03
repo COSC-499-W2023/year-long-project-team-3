@@ -308,3 +308,80 @@ working on enabling larger files to be transferred between our rekognition and s
 ### Additional Context
 
 Since I worked a lot on infrastructure and bug testing, I only have one PR with tests.
+
+
+## Teresa Saller - Term 2: Week 4 (2024/01/29 - 2024/02/04)
+
+![teresa-saller-tasks-w4-t2.png](imgs/teresa-saller-tasks-w4-t2.png)
+
+### Tasks
+
+Completed:
+- [Revamped Mission Statement #357](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/357)
+- [Removed edit tools on video edit page, renamed the page to preview #355](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/355)
+- [Add all tasks that came from peer-testing feedback to GitHub #375](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/375)
+- [Updated PR template now that actions work #404](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/404)
+- [Fix description #402](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/402)
+
+In progress:
+- [Transferring videos between buckets times out for longer videos #343](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/343)
+- [Go to dashboard button after email verification is odd size #407](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/407)
+
+### Goals
+
+My goal for this week was to collect good feedback in our peer-testing session, and to start fixing whatever issues the 
+session uncovers. The feedback we received was generally positive, most of it just lead to smaller UI fixes. We discussed
+features and brainstormed feedbacks in a team meeting and I added the [tasks we came up with](https://docs.google.com/document/d/1KsMm4D5D9PheCWpZ02yLwP1AJmBTkQgDxlyA0grJiUU/edit?usp=sharing)
+to GitHub. Also, I have been working on enabling larger files to be transferred between our rekognition and streaming 
+pipelines.
+
+### Additional Context
+
+Lot of work on infrastructure and planning
+
+
+## Teresa Saller - Term 2: Week 5 (2024/02/05 - 2024/02/11)
+
+![teresa-saller-tasks-w5-t2.png](imgs/teresa-saller-tasks-w5-t2.png)
+
+### Tasks
+
+Completed:
+- [Transferring videos between buckets times out for longer videos #343](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/343)
+- [Go to dashboard button after email verification is odd size #407](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/407)
+
+In progress:
+- [Submission box email addition fixes #422](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/422)
+  - Couldn't merge today because we didn't have time to wait on the E2E tests again, hoping to merge tomorrow
+
+### Goals
+
+My goal for this week was to finish working on enabling larger files to be transferred between our rekognition and streaming
+pipelines. I have also made a minor UI fix on the dashboard and made a bigger fix for submission box email addition, to 
+address some of the feedback we received from the peer testing. My goal for this upcoming week is to look at designing
+new cards for our dashboard.
+
+### Additional Context
+
+## Teresa Saller - Term 2: Week 5 (2024/02/05 - 2024/02/11)
+
+![teresa-saller-tasks-w6-t2.png](imgs/teresa-saller-tasks-w6-t2.png)
+
+### Tasks
+
+Completed:
+- [Create Mocks for Video Cards on Figma #437](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/437)
+  - Designed a new card and improved it through team feedback
+
+In progress:
+- [Submission box email addition fixes #422](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/422)
+  - Done but cannot merge due to issue with tests in staging (tests pass locally)
+- [Implement new video cards #449](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/449)
+  - Need to change API to make this work
+
+### Goals
+
+My goal for this week was to look at designing new cards for our dashboard. My goal for this upcoming week is to enjoy
+reading break. After that, I am hoping to finish the PRs I currently have in progress.
+
+### Additional Context

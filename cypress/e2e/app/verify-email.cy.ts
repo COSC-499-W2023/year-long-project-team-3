@@ -24,11 +24,7 @@ describe('Test email verification', () => {
         cy.url().should('contain', '/verify-email')
     })
 
-    const pages = [
-        '/dashboard',
-        '/submission-box/create',
-        '/video/upload',
-    ]
+    const pages = ['/dashboard', '/submission-box/create', '/video/upload']
     it('should block user from pages if email is not verified', () => {
         cy.wrap(pages).each((page: string) => {
             cy.visit(page)
@@ -44,7 +40,7 @@ describe('Test email verification', () => {
             cy.visit(`/verify-email/${ token }`)
             cy.url().should('match', /\/verify-email\/[a-zA-Z0-9_-]+$/)
             cy.get('body').should('contain', 'Email verified!')
-            cy.get('[data-cy=dashboard-button]').click()
+            cy.get('[data-cy=home-page-button]').click()
             cy.url().should('contain', '/dashboard')
 
             // Test that user can access pages

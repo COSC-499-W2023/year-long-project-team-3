@@ -1,6 +1,7 @@
 import { Inter } from 'next/font/google'
 import { createTheme, Theme } from '@mui/material/styles'
 import { NextFont } from 'next/dist/compiled/@next/font'
+import { responsiveFontSizes } from '@mui/material'
 
 const inter: NextFont = Inter({ subsets: ['latin'] })
 
@@ -16,7 +17,7 @@ declare module '@mui/material/styles' {
     }
 }
 
-export const theme: Theme = createTheme({
+export const theme: Theme = responsiveFontSizes(createTheme({
     palette: {
         background: {
             default: 'white',
@@ -30,7 +31,7 @@ export const theme: Theme = createTheme({
             lighter: '#7dc3ff',
         },
         secondary: {
-            main: '#f50057',
+            main: '#0064c9',
             light: '#cad5e1',
             lighter: '#edf1f5',
         },
@@ -48,4 +49,4 @@ export const theme: Theme = createTheme({
     shape: {
         borderRadius: 32,
     },
-})
+}))

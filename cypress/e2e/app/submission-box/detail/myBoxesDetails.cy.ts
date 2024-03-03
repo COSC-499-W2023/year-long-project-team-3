@@ -4,12 +4,14 @@ import runWithRetry from '../../../../utils/runUntilExist'
 describe('Receiving Dashboard Details Page Tests', () => {
     const email = 'requestedDetail@page.test'
     const fakeEmail = 'invalidUser@mail.com'
+    const moreFakeEmail = 'wowsuchuser@person.com'
     const password = 'Pass1234'
     beforeEach(() => {
         cy.task('clearDB')
         // Can create the same user for each test, but need to create two separate submission boxes
         cy.task('createUser', { email, password })
         cy.task('createUser', { email: fakeEmail, password })
+        cy.task('createUser', { email: moreFakeEmail, password })
         cy.visit('/login')
         cy.get('[data-cy=email]').type(email)
         cy.get('[data-cy=password]').type(password)
@@ -20,12 +22,12 @@ describe('Receiving Dashboard Details Page Tests', () => {
     it('should display a submission box with no information inputted other than title', () => {
         const submissionBoxTitle = 'Test Receiving'
         cy.task('getUserId', email).then((userId) => {
-            cy.task('createSubmissionBoxWithEmail', { submissionBoxTitle, email, userId })
+            cy.task('createSubmissionBoxForSubmissions', { submissionBoxTitle, userId })
         })
         cy.reload()
         cy.visit('/dashboard')
         runWithRetry(() => {
-            cy.get('[data-cy="My Boxes"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
+            cy.get('[data-cy="Manage Boxes"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
             cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
         })
         cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
@@ -35,8 +37,6 @@ describe('Receiving Dashboard Details Page Tests', () => {
             'No Videos Have Been Submitted to Your Box'
         )
         cy.get('[data-cy="submissionBoxTitle"]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain', submissionBoxTitle)
-        cy.get('[data-cy="submissionBoxDate"]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'N/A')
-        cy.get('[data-cy="submissionBoxDesc"]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'N/A')
     })
 
     it('should display a submission box with all information inputted and videos', () => {
@@ -45,24 +45,44 @@ describe('Receiving Dashboard Details Page Tests', () => {
             'This is a description that describes what users need to submit and have in their videos.  The description is a good tool to make sure that participants in the submission box are able to determine what is needed in their submissions and the ability for them to hit their goals. :)'
         const videoTitle = ['Test video1', 'Test video2']
         cy.task('getUserId', email).then((userId) => {
-            cy.task('createSubmissionBoxWithEmail', {
+            cy.task('createSubmissionBoxForSubmissions', {
                 submissionBoxTitle,
-                email,
                 userId,
                 submissionBoxDescription,
+                closesAt: new Date,
             }).then((submissionBoxId) => {
-                cy.task('createOneVideoAndRetrieveVideoId', { title: videoTitle[0] }).then((videoId) => {
-                    cy.task('submitVideoToSubmissionBox', { requestedSubmissionId: submissionBoxId, videoId })
+                cy.task('getUserId', fakeEmail).then((fakeUserId) => {
+                    cy.task('createRequestedBoxForSubmissionBox', {
+                        submissionBoxId: submissionBoxId,
+                        userId: fakeUserId,
+                    }).then((requestedSubmissionId) => {
+                        cy.task('createOneVideoAndRetrieveVideoId', { title: videoTitle[0] }).then((videoId) => {
+                            cy.task('submitVideoToSubmissionBox', {
+                                requestedSubmissionId: requestedSubmissionId,
+                                videoId,
+                            })
+                        })
+                    })
                 })
-                cy.task('createOneVideoAndRetrieveVideoId', { title: videoTitle[1] }).then((videoId) => {
-                    cy.task('submitVideoToSubmissionBox', { requestedSubmissionId: submissionBoxId, videoId })
+                cy.task('getUserId', moreFakeEmail).then((moreFakeUserId) => {
+                    cy.task('createRequestedBoxForSubmissionBox', {
+                        submissionBoxId: submissionBoxId,
+                        userId: moreFakeUserId,
+                    }).then((requestedSubmissionId) => {
+                        cy.task('createOneVideoAndRetrieveVideoId', { title: videoTitle[1] }).then((videoId) => {
+                            cy.task('submitVideoToSubmissionBox', {
+                                requestedSubmissionId: requestedSubmissionId,
+                                videoId,
+                            })
+                        })
+                    })
                 })
             })
         })
         cy.reload()
         cy.visit('/dashboard')
         runWithRetry(() => {
-            cy.get('[data-cy="My Boxes"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
+            cy.get('[data-cy="Manage Boxes"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
             cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
         })
         cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
@@ -73,11 +93,53 @@ describe('Receiving Dashboard Details Page Tests', () => {
             .should('have.length', 2)
 
         cy.get('[data-cy="submissionBoxTitle"]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain', submissionBoxTitle)
-        cy.get('[data-cy="submissionBoxDate"]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'N/A')
+        cy.get('[data-cy="submissionBoxDate"]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain', new Date().toDateString().slice(4))
         cy.get('[data-cy="submissionBoxDesc"]', { timeout: TIMEOUT.EXTRA_LONG }).should(
             'contain',
             'This is a description that describes what users need to submit and have in their videos.  The description is a good tool to make sure that participants in the submission box are able to determine what is needed in their submissions and the ability for them to hit their goals. :)'
         )
+    })
+
+    it('should only show the most recently submitted video that a user has submitted',() => {
+        const submissionBoxTitle = 'Test Multiple Submissions'
+        const videoTitle = ['Test video1', 'Test video2']
+
+        cy.task('getUserId', email).then((userId) => {
+            cy.task('createSubmissionBoxForSubmissions', {
+                submissionBoxTitle,
+                userId,
+            }).then((submissionBoxId) => {
+                cy.task('getUserId', fakeEmail).then((fakeUserId) => {
+                    cy.task('createRequestedBoxForSubmissionBox', {
+                        submissionBoxId: submissionBoxId,
+                        userId: fakeUserId,
+                    }).then((requestedSubmissionId) => {
+                        cy.task('createOneVideoAndRetrieveVideoId', { title: videoTitle[0] }).then((videoId) => {
+                            cy.task('submitVideoToSubmissionBox', {
+                                requestedSubmissionId: requestedSubmissionId,
+                                videoId,
+                            })
+                        })
+                        cy.task('createOneVideoAndRetrieveVideoId', { title: videoTitle[1] }).then((videoId) => {
+                            cy.task('submitVideoToSubmissionBox', { requestedSubmissionId: requestedSubmissionId, videoId })
+                        })
+                    })
+                })
+            })
+        })
+        cy.reload()
+        cy.visit('/dashboard')
+        runWithRetry(() => {
+            cy.get('[data-cy="Manage Boxes"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
+            cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
+        })
+        cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
+
+        cy.get('[data-cy="video-list"]', { timeout: TIMEOUT.EXTRA_LONG })
+            .should('be.visible')
+            .children()
+            .should('have.length', 1)
+        cy.get('[data-cy="video-list"]').children().first().should('contain', videoTitle[1])
     })
 
     it('should not allow a user to view a submission box that they do not have permission to', () => {
@@ -88,7 +150,7 @@ describe('Receiving Dashboard Details Page Tests', () => {
         cy.reload()
         cy.visit('/dashboard')
         runWithRetry(() => {
-            cy.get('[data-cy="My Boxes"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
+            cy.get('[data-cy="Manage Boxes"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
             cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
         })
         cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
@@ -110,5 +172,49 @@ describe('Receiving Dashboard Details Page Tests', () => {
         })
         cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'submission-box')
         cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
+    })
+
+    it('should allow user to go back to submission box after clicking video', () => {
+        const videoTitle = 'Test video'
+        const submissionBoxTitle = 'Test Box'
+
+        cy.task('getUserId', email).then((userId) => {
+            cy.task('createSubmissionBoxForSubmissions', {
+                submissionBoxTitle,
+                userId,
+            }).then((submissionBoxId) => {
+                cy.task('getUserId', fakeEmail).then((fakeUserId) => {
+                    cy.task('createRequestedBoxForSubmissionBox', {
+                        submissionBoxId: submissionBoxId,
+                        userId: fakeUserId,
+                    }).then((requestedSubmissionId) => {
+                        cy.task('createOneVideoAndRetrieveVideoId', { title: videoTitle }).then((videoId) => {
+                            cy.task('submitVideoToSubmissionBox', {
+                                requestedSubmissionId: requestedSubmissionId,
+                                videoId,
+                            })
+                        })
+                    })
+                })
+            })
+        })
+
+        // Go to dashboard to navigate to submission box
+        cy.visit('/dashboard')
+        runWithRetry(() => {
+            cy.get('[data-cy="Manage Boxes"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
+            cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
+        })
+        cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
+
+        // Click on video to go to video page
+        cy.wait(1000)  // Wait for page to fully load
+        cy.get('[data-cy="video-list"]', { timeout: TIMEOUT.EXTRA_LONG }).children().first().click()
+        cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'video')
+
+        // Go back to submission box
+        cy.wait(1000)  // Wait for page to fully load
+        cy.get('[data-cy="back-button"]').should('exist').and('be.visible').click()
+        cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'submission-box')
     })
 })

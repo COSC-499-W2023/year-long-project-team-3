@@ -9,15 +9,20 @@ import getSubmissionBoxes from './cypress/tasks/getSubmissionBoxes'
 import getSubmissionBoxManagers from './cypress/tasks/getSubmissionBoxManagers'
 import getRequestedSubmissions from './cypress/tasks/getRequestedSubmissions'
 import createSubmissionBoxWithEmail from './cypress/tasks/createSubmissionBoxWithEmail'
-import loadInSubmissionBoxes from './cypress/tasks/loadInSubmissionBoxes'
-import loadOutSubmissionBoxes from './cypress/tasks/loadOutSubmissionBoxes'
+import loadManagedSubmissionBox from './cypress/tasks/loadManagedSubmissionBox'
+import loadInvitedSubmissionBox from './cypress/tasks/loadInvitedSubmissionBox'
 import submitVideoToSubmissionBox from './cypress/tasks/submitVideoToSubmissionBox'
 import createRequestSubmissionForUser from './cypress/tasks/createRequestSubmissionForUser'
 import getVerificationToken from 'cypress/tasks/getVerificationToken'
 import verifyEmail from './cypress/tasks/verifyEmail'
+import {deleteVerificationToken} from './cypress/tasks/deleteVerificationToken'
+import {editOrCreateVerificationToken} from './cypress/tasks/editOrCreateVerificationToken'
+import createRequestedBoxForSubmissionBox from './cypress/tasks/createRequestedBoxForSubmissionBox'
+import createSubmissionBoxForSubmissions from './cypress/tasks/createSubmissionBoxForSubmissions'
 
 require('dotenv').config()
 
+// noinspection JSUnusedLocalSymbols
 export default defineConfig({
     e2e: {
         projectId: process.env.NEXT_PUBLIC_CYPRESS_PROJECT_ID,
@@ -36,11 +41,15 @@ export default defineConfig({
                 createSubmissionBoxWithEmail,
                 populateDB,
                 getLatestVideo,
-                loadInSubmissionBoxes,
-                loadOutSubmissionBoxes,
+                loadManagedSubmissionBox,
+                loadInvitedSubmissionBox,
                 submitVideoToSubmissionBox,
                 createRequestSubmissionForUser,
                 verifyEmail,
+                deleteVerificationToken,
+                editOrCreateVerificationToken,
+                createRequestedBoxForSubmissionBox,
+                createSubmissionBoxForSubmissions,
             })
         },
         experimentalModifyObstructiveThirdPartyCode: true,

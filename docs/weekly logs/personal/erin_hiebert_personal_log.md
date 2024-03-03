@@ -222,3 +222,61 @@
 ### Additional Context
 
 -   NA
+
+## Week 4 (29/01/2024 - 04/02/2024)
+
+![](imgs/term-2-week-4-erin-tasks.png)
+
+### Week Tasks
+
+-   Detail page for submission boxes  #303 (In Review)
+-   Detail page for submitted to submission boxes  #339 (In Review)
+-   Modifying submission boxes  #72 (In Progress)
+
+### Week Goals
+
+-   For the 'Requested Submission Boxes' detail page(s) I completed some code review changes that were very much beyond my capibilities and knowledge at the time, spending 6+ hours on monday to try and merge this feature in time for the peer reviews, this did not end up happening.
+-   Modifying Submission Boxes was put on the back burner for this week as the detail pages took priority so only preparations for this PR was done.
+-   This week the team also completed the peer evalutations in class, I guided two users through the process and noted where our platform struggled.
+-   Our team also had a meeting this week to organize our peer evaluation results into tasks to improve our app.
+
+### Additional Context
+
+-   I ran into a lot of issues in regards to my knowledge in nextJS and the programming abilities I currently possess
+
+## Week 5 (05/02/2024 - 11/02/2024)
+
+![](imgs/term-2-week-5-erin-tasks.png)
+
+### Week Tasks
+
+-   Detail page for submission boxes  #303 (Completed)
+-   Detail page for submitted to submission boxes  #339 (Completed)
+-   Modifying submission boxes  #72 (In Progress)
+
+### Week Goals
+
+-   More requested changes were made on Detail page for submitted to submission boxes, with a lot of work into restructuring the API and figuring out more advanced techniques with APIs
+-   Some tests were modified and changed slightly in the Detailed submission boxes pages
+-   The team also met this week to go over our website's logic pathing, we discussed UI changes and page progression changes
+-   Modifying Submission Boxes had no new commits for this week
+
+### Additional Context
+
+-   NA
+
+## Week 6 (12/02/2024 - 18/02/2024)
+
+![](imgs/term-2-week-6-erin-tasks.png)
+
+### Week Tasks
+
+-   Modifying submission boxes  #72 (In Progress)
+
+### Week Goals
+
+-   No work for capstone was done by me this week
+
+### Additional Context
+
+-   I had a midterm and 2 tests this week in my other courses along with multiple assignment due so capstone wasn't a huge priority for me.  I plan to do work on capstone during the reading break and will include it in the week after the break's log.

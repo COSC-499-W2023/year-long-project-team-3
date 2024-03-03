@@ -34,6 +34,9 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
         const updatedVideo = await prisma.video.update({
             where: {
                 id: videoId,
+                owner: {
+                    email: session.user.email,
+                },
             },
             data: {
                 title: title,
