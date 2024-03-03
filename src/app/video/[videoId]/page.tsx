@@ -430,7 +430,7 @@ export default function VideoDetailedPage() {
             })
             .catch((err) => {
                 logger.error(err.message)
-                toast.error('An unexpected error occurred while trying to delete your video!')
+                toast.error('An unexpected error occurred!')
             })
     }
 
@@ -458,7 +458,7 @@ export default function VideoDetailedPage() {
             })
             if (!response.ok) {
                 logger.error(response.statusText)
-                toast.error('An unexpected error occurred!')
+                toast.error('An unexpected error occurred while trying to delete your video!')
             } else {
                 router.push('/dashboard')
                 toast.success('Video deleted successfully!')
