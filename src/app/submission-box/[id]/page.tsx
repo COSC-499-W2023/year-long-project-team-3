@@ -34,8 +34,8 @@ export default function SubmissionBoxDetailPage() {
     const formik = useFormik<SubmissionModificationData>({
         initialValues: {
             title: '',
-            description: '',
-            closesAt: new Date(),
+            description: null,
+            closesAt: null,
         },
         validationSchema: validationSchema,
         onSubmit: (values: SubmissionModificationData) => handleSubmit(values),
@@ -142,101 +142,30 @@ export default function SubmissionBoxDetailPage() {
                                         />
                                     </Box>
                                 )}
-                                <Typography data-cy='submissionBoxTitleHeading' color={'textSecondary'} sx={{ m: 1, fontWeight: 'bold' }}>
-                                Title
-                                </Typography>
-                                {isEditing ? (
-                                    <TextField
-                                        variant='standard'
-                                        sx={{
-                                            '& .MuiInputBase-root.MuiOutlinedInput-root': {
-                                                borderRadius: '8px',
-                                            },
-                                            width: '100%',
-                                        }}
-                                        value={boxTitleEdit}
-                                        onChange={(evt) => setBoxTitleEdit(evt.target.value)}
-                                        inputProps={{
-                                            'data-cy': 'submissionBoxTitleEdit',
-                                        }}
-                                    />
+                                {!isEditing ? (
+                                    <SubmissionBoxDetails submissionBox={boxInfo} />
                                 ) : (
-                                    <Typography
-                                        data-cy='submissionBoxTitle'
-                                        variant='h5'
-                                        color={'textSecondary'}
-                                        paddingBottom='2rem'
-                                        sx={{ m: 1, fontWeight: 'bold' }}
-                                    >
-                                        {boxInfo ? boxInfo.title : 'N/A'}
-                                    </Typography>
-                                )}
-                                <Typography data-cy='submissionBoxDateHeading' color={'textSecondary'} sx={{ m: 1, fontWeight: 'bold' }}>
-                                Close Date:
-                                </Typography>
-                                <Typography
-                                    data-cy='submissionBoxDate'
-                                    variant='h6'
-                                    color={'textSecondary'}
-                                    paddingBottom='2rem'
-                                    paddingLeft='1rem'
-                                    sx={{ m: 1 }}
-                                >
-                                    {boxInfo
-                                        ? !!boxInfo.closesAt
-                                            ? new Date(boxInfo.closesAt).toDateString().slice(4)
-                                            : 'N/A'
-                                        : 'N/A'}
-                                </Typography>
-                                <Typography data-cy='submissionBoxDescHeading' color={'textSecondary'} sx={{ m: 1, fontWeight: 'bold' }}>
-                                Description
-                                </Typography>
-                                {isEditing ? (
-                                    <TextField
-                                        variant='outlined'
-                                        multiline
-                                        sx={{
-                                            '& .MuiInputBase-root.MuiOutlinedInput-root': {
-                                                borderRadius: '8px',
-                                            },
-                                            width: '100%',
-                                        }}
-                                        value={boxDescriptionEdit}
-                                        onChange={(evt) => setBoxDescriptionEdit(evt.target.value)}
-                                        inputProps={{
-                                            'data-cy': 'submissionBoxDescEdit',
-                                        }}
-                                    />
-                                ) : (
-                                    <Typography
-                                        data-cy='submissionBoxDesc'
-                                        variant='subtitle2'
-                                        color={'textSecondary'}
-                                        paddingBottom='2rem'
-                                        paddingLeft='1rem'
-                                        sx={{ m: 1 }}
-                                    >
-                                        {boxInfo ? boxInfo.description ?? 'N/A' : 'N/A'}
-                                    </Typography>
-                                )}
-                                {isEditing && (
-                                    <Box display='flex' justifyContent='flex-end' gap={1} padding='1rem'>
-                                        <Button
-                                            variant='contained'
-                                            color='inherit'
-                                            onClick={onCancelEdit}
-                                            data-cy='cancelButton'
-                                        >
-                                    Cancel
-                                        </Button>
-                                        <Button
-                                            variant='contained'
-                                            onClick={onUpdateVideoInfo}
-                                            data-cy='updateButton'
-                                        >
-                                    Update
-                                        </Button>
-                                    </Box>
+                                    <>
+                                        <form onSubmit={formik.handleSubmit} noValidate>
+                                            <Box display='flex' justifyContent='flex-end' gap={1} padding='1rem'>
+                                                <Button
+                                                    variant='contained'
+                                                    color='inherit'
+                                                    onClick={onCancelEdit}
+                                                    data-cy='cancelButton'
+                                                >
+                                                    Cancel
+                                                </Button>
+                                                <Button
+                                                    type='submit'
+                                                    variant='contained'
+                                                    data-cy='updateButton'
+                                                >
+                                                    Update
+                                                </Button>
+                                            </Box>
+                                        </form>
+                                    </>
                                 )}
                             </Box>
                         </Box>
