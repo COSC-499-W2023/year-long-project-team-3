@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material'
+import { Box, Icon, IconButton, Typography } from '@mui/material'
 import TextField from '@mui/material/TextField'
 import SubmissionRequestedCard from '@/components/SubmissionRequestedCard'
 import React from 'react'
@@ -7,7 +7,8 @@ import * as yup from 'yup'
 import { getEmailRegex } from '@/utils/verification'
 import { useFormik } from 'formik'
 import { useSession } from 'next-auth/react'
-import AddButton from '@/components/AddButton'
+import { theme } from '@/components/ThemeRegistry/theme'
+import { Add } from '@mui/icons-material'
 
 interface FormValues {
   email: string
@@ -87,7 +88,15 @@ export default function SubmissionBoxRequestSubmission({ emails, setEmails, setE
                         helperText={formik.touched.email && formik.errors.email}
                         data-cy='email'
                     />
-                    <AddButton />
+                    <IconButton sx={{
+                        color: theme.palette.background.default, backgroundColor: theme.palette.primary.main, '&:hover': {
+                            color: theme.palette.background.default, backgroundColor: theme.palette.primary.main,
+                        },
+                    }} type='submit' data-cy='add'>
+                        <Icon>
+                            <Add />
+                        </Icon>
+                    </IconButton>
                 </Box>
             </form>
             {/* This is a scrollable container for submission request cards */}
