@@ -25,6 +25,8 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
             logger.error(`User ${ session.user.email } did not provide a title`)
             return NextResponse.json({ error: 'No title provided' }, { status: 500 })
         }
+        console.log("past title")
+        console.log(description)
         if (typeof description !== 'string') {
             logger.error('Unexpected description type')
             return NextResponse.json({ error: 'Unexpected description type' }, { status: 500 })

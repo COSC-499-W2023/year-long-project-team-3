@@ -48,7 +48,7 @@ export default function SubmissionBoxDetailPage() {
             submissionModificationForm.set('description', submissionModificationData.description)
         }
         if (submissionModificationData.closesAt) {
-            submissionModificationForm.set('closesAt', submissionModificationData.closesAt)
+            submissionModificationForm.set('closesAt', submissionModificationData.closesAt.toDateString())
         }
         setIsEditing(false)
         setIsFetchingSubmissionBox(true)
@@ -158,6 +158,7 @@ export default function SubmissionBoxDetailPage() {
                                                     type='text'
                                                     name='title'
                                                     sx={{ color: 'textSecondary', fontWeight: 'bold', width: '100%' }}
+                                                    error={formik.touched.title && Boolean(formik.errors.title)}
                                                     onChange={formik.handleChange}
                                                     onBlur={formik.handleBlur}
                                                     value={formik.values.title}
@@ -199,6 +200,7 @@ export default function SubmissionBoxDetailPage() {
                                                     multiline
                                                     rows={8}
                                                     sx={{ color: 'textSecondary', width: '100%' }}
+                                                    error={formik.touched.description && Boolean(formik.errors.description)}
                                                     onChange={formik.handleChange}
                                                     onBlur={formik.handleBlur}
                                                     value={formik.values.description}
