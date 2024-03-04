@@ -34,7 +34,7 @@ export default function UploadVideoForm() {
             videoUploadFormData.append('file', videoUploadData.file)
         }
         videoUploadFormData.append('blurFace', videoUploadData.blurFace.toString())
-        fetch('/api/new/video/upload', {
+        fetch('/api/video/upload', {
             method: 'POST',
             body: videoUploadFormData,
         })

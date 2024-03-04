@@ -166,12 +166,14 @@ export default function VideoDetailedPage() {
                                             width: '100%',
                                         }}
                                     >
-                                        {!isFetchingVideo && !!video?.processedVideoUrl && (
+                                        {!isFetchingVideo && !!video?.processedVideoUrl ? (
                                             <ScalingReactPlayer
                                                 data-cy='scaling-react-player'
                                                 url={video?.processedVideoUrl}
                                                 allowKeyDown={!isEditing}
                                             />
+                                        ) : (
+                                            <Box sx={{backgroundColor: '#000000', flexGrow: 1, width: '20rem', height: '20rem' }}></Box>
                                         )}
                                     </Box>
                                     <Box
