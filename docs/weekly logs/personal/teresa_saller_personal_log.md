@@ -385,3 +385,25 @@ My goal for this week was to look at designing new cards for our dashboard. My g
 reading break. After that, I am hoping to finish the PRs I currently have in progress.
 
 ### Additional Context
+
+
+## Teresa Saller - Term 2: Week 8 (2024/02/26 - 2024/03/03)
+
+![teresa-saller-tasks-w8-t2.png](imgs/teresa-saller-tasks-w8-t2.png)
+
+### Tasks
+
+Completed:
+
+In progress:
+- [Submission box email addition fixes #422](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/422)
+  - Done but cannot merge due to issue with tests in staging (tests pass locally)
+- [Implement new video cards #449](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/449)
+  - Done but cannot merge due to issue with tests in staging (tests pass locally)
+
+### Goals
+
+My goal for this week was to finish the PRs I currently have in progress. I have finished them, but have not been able
+to merge them because I have encountered issue with flaky tests in the CI pipeline that we have not been able to solve.
+
+### Additional Context
