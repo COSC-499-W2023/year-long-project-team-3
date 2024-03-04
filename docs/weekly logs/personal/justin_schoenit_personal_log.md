@@ -1,5 +1,25 @@
 # Weekly Individual Log - Justin Schoenit
 
+## Week 7/8 (Feb 19 - Mar 03)
+
+### Tasks
+
+![](imgs/week-8-t2-tasks-justin.png)
+
+### My Contributions this week
+
+- Fixed a big that didn't allow the user to navigate back to a submission box via in page buttons after clicking a video that had been submitted to the box
+- Refactored email sending so that there is a template email instead of duplicating code
+- Email users when a video fails to upload
+
+### Goals for the coming week
+
+- I was unable to complete my goal that I had last week since it is being blocked by [#449](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/449). Hopefully that will be merged early this week and I can again try to finish that as my goal for this week.
+
+### Additional Context
+
+N/A
+
 ## Week 6 (Feb 12 - Feb 18)
 
 ### Tasks
