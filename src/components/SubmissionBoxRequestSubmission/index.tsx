@@ -33,7 +33,7 @@ export default function SubmissionBoxRequestSubmission({ emails, setEmails }: Re
         email: yup
             .string()
             .default('') // set default for checking inside onBlur and errors
-            .required('To request a submission from someone, enter their email') // this will show up as a help text, not an error
+            .required('To invite someone to your box, enter their email') // this will show up as a help text, not an error
             .matches(getEmailRegex(), 'Enter a valid email')
             .test('not-own-email', 'You cannot add your own email!', function (value) {
                 return value !== ownerEmail

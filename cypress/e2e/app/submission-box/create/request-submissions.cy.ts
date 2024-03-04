@@ -83,7 +83,7 @@ describe('Submission box request submissions tests', () => {
             cy.get('[data-cy="email"]')
                 .find('.MuiFormHelperText-root')
                 .should('be.visible')
-                .and('contain', 'To request a submission from someone, enter their email')
+                .and('contain', 'To invite someone to your box, enter their email')
         })
 
         it('Should not allow the user to add their own email', () => {
