@@ -1,4 +1,4 @@
-import { Box, Chip } from '@mui/material'
+import { Alert, Box, Chip } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import React from 'react'
 import TextField from '@mui/material/TextField'
@@ -62,14 +62,14 @@ export default function SubmissionBoxReviewAndCreate({ title, description, closi
                     />
                 )}
 
-                {emails.length > 0 && (
+                {emails.length > 0? (
                     <Box sx={{ width: '20rem' }} data-cy='requested-emails'>
                         <Typography>Requested Emails:</Typography>
                         {emails.map((email, index) => (
                             <Chip key={index} label={email} sx={{ m: 0.5, ml: 0 }} />
                         ))}
-                    </Box>
-                )}
+                    </Box>) :
+                    (<Alert data-cy='no-users-warning' severity='warning'>You have not invited anyone to your box</Alert>)}
             </Box>
         </>
     )
