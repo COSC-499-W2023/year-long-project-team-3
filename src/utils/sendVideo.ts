@@ -10,6 +10,7 @@ import prisma from '@/lib/prisma'
 import { Readable } from 'stream'
 import { makeS3Key } from './s3Key'
 import { VideoUploadData } from '@/types/video/video'
+import {sendEmailFailureNotification} from '@/utils/emails/videoUploadFailure'
 
 export function removeFileExtension(filename: string): string {
     return filename.replace(/\.[^/.]+$/, '')
@@ -155,8 +156,47 @@ export async function uploadVideo(videoData: VideoUploadData, user: User, fileEx
     const s3VideoUploadResult: CompleteMultipartUploadCommandOutput | AbortMultipartUploadCommandOutput = await s3VideoUpload.done()
     if (!isCompleteUpload(s3VideoUploadResult) || !s3VideoUploadResult?.Location) {
         logger.error(s3VideoUploadResult)
-        // TODO: Send email/notify to user there is an issue with uploading video
+        await sendEmailFailureNotification([user.email], videoData.title)
+
+        // Delete database entry
+        await prisma.video.delete({
+            where: {
+                id: uploadedVideo.id,
+            },
+        })
+
         throw new Error(`Unexpected error while uploading video ${ videoData.title } to S3`)
+    }
+
+    // Trigger the processing pipeline by uploading metadata
+    if (!videoData.blurFace) {
+        const metadataFile: string = JSON.stringify({
+            videoId: uploadedVideo.id,
+            srcVideo: s3uploadedVideoKey,
+        })
+        const uploadJson = new Upload({
+            client: client,
+            params: {
+                Bucket: process.env.AWS_UPLOAD_BUCKET_STREAMING as string,
+                Key: await makeS3Key(uploadedVideo, 'json'),
+                Body: metadataFile,
+            },
+        })
+        const s3JsonData: CompleteMultipartUploadCommandOutput | AbortMultipartUploadCommandOutput =
+          await uploadJson.done()
+        if (!isCompleteUpload(s3JsonData) || s3JsonData.Location === undefined) {
+            logger.error(s3JsonData)
+            await sendEmailFailureNotification([user.email], videoData.title)
+
+            // Delete database entry
+            await prisma.video.delete({
+                where: {
+                    id: uploadedVideo.id,
+                },
+            })
+
+            throw new Error(`Unexpected error while uploading video metadata file for video ${ videoData.title } to S3`)
+        }
     }
 
     await prisma.videoWhitelist.create({
@@ -178,26 +218,5 @@ export async function uploadVideo(videoData: VideoUploadData, user: User, fileEx
         },
     })
 
-    if (!videoData.blurFace) {
-        const metadataFile: string = JSON.stringify({
-            videoId: uploadedVideo.id,
-            srcVideo: s3uploadedVideoKey,
-        })
-        const uploadJson = new Upload({
-            client: client,
-            params: {
-                Bucket: process.env.AWS_UPLOAD_BUCKET_STREAMING as string,
-                Key: await makeS3Key(uploadedVideo, 'json'),
-                Body: metadataFile,
-            },
-        })
-        const s3JsonData: CompleteMultipartUploadCommandOutput | AbortMultipartUploadCommandOutput =
-          await uploadJson.done()
-        if (!isCompleteUpload(s3JsonData) || s3JsonData.Location === undefined) {
-            logger.error(s3JsonData)
-            // TODO: Send email/notify to user there is an issue with uploading video
-            throw new Error(`Unexpected error while uploading video metadata file for video ${ videoData.title } to S3`)
-        }
-    }
     return uploadedVideo
 }

@@ -1,14 +1,13 @@
-import {Video} from '@prisma/client'
 import process from 'process'
 import {sendEmails} from '@/utils/emails/sendEmail'
 import {Message} from '@aws-sdk/client-ses'
 import getTemplateMessage from '@/utils/emails/template'
 
-export async function sendEmailFailureNotification(emails: string[], video: Video) {
+export async function sendEmailFailureNotification(emails: string[], videoTitle: string) {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? 'https://harpvideo.ca'
     const uploadUrl = `${ baseUrl }/video/upload`
 
-    const message = getFailureNotificationMessage(video.title, uploadUrl)
+    const message = getFailureNotificationMessage(videoTitle, uploadUrl)
     return sendEmails(emails, message)
 }
 
