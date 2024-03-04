@@ -2,7 +2,7 @@ import {Message} from '@aws-sdk/client-ses'
 
 export default function getTemplateMessage(
     subject: string,
-    aboveTitleText: string | undefined,
+    aboveTitleText: string,
     title: string,
     bodyText: string,
     buttonText: string,
