@@ -8,7 +8,7 @@
 
 ### My Contributions this week
 
-- Fixed a big that didn't allow the user to navigate back to a submission box via in page buttons after clicking a video that had been submitted to the box
+- Fixed a bug that didn't allow the user to navigate back to a submission box via in page buttons after clicking a video that had been submitted to the box
 - Refactored email sending so that there is a template email instead of duplicating code
 - Email users when a video fails to upload
 
