@@ -32,10 +32,11 @@ export default function SubmissionBoxDetailPage() {
     const boxId = pathname?.split('/').pop()
     const formik = useFormik<SubmissionModificationData>({
         initialValues: {
-            title: 'Title',
-            description: null,
+            title: 'title',
+            description: '',
             closesAt: null,
         },
+        enableReinitialize: true,
         validationSchema: validationSchema,
         onSubmit: (values: SubmissionModificationData) => handleSubmit(values),
     })
@@ -43,23 +44,26 @@ export default function SubmissionBoxDetailPage() {
     async function handleSubmit(submissionModificationData: SubmissionModificationData) {
         const submissionModificationForm = new FormData()
         submissionModificationForm.set('title', submissionModificationData.title)
-        //submissionModificationForm.set('description', submissionModificationData.description)
-        //submissionModificationForm.set('closesAt', submissionModificationData.closesAt)
+        if (submissionModificationData.description) {
+            submissionModificationForm.set('description', submissionModificationData.description)
+        }
+        if (submissionModificationData.closesAt) {
+            submissionModificationForm.set('closesAt', submissionModificationData.closesAt)
+        }
         setIsEditing(false)
         setIsFetchingSubmissionBox(true)
         fetch(`/api/submission-box/update/${ boxId }`, {
-            method: 'POST',
+            method: 'PUT',
             body: submissionModificationForm,
         })
             .then(async (res: Response) => {
                 const body = await res.json()
-                if (res.status !== 204) {
+                if (res.status !== 200) {
+                    console.log(res.status)
                     throw new Error(body.error)
                 }
-                if (!body.submissionBox) {
-                    throw new Error('Could not update submission box')
-                }
-                setBoxInfo(body.submissionBox)
+                console.log(body)
+                setBoxInfo(body)
             })
             .catch((err) => {
                 logger.error(err.message)
