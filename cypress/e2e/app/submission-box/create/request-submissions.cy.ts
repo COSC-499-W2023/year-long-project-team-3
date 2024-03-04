@@ -25,7 +25,7 @@ describe('Submission box request submissions tests', () => {
             cy.url().should('not.contain', 'login')
 
             cy.visit('/dashboard')
-            cy.get('[data-cy="Create new"]').click()
+            cy.get('[data-cy="Create New"]').click()
 
             const title = 'My Test Title'
 

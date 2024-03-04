@@ -26,7 +26,7 @@ export default function DashboardSidebarSubmissionBoxes(props: DashboardSidebarS
                 Submission Boxes
                 </Typography>
                 <DashboardSidePanelOption
-                    title={'Create new'}
+                    title={'Create New'}
                     icon={<AddCircleIcon fontSize='small' sx={{ color: 'white' }} />}
                     onClick={handleCreateNewClick}
                     isSelected={sidebarSelectedOption === 'submission_boxes_create_new'}
