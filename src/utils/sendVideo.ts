@@ -9,6 +9,8 @@ import logger from './logger'
 import prisma from '@/lib/prisma'
 import { Readable } from 'stream'
 import { makeS3Key } from './s3Key'
+import { VideoUploadData } from '@/types/video/video'
+import {sendEmailFailureNotification} from '@/utils/emails/videoUploadFailure'
 
 export function removeFileExtension(filename: string): string {
     return filename.replace(/\.[^/.]+$/, '')
@@ -20,6 +22,16 @@ function isCompleteUpload(
 ): output is CompleteMultipartUploadCommandOutput {
     return (output as CompleteMultipartUploadCommandOutput).ETag !== undefined
 }
+
+// Upload to Rekognition bucket if user wants their face blurred, upload to streaming bucket if not. If the video is
+// uploaded to the Rekognition bucket, it will be transferred to the streaming bucket using a lambda on AWS, so the
+// videos will all end up in the same bucket at the end
+function getUploadBucket(blurFace: boolean) {
+    return blurFace
+        ? (process.env.AWS_UPLOAD_BUCKET_REKOGNITION as string)
+        : (process.env.AWS_UPLOAD_BUCKET_STREAMING as string)
+}
+
 
 export default async function sendVideo(rawVideo: File, owner: User, isFaceBlurChecked: boolean): Promise<Video> {
     const newVideo: Video = await prisma.video.create({
@@ -45,20 +57,11 @@ export default async function sendVideo(rawVideo: File, owner: User, isFaceBlurC
     const uploadS3 = new Upload({
         client: client,
         params: {
-            Bucket: getUploadBucket(),
+            Bucket: getUploadBucket(isFaceBlurChecked),
             Key: s3Key,
             Body: Readable.from(Buffer.from(rawVideoBuffer)),
         },
     })
-
-    // Upload to Rekognition bucket if user wants their face blurred, upload to streaming bucket if not. If the video is
-    // uploaded to the Rekognition bucket, it will be transferred to the streaming bucket using a lambda on AWS, so the
-    // videos will all end up in the same bucket at the end
-    function getUploadBucket() {
-        return isFaceBlurChecked
-            ? (process.env.AWS_UPLOAD_BUCKET_REKOGNITION as string)
-            : (process.env.AWS_UPLOAD_BUCKET_STREAMING as string)
-    }
 
     const s3Data: CompleteMultipartUploadCommandOutput | AbortMultipartUploadCommandOutput = await uploadS3.done()
     if (!isCompleteUpload(s3Data) || s3Data.Location === undefined) {
@@ -121,4 +124,99 @@ export default async function sendVideo(rawVideo: File, owner: User, isFaceBlurC
     }
 
     return newVideo
+}
+
+export async function uploadVideo(videoData: VideoUploadData, user: User, fileExtension: string): Promise<Video> {
+    const uploadedVideo: Video = await prisma.video.create({
+        data: {
+            owner: {
+                connect: {
+                    id: user.id,
+                },
+            },
+            title: videoData.title,
+            description: videoData.description,
+        },
+    })
+
+    const s3uploadedVideoKey = await makeS3Key(uploadedVideo, fileExtension)
+
+    const client = new S3Client({
+        region: process.env.AWS_UPLOAD_REGION_US,
+    })
+
+    const s3VideoUpload = new Upload({
+        client: client,
+        params: {
+            Bucket: getUploadBucket(videoData.blurFace),
+            Key: s3uploadedVideoKey,
+            Body: videoData.file,
+        },
+    })
+    const s3VideoUploadResult: CompleteMultipartUploadCommandOutput | AbortMultipartUploadCommandOutput = await s3VideoUpload.done()
+    if (!isCompleteUpload(s3VideoUploadResult) || !s3VideoUploadResult?.Location) {
+        logger.error(s3VideoUploadResult)
+        await sendEmailFailureNotification([user.email], videoData.title)
+
+        // Delete database entry
+        await prisma.video.delete({
+            where: {
+                id: uploadedVideo.id,
+            },
+        })
+
+        throw new Error(`Unexpected error while uploading video ${ videoData.title } to S3`)
+    }
+
+    // Trigger the processing pipeline by uploading metadata
+    if (!videoData.blurFace) {
+        const metadataFile: string = JSON.stringify({
+            videoId: uploadedVideo.id,
+            srcVideo: s3uploadedVideoKey,
+        })
+        const uploadJson = new Upload({
+            client: client,
+            params: {
+                Bucket: process.env.AWS_UPLOAD_BUCKET_STREAMING as string,
+                Key: await makeS3Key(uploadedVideo, 'json'),
+                Body: metadataFile,
+            },
+        })
+        const s3JsonData: CompleteMultipartUploadCommandOutput | AbortMultipartUploadCommandOutput =
+          await uploadJson.done()
+        if (!isCompleteUpload(s3JsonData) || s3JsonData.Location === undefined) {
+            logger.error(s3JsonData)
+            await sendEmailFailureNotification([user.email], videoData.title)
+
+            // Delete database entry
+            await prisma.video.delete({
+                where: {
+                    id: uploadedVideo.id,
+                },
+            })
+
+            throw new Error(`Unexpected error while uploading video metadata file for video ${ videoData.title } to S3`)
+        }
+    }
+
+    await prisma.videoWhitelist.create({
+        data: {
+            video: {
+                connect: {
+                    id: uploadedVideo.id,
+                },
+            },
+            whitelistedUsers: {
+                create: {
+                    whitelistedUser: {
+                        connect: {
+                            id: user.id,
+                        },
+                    },
+                },
+            },
+        },
+    })
+
+    return uploadedVideo
 }
