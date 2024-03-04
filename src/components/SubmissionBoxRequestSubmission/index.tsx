@@ -1,5 +1,6 @@
 import { Box, Icon, IconButton } from '@mui/material'
 import TextField from '@mui/material/TextField'
+import { Add } from '@mui/icons-material'
 import SubmissionRequestedCard from '@/components/SubmissionRequestedCard'
 import React from 'react'
 import { ObjectSchema } from 'yup'
@@ -7,16 +8,14 @@ import * as yup from 'yup'
 import { getEmailRegex } from '@/utils/verification'
 import { useFormik } from 'formik'
 import { useSession } from 'next-auth/react'
-import { theme } from '@/components/ThemeRegistry/theme'
-import { Add } from '@mui/icons-material'
 
 interface FormValues {
-  email: string;
+    email: string
 }
 
 type RequestSubmissionProps = {
-  emails: string[]
-  setEmails: React.Dispatch<React.SetStateAction<string[]>>
+    emails: string[]
+    setEmails: React.Dispatch<React.SetStateAction<string[]>>
 }
 
 export default function SubmissionBoxRequestSubmission({ emails, setEmails }: RequestSubmissionProps) {
@@ -36,10 +35,10 @@ export default function SubmissionBoxRequestSubmission({ emails, setEmails }: Re
             .default('') // set default for checking inside onBlur and errors
             .required('To invite someone to your box, enter their email') // this will show up as a help text, not an error
             .matches(getEmailRegex(), 'Enter a valid email')
-            .test('not-own-email', 'You cannot add your own email!', function(value) {
+            .test('not-own-email', 'You cannot add your own email!', function (value) {
                 return value !== ownerEmail
             })
-            .test('unique', 'This email has already been added!', function(value) {
+            .test('unique', 'This email has already been added!', function (value) {
                 return !emails.includes(value)
             }),
     })
@@ -86,11 +85,7 @@ export default function SubmissionBoxRequestSubmission({ emails, setEmails }: Re
                         helperText={formik.touched.email && formik.errors.email}
                         data-cy='email'
                     />
-                    <IconButton sx={{
-                        color: theme.palette.background.default, backgroundColor: theme.palette.primary.main, '&:hover': {
-                            color: theme.palette.background.default, backgroundColor: theme.palette.primary.main,
-                        },
-                    }} type='submit' data-cy='add'>
+                    <IconButton sx={{ backgroundColor: '#F5F5F5' }} type='submit' data-cy='add'>
                         <Icon>
                             <Add />
                         </Icon>
