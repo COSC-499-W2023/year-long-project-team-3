@@ -62,7 +62,7 @@ export default function SubmissionBoxReviewAndCreate({ title, description, closi
                     />
                 )}
 
-                {emails.length > 0? (
+                {emails.length > 0 ? (
                     <Box sx={{ width: '20rem' }} data-cy='requested-emails'>
                         <Typography>Requested Emails:</Typography>
                         {emails.map((email, index) => (
