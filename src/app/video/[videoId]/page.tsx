@@ -63,27 +63,32 @@ export default function VideoDetailedPage() {
             router.push('/')
         }
 
-        fetch(`/api/video/${ videoId }`)
-            .then((res) => {
-                if (!res.ok) {
-                    throw new Error('Could not fetch video')
-                }
-                return res
-            })
-            .then((res) => res.json())
-            .then(({ video }: { video: Video }) => {
-                if (!video) {
-                    throw new Error('Video not found')
-                }
-                setVideo(video)
-            })
-            .catch((err) => {
-                logger.error(err.message)
-                toast.error('An unexpected error occurred!')
-            })
-            .finally(() => {
-                setIsFetchingVideo(false)
-            })
+        const interval = setInterval(async () => {
+            fetch(`/api/video/${ videoId }`)
+                .then((res) => {
+                    if (!res.ok) {
+                        throw new Error('Could not fetch video')
+                    }
+                    return res
+                })
+                .then((res) => res.json())
+                .then(({ video }: { video: Video }) => {
+                    if (!video) {
+                        throw new Error('Video not found')
+                    }
+                    setVideo(video)
+                })
+                .catch((err) => {
+                    logger.error(err.message)
+                    toast.error('An unexpected error occurred!')
+                })
+                .finally(() => {
+                    setIsFetchingVideo(false)
+                    if(video?.isCloudProcessed) {
+                        clearInterval(interval)
+                    }
+                })
+        }, 2000)
 
         fetch(`/api/submission-box/video/${ videoId }`)
             .then((res) => {
