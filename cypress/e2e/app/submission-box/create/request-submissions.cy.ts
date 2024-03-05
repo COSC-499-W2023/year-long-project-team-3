@@ -25,7 +25,7 @@ describe('Submission box request submissions tests', () => {
             cy.url().should('not.contain', 'login')
 
             cy.visit('/dashboard')
-            cy.get('[data-cy="Create new"]').click()
+            cy.get('[data-cy="Create New"]').click()
 
             const title = 'My Test Title'
 
@@ -83,7 +83,7 @@ describe('Submission box request submissions tests', () => {
             cy.get('[data-cy="email"]')
                 .find('.MuiFormHelperText-root')
                 .should('be.visible')
-                .and('contain', 'To request a submission from someone, enter their email')
+                .and('contain', 'To invite someone to your box, enter their email')
         })
 
         it('Should not allow the user to add their own email', () => {
@@ -163,6 +163,27 @@ describe('Submission box request submissions tests', () => {
             cy.url().should('include', '/submission-box')
 
             cy.get('[data-cy="title"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Box Settings')
+        })
+
+        it('Should indicate no one invited yet before adding emails', () => {
+            cy.get('[data-cy="placeholder-text"]').contains('No one has been invited yet').should('be.visible')
+        })
+
+        it('Should indicate no one invited yet after removing emails', () => {
+            const requestedEmail = 'requested@mail.com'
+
+            // Placeholder should be visible before adding email
+            cy.get('[data-cy="placeholder-text"]').contains('No one has been invited yet').should('be.visible')
+
+            // Adding and removing email
+            cy.get('[data-cy="email"]').type(requestedEmail)
+            cy.get('[data-cy="add"]').click()
+            cy.get('[data-cy="requested-email"]').should('contain', requestedEmail)
+            cy.get('[data-cy="remove"]').click()
+            cy.get('[data-cy="requested-email"]').should('not.exist')
+
+            // Placeholder should be visible after removing email
+            cy.get('[data-cy="placeholder-text"]').contains('No one has been invited yet').should('be.visible')
         })
     })
 

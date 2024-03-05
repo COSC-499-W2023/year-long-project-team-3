@@ -24,7 +24,7 @@ describe('Submission box review and create tests', () => {
             })
 
             cy.visit('/dashboard')
-            cy.get('[data-cy="Create new"]').click()
+            cy.get('[data-cy="Create New"]').click()
 
             const title = 'My Test Title'
 
@@ -49,7 +49,6 @@ describe('Submission box review and create tests', () => {
         it('Should let the user return to the previous page using the return to dashboard button', () => {
             cy.get('[data-cy="back-button"]').click()
 
-            // TODO: change this to test for appropriate URL
             cy.url().should('include', '/dashboard')
         })
 
@@ -65,6 +64,12 @@ describe('Submission box review and create tests', () => {
             cy.get('[data-cy="Create"]').click()
 
             cy.url().should('include', '/dashboard')
+        })
+
+        it('Should show a warning if no one invited to the box', () => {
+            cy.get('[data-cy="title"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Review & Create')
+
+            cy.get('[data-cy="no-users-warning"]').contains('You have not invited anyone to your box')
         })
     })
 

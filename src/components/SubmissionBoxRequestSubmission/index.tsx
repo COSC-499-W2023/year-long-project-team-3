@@ -1,4 +1,4 @@
-import { Box, Icon, IconButton } from '@mui/material'
+import { Box, Icon, IconButton, Typography } from '@mui/material'
 import TextField from '@mui/material/TextField'
 import { Add } from '@mui/icons-material'
 import SubmissionRequestedCard from '@/components/SubmissionRequestedCard'
@@ -33,7 +33,7 @@ export default function SubmissionBoxRequestSubmission({ emails, setEmails }: Re
         email: yup
             .string()
             .default('') // set default for checking inside onBlur and errors
-            .required('To request a submission from someone, enter their email') // this will show up as a help text, not an error
+            .required('To invite someone to your box, enter their email') // this will show up as a help text, not an error
             .matches(getEmailRegex(), 'Enter a valid email')
             .test('not-own-email', 'You cannot add your own email!', function (value) {
                 return value !== ownerEmail
@@ -85,7 +85,7 @@ export default function SubmissionBoxRequestSubmission({ emails, setEmails }: Re
                         helperText={formik.touched.email && formik.errors.email}
                         data-cy='email'
                     />
-                    <IconButton sx={{ backgroundColor: '#F5F5F5' }} type='submit' data-cy='add'>
+                    <IconButton type='submit' data-cy='add'>
                         <Icon>
                             <Add />
                         </Icon>
@@ -105,6 +105,7 @@ export default function SubmissionBoxRequestSubmission({ emails, setEmails }: Re
                     mb: 5,
                 }}
             >
+                {emails.length === 0 && <Typography data-cy='placeholder-text' sx={{ textAlign: 'center', pt: 13 }}>No one has been invited yet</Typography>}
                 {/* Add new cards for added submission requests and allow removal */}
                 {emails.map((email, index) => (
                     <SubmissionRequestedCard key={index} email={email} removeEmail={removeEmail} />
