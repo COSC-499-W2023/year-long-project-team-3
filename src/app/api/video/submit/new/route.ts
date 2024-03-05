@@ -47,6 +47,9 @@ export async function POST(req: NextRequest) {
         if (!video) {
             logger.error('Video not found in api/video/submit: ' + videoId)
             return NextResponse.json({ error: 'Video not found' }, { status: 404 })
+        } else if (!video.owner) {
+            logger.error('Video owner not found in api/video/submit: ' + videoId)
+            return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
         } else if (video.owner.email !== sessionEmail) {
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
         }
@@ -129,6 +132,9 @@ export async function DELETE(req: NextRequest) {
         if (!video) {
             logger.error('Video not found in api/video/submit: ' + videoId)
             return NextResponse.json({ error: 'Video not found' }, { status: 404 })
+        } else if (!video.owner) {
+            logger.error('Video owner not found in api/video/submit: ' + videoId)
+            return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
         } else if (video.owner.email !== sessionEmail) {
             logger.error('Forbidden request in api/video/submit: ' + JSON.stringify(req.body))
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
