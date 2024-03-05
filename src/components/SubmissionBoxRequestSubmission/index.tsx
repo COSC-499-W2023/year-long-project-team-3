@@ -8,6 +8,7 @@ import { getEmailRegex } from '@/utils/verification'
 import { useFormik } from 'formik'
 import { useSession } from 'next-auth/react'
 import { Add } from '@mui/icons-material'
+import { theme } from '@/components/ThemeRegistry/theme'
 
 interface FormValues {
   email: string
@@ -87,7 +88,10 @@ export default function SubmissionBoxRequestSubmission({ emails, setEmails, setE
                         helperText={formik.touched.email && formik.errors.email}
                         data-cy='email'
                     />
-                    <IconButton type='submit' data-cy='add'>
+                    <IconButton sx={{
+                        color: theme.palette.background.default, backgroundColor: theme.palette.primary.main, '&:hover': {
+                            color: theme.palette.background.default, backgroundColor: theme.palette.primary.main,
+                        }}} type='submit' data-cy='add'>
                         <Icon>
                             <Add />
                         </Icon>
