@@ -88,7 +88,7 @@ export default function VideoDetailedPage() {
                         clearInterval(interval)
                     }
                 })
-        }, 2000)
+        }, 5000)
 
         fetch(`/api/submission-box/video/${ videoId }`)
             .then((res) => {
@@ -178,7 +178,9 @@ export default function VideoDetailedPage() {
                                                 allowKeyDown={!isEditing}
                                             />
                                         ) : (
-                                            <Box sx={{backgroundColor: '#000000', flexGrow: 1, width: '20rem', height: '20rem' }}></Box>
+                                            <Alert severity='info'>
+                                                    Your video is currently processing. Please wait here or come back later.
+                                            </Alert>
                                         )}
                                     </Box>
                                     <Box
