@@ -2,17 +2,19 @@
 
 import { useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import { SubmissionBox, Video } from '@prisma/client'
 import logger from '@/utils/logger'
 import { toast } from 'react-toastify'
-import { Alert, Box, Button, Chip, TextField, Typography } from '@mui/material'
+import { Alert, Box, Button, TextField, Typography } from '@mui/material'
 
 import ScalingReactPlayer from '@/components/ScalingReactPlayer'
 import PageLoadProgress from '@/components/PageLoadProgress'
 import EditIcon from '@mui/icons-material/Edit'
 import { theme } from '@/components/ThemeRegistry/theme'
-import BackButton from '@/components/BackButton'
+import dayjs from 'dayjs'
+import SubmissionBoxesSelector, { MinifiedSubmissionBox } from '@/components/SubmisionBoxesSeletor'
+import BackButtonWithLink from '@/components/BackButtonWithLink'
 
 export default function VideoDetailedPage() {
     const session = useSession()
@@ -24,8 +26,11 @@ export default function VideoDetailedPage() {
     const [video, setVideo] = useState<Video>()
     const [isFetchingVideo, setIsFetchingVideo] = useState(false)
 
-    const [submissionBoxes, setSubmissionBoxes] = useState<SubmissionBox[]>([])
-    const [isFetchingSubmissionBoxes, setIsFetchingSubmissionBoxes] = useState(false)
+    const [submittedToSubmissionBoxes, setSubmittedToSubmissionBoxes] = useState<SubmissionBox[]>([])
+    const [isFetchingSubmittedToSubmissionBoxes, setIsFetchingSubmittedToSubmissionBoxes] = useState(false)
+
+    const [requestedSubmissionBoxes, setRequestedSubmissionBoxes] = useState<SubmissionBox[]>([])
+    const [isFetchingRequestedSubmissionBoxes, setIsFetchingRequestedSubmissionBoxes] = useState(false)
 
     const [userId, setUserId] = useState<string>()
 
@@ -57,16 +62,25 @@ export default function VideoDetailedPage() {
 
     useEffect(() => {
         setIsFetchingVideo(true)
-        setIsFetchingSubmissionBoxes(true)
+        setIsFetchingSubmittedToSubmissionBoxes(true)
+        setIsFetchingRequestedSubmissionBoxes(true)
 
         if (!videoId) {
             router.push('/')
         }
 
+        let errored= false
+
         const interval = setInterval(async () => {
             fetch(`/api/video/${ videoId }`)
                 .then((res) => {
-                    if (!res.ok) {
+                    if (res.status === 403) {
+                        if (!errored) {
+                            toast.error('You do not have permission to view this video')
+                        }
+                        errored = true
+                        router.push('/dashboard')
+                    } else if (!res.ok) {
                         throw new Error('Could not fetch video')
                     }
                     return res
@@ -77,22 +91,29 @@ export default function VideoDetailedPage() {
                         throw new Error('Video not found')
                     }
                     setVideo(video)
-                })
-                .catch((err) => {
-                    logger.error(err.message)
-                    toast.error('An unexpected error occurred!')
-                })
-                .finally(() => {
                     setIsFetchingVideo(false)
                     if(video?.isCloudProcessed) {
                         clearInterval(interval)
                     }
                 })
-        }, 5000)
+                .catch((err) => {
+                    logger.error(err.message)
+                    if (!errored) {
+                        toast.error('An unexpected error occurred!')
+                    }
+                })
+        }, 2000)
+
 
         fetch(`/api/submission-box/video/${ videoId }`)
             .then((res) => {
-                if (!res.ok) {
+                if (res.status === 403) {
+                    if (!errored) {
+                        toast.error('You do not have permission to view this video')
+                    }
+                    errored = true
+                    router.push('/dashboard')
+                } else if (!res.ok) {
                     throw new Error('Could not fetch submission boxes')
                 }
                 return res
@@ -102,16 +123,59 @@ export default function VideoDetailedPage() {
                 if (!submissionBoxes) {
                     throw new Error('Submission boxes not found')
                 }
-                setSubmissionBoxes(submissionBoxes)
+                setSubmittedToSubmissionBoxes(submissionBoxes)
+                setIsFetchingSubmittedToSubmissionBoxes(false)
             })
             .catch((err) => {
                 logger.error(err.message)
-                toast.error('An unexpected error occurred!')
+                if (!errored) {
+                    toast.error('An unexpected error occurred!')
+                }
             })
-            .finally(() => {
-                setIsFetchingSubmissionBoxes(false)
+
+        fetch('/api/submission-box/requestedsubmissions')
+            .then((res) => {
+                if (!res.ok) {
+                    errored = true
+                    throw new Error('Could not fetch requested submission boxes')
+                }
+                return res
+            })
+            .then((res) => res.json())
+            .then(({ submissionBoxes }: { submissionBoxes: SubmissionBox[] }) => {
+                if (!submissionBoxes) {
+                    throw new Error('Requested submission boxes not found')
+                }
+                setRequestedSubmissionBoxes(submissionBoxes)
+                setIsFetchingRequestedSubmissionBoxes(false)
+            })
+            .catch((err) => {
+                logger.error(err.message)
+                if (!errored) {
+                    toast.error(err.message || 'An unexpected error occurred!')
+                }
             })
     }, [router, videoId])
+
+    const onSubmit = useCallback((boxes: MinifiedSubmissionBox[]) => {
+        fetch('/api/video/submit/new', {
+            method: 'POST',
+            body: JSON.stringify({
+                videoId,
+                submissionBoxIds: boxes.map((box) => box.id),
+            }),
+        }).then(_ => {})
+    }, [videoId])
+
+    const onUnsubmit = useCallback((boxes: MinifiedSubmissionBox[]) => {
+        fetch('/api/video/submit/new', {
+            method: 'DELETE',
+            body: JSON.stringify({
+                videoId,
+                submissionBoxIds: boxes.map((box) => box.id),
+            }),
+        }).then(_ => {})
+    }, [videoId])
 
     return (
         <>
@@ -126,7 +190,7 @@ export default function VideoDetailedPage() {
                     height: '100%',
                 }}
             >
-                {isFetchingVideo || isFetchingSubmissionBoxes ? (
+                {isFetchingVideo || isFetchingSubmittedToSubmissionBoxes || isFetchingRequestedSubmissionBoxes ? (
                     <PageLoadProgress />
                 ) : (
                     <>
@@ -140,7 +204,7 @@ export default function VideoDetailedPage() {
                                     width: '100%',
                                 }}
                             >
-                                <BackButton title={'Back'} />
+                                <BackButtonWithLink route={'/dashboard '} title={'Return to Dashboard'} />
                                 <Box
                                     sx={{
                                         display: 'flex',
@@ -179,7 +243,7 @@ export default function VideoDetailedPage() {
                                             />
                                         ) : (
                                             <Alert severity='info'>
-                                                    Your video is currently processing. Please wait here or come back later.
+                                                Your video is currently processing. Please wait here or come back later.
                                             </Alert>
                                         )}
                                     </Box>
@@ -232,7 +296,7 @@ export default function VideoDetailedPage() {
                                                     />
                                                 ) : (
                                                     <Typography
-                                                        variant='h3'
+                                                        variant='h4'
                                                         sx={{
                                                             fontWeight: 'bold',
                                                             overflowX: 'auto',
@@ -278,35 +342,34 @@ export default function VideoDetailedPage() {
                                                 )}
                                             </Box>
                                             <Box
-                                                sx={{
-                                                    display:
-                                                        !isFetchingSubmissionBoxes && submissionBoxes?.length > 0
-                                                            ? 'block'
-                                                            : 'none',
-                                                }}
                                                 data-cy='submission-box-chips-wrapper'
                                             >
                                                 <Typography sx={{ fontWeight: 'bold' }}>Submitted To</Typography>
-                                                {submissionBoxes.map((submissionBox, idx) => (
-                                                    <Chip
-                                                        key={`submission-box-chip-${ idx }`}
-                                                        label={submissionBox.title}
-                                                        sx={{ m: 0.5, ml: 0 }}
+                                                <Box
+                                                    sx={{
+                                                        py: '0.5rem',
+                                                    }}
+                                                >
+                                                    <SubmissionBoxesSelector
+                                                        allSubmissionBoxes={toMinimizedBoxes(requestedSubmissionBoxes)}
+                                                        submittedBoxes={toMinimizedBoxes(submittedToSubmissionBoxes)}
+                                                        onSubmit={onSubmit}
+                                                        onUnsubmit={onUnsubmit}
                                                     />
-                                                ))}
+                                                </Box>
                                             </Box>
                                             <Box>
                                                 <Typography sx={{ fontWeight: 'bold' }}>Other information</Typography>
                                                 <Typography>
-                                                    Created At:{' '}
+                                                    Created at:{' '}
                                                     {!!video?.createdAt
-                                                        ? new Date(video?.createdAt).toLocaleString('en-GB', { timeZone: 'PST' })
+                                                        ? dayjs(video?.createdAt).format('MMM D, h:mma')
                                                         : 'N/A'}
                                                 </Typography>
                                                 <Typography>
-                                                    Updated At:{' '}
+                                                    Updated at:{' '}
                                                     {!!video?.updatedAt
-                                                        ? new Date(video?.updatedAt).toLocaleString('en-GB', { timeZone: 'PST' })
+                                                        ? dayjs(video?.updatedAt).format('MMM D, h:mma')
                                                         : 'N/A'}
                                                 </Typography>
                                             </Box>
@@ -405,4 +468,10 @@ export default function VideoDetailedPage() {
         const { userId } = await response.json()
         return userId
     }
+}
+
+function toMinimizedBoxes(boxes: SubmissionBox[]) {
+    return boxes.map((box) => {
+        return {id: box.id, title: box.title}
+    })
 }
