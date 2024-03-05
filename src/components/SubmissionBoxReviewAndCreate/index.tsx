@@ -68,9 +68,9 @@ export default function SubmissionBoxReviewAndCreate({ title, description, closi
                         {emails.map((email, index) => (
                             <Chip key={index} label={email} sx={{ m: 0.5, ml: 0 }} />
                         ))}
-                    </Box>):
-                    (<Alert data-cy='no-users-warning' severity='warning'>You have not invited anyone to your box</Alert>)
-                }
+                    </Box>)
+                    :
+                    (<Alert data-cy='no-users-warning' severity='warning'>You have not invited anyone to your box</Alert>)}
             </Box>
         </>
     )
