@@ -164,6 +164,27 @@ describe('Submission box request submissions tests', () => {
 
             cy.get('[data-cy="title"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Box Settings')
         })
+
+        it('Should indicate no one invited yet before adding emails', () => {
+            cy.get('[data-cy="placeholder-text"]').contains('No one has been invited yet').should('be.visible')
+        })
+
+        it('Should indicate no one invited yet after removing emails', () => {
+            const requestedEmail = 'requested@mail.com'
+
+            // Placeholder should be visible before adding email
+            cy.get('[data-cy="placeholder-text"]').contains('No one has been invited yet').should('be.visible')
+
+            // Adding and removing email
+            cy.get('[data-cy="email"]').type(requestedEmail)
+            cy.get('[data-cy="add"]').click()
+            cy.get('[data-cy="requested-email"]').should('contain', requestedEmail)
+            cy.get('[data-cy="remove"]').click()
+            cy.get('[data-cy="requested-email"]').should('not.exist')
+
+            // Placeholder should be visible after removing email
+            cy.get('[data-cy="placeholder-text"]').contains('No one has been invited yet').should('be.visible')
+        })
     })
 
     context('Not logged in', () => {
