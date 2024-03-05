@@ -6,11 +6,10 @@ export type VideoCardProps = {
     videoId: string
     title: string
     thumbnailUrl: string | null
+    handleVideoClick: any
 }
 
 export default function VideoCard(props: VideoCardProps) {
-    const router = useRouter()
-
     return (
         <Box
             width={230}
@@ -29,7 +28,7 @@ export default function VideoCard(props: VideoCardProps) {
                 backgroundColor: 'black',
                 overflow: 'hidden',
             }}
-            onClick={handleOnClick}
+            onClick={() => props.handleVideoClick(props.videoId)}
         >
             {!!props.thumbnailUrl && (
                 <Image
@@ -63,8 +62,4 @@ export default function VideoCard(props: VideoCardProps) {
             </Box>
         </Box>
     )
-
-    function handleOnClick() {
-        router.push(`/video/${ props.videoId }`)
-    }
 }

@@ -11,21 +11,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { videoId, videoTitle, videoDescription, submissionBoxIds } = await req.json()
+    const { videoId, submissionBoxIds } = await req.json()
 
     if (!videoId || typeof videoId !== 'string') {
         logger.error(`User ${ session.user.email } did not provide a videoId`)
         return NextResponse.json({ error: 'No videoId provided' }, { status: 400 })
-    }
-
-    if (!videoTitle || typeof videoTitle !== 'string') {
-        logger.error(`User ${ session.user.email } did not provide a videoTitle`)
-        return NextResponse.json({ error: 'No videoTitle provided' }, { status: 500 })
-    }
-
-    if (!!videoDescription && typeof videoDescription !== 'string') {
-        logger.error('Unexpected videoDescription type')
-        return NextResponse.json({ error: 'Unexpected videoDescription type' }, { status: 500 })
     }
 
     submissionBoxIds.forEach((submissionBoxId: any) => {
@@ -84,8 +74,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             },
             data: {
                 isSubmitted: true,
-                title: videoTitle,
-                description: videoDescription,
             },
         })
 
@@ -123,7 +111,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             }
         }
 
-        return NextResponse.json({ message: `Successfully submitted ${ videoTitle }` }, { status: 201 })
+        return NextResponse.json({ message: 'Successfully submitted video' }, { status: 201 })
     } catch (err) {
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
     }

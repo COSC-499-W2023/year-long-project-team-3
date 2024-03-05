@@ -12,10 +12,11 @@ import { SidebarOption } from '@/types/dashboard/sidebar'
 import VideoList from '@/components/VideoList'
 import SubmissionBoxList from '@/components/SubmissionBoxList'
 import DashboardSearchBar from '@/components/DashboardSearchBar'
+import { useRouter } from 'next/navigation'
 
 export default function DashboardPage() {
     const session = useSession()
-
+    const router = useRouter()
     // Videos
     const [allVideos, setAllVideos] = useState<Video[]>([])
     const [tempVideos, setTempVideos] = useState<Video[]>([])
@@ -167,6 +168,7 @@ export default function DashboardPage() {
                                                 title: video.title,
                                                 videoId: video.id,
                                                 thumbnailUrl: video.thumbnail,
+                                                handleVideoClick: handleVideoClick,
                                             }
                                         })}
                                         isSearching={isSearching}
@@ -202,5 +204,10 @@ export default function DashboardPage() {
         const response = await fetch('/api/submission-box/requestedsubmissions')
         const { submissionBoxes } = await response.json()
         return submissionBoxes
+    }
+
+    function handleVideoClick(videoId: string) {
+        console.log('hello')
+        router.push(`/video/${ videoId }`)
     }
 }

@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import { Typography, Box, Button, Link } from '@mui/material'
+import { Typography, Box, Button, Link, Modal } from '@mui/material'
 import { SubmissionBox, Video } from '@prisma/client'
 import VideoList from '@/components/VideoList'
 import BackButtonWithLink from '@/components/BackButtonWithLink'
@@ -11,6 +11,7 @@ import ScalingReactPlayer from '@/components/ScalingReactPlayer'
 import PageLoadProgress from '@/components/PageLoadProgress'
 import { BoxStatus } from '@/types/submission-box/boxStatus'
 import { toast } from 'react-toastify'
+import logger from '@/utils/logger'
 
 export default function SubmissionBoxDetailPage() {
     const router = useRouter()
@@ -20,6 +21,21 @@ export default function SubmissionBoxDetailPage() {
     const [videos, setVideos] = useState<Video[]>([])
     const [boxInfo, setBoxInfo] = useState<SubmissionBox | null>(null)
     const boxId = pathname?.split('/').pop()
+    const [isSubmissionModalOpen, setIsSubmissionModalOpen] = useState(false)
+    const [allVideos, setAllVideos] = useState<Video[]>([])
+
+    const modalStyle = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '25rem',
+        minWidth: '20rem',
+        backgroundColor: 'background.default',
+        borderRadius: '1rem',
+        boxShadow: 24,
+        p: '1rem 2rem',
+    }
 
     useEffect(() => {
         setIsFetchingSubmissionBox(true)
@@ -40,6 +56,13 @@ export default function SubmissionBoxDetailPage() {
             setIsFetchingSubmissionBox(false)
         })
     }, [boxId, router])
+
+    useEffect(() => {
+        fetchAllVideos()
+            .then((videos: Video[]) => setAllVideos(videos))
+            .catch((error) => toast.error(error))
+    }, [])
+
 
     return (
         <>
@@ -65,6 +88,7 @@ export default function SubmissionBoxDetailPage() {
                                             title: video.title,
                                             videoId: video.id,
                                             thumbnailUrl: video.thumbnail,
+                                            handleVideoClick: handleVideoClick,
                                         }
                                     })}
                                     isSearching={false}
@@ -136,7 +160,7 @@ export default function SubmissionBoxDetailPage() {
                                     <Box textAlign='center' padding='1rem'>
                                         <Button
                                             variant='contained'
-                                            onClick={() => router.push('/video/upload')}
+                                            onClick={onSubmitButtonClicked}
                                             data-cy='submissionButton'
                                         >
                                             { videos?.length === 0 ? 'Create A Submission' : 'Create A Resubmission' }
@@ -148,6 +172,67 @@ export default function SubmissionBoxDetailPage() {
                     )}
                 </>
             )}
+            <Modal open={isSubmissionModalOpen} onClose={handleModelClosed}>
+                <Box sx={{...modalStyle}}>
+                    <VideoList
+                        videos={allVideos.map((video) => {
+                            return {
+                                title: video.title,
+                                videoId: video.id,
+                                thumbnailUrl: video.thumbnail,
+                                handleVideoClick: handleSubmitVideo,
+                            }
+                        })}
+                        isSearching={false}
+                    />
+                </Box>
+            </Modal>
         </>
     )
+
+    function onSubmitButtonClicked() {
+        setIsSubmissionModalOpen(true)
+    }
+
+    function handleModelClosed() {
+        setIsSubmissionModalOpen(false)
+    }
+
+    async function fetchAllVideos(): Promise<Video[]> {
+        const response = await fetch('/api/my-videos')
+        const { videos } = await response.json()
+        return videos
+    }
+
+    function handleVideoClick(videoId: string) {
+        console.log('hello')
+        // router.push(`/video/${ videoId }`)
+    }
+
+    function handleSubmitVideo(videoId: string) {
+        const submissionBoxIds = [boxId]
+        const body = {
+            submissionBoxIds,
+            videoId: videoId,
+        }
+        fetch('/api/video/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+        })
+            .then(async (res) => {
+                if (res.status !== 201) {
+                    throw new Error('Failed to submit the video')
+                }
+                const body = await res.json()
+                router.push('/dashboard')
+                toast.success(body.message)
+            })
+            .catch((err) => {
+                logger.error(err)
+                toast.error('Unexpected error occurred while submitting the video')
+            })
+    }
 }
