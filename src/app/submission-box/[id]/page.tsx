@@ -48,7 +48,7 @@ export default function SubmissionBoxDetailPage() {
             submissionModificationForm.set('description', submissionModificationData.description)
         }
         if (submissionModificationData.closesAt) {
-            submissionModificationForm.set('closesAt', submissionModificationData.closesAt.toDateString())
+            submissionModificationForm.set('closesAt', submissionModificationData.closesAt.toString())
         }
         setIsEditing(false)
         setIsFetchingSubmissionBox(true)
@@ -172,7 +172,7 @@ export default function SubmissionBoxDetailPage() {
                                                     sx={{ width: '100% '}}
                                                     value={formik.values.closesAt ? dayjs(formik.values.closesAt) : null}
                                                     onChange={(e) => {
-                                                        formik.setFieldValue('closingDate', e)
+                                                        formik.setFieldValue('closesAt', e)
                                                     }}
                                                     format='YYYY/MM/DD hh:mm A'
                                                     defaultValue={null}
@@ -181,7 +181,7 @@ export default function SubmissionBoxDetailPage() {
                                                         <TextField
                                                             margin='normal'
                                                             variant='outlined'
-                                                            name='submissionBoxClosesAt'
+                                                            name='closesAt'
                                                             onBlur={formik.handleBlur}
                                                             error={formik.touched.closesAt && Boolean(formik.errors.closesAt)}
                                                             FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
