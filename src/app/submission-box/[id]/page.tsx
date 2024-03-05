@@ -12,7 +12,6 @@ import PageLoadProgress from '@/components/PageLoadProgress'
 import { BoxStatus } from '@/types/submission-box/boxStatus'
 import { toast } from 'react-toastify'
 import EditIcon from '@mui/icons-material/Edit'
-import logger from '@/utils/logger'
 import * as yup from 'yup'
 import { useFormik } from 'formik'
 import { ObjectSchema } from 'yup'
@@ -66,7 +65,7 @@ export default function SubmissionBoxDetailPage() {
                 setBoxInfo(body)
                 console.log(body)
             })
-            .catch((err) => {
+            .catch(() => {
                 toast.error('An unexpected error occurred')
             })
             .finally(() => {
