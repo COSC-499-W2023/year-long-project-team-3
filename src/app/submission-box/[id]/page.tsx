@@ -29,12 +29,11 @@ export default function SubmissionBoxDetailPage() {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: '25rem',
         minWidth: '20rem',
         backgroundColor: 'background.default',
         borderRadius: '1rem',
         boxShadow: 24,
-        p: '1rem 2rem',
+        p: '2rem',
     }
 
     useEffect(() => {
@@ -173,7 +172,7 @@ export default function SubmissionBoxDetailPage() {
                 </>
             )}
             <Modal open={isSubmissionModalOpen} onClose={handleModelClosed}>
-                <Box sx={{...modalStyle}}>
+                <Box sx={{ ...modalStyle}}>
                     <VideoList
                         videos={allVideos.map((video) => {
                             return {
@@ -205,8 +204,7 @@ export default function SubmissionBoxDetailPage() {
     }
 
     function handleVideoClick(videoId: string) {
-        console.log('hello')
-        // router.push(`/video/${ videoId }`)
+        router.push(`/video/${ videoId }`)
     }
 
     function handleSubmitVideo(videoId: string) {
