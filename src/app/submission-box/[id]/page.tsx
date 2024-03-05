@@ -59,11 +59,9 @@ export default function SubmissionBoxDetailPage() {
             .then(async (res: Response) => {
                 const body = await res.json()
                 if (res.status !== 200) {
-                    console.log(res.status)
                     throw new Error(body.error)
                 }
                 setBoxInfo(body)
-                console.log(body)
             })
             .catch(() => {
                 toast.error('An unexpected error occurred')
