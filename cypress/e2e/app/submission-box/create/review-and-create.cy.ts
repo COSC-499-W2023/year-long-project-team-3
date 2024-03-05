@@ -42,6 +42,8 @@ describe('Submission box review and create tests', () => {
 
         it('Should allow the user to review their submission box before creating', () => {
             cy.get('[data-cy="title"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Review & Create')
+
+            // TODO: extend this test to check more details about the page
         })
 
         it('Should let the user return to the previous page using the return to dashboard button', () => {

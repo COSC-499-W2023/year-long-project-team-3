@@ -109,7 +109,7 @@ export default function SubmissionBox() {
                 data-cy='pop-up'
             >
                 <DialogTitle id='alert-dialog-title'>
-                    {'Continue without adding the entered email?'}
+                    Continue without adding the entered email?
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id='alert-dialog-description'>
