@@ -6,7 +6,7 @@ import SubmissionBoxSettings, { validationSchema as settingsValidationSchema } f
 import SubmissionBoxRequestSubmission from '@/components/SubmissionBoxRequestSubmission'
 import SubmissionBoxReviewAndCreate from '@/components/SubmissionBoxReviewAndCreate'
 import BackButtonWithLink from '@/components/BackButtonWithLink'
-import { Box } from '@mui/material'
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
 import ProgressDots from '@/components/ProgressDots'
 import Typography from '@mui/material/Typography'
 import logger from '@/utils/logger'
@@ -17,11 +17,13 @@ import FormNavButton from '@/components/FormNavButton'
 export default function SubmissionBox() {
     const router = useRouter()
 
-    const [title, setTitle] = useState('')
-    const [isTitleError, setIsTitleError] = useState(false)
+    const [title, setTitle] = useState<string>('')
+    const [isTitleError, setIsTitleError] = useState<boolean>(false)
     const [description, setDescription] = useState<string | undefined>()
     const [closingDate, setClosingDate] = useState<Date | null>(null)
     const [emails, setEmails] = useState<string[]>([])
+    const [emailFieldText, setEmailFieldText] = useState<string>('')
+    const [popUpVisible, setPopupVisible] = useState<boolean>(false)
 
     const { steps, currentStepIndex, step, stepTitles, currentStepTitle, isFirstStep, isLastStep, back, next } =
         useMultiStepForm(
@@ -37,7 +39,7 @@ export default function SubmissionBox() {
                     isTitleError={isTitleError}
                     setIsTitleError={setIsTitleError}
                 />,
-                <SubmissionBoxRequestSubmission key='step2' emails={emails} setEmails={setEmails} />,
+                <SubmissionBoxRequestSubmission key='step2' emails={emails} setEmails={setEmails} setEmailFieldText={setEmailFieldText}/>,
                 <SubmissionBoxReviewAndCreate
                     key='step3'
                     title={title}
@@ -98,6 +100,28 @@ export default function SubmissionBox() {
                     </Box>
                 </Box>
             </Box>
+            <Dialog
+                open={popUpVisible}
+                onClose={handleClose}
+                aria-labelledby='alert-dialog-title'
+                aria-describedby='alert-dialog-description'
+                sx={{ pt: 21 }}
+                data-cy='pop-up'
+            >
+                <DialogTitle id='alert-dialog-title'>
+                    {'Continue without adding the entered email?'}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id='alert-dialog-description'>
+                      You have not added the email you entered into the email addresses field. Are you sure you want to
+                      move on to the next page without adding it?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button data-cy='close' onClick={handleClose}>No</Button>
+                    <Button data-cy='agree' onClick={handleAgree} autoFocus>Yes, I am sure</Button>
+                </DialogActions>
+            </Dialog>
         </>
     )
 
@@ -107,9 +131,17 @@ export default function SubmissionBox() {
                 const validationResult = await validateFormData()
                 setIsTitleError(!validationResult)
                 return next(validationResult)
+            } else if (currentStepIndex === 1) {
+                // On SubmissionBoxRequestSubmission, check whether there is text in the email field
+                const emailFieldHasText = emailFieldText.trim() == ''
+                setPopupVisible(!emailFieldHasText)
+                return next(emailFieldHasText)
             }
 
-            // TODO: Handle other steps
+            // Reset state storing text in email field
+            setEmailFieldText('')
+
+            // Handle other steps
             return next(true)
         }
         handleCreate().then()
@@ -152,5 +184,16 @@ export default function SubmissionBox() {
         }
 
         return settingsValidationSchema.isValid(formData)
+    }
+
+    // If the user clicks: No in the popup
+    function handleClose() {
+        setPopupVisible(false)
+    }
+
+    // If the user clicks: Yes, I am sure in the popup
+    function handleAgree() {
+        setPopupVisible(false)
+        return next(true)
     }
 }
