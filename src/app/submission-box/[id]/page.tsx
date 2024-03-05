@@ -28,13 +28,14 @@ export default function SubmissionBoxDetailPage() {
     const [videos, setVideos] = useState<Video[]>([])
     const [boxInfo, setBoxInfo] = useState<SubmissionBox | null>(null)
     const [isEditing, setIsEditing] = useState(false)
+    const [isFormSubmitted, setIsFormSubmitted] = useState(false)
 
     const boxId = pathname?.split('/').pop()
     const formik = useFormik<SubmissionModificationData>({
         initialValues: {
-            title: 'title',
-            description: '',
-            closesAt: null,
+            title: boxInfo ? boxInfo.title : 'Title',
+            description: boxInfo ? boxInfo.description : '',
+            closesAt: boxInfo ? boxInfo.closesAt : null,
         },
         enableReinitialize: true,
         validationSchema: validationSchema,
@@ -62,15 +63,15 @@ export default function SubmissionBoxDetailPage() {
                     console.log(res.status)
                     throw new Error(body.error)
                 }
-                console.log(body)
                 setBoxInfo(body)
+                console.log(body)
             })
             .catch((err) => {
-                logger.error(err.message)
                 toast.error('An unexpected error occurred')
             })
             .finally(() => {
                 setIsFetchingSubmissionBox(false)
+                setIsFormSubmitted(true)
             })
     }
 
@@ -94,8 +95,9 @@ export default function SubmissionBoxDetailPage() {
             })
             .finally(() => {
                 setIsFetchingSubmissionBox(false)
+                setIsFormSubmitted(false)
             })
-    }, [boxId, router])
+    }, [boxId, router, isFormSubmitted])
 
     return (
         <>
