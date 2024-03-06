@@ -17,7 +17,7 @@ describe('Requested Dashboard Details Page Tests', () => {
         cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('not.contain', 'login')
     })
 
-    it.only('should display a submission box with no information inputted other than title and no video', () => {
+    it('should display a submission box with no information inputted other than title and no video', () => {
         const submissionBoxTitle = 'Test Requested'
 
         cy.task('getUserId', email).then((userId) => {
@@ -46,7 +46,7 @@ describe('Requested Dashboard Details Page Tests', () => {
     })
 
 
-    it.only('should display a submission box with all information inputted and current submitted video', () => {
+    it('should display a submission box with all information inputted and current submitted video', () => {
         const submissionBoxTitle = 'Test Requested with Data'
         const submissionBoxDescription =
           'This is a description that describes what users need to submit and have in their videos.  The description is a good tool to make sure that participants in the submission box are able to determine what is needed in their submissions and the ability for them to hit their goals. :)'
