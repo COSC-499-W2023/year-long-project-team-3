@@ -22,18 +22,23 @@ describe('Requested Dashboard Details Page Tests', () => {
 
         cy.task('getUserId', email).then((userId) => {
             cy.task('createRequestSubmissionForUser', { userId, submissionBoxTitle }).then(() => {
-                cy.reload()
-                cy.visit('/dashboard')
-                cy.get('[data-cy="My Invitations"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
-                cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
                 runWithRetry(() => {
-                    cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
+                    cy.visit('/dashboard')
+
+                    cy.get('[data-cy="My Invitations"]')
+                    cy.wait(1000)
+                    cy.get('[data-cy="My Invitations"]').click()
+
+                    cy.get(`[data-cy="${ submissionBoxTitle }"]`)
+                    cy.wait(1000)  // Wait for card to be clickable
+                    cy.get(`[data-cy="${ submissionBoxTitle }"]`).click()
+                    cy.url().should('contain', 'submission-box')
 
                     // Assert no submission message and submission box title
-                    cy.get('[data-cy="noSubmission"]', { timeout: TIMEOUT.EXTRA_LONG })
+                    cy.get('[data-cy="noSubmission"]')
                         .should('be.visible')
                         .and('contain', 'No Current Submission')
-                    cy.get('[data-cy="submissionBoxTitle"]', { timeout: TIMEOUT.EXTRA_LONG })
+                    cy.get('[data-cy="submissionBoxTitle"]')
                         .should('contain', submissionBoxTitle)
                 })
             })
@@ -68,26 +73,19 @@ describe('Requested Dashboard Details Page Tests', () => {
                             }).then(() => {
                                 cy.reload()
                                 cy.visit('/dashboard')
-                                cy.get('[data-cy="My Invitations"]', {
-                                    timeout: TIMEOUT.EXTRA_LONG,
-                                }).click()
-                                cy.url({
-                                    timeout: TIMEOUT.EXTRA_LONG,
-                                }).should('contain', 'dashboard')
-                                cy.get(`[data-cy="${ submissionBoxTitle }"]`, {
-                                    timeout: TIMEOUT.EXTRA_EXTRA_LONG,
-                                }).click()
+                                cy.get('[data-cy="My Invitations"]')
+                                cy.wait(1000)
+                                cy.get('[data-cy="My Invitations"]').click()
+
+                                cy.get(`[data-cy="${ submissionBoxTitle }"]`)
+                                cy.wait(1000)
+                                cy.get(`[data-cy="${ submissionBoxTitle }"]`).click()
+                                cy.url().should('contain', 'submission-box')
 
                                 // Assert submission box information
-                                cy.get('[data-cy="submissionBoxTitle"]', {
-                                    timeout: TIMEOUT.EXTRA_LONG,
-                                }).should('contain', submissionBoxTitle)
-                                cy.get('[data-cy="submissionBoxDate"]', {
-                                    timeout: TIMEOUT.EXTRA_LONG,
-                                }).should('contain', new Date().toDateString().slice(4))
-                                cy.get('[data-cy="submissionBoxDesc"]', {
-                                    timeout: TIMEOUT.EXTRA_LONG,
-                                }).should('contain', submissionBoxDescription)
+                                cy.get('[data-cy="submissionBoxTitle"]').should('contain', submissionBoxTitle)
+                                cy.get('[data-cy="submissionBoxDate"]').should('contain', new Date().toDateString().slice(4))
+                                cy.get('[data-cy="submissionBoxDesc"]').should('contain', submissionBoxDescription)
 
                                 // Assert video player is visible
                                 cy.get('[data-cy="video-player"]', {
@@ -109,20 +107,27 @@ describe('Requested Dashboard Details Page Tests', () => {
 
         cy.task('getUserId', email).then((userId) => {
             cy.task('createRequestSubmissionForUser', { userId, submissionBoxTitle, submissionBoxDescription }).then(() => {
-                cy.reload()
                 cy.visit('/dashboard')
-                cy.get('[data-cy="My Invitations"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
-                cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
+
+                cy.get('[data-cy="My Invitations"]')
+                cy.wait(1000)
+                cy.get('[data-cy="My Invitations"]').click()
+
                 runWithRetry(() => {
-                    cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
+                    cy.get(`[data-cy="${ submissionBoxTitle }"]`)
+                    cy.wait(1000)
+                    cy.get(`[data-cy="${ submissionBoxTitle }"]`).click()
+
                     // Assert redirection to submission box page
                     cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'submission-box')
-                })
-                // Click submission button
-                // Assert redirection to upload page
-                runWithRetry(() => {
-                    cy.get('[data-cy="submissionButton"]', { timeout: TIMEOUT.EXTRA_LONG }).should('be.visible').click()
-                    cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'upload')
+
+                    // Click submission button
+                    // Assert redirection to upload page
+                    cy.get('[data-cy="submissionButton"]').should('be.visible')
+                    cy.wait(1000)
+                    cy.get('[data-cy="submissionButton"]').should('be.visible').click()
+
+                    cy.url().should('contain', 'upload')
                 })
             })
         })

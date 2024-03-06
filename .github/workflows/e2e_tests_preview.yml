@@ -111,7 +111,7 @@ jobs:
                   npx prisma generate
             - name: Run Cypress Tests
               run: |
-                  npx cypress run --headless --browser chrome
+                  npx cypress run
             - name: Upload screenshots
               uses: actions/upload-artifact@v4
               if: failure()

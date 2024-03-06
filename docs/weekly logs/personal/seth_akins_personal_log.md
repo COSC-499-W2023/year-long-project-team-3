@@ -439,3 +439,30 @@ will have to reconsider how we do that moving forwards.
 ### Additional Context
 
 - N/A
+
+## Week 8 (26/02/2024 - 03/03/2024)
+
+![](imgs/seth-akins-term-2-week-8-tasks.png)
+
+### Goals
+
+- This week I was trying to finish up my tasks before peer testing. I finished the new upload video form, and I wrote
+  the backend for the form, the tests, and got it merged.
+- I started working on another PR to replace the current system with my new one.
+- I also tried to help Teresa fix some of her video card PR, but was unsuccessful.
+
+### Tasks
+
+#### Completed Tasks
+
+- [New Upload Video Form Frontend](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/417)
+- [Refactor Backend to Work With New Video Submission Form](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/451)
+
+#### In-Progress Tasks
+
+- [Fix Position of Loading Wheel](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/440)
+- [Change Upload Video Path to Use New Upload Video Form](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/461)
+
+### Additional Context
+
+- N/A

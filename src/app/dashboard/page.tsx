@@ -128,7 +128,6 @@ export default function DashboardPage() {
             <Box sx={{
                 display: 'flex',
                 flexDirection: 'row',
-                flexGrow: 1,
                 height: '100%',
                 width: '100%',
             }}>
@@ -136,7 +135,7 @@ export default function DashboardPage() {
                     sidebarSelectedOption={sidebarSelectedOption}
                     setSidebarSelectedOption={setSidebarSelectedOption}
                 />
-                <Box width='80%' display='flex' flexDirection='column'>
+                <Box display='flex' flexDirection='column' width='100%'>
                     <Box display='flex' justifyContent='space-between' alignItems='center' paddingRight='3rem'>
                         <Typography
                             data-cy='title'
@@ -160,13 +159,12 @@ export default function DashboardPage() {
                             <PageLoadProgress />
                         ) : (
                             <Box
-                                component='section'
                                 sx={{
-                                    height: 'calc(100vh - 200px)',
+                                    height: '100%',
+                                    width: '100%',
                                     overflowY: 'auto',
                                     paddingTop: 2,
                                 }}
-                                width='100%'
                             >
                                 {isVideoTabSelected ? (
                                     <VideoList
