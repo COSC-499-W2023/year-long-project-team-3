@@ -25,7 +25,7 @@ describe('Submission box request submissions tests', () => {
             cy.url().should('not.contain', 'login')
 
             cy.visit('/dashboard')
-            cy.get('[data-cy="Create New"]').click()
+            cy.get('[data-cy="Create New"]').wait(1000).click()
 
             const title = 'My Test Title'
 
@@ -37,6 +37,8 @@ describe('Submission box request submissions tests', () => {
 
             // We should be on the request submission step
             cy.get('[data-cy="title"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Request Submissions')
+
+            cy.wait(500)
         })
 
         it('Should give popup if user enters email and doesn\'t add it before clicking next and let user cancel', () => {
