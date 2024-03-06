@@ -1,4 +1,5 @@
 import { TIMEOUT } from '../../../../utils/constants'
+import runWithRetry from '../../../../utils/runUntilExist'
 
 describe('Requested Dashboard Details Page Tests', () => {
     const email = 'requestedDetail@page.test'
@@ -25,14 +26,16 @@ describe('Requested Dashboard Details Page Tests', () => {
                 cy.visit('/dashboard')
                 cy.get('[data-cy="My Invitations"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
                 cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
-                cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
+                runWithRetry(() => {
+                    cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
 
-                // Assert no submission message and submission box title
-                cy.get('[data-cy="noSubmission"]', { timeout: TIMEOUT.EXTRA_LONG })
-                    .should('be.visible')
-                    .and('contain', 'No Current Submission')
-                cy.get('[data-cy="submissionBoxTitle"]', { timeout: TIMEOUT.EXTRA_LONG })
-                    .should('contain', submissionBoxTitle)
+                    // Assert no submission message and submission box title
+                    cy.get('[data-cy="noSubmission"]', { timeout: TIMEOUT.EXTRA_LONG })
+                        .should('be.visible')
+                        .and('contain', 'No Current Submission')
+                    cy.get('[data-cy="submissionBoxTitle"]', { timeout: TIMEOUT.EXTRA_LONG })
+                        .should('contain', submissionBoxTitle)
+                })
             })
         })
     })
@@ -110,16 +113,17 @@ describe('Requested Dashboard Details Page Tests', () => {
                 cy.visit('/dashboard')
                 cy.get('[data-cy="My Invitations"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
                 cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
-                cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
-
-                // Assert redirection to submission box page
-                cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'submission-box')
-
+                runWithRetry(() => {
+                    cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
+                    // Assert redirection to submission box page
+                    cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'submission-box')
+                })
                 // Click submission button
-                cy.get('[data-cy="submissionButton"]', { timeout: TIMEOUT.EXTRA_LONG }).should('be.visible').click()
-
                 // Assert redirection to upload page
-                cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'upload')
+                runWithRetry(() => {
+                    cy.get('[data-cy="submissionButton"]', { timeout: TIMEOUT.EXTRA_LONG }).should('be.visible').click()
+                    cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'upload')
+                })
             })
         })
     })
