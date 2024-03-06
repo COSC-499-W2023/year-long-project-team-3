@@ -2,29 +2,24 @@ import { TIMEOUT } from '../../../../utils/constants'
 import { v4 as uuidv4 } from 'uuid'
 
 describe('Submission box review and create tests', () => {
-    before(() => {
-        cy.task('clearDB')
-    })
-
     context('Logged in', () => {
         beforeEach(() => {
-            cy.session('testuser', () => {
-                const email = 'user' + uuidv4() + '@example.com'
-                const password = 'Password1'
+            cy.task('clearDB')
+            const email = 'user' + uuidv4() + '@example.com'
+            const password = 'Password1'
 
-                // Sign up
-                cy.task('createUser', { email, password })
+            // Sign up
+            cy.task('createUser', { email, password })
 
-                // Login
-                cy.visit('/login')
-                cy.get('[data-cy=email]').type(email)
-                cy.get('[data-cy=password]').type(password)
-                cy.get('[data-cy=submit]').click()
-                cy.url().should('not.contain', 'login')
-            })
+            // Login
+            cy.visit('/login')
+            cy.get('[data-cy=email]').type(email)
+            cy.get('[data-cy=password]').type(password)
+            cy.get('[data-cy=submit]').click()
+            cy.url().should('not.contain', 'login')
 
             cy.visit('/dashboard')
-            cy.get('[data-cy="Create New"]').click()
+            cy.get('[data-cy="Create New"]').wait(1000).click()
 
             const title = 'My Test Title'
 
@@ -38,6 +33,7 @@ describe('Submission box review and create tests', () => {
             cy.get('[data-cy="title"]', { timeout: TIMEOUT.EXTRA_LONG }).contains('Request Submissions')
 
             cy.get('[data-cy="Next"]').click()
+            cy.wait(500)
         })
 
         it('Should allow the user to review their submission box before creating', () => {
