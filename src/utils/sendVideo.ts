@@ -10,6 +10,8 @@ import prisma from '@/lib/prisma'
 import { Readable } from 'stream'
 import { makeS3Key } from './s3Key'
 import { getS3UploadBucket } from '@/utils/getS3UploadBucket'
+import { VideoUploadData } from '@/types/video/video'
+import {sendEmailFailureNotification} from '@/utils/emails/videoUploadFailure'
 
 export function removeFileExtension(filename: string): string {
     return filename.replace(/\.[^/.]+$/, '')
@@ -46,7 +48,7 @@ export default async function sendVideo(rawVideo: File, owner: User, isFaceBlurC
     const uploadS3 = new Upload({
         client: client,
         params: {
-            Bucket: getS3UploadBucket(isFaceBlurChecked),
+            Bucket: getS3UploadBucket(isFaceBlurChecked), 
             Key: s3Key,
             Body: Readable.from(Buffer.from(rawVideoBuffer)),
         },
@@ -114,4 +116,99 @@ export default async function sendVideo(rawVideo: File, owner: User, isFaceBlurC
     }
 
     return newVideo
+}
+
+export async function uploadVideo(videoData: VideoUploadData, user: User, fileExtension: string): Promise<Video> {
+    const uploadedVideo: Video = await prisma.video.create({
+        data: {
+            owner: {
+                connect: {
+                    id: user.id,
+                },
+            },
+            title: videoData.title,
+            description: videoData.description,
+        },
+    })
+
+    const s3uploadedVideoKey = await makeS3Key(uploadedVideo, fileExtension)
+
+    const client = new S3Client({
+        region: process.env.AWS_UPLOAD_REGION_US,
+    })
+
+    const s3VideoUpload = new Upload({
+        client: client,
+        params: {
+            Bucket: getUploadBucket(videoData.blurFace),
+            Key: s3uploadedVideoKey,
+            Body: videoData.file,
+        },
+    })
+    const s3VideoUploadResult: CompleteMultipartUploadCommandOutput | AbortMultipartUploadCommandOutput = await s3VideoUpload.done()
+    if (!isCompleteUpload(s3VideoUploadResult) || !s3VideoUploadResult?.Location) {
+        logger.error(s3VideoUploadResult)
+        await sendEmailFailureNotification([user.email], videoData.title)
+
+        // Delete database entry
+        await prisma.video.delete({
+            where: {
+                id: uploadedVideo.id,
+            },
+        })
+
+        throw new Error(`Unexpected error while uploading video ${ videoData.title } to S3`)
+    }
+
+    // Trigger the processing pipeline by uploading metadata
+    if (!videoData.blurFace) {
+        const metadataFile: string = JSON.stringify({
+            videoId: uploadedVideo.id,
+            srcVideo: s3uploadedVideoKey,
+        })
+        const uploadJson = new Upload({
+            client: client,
+            params: {
+                Bucket: process.env.AWS_UPLOAD_BUCKET_STREAMING as string,
+                Key: await makeS3Key(uploadedVideo, 'json'),
+                Body: metadataFile,
+            },
+        })
+        const s3JsonData: CompleteMultipartUploadCommandOutput | AbortMultipartUploadCommandOutput =
+          await uploadJson.done()
+        if (!isCompleteUpload(s3JsonData) || s3JsonData.Location === undefined) {
+            logger.error(s3JsonData)
+            await sendEmailFailureNotification([user.email], videoData.title)
+
+            // Delete database entry
+            await prisma.video.delete({
+                where: {
+                    id: uploadedVideo.id,
+                },
+            })
+
+            throw new Error(`Unexpected error while uploading video metadata file for video ${ videoData.title } to S3`)
+        }
+    }
+
+    await prisma.videoWhitelist.create({
+        data: {
+            video: {
+                connect: {
+                    id: uploadedVideo.id,
+                },
+            },
+            whitelistedUsers: {
+                create: {
+                    whitelistedUser: {
+                        connect: {
+                            id: user.id,
+                        },
+                    },
+                },
+            },
+        },
+    })
+
+    return uploadedVideo
 }
