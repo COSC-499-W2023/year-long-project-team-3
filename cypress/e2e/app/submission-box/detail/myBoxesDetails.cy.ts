@@ -173,7 +173,7 @@ describe('Receiving Dashboard Details Page Tests', () => {
             cy.url().then((url) => (slug = url.split('/').pop()))
 
             cy.get('[data-cy="sign-out-button"]').click()
-            cy.url().should('not.contain', 'dashboard')
+            cy.url().should('not.contain', 'submission-box')
             cy.reload()
 
             cy.visit('/login')
