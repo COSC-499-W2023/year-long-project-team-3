@@ -1,36 +1,37 @@
 import {Box, Button, Divider, Modal} from '@mui/material'
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 import {theme} from '@/components/ThemeRegistry/theme'
 import VideoList from '@/components/VideoList'
 import {Video} from '@prisma/client'
 import Link from '@mui/material/Link'
+import { VideoSubmission } from '@/app/api/my-videos/route'
+import { toast } from 'react-toastify'
+import PageLoadProgress from '@/components/PageLoadProgress'
 
 export default function SelectVideoForSubmission() {
     const [selectVideoOpen, setSelectVideoOpen] = useState(false)
+    const [isFetching, setIsFetching] = useState(false)
+    const [userVideos, setUserVideos] = useState<(Video & VideoSubmission)[]>([])
 
-    const style = {
+    const modalStyle = {
         position: 'absolute' as 'absolute',
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
         width: '70vw',
-        height: '50vh',
+        height: '80vh',
         backgroundColor: theme.palette.background.default,
         boxShadow: 24,
         borderRadius: '1rem',
         p: 4,
     }
 
-    const [userVideos, setUserVideos] = useState<Video[]>([])
     useEffect(() => {
-        fetch('/api/my-videos').then(async (res) => {
-            const {videos} = await res.json()
-            setUserVideos(videos)
-            console.log(videos)
-        }).catch((err) => {
-            setUserVideos([])
-            console.log('error: ' + err)
-        })
+        setIsFetching(true)
+        fetchAllVideos()
+            .then((videos: (Video & VideoSubmission)[]) => setUserVideos(videos))
+            .catch((error) => toast.error(error))
+            .finally(() => setIsFetching(false))
     }, [])
 
     return (
@@ -61,22 +62,41 @@ export default function SelectVideoForSubmission() {
                 open={selectVideoOpen}
                 onClose={() => setSelectVideoOpen(false)}
             >
-                <Box sx={style}>
-                    <VideoList
-                        isSearching={false}
-                        videos={userVideos.map((video) => {
-                            return {
-                                title: video.title,
-                                videoId: video.id,
-                                thumbnailUrl: video.thumbnail,
-                                description: video.description,
-                                isSubmitted: video.isSubmitted,
-                                createdDate: video.createdAt,
-                            }
-                        })}
-                    />
+                <Box sx={modalStyle}>
+                    {isFetching ? <PageLoadProgress/> : (
+                        <VideoList
+                            isSearching={false}
+                            videos={userVideos.map((video) => {
+                                return {
+                                    title: video.title,
+                                    videoId: video.id,
+                                    thumbnailUrl: video.thumbnail,
+                                    description: video.description,
+                                    isSubmitted: video.isSubmitted,
+                                    createdDate: video.createdAt,
+                                    submissionBoxes: video.submissions.map(submission => submission.requestedSubmission.submissionBox.title),
+                                }
+                            })}
+                        />
+                    )}
                 </Box>
             </Modal>
         </Box>
     )
+}
+
+async function fetchAllVideos(): Promise<(Video & VideoSubmission)[]> {
+    const response = await fetch('/api/my-videos')
+    const data = await response.json()
+
+    // Map video submission objects to extract necessary properties
+    return data.videoSubmission.map((submittedVideo: { title: string; id: string; thumbnail: string | null; description: string | null; isSubmitted: boolean; createdAt: Date; submissions: any }) => ({
+        title: submittedVideo.title,
+        id: submittedVideo.id,
+        thumbnail: submittedVideo.thumbnail,
+        description: submittedVideo.description,
+        isSubmitted: submittedVideo.isSubmitted,
+        createdAt: submittedVideo.createdAt,
+        submissions: submittedVideo.submissions,
+    }))
 }
