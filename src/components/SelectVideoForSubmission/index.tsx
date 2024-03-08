@@ -1,4 +1,4 @@
-import {Box, Button, Divider, Modal} from '@mui/material'
+import { Box, Button, Divider, IconButton, Modal, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import {theme} from '@/components/ThemeRegistry/theme'
 import VideoList from '@/components/VideoList'
@@ -7,6 +7,7 @@ import Link from '@mui/material/Link'
 import { VideoSubmission } from '@/app/api/my-videos/route'
 import { toast } from 'react-toastify'
 import PageLoadProgress from '@/components/PageLoadProgress'
+import CloseIcon from '@mui/icons-material/Close'
 
 type SelectVideoForSubmissionProps = {
     submissionBoxId: string
@@ -17,19 +18,6 @@ export default function SelectVideoForSubmission(props: SelectVideoForSubmission
     const [selectVideoOpen, setSelectVideoOpen] = useState(false)
     const [isFetching, setIsFetching] = useState(false)
     const [userVideos, setUserVideos] = useState<(Video & VideoSubmission)[]>([])
-
-    const modalStyle = {
-        position: 'absolute' as 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: '70vw',
-        height: '80vh',
-        backgroundColor: theme.palette.background.default,
-        boxShadow: 24,
-        borderRadius: '1rem',
-        p: 4,
-    }
 
     useEffect(() => {
         setIsFetching(true)
@@ -67,24 +55,64 @@ export default function SelectVideoForSubmission(props: SelectVideoForSubmission
                 open={selectVideoOpen}
                 onClose={() => setSelectVideoOpen(false)}
             >
-                <Box sx={modalStyle}>
-                    {isFetching ? <PageLoadProgress/> : (
-                        <VideoList
-                            isSearching={false}
-                            videos={userVideos.map((video) => {
-                                return {
-                                    title: video.title,
-                                    videoId: video.id,
-                                    thumbnailUrl: video.thumbnail,
-                                    description: video.description,
-                                    isSubmitted: video.isSubmitted,
-                                    createdDate: video.createdAt,
-                                    submissionBoxes: video.submissions.map(submission => submission.requestedSubmission.submissionBox.title),
-                                }
-                            })}
-                            onCardClick={handleCardClick}
-                        />
-                    )}
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '2rem',
+                    position: 'absolute' as 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: '70vw',
+                    height: '80vh',
+                    backgroundColor: theme.palette.background.default,
+                    boxShadow: 24,
+                    borderRadius: '1rem',
+                    pb: 4,
+                }}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignItems: 'start',
+                        }}
+                    >
+                        <Typography
+                            variant='h4'
+                            sx={{
+                                pl: 4,
+                                pt: 2,
+                                fontWeight: 500,
+                            }}
+                        >Select a video to submit</Typography>
+                        <IconButton onClick={() => setSelectVideoOpen(false)}>
+                            <CloseIcon/>
+                        </IconButton>
+                    </Box>
+                    <Box
+                        sx={{
+                            flexGrow: 1,
+                        }}
+                    >
+                        {isFetching ? <PageLoadProgress/> : (
+                            <VideoList
+                                isSearching={false}
+                                videos={userVideos.map((video) => {
+                                    return {
+                                        title: video.title,
+                                        videoId: video.id,
+                                        thumbnailUrl: video.thumbnail,
+                                        description: video.description,
+                                        isSubmitted: video.isSubmitted,
+                                        createdDate: video.createdAt,
+                                        submissionBoxes: video.submissions.map(submission => submission.requestedSubmission.submissionBox.title),
+                                    }
+                                })}
+                                onCardClick={handleCardClick}
+                            />
+                        )}
+                    </Box>
                 </Box>
             </Modal>
         </Box>
@@ -108,7 +136,7 @@ export default function SelectVideoForSubmission(props: SelectVideoForSubmission
             } else {
                 toast.error('An error occurred submitting the video')
             }
-        }).catch((err) => {
+        }).catch(() => {
             toast.error('An error occurred submitting the video')
         })
 
