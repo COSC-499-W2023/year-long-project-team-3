@@ -93,6 +93,7 @@ export default function SelectVideoForSubmission(props: SelectVideoForSubmission
                     <Box
                         sx={{
                             flexGrow: 1,
+                            maxHeight: 'calc(100% - 4.5rem)',
                         }}
                     >
                         {isFetching ? <PageLoadProgress/> : (
