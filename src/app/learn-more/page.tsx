@@ -120,16 +120,17 @@ export default function LearnMorePage() {
                             <li>
                                 Once you have submitted a video, it will be processed using AWS services. You are going
                                 to be redirected to the video&apos;s page. There you can review details like the title and
-                                upload date.
+                                upload date, and once your video has finished processing, you will be able to play it
+                                back.
                             </li>
                             <li>
-                                If you wish to submit your video, you can now jump into your invites, and submit to any
-                                of them by clicking on its card.
+                                If you wish to submit your video to a submission box, you can now jump into your invites,
+                                and submit to any of the boxes you have been invited to by clicking on their cards.
                             </li>
                         </ol>
                         <Typography>
-                            After clicking Submit, you can see your video on your{' '}
-                            <Link href='/dashboard'>Dashboard page</Link> under Recents and Submitted videos.
+                            You can see all of your videos on your{' '}
+                            <Link href='/dashboard'>Dashboard page</Link> under My Videos.
                         </Typography>
                     </Box>
                 </Box>
