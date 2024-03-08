@@ -48,7 +48,7 @@ export default async function sendVideo(rawVideo: File, owner: User, isFaceBlurC
     const uploadS3 = new Upload({
         client: client,
         params: {
-            Bucket: getS3UploadBucket(isFaceBlurChecked), 
+            Bucket: getS3UploadBucket(isFaceBlurChecked),
             Key: s3Key,
             Body: Readable.from(Buffer.from(rawVideoBuffer)),
         },
