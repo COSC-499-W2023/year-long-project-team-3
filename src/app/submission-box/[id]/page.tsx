@@ -115,7 +115,9 @@ export default function SubmissionBoxDetailPage() {
                                             }}
                                         >
                                             <Typography data-cy='videoTitleHeader' variant='subtitle2' color={'textSecondary'}>Video Title</Typography>
-                                            <Link sx={{ fontWeight: 'bold' }} paddingBottom='1rem' data-cy='videoTitle' variant={'h5'} color={'textSecondary'} onClick={() => router.push(`/video/${ videos?.[0].id }`)}>{videos?.[0].title}</Link>
+                                            <Link sx={{ fontWeight: 'bold' }} paddingBottom='1rem' data-cy='videoTitle' variant={'h5'} color={'textSecondary'} href={`/video/${ videos?.[0].id }`}>
+                                                {videos?.[0].title}
+                                            </Link>
                                         </Box>
                                     )}
                                     <Box
@@ -142,7 +144,10 @@ export default function SubmissionBoxDetailPage() {
                                                 </Typography>
                                             )
                                         ) : (
-                                            <SelectVideoForSubmission />
+                                            <SelectVideoForSubmission
+                                                submissionBoxId={boxId ?? ''}
+                                                onVideoSelect={(video: (Video & VideoSubmission)) => setVideos([video])}
+                                            />
                                         )}
                                     </Box>
                                 </Box>
