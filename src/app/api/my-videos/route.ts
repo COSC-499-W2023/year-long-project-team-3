@@ -5,8 +5,20 @@ import prisma from '@/lib/prisma'
 import { Video } from '@prisma/client'
 
 /**
- * Retrieves all videos owned by the logged-in user as a Video[]
+ * Retrieves all videos owned by the logged-in user as a (Video & VideoSubmission)[]
  */
+
+export type VideoSubmission = {
+    submissions: {
+        requestedSubmission: {
+            submissionBox: {
+                id: string,
+                title: string;
+            };
+        };
+    }[];
+}
+
 export async function GET(): Promise<NextResponse> {
     try {
         const session = await getServerSession()
@@ -25,13 +37,29 @@ export async function GET(): Promise<NextResponse> {
             })
         ).id
 
-        const ownedVideos: Video[] = await prisma.video.findMany({
+        const myVideoSubmission: (Video & VideoSubmission)[] = (await prisma.video.findMany({
             where: {
                 ownerId: userId,
             },
-        })
+            include: {
+                submissions: {
+                    include: {
+                        requestedSubmission: {
+                            include: {
+                                submissionBox: {
+                                    select: {
+                                        id: true,
+                                        title: true,
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        }))
 
-        return NextResponse.json({ videos: ownedVideos }, { status: 200 })
+        return NextResponse.json({ videoSubmission: myVideoSubmission }, { status: 200 })
     } catch (err) {
         logger.error(err)
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })

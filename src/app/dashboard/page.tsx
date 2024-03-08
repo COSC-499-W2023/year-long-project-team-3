@@ -12,14 +12,15 @@ import { SidebarOption } from '@/types/dashboard/sidebar'
 import VideoList from '@/components/VideoList'
 import SubmissionBoxList from '@/components/SubmissionBoxList'
 import DashboardSearchBar from '@/components/DashboardSearchBar'
+import { VideoSubmission } from '@/app/api/my-videos/route'
 
 export default function DashboardPage() {
     const session = useSession()
 
     // Videos
-    const [allVideos, setAllVideos] = useState<Video[]>([])
-    const [tempVideos, setTempVideos] = useState<Video[]>([])
-    const [displayVideos, setDisplayVideos] = useState<Video[]>([])
+    const [allVideos, setAllVideos] = useState<(Video & VideoSubmission)[]>([])
+    const [tempVideos, setTempVideos] = useState<(Video & VideoSubmission)[]>([])
+    const [displayVideos, setDisplayVideos] = useState<(Video & VideoSubmission)[]>([])
 
     // Submission Boxes
     const [submissionBoxes, setSubmissionBoxes] = useState<SubmissionBox[]>([])
@@ -41,7 +42,7 @@ export default function DashboardPage() {
     useEffect(() => {
         setIsFetching(true)
         fetchAllVideos()
-            .then((videos: Video[]) => setAllVideos(videos))
+            .then((videos: (Video & VideoSubmission)[]) => setAllVideos(videos))
             .catch((error) => toast.error(error))
             .finally(() => setIsFetching(false))
     }, [])
@@ -127,7 +128,6 @@ export default function DashboardPage() {
             <Box sx={{
                 display: 'flex',
                 flexDirection: 'row',
-                flexGrow: 1,
                 height: '100%',
                 width: '100%',
             }}>
@@ -135,7 +135,7 @@ export default function DashboardPage() {
                     sidebarSelectedOption={sidebarSelectedOption}
                     setSidebarSelectedOption={setSidebarSelectedOption}
                 />
-                <Box width='100%' display='flex' flexDirection='column'>
+                <Box display='flex' flexDirection='column' width='100%'>
                     <Box display='flex' justifyContent='space-between' alignItems='center' paddingRight='3rem'>
                         <Typography
                             data-cy='title'
@@ -150,7 +150,6 @@ export default function DashboardPage() {
                     <Box
                         sx={{
                             borderTopLeftRadius: 25,
-                            borderBottomLeftRadius: 25,
                             backgroundColor: 'secondary.lighter',
                             height: '100%',
                         }}
@@ -159,7 +158,14 @@ export default function DashboardPage() {
                         {isFetching ? (
                             <PageLoadProgress />
                         ) : (
-                            <Box component='section' sx={{ height: '100%', paddingTop: 5 }} width='100%'>
+                            <Box
+                                sx={{
+                                    height: '100%',
+                                    width: '100%',
+                                    overflowY: 'auto',
+                                    paddingTop: 2,
+                                }}
+                            >
                                 {isVideoTabSelected ? (
                                     <VideoList
                                         videos={displayVideos.map((video) => {
@@ -167,6 +173,10 @@ export default function DashboardPage() {
                                                 title: video.title,
                                                 videoId: video.id,
                                                 thumbnailUrl: video.thumbnail,
+                                                description: video.description,
+                                                isSubmitted: video.isSubmitted,
+                                                createdDate: video.createdAt,
+                                                submissionBoxes: video.submissions.map(submission => submission.requestedSubmission.submissionBox.title),
                                             }
                                         })}
                                         isSearching={isSearching}
@@ -186,10 +196,20 @@ export default function DashboardPage() {
         </>
     )
 
-    async function fetchAllVideos(): Promise<Video[]> {
+    async function fetchAllVideos(): Promise<(Video & VideoSubmission)[]> {
         const response = await fetch('/api/my-videos')
-        const { videos } = await response.json()
-        return videos
+        const data = await response.json()
+
+        // Map video submission objects to extract necessary properties
+        return data.videoSubmission.map((submittedVideo: { title: string; id: string; thumbnail: string | null; description: string | null; isSubmitted: boolean; createdAt: Date; submissions: any }) => ({
+            title: submittedVideo.title,
+            id: submittedVideo.id,
+            thumbnail: submittedVideo.thumbnail,
+            description: submittedVideo.description,
+            isSubmitted: submittedVideo.isSubmitted,
+            createdAt: submittedVideo.createdAt,
+            submissions: submittedVideo.submissions,
+        }))
     }
 
     async function fetchMyBoxes(): Promise<SubmissionBox[]> {
