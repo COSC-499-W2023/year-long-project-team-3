@@ -41,9 +41,9 @@ export default function LearnMorePage() {
                     </Typography>
                     <Box>
                         <Typography>
-                            The purpose of our software is to allow users to easily send and receive videos through
-                            their web browser. Users are able to protect their privacy in those videos by optionally
-                            blurring their face.
+                            The purpose of our software is to allow you to easily send and receive videos through
+                            your web browser. You are able to protect your privacy in those videos by optionally
+                            blurring your face.
                         </Typography>
                     </Box>
                     <Box>
@@ -88,16 +88,12 @@ export default function LearnMorePage() {
                                 <Link href='/dashboard'>Dashboard</Link>.
                             </li>
                             <li>
-                                If you are logging in for the first time, you will need to verify your email address.
-                                Check your emails and click on the link we have sent to you.
-                            </li>
-                            <li>
                                 Complete the multi-step form consisting of Box Settings, Request Submissions, and Review
                                 &amp; Create.
                             </li>
                         </ol>
                         <Typography>
-                            After clicking Create, you can now navigate to My Boxes under Submission Boxes on the{' '}
+                            After clicking Create, you can now navigate to Manage Boxes under Submission Boxes on the{' '}
                             <Link href='/dashboard'>Dashboard</Link> to see the box you have created.
                         </Typography>
                     </Box>
@@ -120,7 +116,7 @@ export default function LearnMorePage() {
                             <li>
                                 Once you have submitted a video, it will be processed using AWS services. You are going
                                 to be redirected to the video&apos;s page. There you can review details like the title and
-                                upload date, and once your video has finished processing, you will be able to play it
+                                upload date. Once your video has finished processing, you will also be able to play it
                                 back.
                             </li>
                             <li>
