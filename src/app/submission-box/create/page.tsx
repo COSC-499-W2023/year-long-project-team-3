@@ -164,7 +164,7 @@ export default function SubmissionBox() {
             if (response.status == 201) {
                 toast.success(`Submission box ${ submissionBoxInfo.title } successfully created!`)
                 logger.info(`Submission box with title ${ submissionBoxInfo.title } successfully created`)
-                router.push('/dashboard')
+                router.push('/submission-box/' + submissionBoxInfo.id)
                 router.refresh()
             } else {
                 toast.error(submissionBoxInfo.error)
