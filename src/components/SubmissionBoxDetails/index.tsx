@@ -8,6 +8,7 @@ import Button from '@mui/material/Button'
 
 export type SubmissionBoxInfoProps = {
     submissionBox: SubmissionBox | null
+    onUnsubmit?: () => void
 }
 export default function SubmissionBoxDetails(props: SubmissionBoxInfoProps) {
     return (
@@ -60,6 +61,19 @@ export default function SubmissionBoxDetails(props: SubmissionBoxInfoProps) {
                     </Typography>
                 </Box>
             )}
-        </>
+            {props.onUnsubmit && (
+                <Box
+                    sx={{
+                        mt: '2rem',
+                    }}
+                >
+                    <Button
+                        variant='contained'
+                        onClick={props.onUnsubmit}
+                        color='error'
+                    >Unsubmit Video</Button>
+                </Box>
+            )}
+        </Box>
     )
 }

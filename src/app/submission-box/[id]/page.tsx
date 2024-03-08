@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import { Typography, Box, Link } from '@mui/material'
+import { Typography, Box, Link, Dialog, DialogTitle, DialogActions, Button } from '@mui/material'
 import { SubmissionBox, Video } from '@prisma/client'
 import VideoList from '@/components/VideoList'
 import BackButtonWithLink from '@/components/BackButtonWithLink'
@@ -22,6 +22,7 @@ export default function SubmissionBoxDetailPage() {
     const [videos, setVideos] = useState<(Video & VideoSubmission)[]>([])
     const [boxInfo, setBoxInfo] = useState<SubmissionBox | null>(null)
     const boxId = pathname?.split('/').pop()
+    const [unsubmitDialogOpen, setUnsubmitDialogOpen] = useState(false)
 
     useEffect(() => {
         setIsFetchingSubmissionBox(true)
@@ -152,11 +153,32 @@ export default function SubmissionBoxDetailPage() {
                                         )}
                                     </Box>
                                 </Box>
-                                <Box padding='1rem'>
-                                    <SubmissionBoxDetails submissionBox={boxInfo} />
                                 <Box sx={{
                                     pr: '2rem',
                                 }}>
+                                    <SubmissionBoxDetails submissionBox={boxInfo} onUnsubmit={videos.length === 1 ? () => setUnsubmitDialogOpen(true) : undefined}/>
+                                    <Dialog
+                                        open={unsubmitDialogOpen}
+                                        onClose={() => setUnsubmitDialogOpen(false)}
+                                    >
+                                        <DialogTitle>
+                                            Are you sure you want to unsubmit this video?
+                                        </DialogTitle>
+                                        <DialogActions
+                                            sx={{
+                                                p: 2,
+                                            }}
+                                        >
+                                            <Button onClick={() => setUnsubmitDialogOpen(false)}>No</Button>
+                                            <Button
+                                                onClick={unsubmitVideo}
+                                                variant='contained'
+                                                autoFocus
+                                            >
+                                                Yes
+                                            </Button>
+                                        </DialogActions>
+                                    </Dialog>
                                 </Box>
                             </Box>
                         </>
@@ -165,4 +187,25 @@ export default function SubmissionBoxDetailPage() {
             )}
         </>
     )
+
+    function unsubmitVideo() {
+        setUnsubmitDialogOpen(false)
+
+        fetch('/api/video/submit/new', {
+            method: 'DELETE',
+            body: JSON.stringify({
+                videoId: videos[0].id,
+                submissionBoxIds: [boxId],
+            }),
+        }).then(async (res) => {
+            if (res.ok) {
+                toast.success('Video Unsubmitted')
+                setVideos([])
+            } else {
+                toast.error('An error occurred trying to unsubmit video')
+            }
+        }).catch(() => {
+            toast.error('An error occurred trying to unsubmit video')
+        })
+    }
 }
