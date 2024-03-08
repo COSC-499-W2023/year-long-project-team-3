@@ -115,17 +115,16 @@ export default function LearnMorePage() {
                             <li>
                                 Click on Upload New under Menu on the <Link href='/dashboard'>Dashboard</Link>. If you
                                 want to blur your face in the video, tick the checkbox on the Upload Video page before
-                                uploading a video from your computer.
+                                submitting.
                             </li>
                             <li>
-                                Once you have uploaded a video, it will be processed using AWS services. After
-                                processing is done, you will be redirected to the Preview page. There, you can playback
-                                your video to ensure it is what you want to submit.
+                                Once you have submitted a video, it will be processed using AWS services. You are going
+                                to be redirected to the video&apos;s page. There you can review details like the title and
+                                upload date.
                             </li>
                             <li>
-                                Upon clicking Next, you will find yourself on the Submit page, there you can see your
-                                video&apos;s thumbnail and enter a title and description. You will also choose the
-                                Submission Box you want to upload your video to.
+                                If you wish to submit your video, you can now jump into your invites, and submit to any
+                                of them by clicking on its card.
                             </li>
                         </ol>
                         <Typography>
