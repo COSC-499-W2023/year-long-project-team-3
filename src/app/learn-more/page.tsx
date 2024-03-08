@@ -57,7 +57,7 @@ export default function LearnMorePage() {
                             Creating an Account
                         </Typography>
                         <ol>
-                            <li>Navigate to the Signup page and fill out the form, then click sign in</li>
+                            <li>Navigate to the <Link href='/signup'>Signup page</Link> and fill out the form, then click sign in</li>
                             <li>
                                 You will be redirected to the <Link href='/login'>Login page</Link>, login with the
                                 account you created at <Link href='/signup'>Signup</Link>
