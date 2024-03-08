@@ -140,7 +140,7 @@ export async function uploadVideo(videoData: VideoUploadData, user: User, fileEx
     const s3VideoUpload = new Upload({
         client: client,
         params: {
-            Bucket: getUploadBucket(videoData.blurFace),
+            Bucket: getS3UploadBucket(videoData.blurFace),
             Key: s3uploadedVideoKey,
             Body: videoData.file,
         },
