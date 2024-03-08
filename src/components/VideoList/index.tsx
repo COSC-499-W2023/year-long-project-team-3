@@ -5,6 +5,7 @@ export type VideoListProps = {
     videos: VideoCardProps[]
     isSearching: boolean
     emptyMessage?: string
+    onCardClick?: (videoId: string) => void
 }
 
 export default function VideoList(props: VideoListProps) {
@@ -24,7 +25,7 @@ export default function VideoList(props: VideoListProps) {
             }}
         >
             {props.videos.map((video, idx) => (
-                <VideoCard key={`video_${ idx }`} {...video} />
+                <VideoCard key={`video_${ idx }`} {...video} onClick={props.onCardClick} />
             ))}
         </Box>
     ) : (
