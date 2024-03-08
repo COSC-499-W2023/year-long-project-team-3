@@ -78,7 +78,7 @@ export default function SubmissionBoxDetailPage() {
                                     emptyMessage={'No Videos Have Been Submitted to Your Box'}
                                 />
                             </Box>
-                            <Box paddingLeft='1rem'>
+                            <Box paddingLeft='2rem'>
                                 <SubmissionBoxDetails submissionBox={boxInfo} />
                             </Box>
                         </Box>
@@ -92,6 +92,7 @@ export default function SubmissionBoxDetailPage() {
                                     flexGrow: 1,
                                     height: '100%',
                                     width: '100%',
+                                    pt: '2rem',
                                 }}
                             >
                                 <Box
@@ -100,7 +101,7 @@ export default function SubmissionBoxDetailPage() {
                                         flexDirection: 'column',
                                         width: '100%',
                                         height: '100%',
-                                        padding: '2rem',
+                                        px: '2rem',
                                         flexGrow: 1,
                                         flexShrink: 1,
                                     }}
@@ -153,6 +154,9 @@ export default function SubmissionBoxDetailPage() {
                                 </Box>
                                 <Box padding='1rem'>
                                     <SubmissionBoxDetails submissionBox={boxInfo} />
+                                <Box sx={{
+                                    pr: '2rem',
+                                }}>
                                 </Box>
                             </Box>
                         </>
