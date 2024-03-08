@@ -10,9 +10,9 @@ import { Alert, Box, Button, TextField, Typography } from '@mui/material'
 
 import ScalingReactPlayer from '@/components/ScalingReactPlayer'
 import PageLoadProgress from '@/components/PageLoadProgress'
-import BackButton from '@/components/BackButton'
 import EditIcon from '@mui/icons-material/Edit'
 import { theme } from '@/components/ThemeRegistry/theme'
+import BackButton from '@/components/BackButton'
 import dayjs from 'dayjs'
 import SubmissionBoxesSelector, { MinifiedSubmissionBox } from '@/components/SubmisionBoxesSeletor'
 
@@ -198,7 +198,7 @@ export default function VideoDetailedPage() {
                                     width: '100%',
                                 }}
                             >
-                                <BackButton route={'/dashboard '} title={'Return to Dashboard'} />
+                                <BackButton title={'Back'} />
                                 <Box
                                     sx={{
                                         display: 'flex',

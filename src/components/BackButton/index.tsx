@@ -7,16 +7,11 @@ import React from 'react'
 import { useRouter } from 'next/navigation'
 
 export type BackButtonProps = {
-    route: string
     title: string
 }
 
 export default function BackButton(props: BackButtonProps) {
     const router = useRouter()
-
-    function handleGoBack() {
-        router.push(props.route)
-    }
 
     return (
         <Box
@@ -28,7 +23,7 @@ export default function BackButton(props: BackButtonProps) {
                 cursor: 'pointer',
                 color: '#757575',
             }}
-            onClick={handleGoBack}
+            onClick={() => router.back()}
             data-cy='back-button'
         >
             <ArrowBack />

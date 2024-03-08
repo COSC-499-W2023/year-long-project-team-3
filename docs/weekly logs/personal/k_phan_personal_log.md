@@ -1,5 +1,17 @@
 # K Phan
 
+## Term 2 Week 8 (February 25, 2024 - March 03, 2024)
+
+### Week's Goals
+- Delete video feature (COMPLETE)
+
+### Tasks Worked On
+- Delete video feature (https://github.com/COSC-499-W2023/year-long-project-team-3/pull/455)
+- Bonus: fix bug of submission box not showing up when signing up by Google (https://github.com/COSC-499-W2023/year-long-project-team-3/pull/458)
+
+### Teamformation Report
+![](./imgs/term-2-week-8-k-phan-tasks.png)
+
 ## Term 2 Week 5 (February 05, 2024 - February 11, 2024)
 
 ### Week's Goals

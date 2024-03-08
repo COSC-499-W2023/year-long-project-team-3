@@ -1,5 +1,12 @@
 import { TIMEOUT } from '../../../utils/constants'
 import { v4 as uuidv4 } from 'uuid'
+import dayjs from 'dayjs'
+
+function getCurrentDateFormatted() {
+    // Get the current date
+    const currentDate = new Date()
+    return currentDate && dayjs(currentDate).format('MMM D, YYYY')
+}
 
 describe('Dashboard Recent Videos Tests', () => {
     beforeEach(() => {
@@ -59,7 +66,11 @@ describe('Dashboard Recent Videos Tests', () => {
             .children()
             .should('have.length', 1)
 
-        cy.get('[data-cy="video-list"]').children().first().should('contain', videoTitle)
+        const firstVideo = cy.get('[data-cy="video-list"]').children().first()
+
+        firstVideo.should('contain', videoTitle)
+        firstVideo.should('contain', 'Not Submitted')
+        firstVideo.should('contain', 'Uploaded on: ' + getCurrentDateFormatted())
     })
 
     it('should not display received videos when a user has received videos', () => {

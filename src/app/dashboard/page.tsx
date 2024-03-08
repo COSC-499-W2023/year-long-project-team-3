@@ -128,7 +128,6 @@ export default function DashboardPage() {
             <Box sx={{
                 display: 'flex',
                 flexDirection: 'row',
-                flexGrow: 1,
                 height: '100%',
                 width: '100%',
             }}>
@@ -136,7 +135,7 @@ export default function DashboardPage() {
                     sidebarSelectedOption={sidebarSelectedOption}
                     setSidebarSelectedOption={setSidebarSelectedOption}
                 />
-                <Box width='100%' display='flex' flexDirection='column'>
+                <Box display='flex' flexDirection='column' width='100%'>
                     <Box display='flex' justifyContent='space-between' alignItems='center' paddingRight='3rem'>
                         <Typography
                             data-cy='title'
@@ -151,7 +150,6 @@ export default function DashboardPage() {
                     <Box
                         sx={{
                             borderTopLeftRadius: 25,
-                            borderBottomLeftRadius: 25,
                             backgroundColor: 'secondary.lighter',
                             height: '100%',
                         }}
@@ -160,7 +158,14 @@ export default function DashboardPage() {
                         {isFetching ? (
                             <PageLoadProgress />
                         ) : (
-                            <Box component='section' sx={{ height: '100%', paddingTop: 5 }} width='100%'>
+                            <Box
+                                sx={{
+                                    height: '100%',
+                                    width: '100%',
+                                    overflowY: 'auto',
+                                    paddingTop: 2,
+                                }}
+                            >
                                 {isVideoTabSelected ? (
                                     <VideoList
                                         videos={displayVideos.map((video) => {
@@ -196,10 +201,9 @@ export default function DashboardPage() {
         const data = await response.json()
 
         // Map video submission objects to extract necessary properties
-        // TODO: Fix type error
-        return data.videoSubmission.map((submittedVideo) => ({
+        return data.videoSubmission.map((submittedVideo: { title: string; id: string; thumbnail: string | null; description: string | null; isSubmitted: boolean; createdAt: Date; submissions: any }) => ({
             title: submittedVideo.title,
-            videoId: submittedVideo.id,
+            id: submittedVideo.id,
             thumbnail: submittedVideo.thumbnail,
             description: submittedVideo.description,
             isSubmitted: submittedVideo.isSubmitted,

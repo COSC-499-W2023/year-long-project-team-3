@@ -1,5 +1,3 @@
-'use client'
-
 import ListItem from '@mui/material/ListItem'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
