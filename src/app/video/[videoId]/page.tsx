@@ -273,13 +273,13 @@ export default function VideoDetailedPage() {
                                                 data-cy='submission-box-chips-wrapper'
                                             >
                                                 <Typography sx={{ fontWeight: 'bold' }}>Submitted To</Typography>
-                                                {submissionBoxes.map((submissionBox, idx) => (
+                                                {submissionBoxes.length > 0 ? submissionBoxes.map((submissionBox, idx) => (
                                                     <Chip
                                                         key={`submission-box-chip-${ idx }`}
                                                         label={submissionBox.title}
                                                         sx={{ m: 0.5, ml: 0 }}
                                                     />
-                                                ))}
+                                                )) : 'None'}
                                             </Box>
                                             <Box>
                                                 <Typography sx={{ fontWeight: 'bold' }}>Other information</Typography>
@@ -296,6 +296,21 @@ export default function VideoDetailedPage() {
                                                         : 'N/A'}
                                                 </Typography>
                                             </Box>
+                                            {!isEditing && (
+                                                <Box
+                                                    sx={{
+                                                        mt: '2rem',
+                                                    }}
+                                                >
+                                                    <Button
+                                                        variant='contained'
+                                                        onClick={() => router.push('/dashboard?tab=my-invitations')}
+                                                        data-cy='detail-video-submit-button'
+                                                    >
+                                                    Submit to a Submission Box
+                                                    </Button>
+                                                </Box>
+                                            )}
                                         </Box>
                                         {isEditing && (
                                             <Box display='flex' justifyContent='flex-end' gap={1}>
