@@ -28,13 +28,12 @@ export default function VideoList(props: VideoListProps) {
             ))}
         </Box>
     ) : (
-        <Box display='flex' justifyContent='center' alignItems='center'>
+        <Box display='flex' justifyContent='center' alignItems='center' height='100%'>
             <Typography
                 data-cy='no-video-text'
                 variant='h5'
                 align='center'
                 color={'textSecondary'}
-                sx={{ mt: 20 }}
             >
                 { props.isSearching
                     ? 'You do not have any videos that match this search'
