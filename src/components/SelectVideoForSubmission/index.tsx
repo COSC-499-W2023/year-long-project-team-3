@@ -8,7 +8,12 @@ import { VideoSubmission } from '@/app/api/my-videos/route'
 import { toast } from 'react-toastify'
 import PageLoadProgress from '@/components/PageLoadProgress'
 
-export default function SelectVideoForSubmission() {
+type SelectVideoForSubmissionProps = {
+    submissionBoxId: string
+    onVideoSelect: (video: (Video & VideoSubmission)) => void
+}
+
+export default function SelectVideoForSubmission(props: SelectVideoForSubmissionProps) {
     const [selectVideoOpen, setSelectVideoOpen] = useState(false)
     const [isFetching, setIsFetching] = useState(false)
     const [userVideos, setUserVideos] = useState<(Video & VideoSubmission)[]>([])
@@ -77,26 +82,48 @@ export default function SelectVideoForSubmission() {
                                     submissionBoxes: video.submissions.map(submission => submission.requestedSubmission.submissionBox.title),
                                 }
                             })}
+                            onCardClick={handleCardClick}
                         />
                     )}
                 </Box>
             </Modal>
         </Box>
     )
+
+    function handleCardClick(videoId: string) {
+        // Close modal
+        setSelectVideoOpen(false)
+
+        fetch('/api/video/submit/new', {
+            method: 'POST',
+            body: JSON.stringify({
+                videoId,
+                submissionBoxIds: [props.submissionBoxId],
+            }),
+        }).then(async (res) => {
+            if (res.ok) {
+                toast.success('Video submitted successfully')
+
+                // Update the video list
+            } else {
+                toast.error('An error occurred submitting the video')
+            }
+        }).catch((err) => {
+            toast.error('An error occurred submitting the video')
+        })
+
+        // Submit video
+        const video = userVideos.filter((video) => video.id === videoId)
+        if (video.length !== 1) {
+            toast.error('An error occurred submitting the video')
+            return
+        }
+        props.onVideoSelect(video[0])
+    }
 }
 
 async function fetchAllVideos(): Promise<(Video & VideoSubmission)[]> {
     const response = await fetch('/api/my-videos')
     const data = await response.json()
-
-    // Map video submission objects to extract necessary properties
-    return data.videoSubmission.map((submittedVideo: { title: string; id: string; thumbnail: string | null; description: string | null; isSubmitted: boolean; createdAt: Date; submissions: any }) => ({
-        title: submittedVideo.title,
-        id: submittedVideo.id,
-        thumbnail: submittedVideo.thumbnail,
-        description: submittedVideo.description,
-        isSubmitted: submittedVideo.isSubmitted,
-        createdAt: submittedVideo.createdAt,
-        submissions: submittedVideo.submissions,
-    }))
+    return data.videoSubmission
 }
