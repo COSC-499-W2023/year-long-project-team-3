@@ -58,7 +58,7 @@ describe('Detail video page', () => {
             .should('be.visible')
             .find('div.MuiChip-root')
             .should('have.length', 1)
-            .should('contain', submissionBoxTitle) // TODO
+            .should('contain', submissionBoxTitle)
     })
 
 
@@ -98,7 +98,7 @@ describe('Detail video page', () => {
             .should('be.visible')
             .find('div.MuiChip-root')
             .should('have.length', 1)
-            .should('contain', submissionBoxTitle) // TODO
+            .should('contain', submissionBoxTitle)
     })
 
     it('Should be able to edit the video\'s title and description', () => {

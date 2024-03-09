@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import { Typography, Box, Link, Dialog, DialogTitle, DialogActions, Button } from '@mui/material'
+import { Typography, Box, Link, Dialog, DialogTitle, DialogActions, Button, Alert } from '@mui/material'
 import { SubmissionBox, Video } from '@prisma/client'
 import VideoList from '@/components/VideoList'
 import BackButtonWithLink from '@/components/BackButtonWithLink'
@@ -141,9 +141,7 @@ export default function SubmissionBoxDetailPage() {
                                             videos[0]?.processedVideoUrl ? (
                                                 <ScalingReactPlayer data-cy='scaling-react-player' url={videos[0].processedVideoUrl} />
                                             ) : (
-                                                <Typography data-cy='pending' variant={'h5'} color={'textSecondary'}>
-                                                    Submission Pending
-                                                </Typography>
+                                                <Alert severity='info'>Your video has been submitted. It will be visible here as soon as cloud processing is finished.</Alert>
                                             )
                                         ) : (
                                             <SelectVideoForSubmission
@@ -156,7 +154,7 @@ export default function SubmissionBoxDetailPage() {
                                 <Box sx={{
                                     pr: '2rem',
                                 }}>
-                                    <SubmissionBoxDetails submissionBox={boxInfo} onUnsubmit={videos.length === 1 ? () => setUnsubmitDialogOpen(true) : undefined}/>
+                                    <SubmissionBoxDetails submissionBox={boxInfo} onUnsubmit={videos?.length !== 0 ? () => setUnsubmitDialogOpen(true) : undefined}/>
                                     <Dialog
                                         open={unsubmitDialogOpen}
                                         onClose={() => setUnsubmitDialogOpen(false)}

@@ -40,7 +40,7 @@ export default function SelectVideoForSubmission(props: SelectVideoForSubmission
             }}
         >
             <Link href={'/video/upload'}>
-                <Button variant='contained' data-cy='upload-new-submission'>Upload new video</Button>
+                <Button variant='contained' data-cy='upload-new-submission'>Upload New Video</Button>
             </Link>
             <Divider
                 sx={{
@@ -51,7 +51,7 @@ export default function SelectVideoForSubmission(props: SelectVideoForSubmission
             >
                 OR
             </Divider>
-            <Button variant='contained' data-cy='submit-existing' onClick={() => setSelectVideoOpen(true)}>Choose existing video</Button>
+            <Button variant='contained' data-cy='submit-existing' onClick={() => setSelectVideoOpen(true)}>Choose Existing Video</Button>
             <Modal
                 open={selectVideoOpen}
                 onClose={() => setSelectVideoOpen(false)}
@@ -83,8 +83,9 @@ export default function SelectVideoForSubmission(props: SelectVideoForSubmission
                             variant='h4'
                             sx={{
                                 pl: 4,
-                                pt: 2,
+                                pt: 4,
                                 fontWeight: 500,
+                                color: 'text.secondary',
                             }}
                         >Select a video to submit</Typography>
                         <IconButton onClick={() => setSelectVideoOpen(false)}>
