@@ -71,6 +71,7 @@ export default function SubmissionBoxDetails(props: SubmissionBoxInfoProps) {
                         variant='contained'
                         onClick={props.onUnsubmit}
                         color='error'
+                        data-cy='unsubmit-button'
                     >Unsubmit Video</Button>
                 </Box>
             )}

@@ -172,4 +172,34 @@ describe('Requested Dashboard Details Page Tests', () => {
             })
         })
     })
+
+    it.only('should allow user to unsubmit a video', () => {
+        const submissionBoxTitle = 'very exciting submission box'
+        const videoTitle = 'Such video'
+
+        cy.task('getUserId', email).then((userId) => {
+            cy.task('createOneVideoAndRetrieveVideoId', {ownerId: userId, title: videoTitle}).then((videoId) => {
+                cy.task('createRequestSubmissionForUser', {userId, submissionBoxTitle}).then((requestedSubmissionId) => {
+                    cy.task('submitVideoToSubmissionBox', { videoId, requestedSubmissionId })
+                })
+            })
+        })
+
+        cy.visit('/dashboard?tab=my-invitations')
+
+        cy.get('[data-cy="My Invitations"]')
+        cy.wait(1000)
+        cy.get('[data-cy="My Invitations"]').click()
+
+        cy.get(`[data-cy="${ submissionBoxTitle }"]`)
+        cy.wait(1000)
+        cy.get(`[data-cy="${ submissionBoxTitle }"]`).click()
+
+        cy.get('[data-cy="unsubmit-button"]').should('be.visible')
+        cy.wait(1000)
+        cy.get('[data-cy="unsubmit-button"]').should('be.visible').click()
+        cy.get('button').last().should('be.visible').and('have.text', 'Yes').click()
+
+        cy.get('[data-cy="select-video-for-submission"]').should('be.visible')
+    })
 })
