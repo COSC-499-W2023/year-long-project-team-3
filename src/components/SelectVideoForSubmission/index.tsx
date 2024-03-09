@@ -1,5 +1,13 @@
-import { Box, Button, Divider, IconButton, Modal, Typography } from '@mui/material'
-import { useEffect, useState } from 'react'
+import {
+    Box,
+    Button, Dialog, DialogActions,
+    DialogTitle,
+    Divider,
+    IconButton,
+    Modal,
+    Typography,
+} from '@mui/material'
+import React, { useEffect, useState } from 'react'
 import {theme} from '@/components/ThemeRegistry/theme'
 import VideoList from '@/components/VideoList'
 import {Video} from '@prisma/client'
@@ -18,6 +26,8 @@ export default function SelectVideoForSubmission(props: SelectVideoForSubmission
     const [selectVideoOpen, setSelectVideoOpen] = useState(false)
     const [isFetching, setIsFetching] = useState(false)
     const [userVideos, setUserVideos] = useState<(Video & VideoSubmission)[]>([])
+    const [submitDialogOpen, setSubmitDialogOpen] = useState(false)
+    const [proposedSubmission, setProposedSubmission] = useState<(Video & VideoSubmission) | null>(null)
 
     useEffect(() => {
         setIsFetching(true)
@@ -118,38 +128,71 @@ export default function SelectVideoForSubmission(props: SelectVideoForSubmission
                     </Box>
                 </Box>
             </Modal>
+            <Dialog
+                open={submitDialogOpen}
+                onClose={() => setSubmitDialogOpen(false)}
+            >
+                <DialogTitle>Are you sure you want to submit the video {'"'}{proposedSubmission?.title}{'"'}?</DialogTitle>
+                <DialogActions
+                    sx={{
+                        p: 2,
+                    }}
+                >
+                    <Button onClick={
+                        () => {
+                            setSubmitDialogOpen(false)
+                            setProposedSubmission(null)
+                        }
+                    }>No</Button>
+                    <Button
+                        onClick={confirmedSubmission}
+                        variant='contained'
+                        autoFocus
+                    >Yes</Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     )
 
     function handleCardClick(videoId: string) {
-        // Close modal
+        // Close select modal
         setSelectVideoOpen(false)
 
-        fetch('/api/video/submit/new', {
-            method: 'POST',
-            body: JSON.stringify({
-                videoId,
-                submissionBoxIds: [props.submissionBoxId],
-            }),
-        }).then(async (res) => {
-            if (res.ok) {
-                toast.success('Video submitted successfully')
-
-                // Update the video list
-            } else {
-                toast.error('An error occurred submitting the video')
-            }
-        }).catch(() => {
-            toast.error('An error occurred submitting the video')
-        })
-
-        // Submit video
+        // Set proposed submission
         const video = userVideos.filter((video) => video.id === videoId)
         if (video.length !== 1) {
             toast.error('An error occurred submitting the video')
             return
         }
-        props.onVideoSelect(video[0])
+        setProposedSubmission(video[0])
+
+        // Open submit confirmation dialog
+        setSubmitDialogOpen(true)
+    }
+
+    function confirmedSubmission() {
+        setSubmitDialogOpen(false)
+        if (proposedSubmission) {
+            fetch('/api/video/submit/new', {
+                method: 'POST',
+                body: JSON.stringify({
+                    videoId: proposedSubmission.id,
+                    submissionBoxIds: [props.submissionBoxId],
+                }),
+            }).then(async (res) => {
+                if (res.ok) {
+                    toast.success('Video submitted successfully')
+                } else {
+                    toast.error('An error occurred submitting the video')
+                }
+            }).catch(() => {
+                toast.error('An error occurred submitting the video')
+            })
+
+            // Notify parent
+            props.onVideoSelect(proposedSubmission)
+        }
+        setProposedSubmission(null)
     }
 }
 
