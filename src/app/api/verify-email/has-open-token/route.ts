@@ -15,6 +15,15 @@ export async function GET(){
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
 
+        const { emailVerified } = await prisma.user.findUniqueOrThrow({
+            where: {
+                email: session.user.email,
+            },
+            select: {
+                emailVerified: true,
+            },
+        })
+
         const verificationTokens = await prisma.requestedEmailVerification.findMany({
             where: {
                 user: {
@@ -30,7 +39,7 @@ export async function GET(){
 
         logger.info('User has open token: ' + hasOpenToken)
 
-        return NextResponse.json({ hasOpenToken: hasOpenToken }, { status: 200 })
+        return NextResponse.json({ hasOpenToken: hasOpenToken, isUserVerified: !!emailVerified }, { status: 200 })
     } catch (e) {
         logger.error('Error in verify-email/has-open-token: ' + e)
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
