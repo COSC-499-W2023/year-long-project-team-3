@@ -280,3 +280,21 @@
 ### Additional Context
 
 -   I had a midterm and 2 tests this week in my other courses along with multiple assignment due so capstone wasn't a huge priority for me.  I plan to do work on capstone during the reading break and will include it in the week after the break's log.
+
+## Week 8 (19/02/2024 - 03/03/2024)
+
+![](imgs/term-2-week-8-erin-tasks.png)
+
+### Week Tasks
+
+-   Modifying submission boxes  #72 (In Progress)
+-   Redirects should be cleared when logging out  #366 (Completed)
+
+### Week Goals
+
+-   This week I wanted to get some tasks done that would fix bugs related to the peer evaluations, that being the redirection bugs after a user logs out of our system. This was completed this week
+-   Work on modifying submission boxes was done.  It now uses formik and yup for form validation on the front end, the ui was improved as well.  The date picker was also added to the page to allow for users to change the date of submission on the box.  Work on the back end was started and some difficulty has been hit with transferring the data between the front and backend.
+
+### Additional Context
+
+-   Same as last week I had more midterms this week and no work was completed during the reading week as I wanted to try and get some proper rest so that I can push through the rest of the semester without burnout.

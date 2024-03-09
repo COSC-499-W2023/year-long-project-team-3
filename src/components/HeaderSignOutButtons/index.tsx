@@ -19,7 +19,7 @@ export default function HeaderSignOutButtons() {
     )
 
     function handleSignOut() {
-        signOut().catch((err) => {
+        signOut({ callbackUrl: '/login' }).catch((err) => {
             const errMessage = JSON.stringify(err, Object.getOwnPropertyNames(err))
             logger.error(errMessage)
         })

@@ -11,6 +11,7 @@ import ScalingReactPlayer from '@/components/ScalingReactPlayer'
 import PageLoadProgress from '@/components/PageLoadProgress'
 import { BoxStatus } from '@/types/submission-box/boxStatus'
 import { toast } from 'react-toastify'
+import { VideoSubmission } from '@/app/api/my-videos/route'
 import EditIcon from '@mui/icons-material/Edit'
 import * as yup from 'yup'
 import { useFormik } from 'formik'
@@ -24,7 +25,7 @@ export default function SubmissionBoxDetailPage() {
     const pathname = usePathname()
     const [isFetchingSubmissionBox, setIsFetchingSubmissionBox] = useState(true)
     const [boxType, setBoxType] = useState<BoxStatus>('requested')
-    const [videos, setVideos] = useState<Video[]>([])
+    const [videos, setVideos] = useState<(Video & VideoSubmission)[]>([])
     const [boxInfo, setBoxInfo] = useState<SubmissionBox | null>(null)
     const [isEditing, setIsEditing] = useState(false)
     const [isFormSubmitted, setIsFormSubmitted] = useState(false)
@@ -120,6 +121,11 @@ export default function SubmissionBoxDetailPage() {
                                             title: video.title,
                                             videoId: video.id,
                                             thumbnailUrl: video.thumbnail,
+                                            description: video.description,
+                                            isSubmitted: video.isSubmitted,
+                                            createdDate: video.createdAt,
+                                            // Not passing submission boxes when video is viewed in submission box
+                                            submissionBoxes: [],
                                         }
                                     })}
                                     isSearching={false}

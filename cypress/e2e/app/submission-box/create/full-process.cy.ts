@@ -30,7 +30,7 @@ describe('Test full submission box creation', () => {
                 (requestedUser: any) => {
                     cy.visit('/dashboard')
 
-                    cy.get('[data-cy="Create new"]').click()
+                    cy.get('[data-cy="Create New"]').wait(1000).click()
 
                     cy.url().should('contain', 'submission-box/create')
 

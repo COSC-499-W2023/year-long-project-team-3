@@ -24,7 +24,7 @@ describe('Test that url callbacks work', () => {
         // Login
         cy.get('[data-cy="email"]').type(email)
         cy.get('[data-cy="password"]').type(password)
-        cy.get('[data-cy="submit"]').click()
+        cy.get('[data-cy="submit"]').wait(1000).click()
 
         // Check that we go back to original page
         cy.url().should('contain', page)
@@ -36,14 +36,14 @@ describe('Test that url callbacks work', () => {
         cy.visit(page)
 
         cy.url().should('contain', 'login')
-        cy.get('[data-cy=link-to-signup]').click()
+        cy.get('[data-cy=link-to-signup]').wait(1000).click()
 
         // Manually signup
         cy.url().should('contain', 'signup')
         cy.get('[data-cy="email"]').type(email)
         cy.get('[data-cy="password"]').type(password)
         cy.get('[data-cy="passwordConfirmation"]').type(password)
-        cy.get('[data-cy="submit"]').click()
+        cy.get('[data-cy="submit"]').wait(1000).click()
 
         // Wait to arrive at login to ensure user is created
         cy.url().should('contain', 'login')
