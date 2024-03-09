@@ -185,7 +185,7 @@ describe('Test that the API can submit and unsubmit videos to submission boxes',
         cy.get('[data-cy="My Invitations"]').click()
         cy.get('li').first().click()
         cy.url().should('contain', '/submission-box/')
-        cy.get('[data-cy="videoHolder"]').should('contain', 'No Current Submission')
+        cy.get('[data-cy="select-video-for-submission"]').should('exist').and('be.visible')
     })
 
     it('should fail when user isn\'t invited to box', () => {

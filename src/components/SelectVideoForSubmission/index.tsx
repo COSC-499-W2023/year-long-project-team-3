@@ -29,6 +29,7 @@ export default function SelectVideoForSubmission(props: SelectVideoForSubmission
 
     return (
         <Box
+            data-cy='select-video-for-submission'
             sx={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -39,7 +40,7 @@ export default function SelectVideoForSubmission(props: SelectVideoForSubmission
             }}
         >
             <Link href={'/video/upload'}>
-                <Button variant='contained'>Upload new video</Button>
+                <Button variant='contained' data-cy='upload-new-submission'>Upload new video</Button>
             </Link>
             <Divider
                 sx={{
@@ -50,7 +51,7 @@ export default function SelectVideoForSubmission(props: SelectVideoForSubmission
             >
                 OR
             </Divider>
-            <Button variant='contained' onClick={() => setSelectVideoOpen(true)}>Choose existing video</Button>
+            <Button variant='contained' data-cy='submit-existing' onClick={() => setSelectVideoOpen(true)}>Choose existing video</Button>
             <Modal
                 open={selectVideoOpen}
                 onClose={() => setSelectVideoOpen(false)}
