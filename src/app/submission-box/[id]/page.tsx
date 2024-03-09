@@ -142,7 +142,7 @@ export default function SubmissionBoxDetailPage() {
                                                 <ScalingReactPlayer data-cy='scaling-react-player' url={videos[0].processedVideoUrl} />
                                             ) : (
                                                 <Typography data-cy='pending' variant={'h5'} color={'textSecondary'}>
-                                                Submission Pending
+                                                    Submission Pending
                                                 </Typography>
                                             )
                                         ) : (

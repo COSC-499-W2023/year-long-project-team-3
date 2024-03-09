@@ -35,9 +35,9 @@ describe('Requested Dashboard Details Page Tests', () => {
                     cy.url().should('contain', 'submission-box')
 
                     // Assert no submission message and submission box title
-                    cy.get('[data-cy="noSubmission"]')
-                        .should('be.visible')
-                        .and('contain', 'No Current Submission')
+                    cy.get('[data-cy="select-video-for-submission"]')
+                        .should('exist')
+                        .and('be.visible')
                     cy.get('[data-cy="submissionBoxTitle"]')
                         .should('contain', submissionBoxTitle)
                 })
@@ -123,13 +123,83 @@ describe('Requested Dashboard Details Page Tests', () => {
 
                     // Click submission button
                     // Assert redirection to upload page
-                    cy.get('[data-cy="submissionButton"]').should('be.visible')
+                    cy.get('[data-cy="upload-new-submission"]').should('be.visible')
                     cy.wait(1000)
-                    cy.get('[data-cy="submissionButton"]').should('be.visible').click()
+                    cy.get('[data-cy="upload-new-submission"]').should('be.visible').click()
 
                     cy.url().should('contain', 'upload')
                 })
             })
         })
+    })
+
+    it('should allow user to select existing video', ()=> {
+        const submissionBoxTitle = 'very exciting submission box'
+        const videoTitle = 'Such video'
+
+        cy.task('getUserId', email).then((userId) => {
+            cy.task('createOneVideoAndRetrieveVideoId', { ownerId: userId, title: videoTitle })
+            cy.task('createRequestSubmissionForUser', { userId, submissionBoxTitle }).then(() => {
+                cy.visit('/dashboard')
+
+                cy.get('[data-cy="My Invitations"]')
+                cy.wait(1000)
+                cy.get('[data-cy="My Invitations"]').click()
+
+                runWithRetry(() => {
+                    cy.get(`[data-cy="${ submissionBoxTitle }"]`)
+                    cy.wait(1000)
+                    cy.get(`[data-cy="${ submissionBoxTitle }"]`).click()
+
+                    // Assert redirection to submission box page
+                    cy.url().should('contain', 'submission-box')
+
+                    // Click 'Choose existing video' button
+                    cy.get('[data-cy="submit-existing"]').should('be.visible')
+                    cy.wait(1000)
+                    cy.get('[data-cy="submit-existing"]').should('be.visible').click()
+
+
+                    // Submit video
+                    cy.get('[data-cy="video-list"]').children().first().should('be.visible')
+                    cy.wait(1000)
+                    cy.get('[data-cy="video-list"]').children().first().should('be.visible').click()
+
+                    // Check that it is submitted
+                    cy.get('[data-cy="select-video-for-submission"]').should('not.exist')
+                    cy.get('[data-cy="video-player"]').should('exist').and('be.visible')
+                })
+            })
+        })
+    })
+
+    it.only('should allow user to unsubmit a video', () => {
+        const submissionBoxTitle = 'very exciting submission box'
+        const videoTitle = 'Such video'
+
+        cy.task('getUserId', email).then((userId) => {
+            cy.task('createOneVideoAndRetrieveVideoId', {ownerId: userId, title: videoTitle}).then((videoId) => {
+                cy.task('createRequestSubmissionForUser', {userId, submissionBoxTitle}).then((requestedSubmissionId) => {
+                    cy.task('submitVideoToSubmissionBox', { videoId, requestedSubmissionId })
+                })
+            })
+        })
+
+        cy.visit('/dashboard?tab=my-invitations')
+
+        cy.get('[data-cy="My Invitations"]')
+        cy.wait(1000)
+        cy.get('[data-cy="My Invitations"]').click()
+
+        cy.get(`[data-cy="${ submissionBoxTitle }"]`)
+        cy.wait(1000)
+        cy.get(`[data-cy="${ submissionBoxTitle }"]`).click()
+
+        cy.get('[data-cy="unsubmit-button"]').should('be.visible')
+        cy.wait(1000)
+        cy.get('[data-cy="unsubmit-button"]').should('be.visible').click()
+        cy.get('button').last().should('be.visible').and('have.text', 'Yes').click()
+
+        cy.get('[data-cy="select-video-for-submission"]').should('be.visible')
     })
 })
