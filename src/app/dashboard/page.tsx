@@ -154,9 +154,6 @@ export default function DashboardPage() {
                             backgroundColor: 'secondary.lighter',
                             height: '100%',
                             display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            position: 'relative',
                         }}
                         borderColor={'secondary.lighter'}
                     >
