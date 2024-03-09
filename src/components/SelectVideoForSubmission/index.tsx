@@ -1,6 +1,7 @@
 import {
     Box,
-    Button, Dialog, DialogActions,
+    Button, CardMedia, Dialog, DialogActions,
+    DialogContent,
     DialogTitle,
     Divider,
     IconButton,
@@ -133,6 +134,16 @@ export default function SelectVideoForSubmission(props: SelectVideoForSubmission
                 onClose={() => setSubmitDialogOpen(false)}
             >
                 <DialogTitle>Are you sure you want to submit the video {'"'}{proposedSubmission?.title}{'"'}?</DialogTitle>
+                {proposedSubmission && !!proposedSubmission.thumbnail && (
+                    <DialogContent>
+                        <CardMedia
+                            component='img'
+                            src={proposedSubmission.thumbnail}
+                            alt={proposedSubmission.title}
+                            style={{ objectFit: 'cover' }}
+                        />
+                    </DialogContent>
+                )}
                 <DialogActions
                     sx={{
                         p: 2,
