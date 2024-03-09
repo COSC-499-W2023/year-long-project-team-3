@@ -182,9 +182,15 @@ describe('Test that the API can submit and unsubmit videos to submission boxes',
 
         // Check one of the boxes to see if the video was submitted
         cy.visit('/dashboard')
+        cy.get('[data-cy="My Invitations"]')
+        cy.wait(1000)
         cy.get('[data-cy="My Invitations"]').click()
+
+        cy.get('li').first().should('be.visible')
+        cy.wait(1000)
         cy.get('li').first().click()
         cy.url().should('contain', '/submission-box/')
+
         cy.get('[data-cy="select-video-for-submission"]').should('exist').and('be.visible')
     })
 
