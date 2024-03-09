@@ -125,8 +125,8 @@ export default function LearnMorePage() {
                             </li>
                             <li>
                                 If you wish to submit your video to a submission box, you can now jump into your
-                                invitations by clicking <i>Submit This Video</i>. Alternatively, you access the same page
-                                by navigating to your dashboard and heading to &quot;My Invitations&quot;
+                                invitations by clicking <i>Submit to a Submission Box</i>. Alternatively, you access the
+                                same page by navigating to your dashboard and heading to &quot;My Invitations&quot;
                             </li>
                         </ol>
                         <Typography>
