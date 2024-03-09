@@ -90,7 +90,7 @@ export default function LearnMorePage() {
                             </li>
                             <li>
                                 Complete the multi-step form consisting of &quot;Box Settings&quot;, &quot;Request
-                                Submissions&quot;, and &quot;Review&amp; Create&quot;.
+                                Submissions&quot;, and &quot;Review &amp; Create&quot;.
                             </li>
                         </ol>
                         <Typography>
@@ -114,8 +114,8 @@ export default function LearnMorePage() {
                                 Click on <i>Upload New</i> under &quot;Videos&quot; on the <Link href='/dashboard'>
                                 Dashboard</Link>. This will redirect you to the &quot;Upload Video&quot; page, where you
                                 choose the title of your video. You can optionally add a description to your video. If
-                                you want to blur your face in the video, tick the checkbox on the &quot;Upload Video
-                                &quot; page before submitting.
+                                you want to blur your face in the video, tick the checkbox on the page before
+                                submitting.
                             </li>
                             <li>
                                 Once you have submitted a video, it will be processed using AWS services. You are going
@@ -124,10 +124,9 @@ export default function LearnMorePage() {
                                 it back.
                             </li>
                             <li>
-                                If you wish to submit your video to a submission box, you can now jump into your invites
-                                by clicking <i>Submit This Video</i> or by navigating to your dashboard and finding the
-                                box you would like to submit to under &quot;My Invitations&quot;
-                                and submit to any of the boxes you have been invited to by clicking on their cards.
+                                If you wish to submit your video to a submission box, you can now jump into your
+                                invitations by clicking <i>Submit This Video</i>. Alternatively, you access the same page
+                                by navigating to your dashboard and heading to &quot;My Invitations&quot;
                             </li>
                         </ol>
                         <Typography>
