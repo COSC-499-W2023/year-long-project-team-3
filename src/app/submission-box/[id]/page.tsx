@@ -167,6 +167,7 @@ export default function SubmissionBoxDetailPage() {
                                                     onChange={formik.handleChange}
                                                     onBlur={formik.handleBlur}
                                                     value={formik.values.title}
+                                                    data-cy='submissionBoxTitleEditing'
                                                 />
                                                 <Typography data-cy='submissionBoxDateHeading' color={'textSecondary'} sx={{ m: 1, fontWeight: 'bold' }}>
                                                     Close Date:
@@ -209,6 +210,7 @@ export default function SubmissionBoxDetailPage() {
                                                     onChange={formik.handleChange}
                                                     onBlur={formik.handleBlur}
                                                     value={formik.values.description}
+                                                    data-cy='submissionBoxDescEditing'
                                                 />
                                                 <Box display='flex' justifyContent='flex-end' gap={1} padding='1rem'>
                                                     <Button
