@@ -57,7 +57,7 @@ export default function LearnMorePage() {
                             Creating an Account
                         </Typography>
                         <ol>
-                            <li>Navigate to the <Link href='/signup'>Signup page</Link> and fill out the form, then click sign in</li>
+                            <li>Navigate to the <Link href='/signup'>Signup page</Link> and fill out the form, then click <i>Sign Up</i></li>
                             <li>
                                 You will be redirected to the <Link href='/login'>Login page</Link>, login with the
                                 account you created at <Link href='/signup'>Signup</Link>
@@ -84,17 +84,17 @@ export default function LearnMorePage() {
                         </Typography>
                         <ol>
                             <li>
-                                Click on Create New under Submission Boxes on the{' '}
+                                Click on <i>Create New</i> under Submission Boxes on the{' '}
                                 <Link href='/dashboard'>Dashboard</Link>.
                             </li>
                             <li>
-                                Complete the multi-step form consisting of Box Settings, Request Submissions, and Review
-                                &amp; Create.
+                                Complete the multi-step form consisting of &quot;Box Settings&quot;, &quot;Request Submissions&quot;, and &quot;Review
+                                &amp; Create&quot;.
                             </li>
                         </ol>
                         <Typography>
-                            After clicking Create, you can now navigate to Manage Boxes under Submission Boxes on the{' '}
-                            <Link href='/dashboard'>Dashboard</Link> to see the box you have created.
+                            After you finish the creation process, you can click on <i>Manage Boxes</i> under &quot;Submission Boxes&quot; on
+                            the <Link href='/dashboard'>Dashboard</Link> to see a list of all the boxes you have created.
                         </Typography>
                     </Box>
                     <Box>
@@ -109,9 +109,9 @@ export default function LearnMorePage() {
                         </Typography>
                         <ol>
                             <li>
-                                Click on Upload New under Menu on the <Link href='/dashboard'>Dashboard</Link>. If you
-                                want to blur your face in the video, tick the checkbox on the Upload Video page before
-                                submitting.
+                                Click on <i>Upload New</i> under &quot;Videos&quot; on the <Link href='/dashboard'>Dashboard</Link>.
+                                If you want to blur your face in the video, tick the checkbox on the &quot;Upload Video&quot; page
+                                before submitting.
                             </li>
                             <li>
                                 Once you have submitted a video, it will be processed using AWS services. You are going
