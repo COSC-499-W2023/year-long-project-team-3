@@ -162,11 +162,13 @@ export default function SubmissionBoxDetailPage() {
                                                 <TextField
                                                     type='text'
                                                     name='title'
-                                                    sx={{ color: 'textSecondary', fontWeight: 'bold', width: '100%' }}
+                                                    sx={{ color: 'textSecondary', fontWeight: 'bold', width: '100%', mb: 1 }}
                                                     error={formik.touched.title && Boolean(formik.errors.title)}
                                                     onChange={formik.handleChange}
                                                     onBlur={formik.handleBlur}
                                                     value={formik.values.title}
+                                                    FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
+                                                    helperText={formik.touched.title && formik.errors.title}
                                                     data-cy='submissionBoxTitleEditing'
                                                 />
                                                 <Typography data-cy='submissionBoxDateHeading' color={'textSecondary'} sx={{ m: 1, fontWeight: 'bold' }}>
@@ -175,7 +177,7 @@ export default function SubmissionBoxDetailPage() {
                                                 <DateTimePicker
                                                     className='data-cy-date-time-picker' // regular data-cy wasn't working
                                                     disablePast
-                                                    sx={{ width: '100% '}}
+                                                    sx={{ width: '100%', mb: 1 }}
                                                     value={formik.values.closesAt ? dayjs(formik.values.closesAt) : null}
                                                     onChange={(e) => {
                                                         formik.setFieldValue('closesAt', e)
@@ -205,11 +207,13 @@ export default function SubmissionBoxDetailPage() {
                                                     name='description'
                                                     multiline
                                                     rows={8}
-                                                    sx={{ color: 'textSecondary', width: '100%' }}
+                                                    sx={{ color: 'textSecondary', width: '100%', mb: 1 }}
                                                     error={formik.touched.description && Boolean(formik.errors.description)}
                                                     onChange={formik.handleChange}
                                                     onBlur={formik.handleBlur}
                                                     value={formik.values.description}
+                                                    FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
+                                                    helperText={formik.touched.description && formik.errors.description}
                                                     data-cy='submissionBoxDescEditing'
                                                 />
                                                 <Box display='flex' justifyContent='flex-end' gap={1} padding='1rem'>
