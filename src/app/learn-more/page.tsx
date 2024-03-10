@@ -57,7 +57,7 @@ export default function LearnMorePage() {
                             Creating an Account
                         </Typography>
                         <ol>
-                            <li>Navigate to the <Link href='/signup'>Signup page</Link> and fill out the form, then
+                            <li>Navigate to the <Link href='/signup'>Signup page</Link>, fill out the form, and then
                                 click <i>Sign Up</i></li>
                             <li>
                                 You will be redirected to the <Link href='/login'>Login page</Link>, login with the
@@ -113,18 +113,17 @@ export default function LearnMorePage() {
                             <li>
                                 Click on <i>Upload New</i> under &quot;Videos&quot; on the <Link href='/dashboard'>
                                 Dashboard</Link>. This will redirect you to the &quot;Upload Video&quot; page, where you
-                                choose the title of your video. You can optionally add a description to your video. If
-                                you want to blur your face in the video, tick the checkbox on the page before
-                                submitting.
+                                choose a video from your computer to upload and give it a title. You can optionally
+                                add a description. If you want to blur your face in the video, tick the checkbox on the
+                                page before submitting.
                             </li>
                             <li>
-                                Once you have submitted a video, it will be processed using AWS services. You are going
-                                to be redirected to the video&apos;s page. There you can review details like the title
-                                and upload date. Once your video has finished processing, you will also be able to play
-                                it back.
+                                Once you have submitted your video, it will be uploaded for processing and you will be
+                                redirected to the video&apos;s page. There you can review details like the title and upload date.
+                                Once your video has finished processing, you will also be able to play it back.
                             </li>
                             <li>
-                                If you wish to submit your video to a submission box, you can now jump into your
+                                If you wish to submit your video to a submission box, you can now go to your
                                 invitations by clicking <i>Submit to a Submission Box</i>. Alternatively, you access the
                                 same page by navigating to your dashboard and heading to &quot;My Invitations&quot;
                             </li>
