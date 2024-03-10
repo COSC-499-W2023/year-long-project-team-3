@@ -159,11 +159,15 @@ describe('Requested Dashboard Details Page Tests', () => {
                     cy.wait(1000)
                     cy.get('[data-cy="submit-existing"]').should('be.visible').click()
 
-
                     // Submit video
                     cy.get('[data-cy="video-list"]').children().first().should('be.visible')
                     cy.wait(1000)
                     cy.get('[data-cy="video-list"]').children().first().should('be.visible').click()
+
+                    // Confirm submission
+                    cy.get('button').last().should('have.text', 'Yes')
+                    cy.wait(1000)
+                    cy.get('button').last().should('have.text', 'Yes').click()
 
                     // Check that it is submitted
                     cy.get('[data-cy="select-video-for-submission"]').should('not.exist')
@@ -173,7 +177,7 @@ describe('Requested Dashboard Details Page Tests', () => {
         })
     })
 
-    it.only('should allow user to unsubmit a video', () => {
+    it('should allow user to unsubmit a video', () => {
         const submissionBoxTitle = 'very exciting submission box'
         const videoTitle = 'Such video'
 
