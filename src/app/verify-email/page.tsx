@@ -28,7 +28,7 @@ export default function VerifyEmail() {
         }).catch(() => {
             setButtonText('Failed to send. Try again')
         })
-    }, [])
+    }, [router])
 
     const resendEmail = () => {
         setButtonText('Sending...')
