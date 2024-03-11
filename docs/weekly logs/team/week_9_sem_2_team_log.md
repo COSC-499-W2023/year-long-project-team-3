@@ -1,6 +1,6 @@
 # Weekly Team Log
 
-## Team 3 - Week 7/8 Term 2 (2024/02/19 - 2024/03/03)
+## Team 3 - Week 9 Term 2 (2024/03/04 - 2024/03/10)
 
 ### Milestone Goals
 
@@ -28,7 +28,7 @@ UI Fixes:
 - ~~Figure out terminology around submission boxes/video requests (ALL)~~
 
 Nice to have:
-- Video deletion
+- ~~Video deletion~~
 - Add dark mode
 - Visual tags on cards to indicate whether it’s submitted or received
 - Add Badge to My Invitations (indicating number of new requests)
@@ -46,8 +46,8 @@ UI/UX Redesign
 - Dashboard
   - ~~New sidebar~~
   - New cards
-- Submit to a box from video page
-- Submit a video from submission box page
+- ~~Submit to a box from video page~~
+- ~~Submit a video from submission box page~~
 
 Peer Testing 2
 - ~~White border around dashboard video list (Justin)~~
@@ -55,7 +55,7 @@ Peer Testing 2
   - ~~Add toast when submitting~~
   - ~~Add confirmation for unsubmitting~~
   - ~~Have text on video: If you wanna submit this video, go to your invitations!~~
-- Redirect to submission box after creating it (Teresa)
+- ~~Redirect to submission box after creating it (Teresa)~~
 - ~~Add links to all page mentioned in Learn More (Teresa)~~
 - Disable edit while video processing (Erin)
 - Badge on submission invitations on dashboard (Erin) - when submission has no submission
@@ -92,4 +92,4 @@ Peer Testing 2
 
 ### Additional Context
 
-The remaining parts of the UI/UX are being blocked by some pesky tests that keep failing. Between Seth and Teresa, there has been over 10 hours of effort in trying to get them to work.
+We also had a meeting today to review the feedback we got from peer testing #2 and made tasks based on it ("Peer Testing 2" section above).
