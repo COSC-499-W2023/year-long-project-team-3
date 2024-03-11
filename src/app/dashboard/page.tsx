@@ -13,9 +13,11 @@ import VideoList from '@/components/VideoList'
 import SubmissionBoxList from '@/components/SubmissionBoxList'
 import DashboardSearchBar from '@/components/DashboardSearchBar'
 import { VideoSubmission } from '@/app/api/my-videos/route'
+import { useSearchParams } from 'next/navigation'
 
 export default function DashboardPage() {
     const session = useSession()
+    const queriedTab = useSearchParams().get('tab')
 
     // Videos
     const [allVideos, setAllVideos] = useState<(Video & VideoSubmission)[]>([])
@@ -27,7 +29,7 @@ export default function DashboardPage() {
     const [tempSubmissionBoxes, setTempSubmissionBoxes] = useState<SubmissionBox[]>([])
 
     // Page component controls
-    const [sidebarSelectedOption, setSidebarSelectedOption] = useState<SidebarOption>('menu_my_videos')
+    const [sidebarSelectedOption, setSidebarSelectedOption] = useState<SidebarOption>(queryParamToSidebarOption(queriedTab))
     const [pageTitle, setPageTitle] = useState('My Videos')
     const [isVideoTabSelected, setIsVideoTabSelected] = useState(true)
 
@@ -222,5 +224,14 @@ export default function DashboardPage() {
         const response = await fetch('/api/submission-box/requestedsubmissions')
         const { submissionBoxes } = await response.json()
         return submissionBoxes
+    }
+}
+
+function queryParamToSidebarOption(queryParam: string | null): SidebarOption {
+    switch (queryParam?.toLowerCase()) {
+    case 'my-videos': return 'menu_my_videos'
+    case 'my-invitations': return 'submission_boxes_my_invitations'
+    case 'manage-boxes': return 'submission_boxes_manage_boxes'
+    default: return 'menu_my_videos'
     }
 }
