@@ -19,7 +19,7 @@
 
 ### Additional Context
 
-N/A
+Seth was goated at the beginning of the week to pull together our progress to show for peer testing #2
 
 ## Week 7/8 (Feb 19 - Mar 03)
 
