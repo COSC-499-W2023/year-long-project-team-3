@@ -25,20 +25,20 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
 
         // Determine if the title is a valid string and is not empty
         if (!title || typeof title !== 'string' || title === '') {
-            logger.error(`User ${ session.user.email } did not provide a title`)
-            return NextResponse.json({ error: 'No title provided' }, { status: 500 })
+            logger.error(`User ${ session.user.email } did not provide a title when trying to update the submission box title, Update submission box API throw`)
+            return NextResponse.json({ error: 'No title provided' }, { status: 400 })
         }
 
         // Determine if the description is a valid string or is empty
         if (description !== null && typeof description !== 'string') {
-            logger.error('Unexpected description type')
-            return NextResponse.json({ error: 'Unexpected description type' }, { status: 500 })
+            logger.error('Unexpected description type when user tried to update the submission box description, Update submission box API throw')
+            return NextResponse.json({ error: 'Unexpected description type' }, { status: 400 })
         }
 
         // If there is a closing date, determine if the date is not already past
         if (!!closesAt && new Date(closesAt.toString()) < new Date()) {
-            logger.error('Date chosen has already past')
-            return NextResponse.json({ error: 'Date chosen has already past' }, { status: 500 })
+            logger.error('Date the user selected to update the closesAt time for submission box has past, Update submission box API throw')
+            return NextResponse.json({ error: 'Date chosen has already past' }, { status: 400 })
         }
 
         // Get user id
@@ -69,7 +69,7 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
 
         // Determine if user has permission to modify submission details
         if (ownedSubmissionBox.viewPermission !== 'owner') {
-            logger.error(`User ${ userId } does not have permission to modify submission box ${ submissionBoxId }`)
+            logger.error(`User ${ userId } does not have permission to modify submission box ${ submissionBoxId }, Update submission box API throw`)
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
         }
 
