@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import { Typography, Box, Button, Link } from '@mui/material'
+import { Typography, Box, Link, Dialog, DialogTitle, DialogActions, Button, Alert } from '@mui/material'
 import { SubmissionBox, Video } from '@prisma/client'
 import VideoList from '@/components/VideoList'
 import BackButtonWithLink from '@/components/BackButtonWithLink'
@@ -11,6 +11,7 @@ import ScalingReactPlayer from '@/components/ScalingReactPlayer'
 import PageLoadProgress from '@/components/PageLoadProgress'
 import { BoxStatus } from '@/types/submission-box/boxStatus'
 import { toast } from 'react-toastify'
+import SelectVideoForSubmission from '@/components/SelectVideoForSubmission'
 import { VideoSubmission } from '@/app/api/my-videos/route'
 
 export default function SubmissionBoxDetailPage() {
@@ -21,6 +22,7 @@ export default function SubmissionBoxDetailPage() {
     const [videos, setVideos] = useState<(Video & VideoSubmission)[]>([])
     const [boxInfo, setBoxInfo] = useState<SubmissionBox | null>(null)
     const boxId = pathname?.split('/').pop()
+    const [unsubmitDialogOpen, setUnsubmitDialogOpen] = useState(false)
 
     useEffect(() => {
         setIsFetchingSubmissionBox(true)
@@ -77,20 +79,30 @@ export default function SubmissionBoxDetailPage() {
                                     emptyMessage={'No Videos Have Been Submitted to Your Box'}
                                 />
                             </Box>
-                            <Box paddingLeft='1rem'>
+                            <Box paddingLeft='2rem'>
                                 <SubmissionBoxDetails submissionBox={boxInfo} />
                             </Box>
                         </Box>
                     )}
                     {boxType === 'requested' && (
                         <>
-                            <Box display='grid' gridTemplateColumns='3fr 1fr' height='100%' width='100%'>
+                            <Box
+                                sx={{
+                                    display: 'grid',
+                                    gridTemplateColumns: '3fr 1fr',
+                                    flexGrow: 1,
+                                    height: '100%',
+                                    width: '100%',
+                                    pt: '2rem',
+                                }}
+                            >
                                 <Box
                                     sx={{
                                         display: 'flex',
                                         flexDirection: 'column',
                                         width: '100%',
-                                        padding: '2rem',
+                                        height: '100%',
+                                        px: '2rem',
                                         flexGrow: 1,
                                         flexShrink: 1,
                                     }}
@@ -105,7 +117,9 @@ export default function SubmissionBoxDetailPage() {
                                             }}
                                         >
                                             <Typography data-cy='videoTitleHeader' variant='subtitle2' color={'textSecondary'}>Video Title</Typography>
-                                            <Link sx={{ fontWeight: 'bold' }} paddingBottom='1rem' data-cy='videoTitle' variant={'h5'} color={'textSecondary'} onClick={() => router.push(`/video/${ videos?.[0].id }`)}>{videos?.[0].title}</Link>
+                                            <Link sx={{ fontWeight: 'bold' }} paddingBottom='1rem' data-cy='videoTitle' variant={'h5'} color={'textSecondary'} href={`/video/${ videos?.[0].id }`}>
+                                                {videos?.[0].title}
+                                            </Link>
                                         </Box>
                                     )}
                                     <Box
@@ -120,34 +134,49 @@ export default function SubmissionBoxDetailPage() {
                                             width: '100%',
                                             ...(videos.length !== 1 && { backgroundColor: 'secondary.lighter' }),
                                             borderRadius: 1,
+                                            maxHeight: '75%',
                                         }}
                                     >
                                         {videos?.length !== 0 ? (
                                             videos[0]?.processedVideoUrl ? (
                                                 <ScalingReactPlayer data-cy='scaling-react-player' url={videos[0].processedVideoUrl} />
                                             ) : (
-                                                <Typography data-cy='pending' variant={'h5'} color={'textSecondary'}>
-                                                Submission Pending
-                                                </Typography>
+                                                <Alert severity='info'>Your video has been submitted. It will be visible here as soon as cloud processing is finished.</Alert>
                                             )
                                         ) : (
-                                            <Typography data-cy='noSubmission' variant={'h5'} color={'textSecondary'}>
-                                            No Current Submission
-                                            </Typography>
+                                            <SelectVideoForSubmission
+                                                submissionBoxId={boxId ?? ''}
+                                                onVideoSelect={(video: (Video & VideoSubmission)) => setVideos([video])}
+                                            />
                                         )}
                                     </Box>
                                 </Box>
-                                <Box padding='1rem'>
-                                    <SubmissionBoxDetails submissionBox={boxInfo} />
-                                    <Box textAlign='center' padding='1rem'>
-                                        <Button
-                                            variant='contained'
-                                            onClick={() => router.push('/video/upload')}
-                                            data-cy='submissionButton'
+                                <Box sx={{
+                                    pr: '2rem',
+                                }}>
+                                    <SubmissionBoxDetails submissionBox={boxInfo} onUnsubmit={videos?.length !== 0 ? () => setUnsubmitDialogOpen(true) : undefined}/>
+                                    <Dialog
+                                        open={unsubmitDialogOpen}
+                                        onClose={() => setUnsubmitDialogOpen(false)}
+                                    >
+                                        <DialogTitle>
+                                            Are you sure you want to unsubmit this video?
+                                        </DialogTitle>
+                                        <DialogActions
+                                            sx={{
+                                                p: 2,
+                                            }}
                                         >
-                                            { videos?.length === 0 ? 'Create A Submission' : 'Create A Resubmission' }
-                                        </Button>
-                                    </Box>
+                                            <Button onClick={() => setUnsubmitDialogOpen(false)}>No</Button>
+                                            <Button
+                                                onClick={unsubmitVideo}
+                                                variant='contained'
+                                                autoFocus
+                                            >
+                                                Yes
+                                            </Button>
+                                        </DialogActions>
+                                    </Dialog>
                                 </Box>
                             </Box>
                         </>
@@ -156,4 +185,25 @@ export default function SubmissionBoxDetailPage() {
             )}
         </>
     )
+
+    function unsubmitVideo() {
+        setUnsubmitDialogOpen(false)
+
+        fetch('/api/video/submit/new', {
+            method: 'DELETE',
+            body: JSON.stringify({
+                videoId: videos[0].id,
+                submissionBoxIds: [boxId],
+            }),
+        }).then(async (res) => {
+            if (res.ok) {
+                toast.success('Video Unsubmitted')
+                setVideos([])
+            } else {
+                toast.error('An error occurred trying to unsubmit video')
+            }
+        }).catch(() => {
+            toast.error('An error occurred trying to unsubmit video')
+        })
+    }
 }

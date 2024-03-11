@@ -11,6 +11,7 @@ export type VideoCardProps = {
     isSubmitted: boolean
     createdDate: Date
     submissionBoxes: string[]
+    onClick?: (videoId: string) => void
 }
 
 export default function VideoCard(props: VideoCardProps) {
@@ -57,6 +58,10 @@ export default function VideoCard(props: VideoCardProps) {
     }
 
     function handleOnClick() {
-        router.push(`/video/${ props.videoId }`)
+        if (props.onClick) {
+            props.onClick(props.videoId)
+        } else {
+            router.push(`/video/${ props.videoId }`)
+        }
     }
 }
