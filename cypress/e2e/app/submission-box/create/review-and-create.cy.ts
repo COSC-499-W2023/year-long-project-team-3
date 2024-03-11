@@ -59,7 +59,7 @@ describe('Submission box review and create tests', () => {
         it('Should allow user to click create', () => {
             cy.get('[data-cy="Create"]').click()
 
-            cy.url().should('include', '/dashboard')
+            cy.url().should('include', '/submission-box')
         })
 
         it('Should show a warning if no one invited to the box', () => {
