@@ -301,7 +301,7 @@
 
 ## Week 9 (04/03/2024 - 10/03/2024)
 
-![](imgs/term-2-week-8-erin-tasks.png)
+![](imgs/term-2-week-9-erin-tasks.png)
 
 ### Week Tasks
 
