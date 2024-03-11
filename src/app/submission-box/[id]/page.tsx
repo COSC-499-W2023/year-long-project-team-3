@@ -46,7 +46,7 @@ export default function SubmissionBoxDetailPage() {
 
     return (
         <>
-            <BackButtonWithLink route={'/dashboard '} title={'Return to Dashboard'} />
+            <BackButtonWithLink route={boxType === 'owned'? '/dashboard?tab=manage-boxes' : '/dashboard?tab=my-invitations'} title={'Return to Dashboard'} />
             {isFetchingSubmissionBox ? (
                 <PageLoadProgress />
             ) : (

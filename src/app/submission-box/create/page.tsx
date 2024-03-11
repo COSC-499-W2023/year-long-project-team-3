@@ -53,8 +53,7 @@ export default function SubmissionBox() {
 
     return (
         <>
-            <BackButtonWithLink route={'/dashboard'} title={'Return to Dashboard'} />{' '}
-            {/* TODO: make this route to correct page */}
+            <BackButtonWithLink route={'/dashboard?tab=manage-boxes'} title={'Return to Dashboard'} />{' '}
             <Box
                 sx={{
                     display: 'flex',
