@@ -298,3 +298,20 @@
 ### Additional Context
 
 -   Same as last week I had more midterms this week and no work was completed during the reading week as I wanted to try and get some proper rest so that I can push through the rest of the semester without burnout.
+
+## Week 9 (04/03/2024 - 10/03/2024)
+
+![](imgs/term-2-week-8-erin-tasks.png)
+
+### Week Tasks
+
+-   Modifying submission boxes  #72 (Completed)
+
+### Week Goals
+
+-   This week's tasks included finishing up the modify submission box page.  Last week the frontend was refactored to include a formik form and validation, this week was work on connecting said form to the backend and getting it to update properly on the database.  Some difficulties were faced when trying to transfer over the data from the form to the backend and processing the data to be put into the database, (formik only allows the transfer of strings or blobs).
+-   Tests were also written for the modifying submissions task, some difficulty was encountered with testing a DatePicker MUI object and in testing the MUI form with initial values present instead of an empty field
+  
+### Additional Context
+
+-  N/A
