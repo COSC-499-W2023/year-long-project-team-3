@@ -1,5 +1,26 @@
 # Weekly Individual Log - Justin Schoenit
 
+## Week 9 (Mar 04 - Mar 10)
+
+### Tasks
+
+![](imgs/week-9-t2-tasks-justin.png)
+
+### My Contributions this week
+
+- Added ability to navigate to a specific tab on the dashboard via the url
+- After discussion, we decided against being able to submit a video from the video page due some ui and technical challenges, so I removed that from my PR. But I finished up the ability to submit from a submission box as I was unblocked earlier in the week.
+- Fixed a number of tests in Teresa's PRs
+
+### Goals for the coming week
+
+- Get all new UI changes integrated together and merged to main
+- There are a number of small issues that can be worked on
+
+### Additional Context
+
+N/A
+
 ## Week 7/8 (Feb 19 - Mar 03)
 
 ### Tasks
