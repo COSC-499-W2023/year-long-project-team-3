@@ -94,7 +94,7 @@ export default function VideoDetailedPage() {
             })
             .catch((err) => {
                 logger.error(err.message)
-                toast.error('An unexpected error occurred!')
+                toast.error('An unexpected error occurred while trying to load your video!')
                 router.push('/dashboard')
             })
             .finally(() => {
@@ -369,7 +369,7 @@ export default function VideoDetailedPage() {
                             width: 'max-content',
                         }}
                     >
-                        Are you sure you want to delete video?
+                        Are you sure you want to delete this video?
 
                         <Box
                             sx={{

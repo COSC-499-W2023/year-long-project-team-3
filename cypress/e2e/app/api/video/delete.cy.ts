@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid'
 import runWithRetry from '../../../../utils/runUntilExist'
 
 describe('Test video deletion API', () => {
-    it('should reject if not DELETE method', () => {
+    it('should reject request if it is not DELETE method', () => {
         const allOtherMethods = ['GET', 'POST', 'PUT', 'PATCH', 'OPTIONS', 'HEAD']
         allOtherMethods.forEach((method) => {
             cy.request({
@@ -16,7 +16,7 @@ describe('Test video deletion API', () => {
         })
     })
 
-    it('should reject if provide videoId incorrectly', () => {
+    it('should reject request if provide videoId incorrectly', () => {
         const email = 'user' + uuidv4() + '@example.com'
         const password = 'Password1'
 
@@ -35,8 +35,8 @@ describe('Test video deletion API', () => {
             url: '/api/video/delete/wrongVideoId',
             failOnStatusCode: false,
         }).then((response) => {
-            expect(response.status).to.eq(500)
-            expect(response.statusText).to.eq('Internal Server Error')
+            expect(response.status).to.eq(400)
+            expect(response.body.error).to.eq('Video wrongVideoId does not exist')
         })
     })
 
@@ -128,7 +128,8 @@ describe('Test video deletion API', () => {
                         url: '/api/video/delete/' + videoId,
                         failOnStatusCode: false,
                     }).then((response) => {
-                        expect(response.status).to.eq(500)
+                        expect(response.status).to.eq(400)
+                        expect(response.body.error).to.eq('Video ' + videoId + ' does not exist')
                     })
 
                     // Log out

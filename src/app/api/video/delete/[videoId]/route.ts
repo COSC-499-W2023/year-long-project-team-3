@@ -12,28 +12,36 @@ export type VideoDeleteParams = {
     }
 }
 
+/**
+ * Delete a video from the database by id.
+ * @note This will also attempt to delete the video from s3 if it's cloud processed. However, if the video cannot be deleted from s3, the video will still be deleted from the database
+ */
 export async function DELETE(_: NextRequest, { params }: VideoDeleteParams): Promise<NextResponse> {
     const session = await getServerSession()
     if (!session || !session.user?.email) {
-        return NextResponse.json({ error: 'You must be signed in to edit the video' }, { status: 401 })
+        return NextResponse.json({ error: 'You must be signed in to delete the video' }, { status: 401 })
     }
     const { videoId } = params
     if (!videoId) {
         return NextResponse.json({ error: 'No videoId provided' }, { status: 400 })
     }
 
-    try {
-        const video: Video = await prisma.video.findUniqueOrThrow({
-            where: {
-                id: videoId,
-                owner: {
-                    email: session.user.email,
-                },
+    const video: Video | null = await prisma.video.findUnique({
+        where: {
+            id: videoId,
+            owner: {
+                email: session.user.email,
             },
-        })
+        },
+    })
+    if (!video) {
+        return NextResponse.json({ error: `Video ${ videoId } does not exist` }, { status: 400 })
+    }
 
+    try {
         const { s3Key, isCloudProcessed, isSubmitted } = video
 
+        // If the video is cloud processed, we need to attempt to delete it from s3
         if (isCloudProcessed) {
             if (!s3Key) {
                 // If cloud processed, but no s3Key, then it's a bug
@@ -47,6 +55,7 @@ export async function DELETE(_: NextRequest, { params }: VideoDeleteParams): Pro
                 })
         }
 
+        // Delete the whitelisted users that associated with the video
         await prisma.videoWhitelistedUser.deleteMany({
             where: {
                 whitelistedVideo: {
@@ -55,12 +64,14 @@ export async function DELETE(_: NextRequest, { params }: VideoDeleteParams): Pro
             },
         })
 
+        // Delete the whitelisted videos that associated with the video
         await prisma.videoWhitelist.deleteMany({
             where: {
                 videoId: videoId,
             },
         })
 
+        // If submitted, delete the submitted videos
         if (isSubmitted) {
             await prisma.submittedVideo.deleteMany({
                 where: {
