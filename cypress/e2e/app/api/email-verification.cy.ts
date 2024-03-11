@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid'
+
 describe('Test email verification APIs', () => {
     const email = 'no-reply@harpvideo.ca'
     const password = 'Password1'
@@ -26,6 +28,8 @@ describe('Test email verification APIs', () => {
             expect(response.status).to.eq(200)
             expect(response.body).to.have.property('hasOpenToken')
             expect(response.body.hasOpenToken).to.eq(false)
+            expect(response.body).to.have.property('isUserVerified')
+            expect(response.body.isUserVerified).to.eq(false)
         })
 
         // Now visit verify-email
@@ -38,6 +42,8 @@ describe('Test email verification APIs', () => {
             expect(response.status).to.eq(200)
             expect(response.body).to.have.property('hasOpenToken')
             expect(response.body.hasOpenToken).to.eq(true)
+            expect(response.body).to.have.property('isUserVerified')
+            expect(response.body.isUserVerified).to.eq(false)
         })
 
         // Update token to outdated date
@@ -48,6 +54,31 @@ describe('Test email verification APIs', () => {
             expect(response.status).to.eq(200)
             expect(response.body).to.have.property('hasOpenToken')
             expect(response.body.hasOpenToken).to.eq(false)
+            expect(response.body).to.have.property('isUserVerified')
+            expect(response.body.isUserVerified).to.eq(false)
+        })
+    })
+
+    it('should return true if user is verified', () => {
+        const email = 'user' + uuidv4() + '@harpvideo.ca'
+        const password = 'Password1'
+
+        // Sign up
+        cy.task('createUser', {email, password, verifyEmail: true})
+
+        // Login
+        cy.visit('/login')
+        cy.get('[data-cy="email"]').type(email)
+        cy.get('[data-cy="password"]').type(password)
+        cy.get('[data-cy="submit"]').click()
+        cy.url().should('not.contain', '/login')
+
+        cy.request('/api/verify-email/has-open-token').should((response) => {
+            expect(response.status).to.eq(200)
+            expect(response.body).to.have.property('hasOpenToken')
+            expect(response.body.hasOpenToken).to.eq(false)
+            expect(response.body).to.have.property('isUserVerified')
+            expect(response.body.isUserVerified).to.eq(true)
         })
     })
 })
