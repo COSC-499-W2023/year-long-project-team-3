@@ -109,9 +109,9 @@ model RequestedSubmission {
   updatedAt       DateTime         @updatedAt
   videoVersions   SubmittedVideo[]
 
+  @@unique([email, submissionBoxId])
   @@index([email])
   @@index([userId])
-  @@unique([email, submissionBoxId])
 }
 
 model SubmittedVideo {

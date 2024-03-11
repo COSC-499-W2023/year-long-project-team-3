@@ -11,6 +11,7 @@ const nextConfig = () => {
         'AWS_UPLOAD_BUCKET_REKOGNITION',
         'AWS_UPLOAD_REGION_CANADA',
         'AWS_UPLOAD_REGION_US',
+        'AWS_STREAMING_BUCKET',
     ]
 
     // Check if all environment variables are set
