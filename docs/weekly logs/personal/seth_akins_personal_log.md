@@ -478,7 +478,7 @@ will have to reconsider how we do that moving forwards.
   that was stable to use for peer testing.
 - I also continued working on changing the video upload path to use the new form, but I am currently blocked from
   finishing this until the ability to submit to submission boxes from an invite is complete (as my PR removes the old 
-  ay of doing it from a video)
+  way of doing it from a video)
 
 ### Tasks
 
