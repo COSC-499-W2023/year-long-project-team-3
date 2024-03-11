@@ -407,3 +407,28 @@ My goal for this week was to finish the PRs I currently have in progress. I have
 to merge them because I have encountered issue with flaky tests in the CI pipeline that we have not been able to solve.
 
 ### Additional Context
+
+
+## Teresa Saller - Term 2: Week 9 (2024/03/04 - 2024/03/10)
+
+![teresa-saller-tasks-w9-t2.png](imgs/teresa-saller-tasks-w9-t2.png)
+
+### Tasks
+
+Completed:
+- [Submission box email addition fixes #422](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/422)
+  - Was able to fix and merge thanks to Justin's help
+- [Implement new video cards #449](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/449)
+  - Was able to fix and merge thanks to Justin's help
+- [Reworked Learn More page #479](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/479)
+- [Redirecting to submission box page after creation #485](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/485)
+- Created issues in GitHub for all the feedback we collected from Peer Testing #2
+
+In progress:
+
+### Goals
+
+My goal for this week was to merge the PRs that were having issues with flaky tests. I was able to merge them with Justin's help.
+My goal for this upcoming week is to continue working on addressing feedback from our peer-testing.
+
+### Additional Context
