@@ -53,8 +53,7 @@ export default function SubmissionBox() {
 
     return (
         <>
-            <BackButtonWithLink route={'/dashboard'} title={'Return to Dashboard'} />{' '}
-            {/* TODO: make this route to correct page */}
+            <BackButtonWithLink route={'/dashboard?tab=manage-boxes'} title={'Return to Dashboard'} />{' '}
             <Box
                 sx={{
                     display: 'flex',
@@ -164,7 +163,7 @@ export default function SubmissionBox() {
             if (response.status == 201) {
                 toast.success(`Submission box ${ submissionBoxInfo.title } successfully created!`)
                 logger.info(`Submission box with title ${ submissionBoxInfo.title } successfully created`)
-                router.push('/dashboard')
+                router.push('/submission-box/' + submissionBoxInfo.id)
                 router.refresh()
             } else {
                 toast.error(submissionBoxInfo.error)
