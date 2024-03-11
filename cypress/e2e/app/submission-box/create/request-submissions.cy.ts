@@ -21,7 +21,7 @@ describe('Submission box request submissions tests', () => {
             cy.visit('/login')
             cy.get('[data-cy=email]').type(email)
             cy.get('[data-cy=password]').type(password)
-            cy.get('[data-cy=submit]').click()
+            cy.get('[data-cy=submit]').wait(1000).click()
             cy.url().should('not.contain', 'login')
 
             cy.visit('/dashboard')
@@ -99,7 +99,7 @@ describe('Submission box request submissions tests', () => {
         })
 
         it('Should allow user to click next', () => {
-            cy.get('[data-cy="Next"]').click()
+            cy.get('[data-cy="Next"]').wait(1000).click()
 
             cy.url().should('include', '/submission-box')
 

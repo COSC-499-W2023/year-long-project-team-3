@@ -58,7 +58,7 @@
         "@types/react": "latest",
         "@types/react-dom": "latest",
         "@types/uuid": "^9.0.6",
-        "cypress": "^13.3.0",
+        "cypress": "^13.6.6",
         "dotenv-cli": "^7.3.0",
         "eslint": "latest",
         "eslint-config-next": "latest",

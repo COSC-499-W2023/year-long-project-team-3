@@ -54,8 +54,8 @@ model Video {
   description              String?
   createdAt                DateTime         @default(now())
   updatedAt                DateTime         @updatedAt
-  owner                    User?            @relation(fields: [ownerId], references: [id])
-  ownerId                  String?
+  owner                    User             @relation(fields: [ownerId], references: [id])
+  ownerId                  String
   s3Key                    String?
   isCloudProcessed         Boolean          @default(false)
   isSubmitted              Boolean          @default(false)
@@ -112,6 +112,7 @@ model RequestedSubmission {
 
   @@index([email])
   @@index([userId])
+  @@unique([email, submissionBoxId])
 }
 
 model SubmittedVideo {

@@ -10,9 +10,10 @@ import { Alert, Box, Button, Chip, Modal, TextField, Typography } from '@mui/mat
 
 import ScalingReactPlayer from '@/components/ScalingReactPlayer'
 import PageLoadProgress from '@/components/PageLoadProgress'
+import BackButton from '@/components/BackButton'
 import EditIcon from '@mui/icons-material/Edit'
 import { theme } from '@/components/ThemeRegistry/theme'
-import BackButton from '@/components/BackButton'
+import dayjs from 'dayjs'
 
 export default function VideoDetailedPage() {
     const session = useSession()
@@ -264,38 +265,47 @@ export default function VideoDetailedPage() {
                                                 )}
                                             </Box>
                                             <Box
-                                                sx={{
-                                                    display:
-                                                        !isFetchingSubmissionBoxes && submissionBoxes?.length > 0
-                                                            ? 'block'
-                                                            : 'none',
-                                                }}
                                                 data-cy='submission-box-chips-wrapper'
                                             >
                                                 <Typography sx={{ fontWeight: 'bold' }}>Submitted To</Typography>
-                                                {submissionBoxes.map((submissionBox, idx) => (
+                                                {submissionBoxes.length > 0 ? submissionBoxes.map((submissionBox, idx) => (
                                                     <Chip
                                                         key={`submission-box-chip-${ idx }`}
                                                         label={submissionBox.title}
                                                         sx={{ m: 0.5, ml: 0 }}
                                                     />
-                                                ))}
+                                                )) : 'None'}
                                             </Box>
                                             <Box>
                                                 <Typography sx={{ fontWeight: 'bold' }}>Other information</Typography>
                                                 <Typography>
-                                                    Created At:{' '}
+                                                    Created at:{' '}
                                                     {!!video?.createdAt
-                                                        ? new Date(video?.createdAt).toLocaleString('en-GB', { timeZone: 'PST' })
+                                                        ? dayjs(video?.createdAt).format('MMM D, h:mma')
                                                         : 'N/A'}
                                                 </Typography>
                                                 <Typography>
-                                                    Updated At:{' '}
+                                                    Updated at:{' '}
                                                     {!!video?.updatedAt
-                                                        ? new Date(video?.updatedAt).toLocaleString('en-GB', { timeZone: 'PST' })
+                                                        ? dayjs(video?.updatedAt).format('MMM D, h:mma')
                                                         : 'N/A'}
                                                 </Typography>
                                             </Box>
+                                            {!isEditing && (
+                                                <Box
+                                                    sx={{
+                                                        mt: '2rem',
+                                                    }}
+                                                >
+                                                    <Button
+                                                        variant='contained'
+                                                        onClick={() => router.push('/dashboard?tab=my-invitations')}
+                                                        data-cy='detail-video-submit-button'
+                                                    >
+                                                    Submit to a Submission Box
+                                                    </Button>
+                                                </Box>
+                                            )}
                                         </Box>
                                         {isEditing && (
                                             <Box display='flex' justifyContent='space-between' gap={1} marginBottom={1}>

@@ -26,7 +26,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <body>
                 <ThemeRegistry>
                     <NextAuthProvider session={session}>
-                        <Box sx={{ margin: 0, display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                        <Box sx={{ margin: 0, display: 'flex', flexDirection: 'column', maxHeight: '100vh', height: '100vh' }}>
                             <Header />
                             <Box sx={{ display: 'flex', flexGrow: '1', flexDirection: 'column'}}>{children}</Box>
                         </Box>

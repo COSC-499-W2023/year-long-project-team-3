@@ -58,7 +58,7 @@ describe('Login tests', () => {
         cy.visit('/login')
         cy.get('[data-cy="email"]').type(email)
         cy.get('[data-cy="password"]').type(password)
-        cy.get('[data-cy="submit"]').click()
+        cy.get('[data-cy="submit"]').wait(1000).click()
 
         // We shouldn't be on the login page anymore
         cy.url({ timeout: TIMEOUT.EXTRA_EXTRA_LONG }).should('include', '/dashboard')
