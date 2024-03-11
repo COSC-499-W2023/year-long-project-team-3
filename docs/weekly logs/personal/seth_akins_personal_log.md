@@ -467,7 +467,7 @@ will have to reconsider how we do that moving forwards.
 
 - N/A
 
-## Week 8 (04/03/2024 - 10/03/2024)
+## Week 9 (04/03/2024 - 10/03/2024)
 
 ![](imgs/seth-akins-term-2-week-9-tasks.png)
 
