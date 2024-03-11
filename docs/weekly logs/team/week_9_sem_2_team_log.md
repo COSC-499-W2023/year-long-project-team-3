@@ -32,7 +32,7 @@ Nice to have:
 - Add dark mode
 - Visual tags on cards to indicate whether it’s submitted or received
 - Add Badge to My Invitations (indicating number of new requests)
-- Navigate to correct part of dashboard when returning (e.g. submission boxes after creating one)
+- ~~Navigate to correct part of dashboard when returning (e.g. submission boxes after creating one)~~
 - Add info icons to page
 - ~~Should be able to access video that is upload in progress (or fix text on page to tell them to stay on the page)~~
 - Be able to record in browser
@@ -92,4 +92,4 @@ Peer Testing 2
 
 ### Additional Context
 
-We also had a meeting today to review the feedback we got from peer testing #2 and made tasks based on it ("Peer Testing 2" section above).
+We also had a meeting on Tuesday to review the feedback we got from peer testing #2 and made tasks based on it ("Peer Testing 2" section above).
