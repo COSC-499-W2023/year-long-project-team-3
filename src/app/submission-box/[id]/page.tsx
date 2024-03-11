@@ -365,7 +365,6 @@ export default function SubmissionBoxDetailPage() {
             toast.error('An error occurred trying to unsubmit video')
         })
     }
-}
 
     function onCancelEdit() {
         setIsEditing(false)
