@@ -303,10 +303,17 @@ export default function SubmissionBoxDetailPage() {
                                                 <Alert severity='info'>Your video has been submitted. It will be visible here as soon as cloud processing is finished.</Alert>
                                             )
                                         ) : (
-                                            <SelectVideoForSubmission
-                                                submissionBoxId={boxId ?? ''}
-                                                onVideoSelect={(video: (Video & VideoSubmission)) => setVideos([video])}
-                                            />
+                                            !boxInfo?.closesAt || new Date(boxInfo.closesAt) >= new Date() ? (
+                                                <SelectVideoForSubmission
+                                                    submissionBoxId={boxId ?? ''}
+                                                    onVideoSelect={(video: (Video & VideoSubmission)) => setVideos([video])}
+                                                />
+                                            ) : (
+                                                <>
+                                                    <Typography>Sorry, this submission box is closed to submissions at this time</Typography>
+                                                    <Typography>Submissions closed at {dayjs(boxInfo?.closesAt).format('h:mma [on] dddd MMM D, YYYY')}</Typography>
+                                                </>
+                                            )
                                         )}
                                     </Box>
                                 </Box>
