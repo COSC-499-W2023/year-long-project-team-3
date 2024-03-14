@@ -309,10 +309,19 @@ export default function SubmissionBoxDetailPage() {
                                                     onVideoSelect={(video: (Video & VideoSubmission)) => setVideos([video])}
                                                 />
                                             ) : (
-                                                <>
-                                                    <Typography>Sorry, this submission box is closed to submissions at this time</Typography>
-                                                    <Typography>Submissions closed at {dayjs(boxInfo?.closesAt).format('h:mma [on] dddd MMM D, YYYY')}</Typography>
-                                                </>
+                                                <Box
+                                                    sx={{
+                                                        p: 4,
+                                                        maxWidth: '35rem',
+                                                    }}
+                                                >
+                                                    <Typography
+                                                        data-cy='submissionBoxClosed'
+                                                        variant='h5'
+                                                        color={'textSecondary'}
+                                                        textAlign='center'
+                                                    >Sorry, this submission box is closed to submissions at this time. Submissions closed at {dayjs(boxInfo?.closesAt).format('h:mma [on] dddd MMM D, YYYY')}.</Typography>
+                                                </Box>
                                             )
                                         )}
                                     </Box>
