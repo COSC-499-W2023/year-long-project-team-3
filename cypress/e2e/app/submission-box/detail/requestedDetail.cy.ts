@@ -208,7 +208,7 @@ describe('Requested Dashboard Details Page Tests', () => {
         cy.get('[data-cy="select-video-for-submission"]').should('be.visible')
     })
 
-    it('shouldn\'t allow user to unsubmit a video if the submission box is closed', () => {
+    it('shouldn\'t allow user to submit a video if the submission box is closed', () => {
         const submissionBoxTitle = 'very exciting submission box'
 
         cy.task('getUserId', email).then((userId) => {
