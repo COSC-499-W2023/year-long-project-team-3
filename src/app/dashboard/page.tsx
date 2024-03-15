@@ -183,13 +183,14 @@ export default function DashboardPage() {
                                         })}
                                         isSearching={isSearching}
                                     />
-                                ) : (sidebarSelectedOption === 'submission_boxes_manage_boxes'?
+                                ) :
                                     <SubmissionBoxList
                                         submissionBoxes={submissionBoxes}
                                         isSearching={isSearching}
                                         emptyMessage={sidebarSelectedOption === 'submission_boxes_manage_boxes' ? 'You do not own any submission boxes' : 'You have not been invited to any submission boxes'}
-                                    />:<></>
-                                )}
+                                        isOwned={sidebarSelectedOption === 'submission_boxes_manage_boxes'}
+                                    />
+                                }
                             </Box>
                         )}
                     </Box>

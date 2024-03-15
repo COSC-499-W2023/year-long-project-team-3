@@ -10,9 +10,11 @@ export type ManageSubmissionBoxCardProps = {
   numMembers: number
   numSubmissions: number
   closesAt: Date | null
+  isOwned: boolean
+  timeSubmitted: Date | null
 }
 
-export default function ManageSubmissionBoxCard(props: ManageSubmissionBoxCardProps) {
+export default function SubmissionBoxCard(props: ManageSubmissionBoxCardProps) {
     const router = useRouter()
 
     return <Card sx={{ mb: 2, cursor: 'pointer' }} onClick={handleOnClick}>
@@ -36,7 +38,10 @@ export default function ManageSubmissionBoxCard(props: ManageSubmissionBoxCardPr
                 <Typography>{props.closesAt ? 'Closes at ' + dayjs(new Date(props.closesAt)).format('h:mma [on] MMMM D') + ' ' : 'No closing date'}  </Typography>
             </Box>
             <Box sx={{ width: '20%' }}>
-                <Typography>{props.numMembers > 0 ? +props.numSubmissions + ' / ' + props.numMembers + ' members have submitted!' : 'You have not invited anyone!'}</Typography>
+                {props.isOwned?
+                    <Typography>{props.numMembers > 0 ? +props.numSubmissions + ' / ' + props.numMembers + ' members have submitted!' : 'You have not invited anyone!'}</Typography> :
+                    <Typography>{props.timeSubmitted ? 'Submitted at ' + props.timeSubmitted : 'You have not submitted yet!'}</Typography>
+                }
             </Box>
         </CardContent>
     </Card>
