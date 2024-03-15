@@ -320,7 +320,7 @@ export default function SubmissionBoxDetailPage() {
                                                         variant='h5'
                                                         color={'textSecondary'}
                                                         textAlign='center'
-                                                    >Sorry, this submission box is closed to submissions at this time. Submissions closed at {dayjs(boxInfo?.closesAt).format('h:mma [on] dddd MMM D, YYYY')}.</Typography>
+                                                    >Sorry, this submission box closed at {dayjs(boxInfo?.closesAt).format('h:mma [on] dddd MMM D, YYYY')}.</Typography>
                                                 </Box>
                                             )
                                         )}
