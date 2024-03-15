@@ -1,5 +1,6 @@
 import { TIMEOUT } from '../../../../utils/constants'
 import runWithRetry from '../../../../utils/runUntilExist'
+import { SubmissionBox } from '@prisma/client'
 
 describe('Requested Dashboard Details Page Tests', () => {
     const email = 'requestedDetail@page.test'
@@ -205,5 +206,21 @@ describe('Requested Dashboard Details Page Tests', () => {
         cy.get('button').last().should('be.visible').and('have.text', 'Yes').click()
 
         cy.get('[data-cy="select-video-for-submission"]').should('be.visible')
+    })
+
+    it('shouldn\'t allow user to unsubmit a video if the submission box is closed', () => {
+        const submissionBoxTitle = 'very exciting submission box'
+
+        cy.task('getUserId', email).then((userId) => {
+            cy.task('createRequestSubmissionForUser', {userId, submissionBoxTitle, closeDate: new Date('2003-12-13')})
+        })
+        cy.wait(1000)  // Wait for submission box to be created
+        cy.task<SubmissionBox[]>('getSubmissionBoxes').then((submissionBoxes) => {
+            cy.visit(`/submission-box/${ submissionBoxes[0].id }`)
+        })
+
+        cy.url().should('contain', 'submission-box')
+
+        cy.get('[data-cy="videoHolder"]').should('contain.text', 'Sorry, this submission box closed')
     })
 })
