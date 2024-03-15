@@ -35,10 +35,10 @@ export default function SubmissionBoxCard(props: ManageSubmissionBoxCardProps) {
                     sx={{ fontWeight: 'bold' }}>{props.isOpen ? 'Open' : 'Closed'}</Typography>
             </Box>
             <Box sx={{ width: '30%' }}>
-                <Typography>{props.closesAt ? 'Closes at ' + dayjs(new Date(props.closesAt)).format('h:mma [on] MMMM D') + ' ' : 'No closing date'}  </Typography>
+                <Typography>{props.closesAt ? 'Close' + (props.isOpen ? 's' : 'd') + ' at ' + dayjs(new Date(props.closesAt)).format('h:mma [on] MMMM D') + ' ' : 'No closing date'}  </Typography>
             </Box>
             <Box sx={{ width: '20%' }}>
-                {props.isOwned?
+                {props.isOwned ?
                     <Typography>{props.numMembers > 0 ? +props.numSubmissions + ' / ' + props.numMembers + ' members have submitted!' : 'You have not invited anyone!'}</Typography> :
                     <Typography>{props.timeSubmitted ? 'Submitted at ' + props.timeSubmitted : 'You have not submitted yet!'}</Typography>
                 }
