@@ -3,7 +3,7 @@ import { theme } from '@/components/ThemeRegistry/theme'
 import { useRouter } from 'next/navigation'
 import dayjs from 'dayjs'
 
-export type ManageSubmissionBoxCardProps = {
+export type SubmissionBoxCardProps = {
   id: string
   title: string
   isOpen: boolean
@@ -14,7 +14,7 @@ export type ManageSubmissionBoxCardProps = {
   timeSubmitted: Date | null
 }
 
-export default function SubmissionBoxCard(props: ManageSubmissionBoxCardProps) {
+export default function SubmissionBoxCard(props: SubmissionBoxCardProps) {
     const router = useRouter()
 
     return <Card sx={{ mb: 2, cursor: 'pointer' }} onClick={handleOnClick}>
