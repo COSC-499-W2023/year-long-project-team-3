@@ -10,6 +10,12 @@ type CreateSubmissionBoxWithEmailData = {
 export default async function createRequestSubmissionForUser(props: CreateSubmissionBoxWithEmailData): Promise<string> {
     const { userId } = props
 
+    const user = await prisma.user.findUniqueOrThrow({
+        where: {
+            id: userId,
+        },
+    })
+
     const fakeUser = await prisma.user.create({
         data: {
             email: 'user' + uuidv4() + '@example.com',
@@ -33,7 +39,7 @@ export default async function createRequestSubmissionForUser(props: CreateSubmis
 
     const requestedSubmission = await prisma.requestedSubmission.create({
         data: {
-            email: '',
+            email: user.email,
             userId: userId,
             submissionBoxId: newSubBox.id,
         },

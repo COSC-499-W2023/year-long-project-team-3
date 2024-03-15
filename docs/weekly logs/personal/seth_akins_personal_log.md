@@ -439,3 +439,60 @@ will have to reconsider how we do that moving forwards.
 ### Additional Context
 
 - N/A
+
+## Week 8 (26/02/2024 - 03/03/2024)
+
+![](imgs/seth-akins-term-2-week-8-tasks.png)
+
+### Goals
+
+- This week I was trying to finish up my tasks before peer testing. I finished the new upload video form, and I wrote
+  the backend for the form, the tests, and got it merged.
+- I started working on another PR to replace the current system with my new one.
+- I also tried to help Teresa fix some of her video card PR, but was unsuccessful.
+
+### Tasks
+
+#### Completed Tasks
+
+- [New Upload Video Form Frontend](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/417)
+- [Refactor Backend to Work With New Video Submission Form](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/451)
+
+#### In-Progress Tasks
+
+- [Fix Position of Loading Wheel](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/440)
+- [Change Upload Video Path to Use New Upload Video Form](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/461)
+
+### Additional Context
+
+- N/A
+
+## Week 9 (04/03/2024 - 10/03/2024)
+
+![](imgs/seth-akins-term-2-week-9-tasks.png)
+
+### Goals
+
+- This week I was mainly focused on putting together a branch for our peer testing. 
+- Some of the UI we wanted to demo was either not fully tested, or was not fully implemented, so I put together a branch
+  that was stable to use for peer testing.
+- I also continued working on changing the video upload path to use the new form, but I am currently blocked from
+  finishing this until the ability to submit to submission boxes from an invite is complete (as my PR removes the old 
+  way of doing it from a video)
+
+### Tasks
+
+#### Completed Tasks
+
+- [Fix Position of Loading Wheel](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/440)
+- [Create Stable Branch for Peer Testing 2](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/471)
+
+#### In-Progress Tasks
+
+- [Change Upload Video Path to Use New Upload Video Form](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/461)
+
+### Additional Context
+
+- As mentioned, my main goal this week was creating a stable branch for peer testing 2. As this branch was me putting
+  together several other PRs and adding a few small fixes, it will not be merged, but did take a non-insignificant 
+  amount of time.

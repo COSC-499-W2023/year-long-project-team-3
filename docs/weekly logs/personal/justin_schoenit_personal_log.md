@@ -1,5 +1,46 @@
 # Weekly Individual Log - Justin Schoenit
 
+## Week 9 (Mar 04 - Mar 10)
+
+### Tasks
+
+![](imgs/week-9-t2-tasks-justin.png)
+
+### My Contributions this week
+
+- Added ability to navigate to a specific tab on the dashboard via the url
+- After discussion, we decided against being able to submit a video from the video page due some ui and technical challenges, so I removed that from my PR. But I finished up the ability to submit from a submission box as I was unblocked earlier in the week.
+- Fixed a number of tests in Teresa's PRs
+
+### Goals for the coming week
+
+- Get all new UI changes integrated together and merged to main
+- There are a number of small issues that can be worked on
+
+### Additional Context
+
+Seth was goated at the beginning of the week to pull together our progress to show for peer testing #2
+
+## Week 7/8 (Feb 19 - Mar 03)
+
+### Tasks
+
+![](imgs/week-8-t2-tasks-justin.png)
+
+### My Contributions this week
+
+- Fixed a bug that didn't allow the user to navigate back to a submission box via in page buttons after clicking a video that had been submitted to the box
+- Refactored email sending so that there is a template email instead of duplicating code
+- Email users when a video fails to upload
+
+### Goals for the coming week
+
+- I was unable to complete my goal that I had last week since it is being blocked by [#449](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/449). Hopefully that will be merged early this week and I can again try to finish that as my goal for this week.
+
+### Additional Context
+
+N/A
+
 ## Week 6 (Feb 12 - Feb 18)
 
 ### Tasks

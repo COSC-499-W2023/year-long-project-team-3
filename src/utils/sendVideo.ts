@@ -9,6 +9,7 @@ import logger from './logger'
 import prisma from '@/lib/prisma'
 import { Readable } from 'stream'
 import { makeS3Key } from './s3Key'
+import { getS3UploadBucket } from '@/utils/getS3UploadBucket'
 import { VideoUploadData } from '@/types/video/video'
 import {sendEmailFailureNotification} from '@/utils/emails/videoUploadFailure'
 
@@ -22,16 +23,6 @@ function isCompleteUpload(
 ): output is CompleteMultipartUploadCommandOutput {
     return (output as CompleteMultipartUploadCommandOutput).ETag !== undefined
 }
-
-// Upload to Rekognition bucket if user wants their face blurred, upload to streaming bucket if not. If the video is
-// uploaded to the Rekognition bucket, it will be transferred to the streaming bucket using a lambda on AWS, so the
-// videos will all end up in the same bucket at the end
-function getUploadBucket(blurFace: boolean) {
-    return blurFace
-        ? (process.env.AWS_UPLOAD_BUCKET_REKOGNITION as string)
-        : (process.env.AWS_UPLOAD_BUCKET_STREAMING as string)
-}
-
 
 export default async function sendVideo(rawVideo: File, owner: User, isFaceBlurChecked: boolean): Promise<Video> {
     const newVideo: Video = await prisma.video.create({
@@ -57,7 +48,7 @@ export default async function sendVideo(rawVideo: File, owner: User, isFaceBlurC
     const uploadS3 = new Upload({
         client: client,
         params: {
-            Bucket: getUploadBucket(isFaceBlurChecked),
+            Bucket: getS3UploadBucket(isFaceBlurChecked),
             Key: s3Key,
             Body: Readable.from(Buffer.from(rawVideoBuffer)),
         },
@@ -148,7 +139,7 @@ export async function uploadVideo(videoData: VideoUploadData, user: User, fileEx
     const s3VideoUpload = new Upload({
         client: client,
         params: {
-            Bucket: getUploadBucket(videoData.blurFace),
+            Bucket: getS3UploadBucket(videoData.blurFace),
             Key: s3uploadedVideoKey,
             Body: videoData.file,
         },

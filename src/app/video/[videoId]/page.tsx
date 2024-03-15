@@ -6,13 +6,14 @@ import React, { useEffect, useState } from 'react'
 import { SubmissionBox, Video } from '@prisma/client'
 import logger from '@/utils/logger'
 import { toast } from 'react-toastify'
-import { Alert, Box, Button, Chip, TextField, Typography } from '@mui/material'
+import { Alert, Box, Button, Chip, Modal, TextField, Typography } from '@mui/material'
 
 import ScalingReactPlayer from '@/components/ScalingReactPlayer'
 import PageLoadProgress from '@/components/PageLoadProgress'
+import BackButton from '@/components/BackButton'
 import EditIcon from '@mui/icons-material/Edit'
 import { theme } from '@/components/ThemeRegistry/theme'
-import BackButton from '@/components/BackButton'
+import dayjs from 'dayjs'
 
 export default function VideoDetailedPage() {
     const session = useSession()
@@ -33,6 +34,23 @@ export default function VideoDetailedPage() {
     const [isEditing, setIsEditing] = useState(false)
     const [titleEdit, setTitleEdit] = useState('')
     const [descriptionEdit, setDescriptionEdit] = useState('')
+
+    // Delete confirm modal
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+
+
+    const modalStyle = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '25rem',
+        minWidth: '20rem',
+        backgroundColor: 'background.default',
+        borderRadius: '1rem',
+        boxShadow: 24,
+        p: '1rem 2rem',
+    }
 
     useEffect(() => {
         if (!session || !session?.data?.user?.email) {
@@ -63,52 +81,25 @@ export default function VideoDetailedPage() {
             router.push('/')
         }
 
-        const interval = setInterval(async () => {
-            fetch(`/api/video/${ videoId }`)
-                .then((res) => {
-                    if (!res.ok) {
-                        throw new Error('Could not fetch video')
-                    }
-                    return res
-                })
-                .then((res) => res.json())
-                .then(({ video }: { video: Video }) => {
-                    if (!video) {
-                        throw new Error('Video not found')
-                    }
-                    setVideo(video)
-                })
-                .catch((err) => {
-                    logger.error(err.message)
-                    toast.error('An unexpected error occurred!')
-                })
-                .finally(() => {
-                    setIsFetchingVideo(false)
-                    if(video?.isCloudProcessed) {
-                        clearInterval(interval)
-                    }
-                })
-        }, 5000)
-
-        fetch(`/api/submission-box/video/${ videoId }`)
-            .then((res) => {
-                if (!res.ok) {
-                    throw new Error('Could not fetch submission boxes')
+        Promise.all([
+            fetch(`/api/video/${ videoId }`),
+            fetch(`/api/submission-box/video/${ videoId }`),
+        ])
+            .then(async ([videoRes, submissionBoxesRes]) => [await videoRes.json(), await submissionBoxesRes.json()])
+            .then(([videoData, submissionBoxesData]) => {
+                if (!videoData.video || !submissionBoxesData.submissionBoxes) {
+                    throw new Error('Could not fetch video or submission boxes')
                 }
-                return res
-            })
-            .then((res) => res.json())
-            .then(({ submissionBoxes }: { submissionBoxes: SubmissionBox[] }) => {
-                if (!submissionBoxes) {
-                    throw new Error('Submission boxes not found')
-                }
-                setSubmissionBoxes(submissionBoxes)
+                setVideo(videoData.video)
+                setSubmissionBoxes(submissionBoxesData.submissionBoxes)
             })
             .catch((err) => {
                 logger.error(err.message)
-                toast.error('An unexpected error occurred!')
+                toast.error('An unexpected error occurred while trying to load your video!')
+                router.push('/dashboard')
             })
             .finally(() => {
+                setIsFetchingVideo(false)
                 setIsFetchingSubmissionBoxes(false)
             })
     }, [router, videoId])
@@ -171,16 +162,12 @@ export default function VideoDetailedPage() {
                                             width: '100%',
                                         }}
                                     >
-                                        {!isFetchingVideo && !!video?.processedVideoUrl ? (
+                                        {!isFetchingVideo && !!video?.processedVideoUrl && (
                                             <ScalingReactPlayer
                                                 data-cy='scaling-react-player'
                                                 url={video?.processedVideoUrl}
                                                 allowKeyDown={!isEditing}
                                             />
-                                        ) : (
-                                            <Alert severity='info'>
-                                                    Your video is currently processing. Please wait here or come back later.
-                                            </Alert>
                                         )}
                                     </Box>
                                     <Box
@@ -278,56 +265,77 @@ export default function VideoDetailedPage() {
                                                 )}
                                             </Box>
                                             <Box
-                                                sx={{
-                                                    display:
-                                                        !isFetchingSubmissionBoxes && submissionBoxes?.length > 0
-                                                            ? 'block'
-                                                            : 'none',
-                                                }}
                                                 data-cy='submission-box-chips-wrapper'
                                             >
                                                 <Typography sx={{ fontWeight: 'bold' }}>Submitted To</Typography>
-                                                {submissionBoxes.map((submissionBox, idx) => (
+                                                {submissionBoxes.length > 0 ? submissionBoxes.map((submissionBox, idx) => (
                                                     <Chip
                                                         key={`submission-box-chip-${ idx }`}
                                                         label={submissionBox.title}
                                                         sx={{ m: 0.5, ml: 0 }}
                                                     />
-                                                ))}
+                                                )) : 'None'}
                                             </Box>
                                             <Box>
                                                 <Typography sx={{ fontWeight: 'bold' }}>Other information</Typography>
                                                 <Typography>
-                                                    Created At:{' '}
+                                                    Created at:{' '}
                                                     {!!video?.createdAt
-                                                        ? new Date(video?.createdAt).toLocaleString('en-GB', { timeZone: 'PST' })
+                                                        ? dayjs(video?.createdAt).format('MMM D, h:mma')
                                                         : 'N/A'}
                                                 </Typography>
                                                 <Typography>
-                                                    Updated At:{' '}
+                                                    Updated at:{' '}
                                                     {!!video?.updatedAt
-                                                        ? new Date(video?.updatedAt).toLocaleString('en-GB', { timeZone: 'PST' })
+                                                        ? dayjs(video?.updatedAt).format('MMM D, h:mma')
                                                         : 'N/A'}
                                                 </Typography>
                                             </Box>
+                                            {!isEditing && (
+                                                <Box
+                                                    sx={{
+                                                        mt: '2rem',
+                                                    }}
+                                                >
+                                                    <Button
+                                                        variant='contained'
+                                                        onClick={() => router.push('/dashboard?tab=my-invitations')}
+                                                        data-cy='detail-video-submit-button'
+                                                    >
+                                                    Submit to a Submission Box
+                                                    </Button>
+                                                </Box>
+                                            )}
                                         </Box>
                                         {isEditing && (
-                                            <Box display='flex' justifyContent='flex-end' gap={1}>
-                                                <Button
-                                                    variant='contained'
-                                                    color='inherit'
-                                                    onClick={onCancelEdit}
-                                                    data-cy='detail-video-cancel-button'
-                                                >
-                                                    Cancel
-                                                </Button>
-                                                <Button
-                                                    variant='contained'
-                                                    onClick={onUpdateVideoInfo}
-                                                    data-cy='detail-video-update-button'
-                                                >
-                                                    Update
-                                                </Button>
+                                            <Box display='flex' justifyContent='space-between' gap={1} marginBottom={1}>
+                                                <Box>
+                                                    <Button
+                                                        variant='contained'
+                                                        color='error'
+                                                        onClick={onDeleteButtonClicked}
+                                                        data-cy='detail-video-delete-button'
+                                                    >
+                                                        Delete
+                                                    </Button>
+                                                </Box>
+                                                <Box display='flex' gap={1}>
+                                                    <Button
+                                                        variant='contained'
+                                                        color='inherit'
+                                                        onClick={onCancelEdit}
+                                                        data-cy='detail-video-cancel-button'
+                                                    >
+                                                        Cancel
+                                                    </Button>
+                                                    <Button
+                                                        variant='contained'
+                                                        onClick={onUpdateVideoInfo}
+                                                        data-cy='detail-video-update-button'
+                                                    >
+                                                        Update
+                                                    </Button>
+                                                </Box>
                                             </Box>
                                         )}
                                         {!isEditing && video?.ownerId === userId && (
@@ -353,6 +361,57 @@ export default function VideoDetailedPage() {
                     </>
                 )}
             </Box>
+
+            <Modal open={isDeleteModalOpen} onClose={handleModalClose}>
+                <Box sx={{
+                    ...modalStyle,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    gap: '1rem',
+                }}>
+                    <Typography
+                        component='div'
+                        sx={{
+                            textAlign: 'center',
+                            marginTop: '1rem',
+                            width: 'max-content',
+                        }}
+                    >
+                        Are you sure you want to delete this video?
+
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                width: '100%',
+                                marginTop: '1.5rem',
+                                marginBottom: '.5rem',
+                            }}
+                        >
+                            <Button
+                                variant='contained'
+                                color='inherit'
+                                className='modal-close'
+                                onClick={handleModalClose}
+                                data-cy='detail-video-delete-cancel-button'
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                variant='contained'
+                                color='error'
+                                className='modal-close'
+                                onClick={handleDeleteVideo}
+                                data-cy='detail-video-delete-confirm-button'
+                            >
+                                Delete
+                            </Button>
+                        </Box>
+                    </Typography>
+                </Box>
+            </Modal>
         </>
     )
 
@@ -404,5 +463,34 @@ export default function VideoDetailedPage() {
         })
         const { userId } = await response.json()
         return userId
+    }
+
+    async function handleDeleteVideo() {
+        handleModalClose()
+        try {
+            const response = await fetch(`/api/video/delete/${ videoId }`, {
+                method: 'DELETE',
+            })
+            if (!response.ok) {
+                logger.error(response.statusText)
+                toast.error('An unexpected error occurred while trying to delete your video!')
+            } else {
+                router.push('/dashboard')
+                toast.success('Video deleted successfully!')
+            }
+        } catch (error) {
+            if (error instanceof Error) {
+                logger.error(error.message)
+            }
+            toast.error('An unexpected error occurred!')
+        }
+    }
+
+    function onDeleteButtonClicked() {
+        setIsDeleteModalOpen(true)
+    }
+
+    function handleModalClose() {
+        setIsDeleteModalOpen(false)
     }
 }

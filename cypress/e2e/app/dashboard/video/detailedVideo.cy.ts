@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 import { TIMEOUT } from '../../../../utils/constants'
+import runWithRetry from '../../../../utils/runUntilExist'
 
 describe('Detail video page', () => {
     let email: string
@@ -56,9 +57,7 @@ describe('Detail video page', () => {
         // Get the second children
         cy.get('[data-cy="submission-box-chips-wrapper"]')
             .should('be.visible')
-            .children()
-            .last()
-            .children()
+            .find('div.MuiChip-root')
             .should('have.length', 1)
             .should('contain', submissionBoxTitle)
     })
@@ -98,9 +97,7 @@ describe('Detail video page', () => {
         // Get the second children
         cy.get('[data-cy="submission-box-chips-wrapper"]')
             .should('be.visible')
-            .children()
-            .last()
-            .children()
+            .find('div.MuiChip-root')
             .should('have.length', 1)
             .should('contain', submissionBoxTitle)
     })
@@ -192,5 +189,82 @@ describe('Detail video page', () => {
         cy.get('[data-cy="detail-video-cancel-button"]').click()
         cy.get('[data-cy="detail-video-title"]').should('be.visible').should('not.contain', newTitle).should('contain', videoTitle)
         cy.get('[data-cy="detail-video-description"]').should('be.visible').should('not.contain', newDescription).should('contain', videoDescription)
+    })
+
+    it('should be able to cancel deleting a video', () => {
+        cy.visit('/dashboard')
+
+        const videoTitle = 'Test Video Title ' + uuidv4()
+        const videoDescription = 'Test Video Description ' + uuidv4()
+        const submissionBoxTitle = 'Test Submission Box ' + uuidv4()
+        cy.task('getUserId', email).then((userId) => {
+            cy.task('createRequestSubmissionForUser', { userId, submissionBoxTitle }).then((submissionBoxId) => {
+                cy.task('createOneVideoAndRetrieveVideoId', { ownerId: userId, title: videoTitle, description: videoDescription }).then(
+                    (videoId) => {
+                        cy.task('submitVideoToSubmissionBox', {
+                            requestedSubmissionId: submissionBoxId,
+                            videoId: videoId,
+                        })
+
+                        cy.reload()
+                        cy.get('[data-cy="video-list"]', { timeout: TIMEOUT.EXTRA_LONG })
+                            .should('be.visible')
+                            .children()
+                            .should('have.length', 1)
+
+                        cy.get('[data-cy="video-list"]').children().first().should('contain', videoTitle).click()
+
+                        cy.url().should('contain', `/video/${ videoId }`, { timeout: TIMEOUT.EXTRA_LONG })
+
+                        cy.get('[data-cy="edit-icon"]').click()
+                        cy.get('[data-cy="detail-video-delete-button"]').click()
+                        cy.get('[data-cy="detail-video-delete-cancel-button"]').click()
+                        cy.url().should('contain', `/video/${ videoId }`, { timeout: TIMEOUT.EXTRA_LONG })
+                    }
+                )
+            })
+        })
+    })
+
+    it('should be able to delete a video', () => {
+        cy.visit('/dashboard')
+
+        const videoTitle = 'Test Video Title ' + uuidv4()
+        const videoDescription = 'Test Video Description ' + uuidv4()
+        const submissionBoxTitle = 'Test Submission Box ' + uuidv4()
+        cy.task('getUserId', email).then((userId) => {
+            cy.task('createRequestSubmissionForUser', { userId, submissionBoxTitle }).then((submissionBoxId) => {
+                cy.task('createOneVideoAndRetrieveVideoId', { ownerId: userId, title: videoTitle, description: videoDescription }).then(
+                    (videoId) => {
+                        cy.task('submitVideoToSubmissionBox', {
+                            requestedSubmissionId: submissionBoxId,
+                            videoId: videoId,
+                        })
+
+                        cy.reload()
+                        cy.get('[data-cy="video-list"]', { timeout: TIMEOUT.EXTRA_LONG })
+                            .should('be.visible')
+                            .children()
+                            .should('have.length', 1)
+
+                        cy.get('[data-cy="video-list"]').children().first().should('contain', videoTitle).click()
+
+                        cy.url().should('contain', `/video/${ videoId }`, { timeout: TIMEOUT.EXTRA_LONG })
+
+                        cy.get('[data-cy="edit-icon"]').click()
+                        cy.get('[data-cy="detail-video-delete-button"]').click()
+                        cy.get('[data-cy="detail-video-delete-confirm-button"]').click()
+                        cy.url().should('include', '/dashboard', { timeout: TIMEOUT.EXTRA_LONG })
+                        cy.get('[data-cy="video-list"]', { timeout: TIMEOUT.EXTRA_LONG }).should('not.exist')
+
+                        runWithRetry(() => {
+                            cy.visit(`/video/${ videoId }`)
+                            cy.url().should('include', '/dashboard', { timeout: TIMEOUT.EXTRA_LONG })
+                            cy.reload()
+                        })
+                    }
+                )
+            })
+        })
     })
 })

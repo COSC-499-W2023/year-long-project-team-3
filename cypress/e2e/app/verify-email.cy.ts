@@ -15,7 +15,7 @@ describe('Test email verification', () => {
         cy.visit('/login')
         cy.get('[data-cy=email]').type(email)
         cy.get('[data-cy=password]').type(password)
-        cy.get('[data-cy=submit]').click()
+        cy.get('[data-cy=submit]').wait(1000).click()
 
         cy.url().should('not.contain', '/login')
     })

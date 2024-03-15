@@ -3,15 +3,23 @@
 import { Box, Button, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import Logo from '@/components/Logo'
+import { useRouter } from 'next/navigation'
+import { toast } from 'react-toastify'
 
 export default function VerifyEmail() {
+    const router = useRouter()
+
     const [buttonText, setButtonText] = useState('Resend Email')
 
     useEffect(() => {
         // Only automatically send email if the user doesn't have an active verification token
         fetch('/api/verify-email/has-open-token').then(async (res) => {
             if (res.status === 200) {
-                const { hasOpenToken } = await res.json()
+                const { hasOpenToken, isUserVerified } = await res.json()
+                if (isUserVerified) {
+                    router.push('/dashboard')
+                    toast.info('Your email is already verified!')
+                }
                 if (!hasOpenToken) {
                     sendEmail((_) => {})
                 }
@@ -20,7 +28,7 @@ export default function VerifyEmail() {
         }).catch(() => {
             setButtonText('Failed to send. Try again')
         })
-    }, [])
+    }, [router])
 
     const resendEmail = () => {
         setButtonText('Sending...')

@@ -27,16 +27,20 @@ describe('Receiving Dashboard Details Page Tests', () => {
         cy.reload()
         cy.visit('/dashboard')
         runWithRetry(() => {
-            cy.get('[data-cy="Manage Boxes"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
-            cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
-        })
-        cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
+            cy.get('[data-cy="Manage Boxes"]')
+            cy.wait(1000)
+            cy.get('[data-cy="Manage Boxes"]').click()
 
-        cy.get('[data-cy="no-video-text"]', { timeout: TIMEOUT.EXTRA_LONG }).should(
-            'contain',
-            'No Videos Have Been Submitted to Your Box'
-        )
-        cy.get('[data-cy="submissionBoxTitle"]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain', submissionBoxTitle)
+            cy.get(`[data-cy="${ submissionBoxTitle }"]`)
+            cy.wait(1000)
+            cy.get(`[data-cy="${ submissionBoxTitle }"]`).click()
+
+            cy.get('[data-cy="no-video-text"]').should(
+                'contain',
+                'No Videos Have Been Submitted to Your Box'
+            )
+        })
+        cy.get('[data-cy="submissionBoxTitle"]').should('contain', submissionBoxTitle)
     })
 
     it('should display a submission box with all information inputted and videos', () => {
@@ -79,25 +83,28 @@ describe('Receiving Dashboard Details Page Tests', () => {
                 })
             })
         })
-        cy.reload()
-        cy.visit('/dashboard')
+
         runWithRetry(() => {
-            cy.get('[data-cy="Manage Boxes"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
-            cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
+            cy.visit('/dashboard')
+            cy.get('[data-cy="Manage Boxes"]')
+            cy.wait(1000)
+            cy.get('[data-cy="Manage Boxes"]').click()
+
+            cy.get(`[data-cy="${ submissionBoxTitle }"]`)
+            cy.wait(1000)  // Wait for it to be clickable
+            cy.get(`[data-cy="${ submissionBoxTitle }"]`).click()
+
+            cy.get('[data-cy="video-list"]')
+                .should('be.visible')
+                .children()
+                .should('have.length', 2)
+            cy.get('[data-cy="submissionBoxTitle"]').should('contain', submissionBoxTitle)
+            cy.get('[data-cy="submissionBoxDate"]').should('contain', new Date().toDateString().slice(4))
+            cy.get('[data-cy="submissionBoxDesc"]').should(
+                'contain',
+                'This is a description that describes what users need to submit and have in their videos.  The description is a good tool to make sure that participants in the submission box are able to determine what is needed in their submissions and the ability for them to hit their goals. :)'
+            )
         })
-        cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
-
-        cy.get('[data-cy="video-list"]', { timeout: TIMEOUT.EXTRA_LONG })
-            .should('be.visible')
-            .children()
-            .should('have.length', 2)
-
-        cy.get('[data-cy="submissionBoxTitle"]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain', submissionBoxTitle)
-        cy.get('[data-cy="submissionBoxDate"]', { timeout: TIMEOUT.EXTRA_LONG }).should('contain', new Date().toDateString().slice(4))
-        cy.get('[data-cy="submissionBoxDesc"]', { timeout: TIMEOUT.EXTRA_LONG }).should(
-            'contain',
-            'This is a description that describes what users need to submit and have in their videos.  The description is a good tool to make sure that participants in the submission box are able to determine what is needed in their submissions and the ability for them to hit their goals. :)'
-        )
     })
 
     it('should only show the most recently submitted video that a user has submitted',() => {
@@ -127,19 +134,20 @@ describe('Receiving Dashboard Details Page Tests', () => {
                 })
             })
         })
-        cy.reload()
+
         cy.visit('/dashboard')
         runWithRetry(() => {
-            cy.get('[data-cy="Manage Boxes"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
-            cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
-        })
-        cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
+            cy.get('[data-cy="Manage Boxes"]')
+            cy.wait(1000)
+            cy.get('[data-cy="Manage Boxes"]').click()
 
-        cy.get('[data-cy="video-list"]', { timeout: TIMEOUT.EXTRA_LONG })
-            .should('be.visible')
-            .children()
-            .should('have.length', 1)
-        cy.get('[data-cy="video-list"]').children().first().should('contain', videoTitle[1])
+            cy.get(`[data-cy="${ submissionBoxTitle }"]`).click()
+            cy.get('[data-cy="video-list"]')
+                .should('be.visible')
+                .children()
+                .should('have.length', 1)
+            cy.get('[data-cy="video-list"]').children().first().should('contain', videoTitle[1])
+        })
     })
 
     it('should not allow a user to view a submission box that they do not have permission to', () => {
@@ -147,31 +155,39 @@ describe('Receiving Dashboard Details Page Tests', () => {
         cy.task('getUserId', email).then((userId) => {
             cy.task('createSubmissionBoxWithEmail', { submissionBoxTitle, email, userId })
         })
-        cy.reload()
-        cy.visit('/dashboard')
+
         runWithRetry(() => {
-            cy.get('[data-cy="Manage Boxes"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
-            cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
+            cy.visit('/dashboard')
+            cy.get('[data-cy="Manage Boxes"]')
+            cy.wait(1000)
+            cy.get('[data-cy="Manage Boxes"]').click()
+
+            cy.get(`[data-cy="${ submissionBoxTitle }"]`)
+                .should('be.visible')
+                .should('not.be.disabled')
+            cy.wait(1000)
+            cy.get(`[data-cy="${ submissionBoxTitle }"]`).click()
+            cy.url().should('contain', 'submission-box/')
+
+            let slug: string | undefined = ''
+            cy.url().then((url) => (slug = url.split('/').pop()))
+
+            cy.get('[data-cy="sign-out-button"]').click()
+            cy.url().should('not.contain', 'submission-box')
+            cy.reload()
+
+            cy.visit('/login')
+            cy.get('[data-cy=email]').type(fakeEmail)
+            cy.get('[data-cy=password]').type(password)
+            cy.get('[data-cy=submit]').click()
+            cy.url().should('not.contain', 'login')
+
+            cy.then(() => {
+                cy.visit(`/submission-box/${ slug }`)
+            })
+            cy.wait(2000)  // Wait for redirect to finish
+            cy.url().should('contain', 'dashboard')
         })
-        cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
-
-        let slug: string | undefined = ''
-        cy.url().then((url) => (slug = url.split('/').pop()))
-
-        cy.get('[data-cy="sign-out-button"]').click()
-        cy.reload()
-
-        cy.visit('/login')
-        cy.get('[data-cy=email]').type(fakeEmail)
-        cy.get('[data-cy=password]').type(password)
-        cy.get('[data-cy=submit]').click()
-        cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('not.contain', 'login')
-
-        cy.then(() => {
-            cy.visit(`/submission-box/${ slug }`)
-        })
-        cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'submission-box')
-        cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
     })
 
     it('should allow user to go back to submission box after clicking video', () => {
@@ -202,18 +218,26 @@ describe('Receiving Dashboard Details Page Tests', () => {
         // Go to dashboard to navigate to submission box
         cy.visit('/dashboard')
         runWithRetry(() => {
-            cy.get('[data-cy="Manage Boxes"]', { timeout: TIMEOUT.EXTRA_LONG }).click()
-            cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'dashboard')
-        })
-        cy.get(`[data-cy="${ submissionBoxTitle }"]`, { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).click()
+            cy.get('[data-cy="Manage Boxes"]')
+            cy.wait(1000)
+            cy.get('[data-cy="Manage Boxes"]').click()
 
-        // Click on video to go to video page
-        cy.wait(1000)  // Wait for page to fully load
-        cy.get('[data-cy="video-list"]', { timeout: TIMEOUT.EXTRA_LONG }).children().first().click()
-        cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'video')
+            cy.get(`[data-cy="${ submissionBoxTitle }"]`)
+            cy.wait(1000)  // Wait for card to become clickable
+            cy.get(`[data-cy="${ submissionBoxTitle }"]`).click()
+
+            // Click on video to go to video page
+            cy.wait(1000)  // Wait for page to fully load
+            cy.get('[data-cy="video-list"]').children().first().should('contain', videoTitle)
+            cy.wait(1000)
+            cy.get('[data-cy="video-list"]').children().first().click()
+            cy.url().should('contain', 'video')
+        })
 
         // Go back to submission box
         cy.wait(1000)  // Wait for page to fully load
+        cy.get('[data-cy="back-button"]').should('exist').and('be.visible')
+        cy.wait(1000)
         cy.get('[data-cy="back-button"]').should('exist').and('be.visible').click()
         cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', 'submission-box')
     })

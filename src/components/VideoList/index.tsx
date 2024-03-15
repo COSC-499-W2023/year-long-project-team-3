@@ -5,37 +5,36 @@ export type VideoListProps = {
     videos: VideoCardProps[]
     isSearching: boolean
     emptyMessage?: string
+    onCardClick?: (videoId: string) => void
 }
 
 export default function VideoList(props: VideoListProps) {
     return !!props.videos && props.videos.length > 0 ? (
         <Box
-            display={'grid'}
-            gridTemplateColumns={'repeat(auto-fill, minmax(250px, 1fr))'}
-            gridTemplateRows={'min-content'}
             justifyContent={'center'}
             justifyItems={'center'}
             rowGap={'55px'}
-            columnGap={'.8rem'}
             padding={'0 30px'}
             width={'100%'}
             height={'100%'}
             component={'div'}
-            overflow={'scroll'}
             data-cy='video-list'
+            sx = {{
+                overflowY: 'scroll',
+                overflowX: 'hidden',
+            }}
         >
             {props.videos.map((video, idx) => (
-                <VideoCard key={`video_${ idx }`} {...video} />
+                <VideoCard key={`video_${ idx }`} {...video} onClick={props.onCardClick} />
             ))}
         </Box>
     ) : (
-        <Box display='flex' justifyContent='center' alignItems='center'>
+        <Box display='flex' justifyContent='center' alignItems='center' height='100%'>
             <Typography
                 data-cy='no-video-text'
                 variant='h5'
                 align='center'
                 color={'textSecondary'}
-                sx={{ mt: 20 }}
             >
                 { props.isSearching
                     ? 'You do not have any videos that match this search'
