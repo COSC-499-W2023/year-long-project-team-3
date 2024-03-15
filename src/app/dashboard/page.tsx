@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import React, { useEffect, useState } from 'react'
-import { RequestedSubmission, SubmissionBox, Video } from '@prisma/client'
+import { Video } from '@prisma/client'
 import { toast } from 'react-toastify'
 import PageLoadProgress from '@/components/PageLoadProgress'
 import DashboardSidebar from '@/components/DashboardSidebar'
@@ -14,6 +14,7 @@ import SubmissionBoxList from '@/components/SubmissionBoxList'
 import DashboardSearchBar from '@/components/DashboardSearchBar'
 import { VideoSubmission } from '@/app/api/my-videos/route'
 import { useSearchParams } from 'next/navigation'
+import { SubmissionBoxInfo } from '@/types/submission-box/submissionBoxInfo'
 
 export default function DashboardPage() {
     const session = useSession()
@@ -25,8 +26,8 @@ export default function DashboardPage() {
     const [displayVideos, setDisplayVideos] = useState<(Video & VideoSubmission)[]>([])
 
     // Submission Boxes
-    const [submissionBoxes, setSubmissionBoxes] = useState<(SubmissionBox & {requestedSubmissions: RequestedSubmission[]})[]>([])
-    const [tempSubmissionBoxes, setTempSubmissionBoxes] = useState<(SubmissionBox & {requestedSubmissions: RequestedSubmission[]})[]>([])
+    const [submissionBoxes, setSubmissionBoxes] = useState<SubmissionBoxInfo[]>([])
+    const [tempSubmissionBoxes, setTempSubmissionBoxes] = useState<SubmissionBoxInfo[]>([])
 
     // Page component controls
     const [sidebarSelectedOption, setSidebarSelectedOption] = useState<SidebarOption>(queryParamToSidebarOption(queriedTab))
@@ -70,7 +71,7 @@ export default function DashboardPage() {
             ) ?? []
             setDisplayVideos(filteredVideos)
         } else {
-            const filteredSubmissionBoxes: (SubmissionBox & {requestedSubmissions: RequestedSubmission[]})[] = tempSubmissionBoxes?.filter(
+            const filteredSubmissionBoxes: SubmissionBoxInfo[] = tempSubmissionBoxes?.filter(
                 (submissionBox) =>
                     submissionBox.title.toLowerCase().includes(searchTerm.trim().toLowerCase()) ||
                     submissionBox.description?.toLowerCase().includes(searchTerm.trim().toLowerCase())
@@ -215,13 +216,13 @@ export default function DashboardPage() {
         }))
     }
 
-    async function fetchMyBoxes(): Promise<(SubmissionBox & {requestedSubmissions: RequestedSubmission[]})[]> {
+    async function fetchMyBoxes(): Promise<SubmissionBoxInfo[]> {
         const response = await fetch('/api/submission-box/myboxes')
         const { submissionBoxes } = await response.json()
         return submissionBoxes
     }
 
-    async function fetchMyRequests(): Promise<(SubmissionBox & {requestedSubmissions: RequestedSubmission[]})[]> {
+    async function fetchMyRequests(): Promise<SubmissionBoxInfo[]> {
         const response = await fetch('/api/submission-box/requestedsubmissions')
         const { submissionBoxes } = await response.json()
         return submissionBoxes

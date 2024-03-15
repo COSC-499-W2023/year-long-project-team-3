@@ -39,9 +39,12 @@ export async function GET(_: NextRequest): Promise<NextResponse> {
                     },
                     include: {
                         requestedSubmissions: {
-                            select: {
-                                id: true,
-                                submittedAt: true,
+                            include: {
+                                videoVersions: {
+                                    select: {
+                                        submittedAt: true,
+                                    },
+                                },
                             },
                         },
                     },

@@ -2,10 +2,10 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import List from '@mui/material/List'
 import SubmissionBoxCard from 'src/components/SubmissionBoxCard'
-import { RequestedSubmission, SubmissionBox } from '@prisma/client'
+import { SubmissionBoxInfo } from '@/types/submission-box/submissionBoxInfo'
 
 export type SubmissionBoxListProps = {
-  submissionBoxes: (SubmissionBox & {requestedSubmissions: RequestedSubmission[]})[]
+  submissionBoxes: SubmissionBoxInfo[]
   isOwned: boolean
   isSearching: boolean
   emptyMessage: string
