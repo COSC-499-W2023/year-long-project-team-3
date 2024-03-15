@@ -2,7 +2,6 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import List from '@mui/material/List'
 import { SubmissionBox } from '@prisma/client'
-import { useRouter } from 'next/navigation'
 import ManageSubmissionBoxCard from '@/components/ManageSubmissionBoxCard'
 
 export type SubmissionBoxListProps = {
@@ -12,14 +11,12 @@ export type SubmissionBoxListProps = {
 }
 
 export default function SubmissionBoxList(props: SubmissionBoxListProps) {
-    const router = useRouter()
-
     return !!props.submissionBoxes && props.submissionBoxes.length > 0 ? (
-        <List sx={{ maxHeight: 600, overflow: 'auto', position: 'relative', pl: 1, pr: 1 }}>
+        <List sx={{ maxHeight: 600, overflow: 'auto', position: 'relative', pl: 3, pr: 3 }}>
             {props.submissionBoxes.map((submissionBox, idx: number) => (
                 <ManageSubmissionBoxCard key={`submission_box_${ idx }`} title={submissionBox.title}
                     closesAt={submissionBox.closesAt} id={submissionBox.id}
-                    isOpen></ManageSubmissionBoxCard>
+                    isOpen numMembers={} numSubmissions={}></ManageSubmissionBoxCard>
             ))}
         </List>
     ) : (
@@ -37,8 +34,4 @@ export default function SubmissionBoxList(props: SubmissionBoxListProps) {
             </Typography>
         </Box>
     )
-
-    function handleClickListItem(id: string) {
-        router.push(`/submission-box/${ id }`)
-    }
 }
