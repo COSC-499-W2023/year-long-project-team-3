@@ -36,7 +36,7 @@ export default function ManageSubmissionBoxCard(props: ManageSubmissionBoxCardPr
                 <Typography>{props.closesAt ? 'Closes at ' + dayjs(new Date(props.closesAt)).format('h:mma [on] MMMM D') + ' ' : 'No closing date'}  </Typography>
             </Box>
             <Box sx={{ width: '20%' }}>
-                <Typography>{props.numSubmissions > 0 ? +props.numSubmissions + ' / ' + props.numMembers + ' members have submitted!' : 'No submissions yet!'}</Typography>
+                <Typography>{props.numMembers > 0 ? +props.numSubmissions + ' / ' + props.numMembers + ' members have submitted!' : 'You have not invited anyone!'}</Typography>
             </Box>
         </CardContent>
     </Card>

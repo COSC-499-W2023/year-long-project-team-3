@@ -37,6 +37,14 @@ export async function GET(_: NextRequest): Promise<NextResponse> {
                     where: {
                         id: submissionBoxId,
                     },
+                    include: {
+                        requestedSubmissions: {
+                            select: {
+                                id: true,
+                                submittedAt: true,
+                            },
+                        },
+                    },
                 })
         )
 
