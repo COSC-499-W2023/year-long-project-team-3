@@ -184,7 +184,7 @@ export default function SelectVideoForSubmission(props: SelectVideoForSubmission
     function confirmedSubmission() {
         setSubmitDialogOpen(false)
         if (proposedSubmission) {
-            fetch('/api/video/submit/new', {
+            fetch('/api/video/submit', {
                 method: 'POST',
                 body: JSON.stringify({
                     videoId: proposedSubmission.id,
