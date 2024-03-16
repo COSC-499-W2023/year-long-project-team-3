@@ -18,6 +18,7 @@ import { SubmissionBoxInfo } from '@/types/submission-box/submissionBoxInfo'
 
 export default function DashboardPage() {
     const session = useSession()
+    // @ts-ignore
     const queriedTab = useSearchParams().get('tab')
 
     // Videos

@@ -63,7 +63,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
                             id: requestedSubmissionId,
                         },
                         data: {
-                            submittedAt: new Date(),
                             videoVersions: {
                                 create: {
                                     video: {
