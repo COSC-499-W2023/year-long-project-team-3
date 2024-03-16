@@ -105,7 +105,6 @@ model RequestedSubmission {
   submissionBoxId String
   submissionBox   SubmissionBox    @relation(fields: [submissionBoxId], references: [id])
   requestedAt     DateTime         @default(now())
-  submittedAt     DateTime?
   updatedAt       DateTime         @updatedAt
   videoVersions   SubmittedVideo[]
 
