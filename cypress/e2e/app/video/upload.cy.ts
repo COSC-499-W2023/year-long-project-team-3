@@ -1,4 +1,4 @@
-import { MOCKUSER } from '../../../utils/constants'
+import { MOCKUSER, TIMEOUT } from '../../../utils/constants'
 import { wait } from 'next/dist/lib/wait'
 
 describe('Test Video Upload and Streaming Processing Pipeline', () => {
@@ -75,7 +75,7 @@ describe('Test Video Upload and Streaming Processing Pipeline', () => {
 
             // Wait for processing to be done and check if video is visible
             wait(5000)
-            cy.get('[data-cy="scaling-react-player]').should('be.visible')
+            cy.get('[data-cy="scaling-react-player]', { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).should('be.visible')
         })
     })
 })
