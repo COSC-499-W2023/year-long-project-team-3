@@ -23,7 +23,7 @@ export default function SubmissionBoxList(props: SubmissionBoxListProps) {
                     isOpen={isOpen(submissionBox)}
                     // Only set numMembers and numSubmissions for boxes the user owns
                     numMembers={getNumMembers(props.isOwned, submissionBox)}
-                    numSubmissions={getNumSubmissions(submissionBox)}
+                    numSubmissions={getNumSubmissions(props.isOwned, submissionBox)}
                     // Only set time submitted for boxes the user was invited to, not for those he owns
                     timeSubmitted={getTimeSubmittedTo(props.isOwned, submissionBox)}
                     // Are these the user's submission boxes (under Manage Boxes) or the submission boxes the user has
@@ -58,7 +58,8 @@ function getNumMembers(isOwned: boolean, submissionBox: SubmissionBoxInfo) {
     return isOwned && submissionBox.requestedSubmissions? submissionBox.requestedSubmissions.length : 0
 }
 
-function getNumSubmissions(submissionBox: SubmissionBoxInfo) {
+function getNumSubmissions(isOwned: boolean, submissionBox: SubmissionBoxInfo) {
+    if (!isOwned) { return 0 }
     let totalSubmitted = 0
     submissionBox.requestedSubmissions.forEach(submission => {
         submission.videoVersions.forEach(version => {
