@@ -18,12 +18,17 @@ export default function SubmissionBoxList(props: SubmissionBoxListProps) {
                 <SubmissionBoxCard
                     key={`submission_box_${ idx }`}
                     title={submissionBox.title}
-                    closesAt={submissionBox.closesAt} id={submissionBox.id}
+                    closesAt={submissionBox.closesAt}
+                    id={submissionBox.id}
+                    // Box is open if it either does not have a closing date, or if the closing date is in the future
                     isOpen={submissionBox.closesAt? (new Date(submissionBox.closesAt) > new Date()) : true }
-                    numMembers={submissionBox.requestedSubmissions? submissionBox.requestedSubmissions.length : 0}
+                    // Only set numMembers and numSubmissions for boxes the user owns
+                    numMembers={props.isOwned && submissionBox.requestedSubmissions? submissionBox.requestedSubmissions.length : 0}
                     // FIXME: numSubmissions needs to use videoVersions
-                    numSubmissions={submissionBox.requestedSubmissions? submissionBox.requestedSubmissions.filter((submission: { submittedAt: Date | null }) => submission.submittedAt !== null).length : 0}
+                    numSubmissions={0}
+                    // Only set time submitted for boxes the user was invited to, not for those he owns
                     timeSubmitted={!props.isOwned && submissionBox.requestedSubmissions.length == 1? submissionBox.requestedSubmissions[0].submittedAt : null}
+                    // Are these the user's submission boxes (under Manage Boxes) or the submission boxes the user has been invited to (under My Invitations)
                     isOwned={props.isOwned}
                 ></SubmissionBoxCard>
             ))}
