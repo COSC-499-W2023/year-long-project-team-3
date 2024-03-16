@@ -68,6 +68,26 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
         }
 
+        // Check that none of the submission boxes have closed
+        const closedSubmissionBoxes = await prisma.submissionBox.findMany({
+            where: {
+                id: {
+                    in: submissionBoxIds,
+                },
+                closesAt: {
+                    lte: new Date(),
+                },
+            },
+            select: {
+                id: true,
+                title: true,
+            },
+        })
+        if (closedSubmissionBoxes.length > 0) {
+            logger.error('Forbidden request in api/video/submit: ' + JSON.stringify(req.body))
+            return NextResponse.json({ error: 'Submission box must still be open to be valid to submit to' }, { status: 403 })
+        }
+
         // Create new SubmittedVideo if one doesn't already exist
         await prisma.submittedVideo.createMany({
             data: requestedSubmissionIds.map((id) =>  ({

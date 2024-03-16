@@ -303,10 +303,26 @@ export default function SubmissionBoxDetailPage() {
                                                 <Alert severity='info'>Your video has been submitted. It will be visible here as soon as cloud processing is finished.</Alert>
                                             )
                                         ) : (
-                                            <SelectVideoForSubmission
-                                                submissionBoxId={boxId ?? ''}
-                                                onVideoSelect={(video: (Video & VideoSubmission)) => setVideos([video])}
-                                            />
+                                            !boxInfo?.closesAt || new Date(boxInfo.closesAt) >= new Date() ? (
+                                                <SelectVideoForSubmission
+                                                    submissionBoxId={boxId ?? ''}
+                                                    onVideoSelect={(video: (Video & VideoSubmission)) => setVideos([video])}
+                                                />
+                                            ) : (
+                                                <Box
+                                                    sx={{
+                                                        p: 4,
+                                                        maxWidth: '35rem',
+                                                    }}
+                                                >
+                                                    <Typography
+                                                        data-cy='submissionBoxClosed'
+                                                        variant='h5'
+                                                        color={'textSecondary'}
+                                                        textAlign='center'
+                                                    >Sorry, this submission box closed at {dayjs(boxInfo?.closesAt).format('h:mma [on] dddd MMM D, YYYY')}.</Typography>
+                                                </Box>
+                                            )
                                         )}
                                     </Box>
                                 </Box>
