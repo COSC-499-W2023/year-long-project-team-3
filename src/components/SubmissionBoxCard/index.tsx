@@ -27,8 +27,9 @@ export default function SubmissionBoxCard(props: SubmissionBoxCardProps) {
             pl: '3rem',
         }}>
             <Box sx={{ width: '25%' }}>
-                <Typography noWrap variant='h5' color={theme.palette.secondary.main}
-                    sx={{ fontWeight: 'bold' }}>{props.title}</Typography>
+                <Typography noWrap variant='h5' color={theme.palette.secondary.main} sx={{ fontWeight: 'bold' }} data-cy={props.title}>
+                    {props.title}
+                </Typography>
             </Box>
             <Box sx={{ width: '5%' }}/>
             <Box sx={{ width: '20%' }}>
