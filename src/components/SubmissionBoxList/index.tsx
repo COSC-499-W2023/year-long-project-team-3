@@ -13,7 +13,7 @@ export type SubmissionBoxListProps = {
 
 export default function SubmissionBoxList(props: SubmissionBoxListProps) {
     return !!props.submissionBoxes && props.submissionBoxes.length > 0 ? (
-        <List sx={{ maxHeight: 600, overflow: 'auto', position: 'relative', pl: 3, pr: 3 }}>
+        <List sx={{ maxHeight: 600, overflow: 'auto', position: 'relative', pl: 3, pr: 3 }} data-cy={'submission-box-list'}>
             {props.submissionBoxes.map((submissionBox, idx: number) => (
                 <SubmissionBoxCard
                     key={`submission_box_${ idx }`}
