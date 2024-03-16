@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth'
 import logger from '@/utils/logger'
 import prisma from '@/lib/prisma'
 import type { SubmissionBox } from '@prisma/client'
+import { SubmissionBoxInfo } from '@/types/submission-box/submissionBoxInfo'
 
 export async function GET(_: NextRequest): Promise<NextResponse> {
     try {
@@ -31,8 +32,8 @@ export async function GET(_: NextRequest): Promise<NextResponse> {
             },
         })
 
-        const submissionBoxPromises: Promise<SubmissionBox>[] = submissionBoxIds.map(
-            async ({ submissionBoxId }): Promise<SubmissionBox> =>
+        const submissionBoxPromises: Promise<SubmissionBoxInfo>[] = submissionBoxIds.map(
+            async ({ submissionBoxId }): Promise<SubmissionBoxInfo> =>
                 await prisma.submissionBox.findUniqueOrThrow({
                     where: {
                         id: submissionBoxId,
@@ -51,7 +52,7 @@ export async function GET(_: NextRequest): Promise<NextResponse> {
                 })
         )
 
-        const submissionBoxes: SubmissionBox[] = await Promise.all(submissionBoxPromises)
+        const submissionBoxes: SubmissionBoxInfo[] = await Promise.all(submissionBoxPromises)
 
         return NextResponse.json({ submissionBoxes: submissionBoxes }, { status: 200 })
     } catch (error) {
