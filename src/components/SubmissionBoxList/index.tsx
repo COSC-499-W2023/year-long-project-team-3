@@ -20,15 +20,14 @@ export default function SubmissionBoxList(props: SubmissionBoxListProps) {
                     title={submissionBox.title}
                     closesAt={submissionBox.closesAt}
                     id={submissionBox.id}
-                    // Box is open if it either does not have a closing date, or if the closing date is in the future
-                    isOpen={submissionBox.closesAt? (new Date(submissionBox.closesAt) > new Date()) : true }
+                    isOpen={isOpen(submissionBox)}
                     // Only set numMembers and numSubmissions for boxes the user owns
-                    numMembers={props.isOwned && submissionBox.requestedSubmissions? submissionBox.requestedSubmissions.length : 0}
-                    // FIXME: numSubmissions needs to use videoVersions
-                    numSubmissions={0}
+                    numMembers={getNumMembers(props.isOwned, submissionBox)}
+                    numSubmissions={getNumSubmissions(submissionBox)}
                     // Only set time submitted for boxes the user was invited to, not for those he owns
-                    timeSubmitted={!props.isOwned && submissionBox.requestedSubmissions.length == 1? submissionBox.requestedSubmissions[0].submittedAt : null}
-                    // Are these the user's submission boxes (under Manage Boxes) or the submission boxes the user has been invited to (under My Invitations)
+                    timeSubmitted={getTimeSubmittedTo(props.isOwned, submissionBox)}
+                    // Are these the user's submission boxes (under Manage Boxes) or the submission boxes the user has
+                    // been invited to (under My Invitations)
                     isOwned={props.isOwned}
                 ></SubmissionBoxCard>
             ))}
@@ -48,4 +47,29 @@ export default function SubmissionBoxList(props: SubmissionBoxListProps) {
             </Typography>
         </Box>
     )
+}
+
+function isOpen(submissionBox: SubmissionBoxInfo) {
+    // Box is open if it either does not have a closing date, or if the closing date is in the future
+    return submissionBox.closesAt? (new Date() < new Date(submissionBox.closesAt)) : true
+}
+
+function getNumMembers(isOwned: boolean, submissionBox: SubmissionBoxInfo) {
+    return isOwned && submissionBox.requestedSubmissions? submissionBox.requestedSubmissions.length : 0
+}
+
+function getNumSubmissions(submissionBox: SubmissionBoxInfo) {
+    let totalSubmitted = 0
+    submissionBox.requestedSubmissions.forEach(submission => {
+        submission.videoVersions.forEach(version => {
+            if (version.submittedAt !== null) {
+                totalSubmitted++
+            }
+        })
+    })
+    return totalSubmitted
+}
+
+function getTimeSubmittedTo(isOwned: boolean, submissionBox: SubmissionBoxInfo) {
+    return isOwned && submissionBox.requestedSubmissions.length == 1? submissionBox.requestedSubmissions[0].submittedAt : null
 }
