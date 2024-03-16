@@ -72,5 +72,6 @@ function getNumSubmissions(isOwned: boolean, submissionBox: SubmissionBoxInfo) {
 }
 
 function getTimeSubmittedTo(isOwned: boolean, submissionBox: SubmissionBoxInfo) {
-    return isOwned && submissionBox.requestedSubmissions.length == 1? submissionBox.requestedSubmissions[0].submittedAt : null
+    // Return submittedAt of last video version
+    return !isOwned && submissionBox.requestedSubmissions?.length == 1? submissionBox.requestedSubmissions[0].videoVersions[submissionBox.requestedSubmissions[0].videoVersions.length - 1]?.submittedAt : null
 }
