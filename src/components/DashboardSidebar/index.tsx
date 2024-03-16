@@ -3,13 +3,12 @@
 import Box from '@mui/material/Box'
 import DashboardSidebarMenu from '@/components/DashboardSidebarMenu'
 import DashboardSidebarSubmissionBoxes from '@/components/DashboardSidebarSubmissionBoxes'
-import { Dispatch, SetStateAction } from 'react'
 import { SidebarOption } from '@/types/dashboard/sidebar'
 import { useRouter } from 'next/navigation'
 
 export type DashboardSidePanelProps = {
     sidebarSelectedOption: SidebarOption
-    setSidebarSelectedOption: Dispatch<SetStateAction<SidebarOption>>
+    setSidebarSelectedOption: (option: SidebarOption) => void
 }
 
 export default function DashboardSidePanel(props: DashboardSidePanelProps) {
