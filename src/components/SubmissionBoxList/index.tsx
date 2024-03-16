@@ -12,7 +12,6 @@ export type SubmissionBoxListProps = {
 }
 
 export default function SubmissionBoxList(props: SubmissionBoxListProps) {
-    console.log(props.submissionBoxes)
     return !!props.submissionBoxes && props.submissionBoxes.length > 0 ? (
         <List sx={{ maxHeight: 600, overflow: 'auto', position: 'relative', pl: 3, pr: 3 }}>
             {props.submissionBoxes.map((submissionBox, idx: number) => (
