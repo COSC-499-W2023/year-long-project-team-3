@@ -338,7 +338,7 @@ export default function VideoDetailedPage() {
                                                 </Box>
                                             </Box>
                                         )}
-                                        {!isEditing && video?.ownerId === userId && (
+                                        {!isEditing && video?.ownerId === userId && !!video?.processedVideoUrl && (
                                             <Box
                                                 position='absolute'
                                                 top='2rem'
