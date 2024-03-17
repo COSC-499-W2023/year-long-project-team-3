@@ -1,4 +1,4 @@
-import { RequestedSubmission, Video } from '@prisma/client'
+import { RequestedSubmission, SubmissionBox, Video } from '@prisma/client'
 
 describe('Test that the API can submit and unsubmit videos to submission boxes', () => {
     const email = 'testuser@harpvideo.ca'
@@ -217,5 +217,28 @@ describe('Test that the API can submit and unsubmit videos to submission boxes',
         cy.get('[data-cy="video-list"]').children().first().click()
         cy.url().should('contain', '/video/')
         cy.get('[data-cy="submission-box-chips-wrapper"]').find('div.MuiChip-root').should('have.length', 0)
+    })
+
+    it('should fail when submission box is closed', () => {
+        const submissionBoxTitle = 'very exciting submission box'
+
+        cy.task('getUserId', email).then((userId) => {
+            cy.task('createRequestSubmissionForUser', {userId, submissionBoxTitle, closeDate: new Date('2003-12-13')})
+        })
+        cy.task('createOneVideoAndRetrieveVideoId', {title: 'Hi Seth'}).then((videoId) => {
+            cy.task<SubmissionBox[]>('getSubmissionBoxes').then((submissionBoxes) => {
+                cy.request({
+                    method: 'POST',
+                    url: '/api/video/submit/new',
+                    body: {
+                        videoId: videoId,
+                        submissionBoxIds: [submissionBoxes[0].id],
+                    },
+                    failOnStatusCode: false,
+                })
+                    .its('status')
+                    .should('eq', 403)
+            })
+        })
     })
 })
