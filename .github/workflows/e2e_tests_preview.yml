@@ -91,7 +91,7 @@ jobs:
               run: |
                   npx prisma generate
             - name: Migrate Database
-              run: npx prisma migrate deploy &>-
+              run: npx prisma migrate reset --force &>-
 
     cypress-e2e:
         name: Run Cypress E2E Tests on Preview Deployment
