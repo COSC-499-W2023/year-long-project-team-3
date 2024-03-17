@@ -2,7 +2,7 @@ name: Cypress E2E Tests (Preview Deployment)
 
 on:
     pull_request:
-        types: [ready_for_review, synchronize]
+        types: [ready_for_review, synchronize, opened]
         paths-ignore:
             - docs/**
             - '**.md'
