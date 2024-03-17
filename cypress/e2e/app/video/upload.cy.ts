@@ -75,7 +75,7 @@ describe('Test Video Upload and Streaming Processing Pipeline', () => {
 
             // Wait for processing to be done and check if video is visible
             wait(10000)
-            cy.get('[data-cy="scaling-react-player]', { timeout: 60000 }).should('be.visible')
+            cy.get('.react-player', { timeout: 60000 }).should('be.visible')
         })
     })
 })
