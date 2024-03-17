@@ -31,6 +31,23 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
         }
 
+        const video = await prisma.video.findUniqueOrThrow({
+            where: {
+                id: videoId,
+                owner: {
+                    email: session.user.email,
+                },
+            },
+            select: {
+                processedVideoUrl: true,
+            },
+        })
+
+        if (!!video.processedVideoUrl) {
+            logger.error('Unable to update video information when video has not finished processing')
+            return NextResponse.json({ error: 'Unable to update video in process' }, { status: 500 })
+        }
+
         const updatedVideo = await prisma.video.update({
             where: {
                 id: videoId,
