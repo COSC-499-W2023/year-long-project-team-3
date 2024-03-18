@@ -441,8 +441,8 @@ My goal for this upcoming week is to continue working on addressing feedback fro
 ### Tasks
 
 Completed:
--[Create Mocks for Submission Box Cards on Figma #438](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/438)
--[Implement new manage boxes card #493](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/493)
+- [Create Mocks for Submission Box Cards on Figma #438](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/438)
+- [Implement new manage boxes card #493](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/493)
 
 In progress:
 
