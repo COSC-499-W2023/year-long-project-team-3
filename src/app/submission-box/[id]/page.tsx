@@ -364,7 +364,7 @@ export default function SubmissionBoxDetailPage() {
     function unsubmitVideo() {
         setUnsubmitDialogOpen(false)
 
-        fetch('/api/video/submit/new', {
+        fetch('/api/video/submit', {
             method: 'DELETE',
             body: JSON.stringify({
                 videoId: videos[0].id,
