@@ -1,5 +1,18 @@
 # K Phan
 
+## Term 2 Week 10 (March 11, 2024 - March 17, 2024)
+
+### Week's Goals
+- Fix UI for dashboard since J and S gave up
+- Refactor the dynamic routing since the code will be exposed to the public
+
+### Tasks Worked On
+- Fix UI for dashboard (https://github.com/COSC-499-W2023/year-long-project-team-3/pull/501)
+- Refactor the dynamic routing (https://github.com/COSC-499-W2023/year-long-project-team-3/pull/503)
+
+### Teamformation Report
+![](./imgs/term-2-week-10-k-phan-tasks.png)
+
 ## Term 2 Week 9 (March 04, 2024 - March 10, 2024)
 
 ### Week's Goals

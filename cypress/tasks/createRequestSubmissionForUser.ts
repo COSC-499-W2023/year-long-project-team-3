@@ -5,6 +5,7 @@ type CreateSubmissionBoxWithEmailData = {
     userId: string
     submissionBoxTitle?: string
     submissionBoxDescription?: string
+    closeDate?: Date
 }
 
 export default async function createRequestSubmissionForUser(props: CreateSubmissionBoxWithEmailData): Promise<string> {
@@ -26,6 +27,7 @@ export default async function createRequestSubmissionForUser(props: CreateSubmis
         data: {
             title: props.submissionBoxTitle ?? 'Test Submission Box ' + uuidv4(),
             description: props.submissionBoxDescription ?? null,
+            closesAt: props.closeDate ?? null,
         },
     })
 

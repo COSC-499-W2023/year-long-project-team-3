@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import logger from '@/utils/logger'
 import prisma from '@/lib/prisma'
-import { SubmissionBox } from '@prisma/client'
+import { SubmissionBoxInfo } from '@/types/submission-box/submissionBoxInfo'
 
 export async function GET(_: NextRequest): Promise<NextResponse> {
     try {
@@ -31,15 +31,29 @@ export async function GET(_: NextRequest): Promise<NextResponse> {
             },
         })
 
-        const submissionBoxPromises: Promise<SubmissionBox>[] = submissionBoxIds.map(({ submissionBoxId }) =>
+        const submissionBoxPromises: Promise<SubmissionBoxInfo>[] = submissionBoxIds.map(({ submissionBoxId }) =>
             prisma.submissionBox.findUniqueOrThrow({
                 where: {
                     id: submissionBoxId,
                 },
+                include: {
+                    requestedSubmissions: {
+                        where: {
+                            userId: userId,
+                        },
+                        include: {
+                            videoVersions: {
+                                select: {
+                                    submittedAt: true,
+                                },
+                            },
+                        },
+                    },
+                },
             })
         )
 
-        const submissionBoxes: SubmissionBox[] = await Promise.all(submissionBoxPromises)
+        const submissionBoxes: SubmissionBoxInfo[] = await Promise.all(submissionBoxPromises)
 
         return NextResponse.json({ submissionBoxes: submissionBoxes }, { status: 200 })
     } catch (error) {

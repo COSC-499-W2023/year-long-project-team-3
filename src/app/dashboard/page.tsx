@@ -3,7 +3,7 @@
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import React, { useEffect, useMemo, useState } from 'react'
-import { SubmissionBox, Video } from '@prisma/client'
+import { Video } from '@prisma/client'
 import { toast } from 'react-toastify'
 import PageLoadProgress from '@/components/PageLoadProgress'
 import DashboardSidebar from '@/components/DashboardSidebar'
@@ -13,6 +13,7 @@ import SubmissionBoxList from '@/components/SubmissionBoxList'
 import DashboardSearchBar from '@/components/DashboardSearchBar'
 import { VideoSubmission } from '@/app/api/my-videos/route'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { SubmissionBoxInfo } from '@/types/submission-box/submissionBoxInfo'
 
 export default function DashboardPage() {
     const queriedTab = useSearchParams().get('tab')
@@ -34,8 +35,8 @@ export default function DashboardPage() {
     const [allVideos, setAllVideos] = useState<(Video & VideoSubmission)[]>([])
 
     // Submission Boxes
-    const [mySubmissionBoxes, setMySubmissionBoxes] = useState<SubmissionBox[]>([])
-    const [requestedSubmissionBoxes, setRequestedSubmissionBoxes] = useState<SubmissionBox[]>([])
+    const [mySubmissionBoxes, setMySubmissionBoxes] = useState<SubmissionBoxInfo[]>([])
+    const [requestedSubmissionBoxes, setRequestedSubmissionBoxes] = useState<SubmissionBoxInfo[]>([])
     const selectedSubmissionBoxes = useMemo(() => {
         return sidebarSelectedOption === 'submission_boxes_manage_boxes' ? mySubmissionBoxes : requestedSubmissionBoxes
     }, [sidebarSelectedOption, mySubmissionBoxes, requestedSubmissionBoxes])
@@ -147,6 +148,7 @@ export default function DashboardPage() {
                                     width: '100%',
                                     overflowY: 'auto',
                                     paddingTop: 2,
+                                    maxHeight: 'calc(100vh - 170px)',
                                 }}
                             >
                                 {isVideoTabSelected ? (
@@ -169,6 +171,7 @@ export default function DashboardPage() {
                                         submissionBoxes={displayedSubmissionBoxes}
                                         isSearching={isSearching}
                                         emptyMessage={sidebarSelectedOption === 'submission_boxes_manage_boxes' ? 'You do not own any submission boxes' : 'You have not been invited to any submission boxes'}
+                                        isOwned={sidebarSelectedOption === 'submission_boxes_manage_boxes'}
                                     />
                                 )}
                             </Box>
@@ -198,13 +201,13 @@ export default function DashboardPage() {
         return data.videoSubmission
     }
 
-    async function fetchMyBoxes(): Promise<SubmissionBox[]> {
+    async function fetchMyBoxes(): Promise<SubmissionBoxInfo[]> {
         const response = await fetch('/api/submission-box/myboxes')
         const { submissionBoxes } = await response.json()
         return submissionBoxes
     }
 
-    async function fetchMyRequests(): Promise<SubmissionBox[]> {
+    async function fetchMyRequests(): Promise<SubmissionBoxInfo[]> {
         const response = await fetch('/api/submission-box/requestedsubmissions')
         const { submissionBoxes } = await response.json()
         return submissionBoxes
