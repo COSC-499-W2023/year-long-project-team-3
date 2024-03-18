@@ -2,7 +2,6 @@ import { type NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import logger from '@/utils/logger'
 import prisma from '@/lib/prisma'
-import type { SubmissionBox } from '@prisma/client'
 import { SubmissionBoxInfo } from '@/types/submission-box/submissionBoxInfo'
 
 export async function GET(_: NextRequest): Promise<NextResponse> {
@@ -23,36 +22,35 @@ export async function GET(_: NextRequest): Promise<NextResponse> {
             })
         ).id
 
-        const submissionBoxIds = await prisma.submissionBoxManager.findMany({
-            where: {
-                userId: userId,
-            },
-            select: {
-                submissionBoxId: true,
-            },
-        })
+        const submissionBoxIds = (
+            await prisma.submissionBoxManager.findMany({
+                where: {
+                    userId: userId,
+                },
+                select: {
+                    submissionBoxId: true,
+                },
+            })
+        ).map(({submissionBoxId}) => submissionBoxId)
 
-        const submissionBoxPromises: Promise<SubmissionBoxInfo>[] = submissionBoxIds.map(
-            async ({ submissionBoxId }): Promise<SubmissionBoxInfo> =>
-                await prisma.submissionBox.findUniqueOrThrow({
-                    where: {
-                        id: submissionBoxId,
-                    },
+        const submissionBoxes: SubmissionBoxInfo[] = await prisma.submissionBox.findMany({
+            where: {
+                id: {
+                    in: submissionBoxIds,
+                },
+            },
+            include: {
+                requestedSubmissions: {
                     include: {
-                        requestedSubmissions: {
-                            include: {
-                                videoVersions: {
-                                    select: {
-                                        submittedAt: true,
-                                    },
-                                },
+                        videoVersions: {
+                            select: {
+                                submittedAt: true,
                             },
                         },
                     },
-                })
-        )
-
-        const submissionBoxes: SubmissionBoxInfo[] = await Promise.all(submissionBoxPromises)
+                },
+            },
+        })
 
         return NextResponse.json({ submissionBoxes: submissionBoxes }, { status: 200 })
     } catch (error) {

@@ -33,15 +33,16 @@ export default function SubmissionBoxCard(props: SubmissionBoxCardProps) {
             </Box>
             <Box sx={{ width: '5%' }}/>
             <Box sx={{ width: '20%' }}>
-                <Typography color={theme.palette.text.secondary}
-                    sx={{ fontWeight: 'bold' }}>{props.isOpen ? 'Open' : 'Closed'}</Typography>
+                <Typography sx={{ fontWeight: 'bold', color: props.isOpen ? 'green' : theme.palette.text.secondary }}>
+                    {props.isOpen ? 'Open' : 'Closed'}
+                </Typography>
             </Box>
             <Box sx={{ width: '25%' }}>
                 <Typography>{props.closesAt ? 'Close' + (props.isOpen ? 's' : 'd') + ' at ' + formatDate(props.closesAt) + ' ' : 'No closing date'}  </Typography>
             </Box>
             <Box sx={{ width: '25%' }}>
                 {props.isOwned ?
-                    <Typography>{props.numMembers > 0 ? +props.numSubmissions + ' / ' + props.numMembers + ' members have submitted!' : 'You have not invited anyone!'}</Typography> :
+                    <Typography>{props.numMembers > 0 ? + props.numSubmissions + ' / ' + props.numMembers + ' members have submitted!' : 'You have not invited anyone!'}</Typography> :
                     <Typography>{props.timeSubmitted ? 'Submitted at ' + formatDate(props.timeSubmitted) : 'You have not submitted yet!'}</Typography>
                 }
             </Box>
