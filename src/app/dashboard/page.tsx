@@ -52,12 +52,12 @@ export default function DashboardPage() {
             return false
         } else if (isVideoTabSelected && allVideos.length === 0) {
             return false
-        } else if (!isVideoTabSelected && mySubmissionBoxes.length === 0) {
+        } else if (!isVideoTabSelected && selectedSubmissionBoxes.length === 0) {
             return false
         } else {
             return searchTerm.length > 0
         }
-    }, [isVideoTabSelected, searchTerm, mySubmissionBoxes.length, allVideos.length])
+    }, [searchTerm, isVideoTabSelected, allVideos.length, selectedSubmissionBoxes.length])
 
     // Fetch all videos on page load
     useEffect(() => {
@@ -85,11 +85,6 @@ export default function DashboardPage() {
             .catch((error) => toast.error(error))
             .finally(() => setIsRequestsFetching(false))
     }, [])
-
-    // Update the URL query param when the sidebar option changes
-    // useEffect(() => {
-    //     router.replace(`/dashboard?tab=${ sidebarOptionToQueryParam(sidebarSelectedOption) }`, undefined, { shallow: true })
-    // }, [router, sidebarSelectedOption])
 
     // Filter videos based on search term
     const displayVideos = useMemo(() => {
