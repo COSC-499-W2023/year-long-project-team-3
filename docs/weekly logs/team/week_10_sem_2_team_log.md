@@ -92,4 +92,5 @@ Peer Testing 2
 
 ### Additional Context
 
-Due to hitting an artifact limit on our github actions storage we are unable to run any of our actions tests for component and e2e testing, for this week we resorted to locally testing before merging and have begun the process of fixing the artifact storage time on the actions.  Next week we will resume regular testing next week.
+Due to hitting an artifact limit on our GitHub actions storage we are unable to run any of our actions tests for component and e2e testing, for this week we resorted to locally testing before merging and have begun the process of fixing the artifact storage time on the actions.  Next week we will resume regular testing.
+
