@@ -432,3 +432,23 @@ My goal for this week was to merge the PRs that were having issues with flaky te
 My goal for this upcoming week is to continue working on addressing feedback from our peer-testing.
 
 ### Additional Context
+
+
+## Teresa Saller - Term 2: Week 10 (2024/03/11 - 2024/03/17)
+
+![teresa-saller-tasks-w10-t2.png](imgs/teresa-saller-tasks-w10-t2.png)
+
+### Tasks
+
+Completed:
+-[Create Mocks for Submission Box Cards on Figma #438](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/438)
+-[Implement new manage boxes card #493](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/493)
+
+In progress:
+
+### Goals
+
+My goal for this week to continue working on addressing feedback from our peer-testing. I mocked out new submission box
+cards and implemented them as part of this process. My goal for next week is to fix some UI issues on the website.
+
+### Additional Context
