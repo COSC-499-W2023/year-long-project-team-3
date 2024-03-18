@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import ProgressDots from '@/components/ProgressDots'
 import { Box } from '@mui/material'
 import ScalingReactPlayer from '@/components/ScalingReactPlayer'
-import { useRouter, usePathname } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import VideoProcessing from '@/components/VideoProcessing'
 import PageLoadProgress from '@/components/PageLoadProgress'
 import { toast } from 'react-toastify'
@@ -11,15 +11,20 @@ import BackButtonWithLink from '@/components/BackButtonWithLink'
 import FormNavButton from '@/components/FormNavButton'
 import logger from '@/utils/logger'
 
-export default function VideoPreviewPage() {
+type VideoPreviewPageProps = {
+    params: {
+        videoId: string
+    }
+}
+
+export default function VideoPreviewPage({ params }: VideoPreviewPageProps) {
     const router = useRouter()
-    const pathname = usePathname()
 
     const [streamingVideoUrl, setStreamingVideoUrl] = useState<string>('')
     const [isVideoVisible, setIsVideoVisible] = useState(false)
     const [isCloudProcessed, setIsCloudProcessed] = useState(false)
 
-    const videoId = pathname?.split('/').pop()
+    const { videoId } = params
 
     function resizeNavButtons() {
         const buttonsDiv = document.getElementById('nav-buttons-div')

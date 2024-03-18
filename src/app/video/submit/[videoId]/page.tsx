@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { usePathname, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { Box, Select, Typography, Chip, MenuItem } from '@mui/material'
 import ProgressDots from '@/components/ProgressDots'
 import type { SubmissionBox, Video } from '@prisma/client'
@@ -22,11 +22,16 @@ type FormValues = {
     videoDescription?: string
 }
 
-export default function SubmitVideoPage() {
-    const router = useRouter()
-    const pathname = usePathname()
+export type SubmitVideoPageProps = {
+    params: {
+        videoId: string
+    }
+}
 
-    const videoId = pathname?.split('/').pop()
+export default function SubmitVideoPage({ params }: SubmitVideoPageProps) {
+    const router = useRouter()
+
+    const { videoId } = params
 
     const validationSchema: ObjectSchema<FormValues> = yup.object().shape({
         videoTitle: yup.string().required('Title required'),

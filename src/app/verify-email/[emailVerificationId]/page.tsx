@@ -8,9 +8,16 @@ import LandingPageButton from '@/components/LandingPageButton'
 
 type PageStatus = 'loading' | 'success' | 'error'
 
-export default function VerifyEmail() {
+type VerifyEmailProps = {
+    params: {
+        emailVerificationId: string
+    }
+}
+
+export default function VerifyEmail({ params }: VerifyEmailProps) {
     const router = useRouter()
-    const emailVerificationId = usePathname()?.split('/').pop()
+    const { emailVerificationId } = params
+
     const [pageMsg, setPageMsg] = useState('')
     const [pageStatus, setPageStatus] = useState('loading' as PageStatus)
     const [buttonText, setButtonText] = useState('Resend Email')
