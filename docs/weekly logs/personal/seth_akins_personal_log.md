@@ -496,3 +496,30 @@ will have to reconsider how we do that moving forwards.
 - As mentioned, my main goal this week was creating a stable branch for peer testing 2. As this branch was me putting
   together several other PRs and adding a few small fixes, it will not be merged, but did take a non-insignificant 
   amount of time.
+
+## Week 10 (11/03/2024 - 17/03/2024)
+
+![](imgs/seth-akins-term-2-week-10-tasks.png)
+
+### Goals
+
+- This week I finished migrating our app to use the new video upload form.
+- This included moving all the apis and components labeled 'new' to the spots the old ones were, removing some old 
+  components which are no longer used, and fixing some tests.
+- I also fixed some two minor issues with our E2E CI pipeline.
+- Then I started implementing a forget password feature that I am going to continue working on next week.
+
+### Tasks
+
+#### Completed Tasks
+
+- [Change Upload Video Path to Use New Upload Video Form](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/461)
+- [Fix Prisma Migration for Preview](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/497)
+
+#### In-Progress Tasks
+
+- [Implement Forget Password Feature](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/495)
+
+### Additional Context
+
+- N/A
