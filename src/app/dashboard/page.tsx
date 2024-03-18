@@ -167,6 +167,7 @@ export default function DashboardPage() {
                                     width: '100%',
                                     overflowY: 'auto',
                                     paddingTop: 2,
+                                    maxHeight: 'calc(100vh - 170px)',
                                 }}
                             >
                                 {isVideoTabSelected ? (

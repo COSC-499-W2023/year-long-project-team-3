@@ -1,5 +1,5 @@
 import { MOCKUSER, TIMEOUT } from '../../../utils/constants'
-import { Video } from '@prisma/client'
+import { wait } from 'next/dist/lib/wait'
 
 describe('Test Video Upload and Streaming Processing Pipeline', () => {
     context('Not logged in', () => {
@@ -27,53 +27,55 @@ describe('Test Video Upload and Streaming Processing Pipeline', () => {
         })
 
         it('should allow the user to check the box to blur their face', () => {
-            cy.visit('/video/upload')
-
+            cy.visit('video/upload')
             // Click the span to simulate checking the checkbox
-            cy.get('[data-cy=blur-checkbox]').click()
+            cy.get('[data-cy=blur-checkbox]').wait(1000).click()
             // Check that the checkbox has been checked
             cy.get('[data-cy=blur-checkbox]').should('have.class', 'Mui-checked')
         })
 
-        it('should allow the user to uncheck the box to blur their face', () => {
+        it('should print errors if user tries to submit form with no data', () => {
             cy.visit('/video/upload')
+            // Check that dropzone is in initial state
+            cy.get('[data-cy=dropbox-neutral-message]').should('be.visible')
 
-            // Click the span to simulate checking the checkbox
-            cy.get('[data-cy=blur-checkbox]').should('be.visible').click()
-            // Check that the checkbox has been checked
-            cy.get('[data-cy=blur-checkbox]').should('be.visible').should('have.class', 'Mui-checked')
-            // Click the span to simulate un-checking the checkbox
-            cy.get('[data-cy=blur-checkbox]').should('be.visible').click()
-            // Check that the checkbox has been unchecked
-            cy.get('[data-cy=blur-checkbox]').should('be.visible').should('not.have.class', 'Mui-checked')
+            // Try to submit with no data
+            cy.get('[data-cy=submit-upload-button]').wait(1000).click()
+            cy.get('[data-cy=title]').find('p.Mui-error').should('be.visible').and('contain', 'Video title is required')
+            cy.get('[data-cy=dropbox-error-message]').should('be.visible').and('contain', 'You must select a file to upload')
+
+            // Fix Title
+            cy.get('[data-cy=title]').type('Justino599 how to get them W\'s TM')
+            cy.contains('Video title is required').should('not.exist')
+
+            // Fix Video
+            cy.get('[data-cy=dropzone-file-input]').selectFile('public/videos/lemons.mp4', { force: true })
+            cy.get('[data-cy=dropbox-success-message]').should('be.visible').and('contain', 'lemons.mp4')
+
+            // Submit
+            cy.get('[data-cy=submit-upload-button]').wait(1000).click()
+            cy.contains('Video title is required').should('not.exist')
+            cy.get('[data-cy=dropbox-error-message]').should('not.exist')
         })
 
-        it('should upload and process video', () => {
-            /* This is the happy path :) */
-            /* Upload video from "file system" */
+        it('should create video and redirect page to video details', () => {
             cy.visit('/video/upload')
-            cy.get('[data-cy=test-input]').selectFile('public/videos/lemons.mp4', { force: true })
-            cy.get('[data-cy=loading-circle-blur-background]', { timeout: TIMEOUT.EXTRA_EXTRA_LONG }).should(
-                'be.visible'
-            )
+            const videoTitle: string = 'I got a lot of lemons'
+            const videoDescription: string = 'TOO MANY LEMONS'
+            cy.get('[data-cy=title]').type(videoTitle)
+            cy.get('[data-cy=description]').type(videoDescription)
+            cy.get('[data-cy=dropzone-file-input]').selectFile('public/videos/lemons.mp4', { force: true })
+            cy.get('[data-cy=submit-upload-button]').wait(1000).click()
 
-            /* Check if the url changes and displays the loading icon */
-            cy.url({ timeout: TIMEOUT.LONG }).should('contain', 'video/preview/')
-            cy.get('[data-cy=loading-circle]', { timeout: TIMEOUT.LONG }).should('be.visible')
+            cy.url().should('not.contain', '/video/upload').and('contains', '/video/')
 
-            /* Once the video is made, we should display the processing component */
-            cy.get('[data-cy=video-processing-alert]').should(
-                'contain',
-                'Your video is currently being processed by our server. Please wait or come back later.'
-            )
+            cy.get('[data-cy="detail-video-title"]').should('contain', videoTitle)
+            cy.get('[data-cy="detail-video-description"]').should('be.visible').should('contain', videoDescription)
+            cy.get('[data-cy="video-processing-alert"]').should('be.visible')
 
-            /* Make sure that the url is also correct */
-            cy.task('getLatestVideo').then((response) => {
-                cy.url().should('contain', `video/preview/${ (<Video>response).id }`)
-            })
-
-            /* Check that the processed video preview is displayed once we redirect to the edit page */
-            cy.get('[data-cy=video-player]', { timeout: 4 * TIMEOUT.EXTRA_EXTRA_LONG }).should('be.visible')
+            // Wait for processing to be done and check if video is visible
+            wait(10000)
+            cy.get('.react-player', { timeout: 60000 }).should('be.visible')
         })
     })
 })

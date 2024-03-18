@@ -18,7 +18,7 @@ describe('test new video upload api', () => {
             cy.fixture(fileName, 'binary').then((binaryFile) => {
                 const blobFile = Cypress.Blob.binaryStringToBlob(binaryFile)
                 videoUploadForm.append('file', blobFile)
-                fetch('/api/new/video/upload', {
+                fetch('/api/video/upload', {
                     method: 'POST',
                     body: videoUploadForm,
                 }).then(async (response) => {
@@ -53,7 +53,7 @@ describe('test new video upload api', () => {
             cy.fixture(fileName, 'binary').then(async (binaryFile) => {
                 const blobFile = Cypress.Blob.binaryStringToBlob(binaryFile)
                 videoUploadForm.append('file', blobFile)
-                await fetch('/api/new/video/upload', {
+                await fetch('/api/video/upload', {
                     method: 'POST',
                     body: videoUploadForm,
                 }).then(async (response) => {
@@ -73,7 +73,7 @@ describe('test new video upload api', () => {
             cy.fixture(fileName, 'binary').then(async (binaryFile) => {
                 const blobFile = Cypress.Blob.binaryStringToBlob(binaryFile)
                 videoUploadForm.append('file', blobFile)
-                await fetch('/api/new/video/upload', {
+                await fetch('/api/video/upload', {
                     method: 'POST',
                     body: videoUploadForm,
                 }).then(async (response) => {
@@ -89,7 +89,7 @@ describe('test new video upload api', () => {
             videoUploadForm.append('title', 'Video Title')
             videoUploadForm.append('description', '')
             videoUploadForm.append('blurFace', 'true')
-            await fetch('/api/new/video/upload', {
+            await fetch('/api/video/upload', {
                 method: 'POST',
                 body: videoUploadForm,
             }).then(async (response) => {
@@ -98,7 +98,7 @@ describe('test new video upload api', () => {
                 expect(body.error).to.eq('Video file is required')
             })
             videoUploadForm.append('file', 'lemons.mp4')
-            await fetch('/api/new/video/upload', {
+            await fetch('/api/video/upload', {
                 method: 'POST',
                 body: videoUploadForm,
             }).then(async (response) => {
@@ -116,7 +116,7 @@ describe('test new video upload api', () => {
             cy.fixture('avi-sample-file.avi', 'binary').then(async (binaryFile) => {
                 const blobFile = Cypress.Blob.binaryStringToBlob(binaryFile)
                 videoUploadForm.append('file', blobFile)
-                await fetch('/api/new/video/upload', {
+                await fetch('/api/video/upload', {
                     method: 'POST',
                     body: videoUploadForm,
                 }).then(async (response) => {
@@ -134,7 +134,7 @@ describe('test new video upload api', () => {
             cy.fixture(fileName, 'binary').then(async (binaryFile) => {
                 const blobFile = Cypress.Blob.binaryStringToBlob(binaryFile)
                 videoUploadForm.append('file', blobFile)
-                await fetch('/api/new/video/upload', {
+                await fetch('/api/video/upload', {
                     method: 'POST',
                     body: videoUploadForm,
                 }).then(async (response) => {
@@ -153,7 +153,7 @@ describe('test new video upload api', () => {
             cy.fixture(fileName, 'binary').then(async (binaryFile) => {
                 const blobFile = Cypress.Blob.binaryStringToBlob(binaryFile)
                 videoUploadForm.append('file', blobFile)
-                await fetch('/api/new/video/upload', {
+                await fetch('/api/video/upload', {
                     method: 'POST',
                     body: videoUploadForm,
                 }).then(async (response) => {
@@ -169,7 +169,7 @@ describe('test new video upload api', () => {
             cy.fixture(fileName, 'binary').then(async (binaryFile) => {
                 const blobFile = Cypress.Blob.binaryStringToBlob(binaryFile)
                 videoUploadFormFalse.append('file', blobFile)
-                await fetch('/api/new/video/upload', {
+                await fetch('/api/video/upload', {
                     method: 'POST',
                     body: videoUploadFormFalse,
                 }).then(async (response) => {
