@@ -1,7 +1,7 @@
 'use client'
 
 import { useSession } from 'next-auth/react'
-import { usePathname, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { SubmissionBox, Video } from '@prisma/client'
 import logger from '@/utils/logger'
@@ -15,12 +15,17 @@ import EditIcon from '@mui/icons-material/Edit'
 import { theme } from '@/components/ThemeRegistry/theme'
 import dayjs from 'dayjs'
 
-export default function VideoDetailedPage() {
+export type VideoDetailedPageProps = {
+    params: {
+        videoId: string
+    }
+}
+
+export default function VideoDetailedPage({ params }: VideoDetailedPageProps) {
     const session = useSession()
     const router = useRouter()
-    const pathname = usePathname()
 
-    const videoId = pathname?.split('/').pop()
+    const { videoId } = params
 
     const [video, setVideo] = useState<Video>()
     const [isFetchingVideo, setIsFetchingVideo] = useState(false)
