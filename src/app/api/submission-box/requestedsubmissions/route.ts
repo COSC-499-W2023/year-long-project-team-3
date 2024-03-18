@@ -22,38 +22,38 @@ export async function GET(_: NextRequest): Promise<NextResponse> {
             })
         ).id
 
-        const submissionBoxIds = (
-            await prisma.submissionBoxManager.findMany({
-                where: {
-                    userId: userId,
-                },
-                select: {
-                    submissionBoxId: true,
-                },
-            })
-        ).map(({submissionBoxId}) => submissionBoxId)
-
-        const submissionBoxes: SubmissionBoxInfo[] = await prisma.submissionBox.findMany({
+        const submissionBoxIds = await prisma.requestedSubmission.findMany({
             where: {
-                id: {
-                    in: submissionBoxIds,
-                },
+                userId: userId,
             },
-            include: {
-                requestedSubmissions: {
-                    where: {
-                        userId: userId,
-                    },
-                    include: {
-                        videoVersions: {
-                            select: {
-                                submittedAt: true,
+            select: {
+                submissionBoxId: true,
+            },
+        })
+
+        const submissionBoxPromises: Promise<SubmissionBoxInfo>[] = submissionBoxIds.map(({ submissionBoxId }) =>
+            prisma.submissionBox.findUniqueOrThrow({
+                where: {
+                    id: submissionBoxId,
+                },
+                include: {
+                    requestedSubmissions: {
+                        where: {
+                            userId: userId,
+                        },
+                        include: {
+                            videoVersions: {
+                                select: {
+                                    submittedAt: true,
+                                },
                             },
                         },
                     },
                 },
-            },
-        })
+            })
+        )
+
+        const submissionBoxes: SubmissionBoxInfo[] = await Promise.all(submissionBoxPromises)
 
         return NextResponse.json({ submissionBoxes: submissionBoxes }, { status: 200 })
     } catch (error) {
