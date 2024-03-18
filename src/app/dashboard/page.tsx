@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import React, { useEffect, useState } from 'react'
-import { SubmissionBox, Video } from '@prisma/client'
+import { Video } from '@prisma/client'
 import { toast } from 'react-toastify'
 import PageLoadProgress from '@/components/PageLoadProgress'
 import DashboardSidebar from '@/components/DashboardSidebar'
@@ -14,6 +14,7 @@ import SubmissionBoxList from '@/components/SubmissionBoxList'
 import DashboardSearchBar from '@/components/DashboardSearchBar'
 import { VideoSubmission } from '@/app/api/my-videos/route'
 import { useSearchParams } from 'next/navigation'
+import { SubmissionBoxInfo } from '@/types/submission-box/submissionBoxInfo'
 
 export default function DashboardPage() {
     const session = useSession()
@@ -25,8 +26,8 @@ export default function DashboardPage() {
     const [displayVideos, setDisplayVideos] = useState<(Video & VideoSubmission)[]>([])
 
     // Submission Boxes
-    const [submissionBoxes, setSubmissionBoxes] = useState<SubmissionBox[]>([])
-    const [tempSubmissionBoxes, setTempSubmissionBoxes] = useState<SubmissionBox[]>([])
+    const [submissionBoxes, setSubmissionBoxes] = useState<SubmissionBoxInfo[]>([])
+    const [tempSubmissionBoxes, setTempSubmissionBoxes] = useState<SubmissionBoxInfo[]>([])
 
     // Page component controls
     const [sidebarSelectedOption, setSidebarSelectedOption] = useState<SidebarOption>(queryParamToSidebarOption(queriedTab))
@@ -70,7 +71,7 @@ export default function DashboardPage() {
             ) ?? []
             setDisplayVideos(filteredVideos)
         } else {
-            const filteredSubmissionBoxes = tempSubmissionBoxes?.filter(
+            const filteredSubmissionBoxes: SubmissionBoxInfo[] = tempSubmissionBoxes?.filter(
                 (submissionBox) =>
                     submissionBox.title.toLowerCase().includes(searchTerm.trim().toLowerCase()) ||
                     submissionBox.description?.toLowerCase().includes(searchTerm.trim().toLowerCase())
@@ -184,13 +185,14 @@ export default function DashboardPage() {
                                         })}
                                         isSearching={isSearching}
                                     />
-                                ) : (
+                                ) :
                                     <SubmissionBoxList
                                         submissionBoxes={submissionBoxes}
                                         isSearching={isSearching}
                                         emptyMessage={sidebarSelectedOption === 'submission_boxes_manage_boxes' ? 'You do not own any submission boxes' : 'You have not been invited to any submission boxes'}
+                                        isOwned={sidebarSelectedOption === 'submission_boxes_manage_boxes'}
                                     />
-                                )}
+                                }
                             </Box>
                         )}
                     </Box>
@@ -215,13 +217,13 @@ export default function DashboardPage() {
         }))
     }
 
-    async function fetchMyBoxes(): Promise<SubmissionBox[]> {
+    async function fetchMyBoxes(): Promise<SubmissionBoxInfo[]> {
         const response = await fetch('/api/submission-box/myboxes')
         const { submissionBoxes } = await response.json()
         return submissionBoxes
     }
 
-    async function fetchMyRequests(): Promise<SubmissionBox[]> {
+    async function fetchMyRequests(): Promise<SubmissionBoxInfo[]> {
         const response = await fetch('/api/submission-box/requestedsubmissions')
         const { submissionBoxes } = await response.json()
         return submissionBoxes
