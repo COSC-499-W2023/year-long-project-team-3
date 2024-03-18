@@ -63,7 +63,7 @@ Peer Testing 2
 
 ### Burn-up Chart
 
-![](imgs/burnup-week-9-s2.png)
+![](imgs/burnup-week-10-s2.png)
 
 ### Usernames
 
@@ -75,21 +75,21 @@ Peer Testing 2
 
 ### Completed Tasks
 
-![](imgs/completed-week-9-s2.png)
+![](imgs/completed-week-10-s2.png)
 
 ### In-progress Tasks
 
-![](imgs/in-progress-week-9-s2.png)
+![](imgs/in-progress-week-10-s2.png)
 
 ### Test Report
 
-![](imgs/cypress-tests-week-9-s2-component.png)
-![](imgs/cypress-tests-week-9-s2-e2e.png)
+![](imgs/cypress-tests-week-10-s2-component.png)
+![](imgs/cypress-tests-week-10-s2-e2e.png)
 
 ### Milestone Progress
 
-![](imgs/milestone-progress-week-9-s2.png)
+![](imgs/milestone-progress-week-10-s2.png)
 
 ### Additional Context
 
-N/A
+Due to hitting an artifact limit on our github actions storage we are unable to run any of our actions tests for component and e2e testing, for this week we resorted to locally testing before merging and have begun the process of fixing the artifact storage time on the actions.  Next week we will resume regular testing next week.
