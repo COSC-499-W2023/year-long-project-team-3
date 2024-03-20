@@ -115,6 +115,9 @@ export default function LoginForm() {
                                 ),
                             }}
                         />
+                        {/*<Link sx={{marginRight: 'auto', ml: 2}} data-cy='link-to-forget-password' href={'/forget-password' + (callbackUrl ? `?callbackUrl=${ encodeURIComponent(callbackUrl) }` : '')}>*/}
+                        {/*  Forgot Password?*/}
+                        {/*</Link>*/}
                         <Button
                             type='submit'
                             variant='contained'
@@ -137,6 +140,12 @@ export default function LoginForm() {
                         Don&apos;t have an account yet?{' '}
                         <Link data-cy='link-to-signup' href={'/signup' + (callbackUrl ? `?callbackUrl=${ encodeURIComponent(callbackUrl) }` : '')}>
                             Sign up now
+                        </Link>
+                    </Typography>
+                    <Typography sx={{my: 1}}>
+                    Forgot Password?{' '}
+                        <Link data-cy='link-to-forget-password' href={'/reset-password' + (callbackUrl ? `?callbackUrl=${ encodeURIComponent(callbackUrl) }` : '')}>
+                          Reset Password
                         </Link>
                     </Typography>
                     <Box sx={{ my: 4, display: 'flex', alignItems: 'center', width: '100%' }}>

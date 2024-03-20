@@ -21,6 +21,7 @@ model User {
   requestedSubmissions       RequestedSubmission[]
   managedSubmissionBoxes     SubmissionBoxManager[]
   requestedEmailVerification RequestedEmailVerification?
+  ResetPasswordToken         ResetPasswordToken?
 
   @@index([email])
 }
@@ -144,6 +145,14 @@ model RequestedEmailVerification {
   token     String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model ResetPasswordToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  createdAt DateTime @default(now())
   userId    String   @unique
   user      User     @relation(fields: [userId], references: [id])
 }
