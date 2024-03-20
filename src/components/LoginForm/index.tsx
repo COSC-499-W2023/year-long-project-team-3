@@ -115,9 +115,6 @@ export default function LoginForm() {
                                 ),
                             }}
                         />
-                        {/*<Link sx={{marginRight: 'auto', ml: 2}} data-cy='link-to-forget-password' href={'/forget-password' + (callbackUrl ? `?callbackUrl=${ encodeURIComponent(callbackUrl) }` : '')}>*/}
-                        {/*  Forgot Password?*/}
-                        {/*</Link>*/}
                         <Button
                             type='submit'
                             variant='contained'
