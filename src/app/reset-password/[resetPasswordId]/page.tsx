@@ -1,9 +1,17 @@
+import ResetPasswordForm from '@/components/ResetPasswordForm'
 import { Box } from '@mui/material'
 import Logo from '@/components/Logo'
 import React from 'react'
-import ResetPasswordEmailAddressForm from 'src/components/ResetPasswordEmailAddressForm'
 
-export default function ResetPasswordPage() {
+type ResetPasswordProps = {
+    params: {
+        resetPasswordId: string
+    }
+}
+
+export default function ResetPassword({ params }: ResetPasswordProps) {
+    const { resetPasswordId } = params
+
     return (
         <Box
             sx={{
@@ -13,7 +21,7 @@ export default function ResetPasswordPage() {
             <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Logo fontSize={80} />
             </Box>
-            <ResetPasswordEmailAddressForm/>
+            <ResetPasswordForm  resetPasswordId={resetPasswordId}/>
         </Box>
     )
 }

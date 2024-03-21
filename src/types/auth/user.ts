@@ -3,6 +3,11 @@ export type UserSignUpData = {
     password: string
 }
 
-export type ForgetPasswordData = {
+export type ResetPasswordEmailData = {
     email: string
+}
+
+export type ResetPasswordData = {
+    password: string,
+    passwordConfirmation: string
 }

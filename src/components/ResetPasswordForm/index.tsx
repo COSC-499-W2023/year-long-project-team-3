@@ -1,25 +1,39 @@
 'use client'
-import { Box, Button } from '@mui/material'
+import { Box, Button, IconButton, InputAdornment } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import { useFormik } from 'formik'
-import { ForgetPasswordData } from '@/types/auth/user'
+import { ResetPasswordData } from '@/types/auth/user'
 import { ObjectSchema } from 'yup'
 import * as yup from 'yup'
-import { getEmailRegex } from '@/utils/verification'
 import TextField from '@mui/material/TextField'
-import React from 'react'
+import React, { useState } from 'react'
+import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/lib/constants'
+import { Visibility as VisibilityIconOn, VisibilityOff as VisibilityIconOff } from '@mui/icons-material'
 
-export default function ResetPasswordForm() {
-    const formik = useFormik<ForgetPasswordData>({
+export default function ResetPasswordEmailAddressForm(props: {resetPasswordId: string}) {
+    const formik = useFormik<ResetPasswordData>({
         initialValues: {
-            email: '',
+            password: '',
+            passwordConfirmation: '',
         },
         validationSchema: validationSchema,
-        onSubmit: (values: ForgetPasswordData) => handleSubmit(values),
+        onSubmit: (values: ResetPasswordData) => handleSubmit(values),
     })
+
+    const [passwordVisible, setPasswordVisible] = useState(false)
+    const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false)
+
+    const handleClickShowPassword = () => {
+        setPasswordVisible(!passwordVisible)
+    }
+
+    const handleClickShowConfirmPassword = () => {
+        setConfirmPasswordVisible(!confirmPasswordVisible)
+    }
 
     return (
         <Box
+            gap={1}
             sx={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -30,11 +44,13 @@ export default function ResetPasswordForm() {
             <Typography variant='h4' sx={{ fontWeight: 'medium'}}>
                 Reset Password
             </Typography>
+            <Typography sx={{maxWidth: 'sm', textAlign: 'center'}}>
+                Please enter your email address below. If there is an account associated with that email, you will be sent a link to reset your password.
+            </Typography>
             <form onSubmit={formik.handleSubmit} noValidate>
                 <Box
                     gap={1}
                     sx={{
-                        p: 5,
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
@@ -45,17 +61,58 @@ export default function ResetPasswordForm() {
                     <TextField
                         margin='normal'
                         variant='outlined'
-                        type='email'
-                        label='Email Address'
-                        name='email'
-                        value={formik.values.email}
+                        type={passwordVisible ? 'text' : 'password'}
+                        label='Password'
+                        name='password'
+                        value={formik.values.password}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        error={formik.touched.email && Boolean(formik.errors.email)}
+                        error={formik.touched.password && Boolean(formik.errors.password)}
                         // this ensures the layout does not get shifted by the helper text
                         FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
-                        helperText={formik.touched.email && formik.errors.email}
-                        data-cy='email'
+                        helperText={formik.touched.password && formik.errors.password}
+                        data-cy='password'
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position='end'>
+                                    <IconButton
+                                        aria-label='toggle password visibility'
+                                        onClick={handleClickShowPassword}
+                                        data-cy='toggle-password-visibility'
+                                    >
+                                        {passwordVisible ? <VisibilityIconOn /> : <VisibilityIconOff />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                    <TextField
+                        margin='normal'
+                        variant='outlined'
+                        type={confirmPasswordVisible ? 'text' : 'password'}
+                        label='Confirm Password'
+                        name='passwordConfirmation'
+                        value={formik.values.passwordConfirmation}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        error={formik.touched.passwordConfirmation && Boolean(formik.errors.passwordConfirmation)}
+                        // this ensures the layout does not get shifted by the helper text
+                        FormHelperTextProps={{ style: { position: 'absolute', bottom: -20 } }}
+                        helperText={formik.touched.passwordConfirmation && formik.errors.passwordConfirmation}
+                        data-cy='passwordConfirmation'
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position='end'>
+                                    <IconButton
+                                        aria-label='toggle confirm password visibility'
+                                        onClick={handleClickShowConfirmPassword}
+                                        data-cy='toggle-confirm-password-visibility'
+                                    >
+                                        {confirmPasswordVisible ? <VisibilityIconOn /> : <VisibilityIconOff />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
                     />
                     <Button
                         type='submit'
@@ -68,14 +125,28 @@ export default function ResetPasswordForm() {
                 </Box>
             </form>
         </Box>
-
     )
 
-    function handleSubmit(data: ForgetPasswordData) {
+    async function handleSubmit(data: ResetPasswordData) {
         throw Error('Not implemented')
     }
 }
 
-const validationSchema: ObjectSchema<ForgetPasswordData> = yup.object().shape({
-    email: yup.string().matches(getEmailRegex(), 'Enter a valid email').required('Email is required'),
+const getCharacterValidationError = (missingCharacter: string): string => {
+    return `Your password must have at least one ${ missingCharacter } character`
+}
+
+const validationSchema: ObjectSchema<ResetPasswordData> = yup.object().shape({
+    password: yup
+        .string()
+        .min(MIN_PASSWORD_LENGTH, `Password should be a minimum of ${ MIN_PASSWORD_LENGTH } characters long`)
+        .max(MAX_PASSWORD_LENGTH, `Password should be a maximum of ${ MAX_PASSWORD_LENGTH } characters long`)
+        .required('Enter your password')
+        .matches(/[0-9]/, getCharacterValidationError('numeric'))
+        .matches(/[a-z]/, getCharacterValidationError('lowercase'))
+        .matches(/[A-Z]/, getCharacterValidationError('uppercase')),
+    passwordConfirmation: yup
+        .string()
+        .required('Please re-type your password')
+        .oneOf([yup.ref('password')], 'Your passwords must match'),
 })
