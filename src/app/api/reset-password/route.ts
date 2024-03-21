@@ -4,12 +4,10 @@ import { ResetPasswordAPIData } from '@/types/auth/user'
 import prisma from '@/lib/prisma'
 import { isDateWithinFifteenMinutes } from '@/utils/verification'
 import { hash } from 'bcrypt'
-import { cookies } from 'next/headers'
 
 export async function POST(req: NextRequest){
     try {
         const body: ResetPasswordAPIData = await req.json()
-        const cookieStore = cookies()
         const { token, password, passwordConfirmation } = body
         if (password !== passwordConfirmation) {
             return NextResponse.json({ error: 'Passwords do not match' }, { status: 400 })
@@ -23,21 +21,8 @@ export async function POST(req: NextRequest){
         if (!resetPasswordToken) {
             logger.error('Invalid password reset token')
             return NextResponse.json({ error: 'Invalid password reset token' }, { status: 400 })
-        } else if (!isDateWithinFifteenMinutes(resetPasswordToken.createdAt)) {
+        } else if (!isDateWithinFifteenMinutes(resetPasswordToken.updatedAt)) {
             return NextResponse.json({ error: 'Password reset link expired' }, { status: 410 })
-        }
-
-        // Check email in cookies matches
-        const cookieEmail = cookieStore.get('cookieMonster')
-        const user = await prisma.user.findFirst(
-            {
-                where: {
-                    id: resetPasswordToken.userId,
-                },
-            }
-        )
-        if (!cookieEmail || cookieEmail.value !== user!.email) {
-            return NextResponse.json({ message: 'Invalid token' }, { status: 418 })
         }
 
         // Update user password
@@ -45,7 +30,6 @@ export async function POST(req: NextRequest){
         await prisma.user.update({
             where: {
                 id: resetPasswordToken.userId,
-                email: user!.email,
             },
             data: {
                 password: hashedPassword,

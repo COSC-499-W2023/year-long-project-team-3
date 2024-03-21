@@ -3,6 +3,7 @@ CREATE TABLE "ResetPasswordToken" (
     "id" TEXT NOT NULL,
     "token" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
     "userId" TEXT NOT NULL,
 
     CONSTRAINT "ResetPasswordToken_pkey" PRIMARY KEY ("id")

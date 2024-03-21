@@ -12,7 +12,7 @@ import logger from '@/utils/logger'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
 
-export default function ResetPasswordEmailAddressForm(props: {setEmailCookie: any}) {
+export default function ResetPasswordEmailAddressForm() {
     const router = useRouter()
     const formik = useFormik<ResetPasswordEmailData>({
         initialValues: {
@@ -80,8 +80,7 @@ export default function ResetPasswordEmailAddressForm(props: {setEmailCookie: an
 
     async function handleSubmit(data: ResetPasswordEmailData) {
         try {
-            props.setEmailCookie(data.email)
-            const response = await fetch('api/reset-password/send-email', {
+            const response = await fetch('/api/reset-password/send-email', {
                 method: 'POST',
                 body: JSON.stringify({
                     email: data.email,
