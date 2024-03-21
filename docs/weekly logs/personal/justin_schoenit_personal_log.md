@@ -1,5 +1,24 @@
 # Weekly Individual Log - Justin Schoenit
 
+## Week 10 (Mar 11 - Mar 17)
+
+### Tasks
+
+![](imgs/week-10-t2-tasks-justin.png)
+
+### My Contributions this week
+
+- Enforced submission box close dates by updating the frontend to show a message instead of prompting the user to submit. Also updated the backend to reject requests to submit a video to a closed submission box
+- The dashboard page needed a good refactor to use more appropriate NextJS hooks to improve safety and responsiveness. There were also many more API requests being made than was necessary and was actually slowing down the page. This PR is finished and is in review.
+
+### Goals for the coming week
+
+- Continue polishing up the site for final submission
+
+### Additional Context
+
+N/A
+
 ## Week 9 (Mar 04 - Mar 10)
 
 ### Tasks

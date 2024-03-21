@@ -2,7 +2,7 @@ import { withAuth } from 'next-auth/middleware'
 import { NextRequest, NextResponse } from 'next/server'
 import logger from '@/utils/logger'
 
-const protectedPages = ['/dashboard', '/submission-box', '/video', '/new']
+const protectedPages = ['/dashboard', '/submission-box', '/video']
 
 export default withAuth(
     async function middleware(request: NextRequest) {
