@@ -10,6 +10,12 @@ async function setEmailCookie(email: string) {
     cookieStore.set('cookieMonster', email)
 }
 
+/*
+    TODO: Get rid of cookies and just have user enter email again on the password reset page
+    TODO: Refactor reset tokens to have modified at instead of created at
+    TODO: Add tests for api and new components
+ */
+
 export default async function ResetPasswordPage() {
     return (
         <Box
