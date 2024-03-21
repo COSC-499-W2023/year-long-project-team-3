@@ -1,10 +1,16 @@
-'use client'
 import { Box } from '@mui/material'
 import Logo from '@/components/Logo'
 import React from 'react'
 import ResetPasswordEmailAddressForm from 'src/components/ResetPasswordEmailAddressForm'
+import { cookies } from 'next/headers'
 
-export default function ResetPasswordPage() {
+async function setEmailCookie(email: string) {
+    'use server'
+    const cookieStore = cookies()
+    cookieStore.set('cookieMonster', email)
+}
+
+export default async function ResetPasswordPage() {
     return (
         <Box
             sx={{
@@ -14,7 +20,7 @@ export default function ResetPasswordPage() {
             <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Logo fontSize={80} />
             </Box>
-            <ResetPasswordEmailAddressForm/>
+            <ResetPasswordEmailAddressForm setEmailCookie={setEmailCookie}/>
         </Box>
     )
 }

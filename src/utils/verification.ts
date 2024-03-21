@@ -45,7 +45,7 @@ export function validTimestamp(timestamp: string) {
 
 export function isDateWithinFifteenMinutes(date: Date): boolean {
     const currentDate = new Date()
-    const timeDifference = currentDate.getTime() - date.getTime()
+    const timeDifference = currentDate.getTime() - new Date(date).getTime()
     const fifteenMinutesInMilliseconds = 15 * 60 * 1000
     return timeDifference < fifteenMinutesInMilliseconds
 }

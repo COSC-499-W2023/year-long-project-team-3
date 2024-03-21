@@ -133,7 +133,7 @@ export default function ResetPasswordEmailAddressForm(props: {resetPasswordId: s
 
     async function handleSubmit(data: ResetPasswordData) {
         try {
-            const response = await fetch('api/reset-password', {
+            const response = await fetch('/api/reset-password', {
                 method: 'POST',
                 body: JSON.stringify({
                     token: props.resetPasswordId,
