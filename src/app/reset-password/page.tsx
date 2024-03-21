@@ -1,3 +1,4 @@
+'use client'
 import { Box } from '@mui/material'
 import Logo from '@/components/Logo'
 import React from 'react'

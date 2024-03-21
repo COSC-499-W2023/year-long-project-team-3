@@ -19,7 +19,6 @@ export async function POST(req: NextRequest) {
         })
         if (!user) {
             // This is still a success because we do not want to let the user know if that is actually an email or not.
-            logger.info('hello world')
             return NextResponse.json({ message: 'Request Success' }, { status: 201 })
         }
         const succeeded = await sendEmailResetPasswordEmail(email)

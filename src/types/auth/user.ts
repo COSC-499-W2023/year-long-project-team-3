@@ -11,3 +11,9 @@ export type ResetPasswordData = {
     password: string,
     passwordConfirmation: string
 }
+
+export type ResetPasswordAPIData = {
+    token: string,
+    password: string,
+    passwordConfirmation: string,
+}

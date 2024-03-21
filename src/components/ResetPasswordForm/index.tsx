@@ -9,8 +9,12 @@ import TextField from '@mui/material/TextField'
 import React, { useState } from 'react'
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@/lib/constants'
 import { Visibility as VisibilityIconOn, VisibilityOff as VisibilityIconOff } from '@mui/icons-material'
+import { toast } from 'react-toastify'
+import logger from '@/utils/logger'
+import { useRouter } from 'next/navigation'
 
 export default function ResetPasswordEmailAddressForm(props: {resetPasswordId: string}) {
+    const router = useRouter()
     const formik = useFormik<ResetPasswordData>({
         initialValues: {
             password: '',
@@ -128,7 +132,29 @@ export default function ResetPasswordEmailAddressForm(props: {resetPasswordId: s
     )
 
     async function handleSubmit(data: ResetPasswordData) {
-        throw Error('Not implemented')
+        try {
+            const response = await fetch('api/reset-password', {
+                method: 'POST',
+                body: JSON.stringify({
+                    token: props.resetPasswordId,
+                    password: data.password,
+                    passwordConfirmation: data.passwordConfirmation,
+                }),
+            })
+
+            if (response.status == 201) {
+                toast.success('Password has been reset.')
+                logger.info('Reset password')
+            } else {
+                toast.error('There was an error in the password reset process. Please contact support.')
+            }
+        } catch (err) {
+            const errMessage = JSON.stringify(err, Object.getOwnPropertyNames(err))
+            logger.error(errMessage)
+        } finally {
+            router.push('/login')
+            router.refresh()
+        }
     }
 }
 
