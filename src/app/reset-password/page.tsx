@@ -5,7 +5,6 @@ import ResetPasswordEmailAddressForm from 'src/components/ResetPasswordEmailAddr
 
 
 /*
-    TODO: Refactor reset tokens to have modified at instead of created at
     TODO: Add tests for api and new components
  */
 
