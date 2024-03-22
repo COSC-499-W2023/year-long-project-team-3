@@ -7,18 +7,17 @@ describe('test send reset password email api', () => {
     beforeEach(() => {
         cy.task('clearDB')
         cy.task('createUser', { email, password })
-        cy.visit('/login')
     })
 
     it('should reject invalid emails', () => {
         fetch('/api/reset-password/send-email', {
             method: 'POST',
             body: JSON.stringify({
-                invalidEmail,
+                email: invalidEmail,
             }),
-        }).then((res: Response) => {
+        }).then(async(res: Response) => {
             expect(res.status).to.eq(500)
-            res.text().then((jsonBody) => {
+            await res.text().then((jsonBody) => {
                 const message = JSON.parse(jsonBody)
                 expect(message.error).to.eq('Invalid email address')
             })
@@ -29,13 +28,13 @@ describe('test send reset password email api', () => {
         await fetch('/api/reset-password/send-email', {
             method: 'POST',
             body: JSON.stringify({
-                emailWithNoUser,
+                email: emailWithNoUser,
             }),
-        }).then((res: Response) => {
+        }).then(async (res: Response) => {
             expect(res.status).to.eq(201)
-            res.text().then((jsonBody) => {
+            await res.text().then((jsonBody) => {
                 const message = JSON.parse(jsonBody)
-                expect(message.error).to.eq('Request Success')
+                expect(message.message).to.eq('Request Success')
             })
         })
     })
@@ -44,11 +43,11 @@ describe('test send reset password email api', () => {
         await fetch('/api/reset-password/send-email', {
             method: 'POST',
             body: JSON.stringify({
-                email,
+                email: email,
             }),
-        }).then((res: Response) => {
+        }).then(async(res: Response) => {
             expect(res.status).to.eq(201)
-            res.text().then((jsonBody) => {
+            await res.text().then((jsonBody) => {
                 const message = JSON.parse(jsonBody)
                 expect(message.message).to.eq('Request Success')
             })

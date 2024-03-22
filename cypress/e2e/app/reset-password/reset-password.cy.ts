@@ -1,4 +1,4 @@
-describe('test password reset process', () => {
+describe('test password reset send email api', () => {
     const email = 'no-reply@harpvideo.ca'
     const password = 'Password1'
     const updatedPassword = 'Another1'
