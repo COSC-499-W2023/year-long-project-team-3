@@ -14,9 +14,9 @@ export type VideoSubmission = {
             submissionBox: {
                 id: string,
                 title: string;
-            };
-        };
-    }[];
+            }
+        }
+    }[]
 }
 
 export async function GET(): Promise<NextResponse> {

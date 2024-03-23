@@ -1,4 +1,4 @@
-import { MOCKUSER, TIMEOUT } from '../../../utils/constants'
+import { MOCKUSER } from '../../../utils/constants'
 import { wait } from 'next/dist/lib/wait'
 
 describe('Test Video Upload and Streaming Processing Pipeline', () => {
