@@ -29,8 +29,8 @@ export default function VideoCard(props: VideoCardProps) {
                         alt={props.title}
                         style={{ objectFit: 'cover' }}
                         height={'80%'}
-                        sx={{ borderRadius: '8px' }}
-                    />):(<Box width='100%' height='80%' sx={{ backgroundColor: 'black', borderRadius: '8px' }} />)
+                        sx={{ borderRadius: '20px' }}
+                    />):(<Box width='100%' height='80%' sx={{ backgroundColor: 'black', borderRadius: '20px' }} />)
                 }
             </Box>
             <CardContent sx={{ ml: '1rem', display: 'flex', width: '75%', flexDirection: 'column', justifyContent: 'space-between' }}>
