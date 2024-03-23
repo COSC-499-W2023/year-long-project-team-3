@@ -31,11 +31,13 @@ export default function VideoCard(props: VideoCardProps) {
                 }
             </Box>
             <CardContent sx={{ ml: '1rem', display: 'flex', width: '75%', flexDirection: 'column', justifyContent: 'space-between' }}>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', mb: 2 }}>
-                    <Typography noWrap variant='h5' color={theme.palette.secondary.main} sx={{ fontWeight: 'bold'}}>{props.title}</Typography>
-                    <Typography noWrap>{!!props.thumbnailUrl? 'Uploaded on: ' + getDateString() : 'Upload in progress'}</Typography>
+                <Box>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', mb: 2 }}>
+                        <Typography noWrap variant='h5' color={theme.palette.secondary.main} sx={{ fontWeight: 'bold'}}>{props.title}</Typography>
+                        <Typography noWrap>{!!props.thumbnailUrl? 'Uploaded on: ' + getDateString() : 'Upload in progress'}</Typography>
+                    </Box>
+                    <Typography sx={{ maxHeight: '4.5rem', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>{props.description}</Typography>
                 </Box>
-                <Typography sx={{ maxHeight: '4.5rem', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>{props.description}</Typography>
                 {props.isSubmitted ? props.submissionBoxes.length > 0  &&
                   <>
                       <Box sx={{ display: 'flex', alignItems: 'center', overflow: 'hidden', whiteSpace: 'nowrap', width: '75%' }}>
