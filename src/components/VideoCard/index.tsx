@@ -17,6 +17,8 @@ export type VideoCardProps = {
 export default function VideoCard(props: VideoCardProps) {
     const router = useRouter()
 
+    console.log(props)
+
     return (
         <Card sx={{ display: 'flex', height: 200, mb: 2, cursor: 'pointer' }} onClick={handleOnClick}>
             <Box display={'flex'} alignItems={'center'} width={'25%'} pl='1rem'>
@@ -25,10 +27,10 @@ export default function VideoCard(props: VideoCardProps) {
                         component='img'
                         src={props.thumbnailUrl}
                         alt={props.title}
-                        style={{ objectFit: 'cover', width: '100%' }}
-                        sx={{ borderRadius: '8px', overflow: 'hidden' }}
+                        style={{ objectFit: 'cover' }}
                         height={'80%'}
-                    />):(<Box width='100%' height='80%' sx={{ backgroundColor: 'black', borderRadius: '8px', overflow: 'hidden' }} />)
+                        sx={{ borderRadius: '8px' }}
+                    />):(<Box width='100%' height='80%' sx={{ backgroundColor: 'black', borderRadius: '8px' }} />)
                 }
             </Box>
             <CardContent sx={{ ml: '1rem', display: 'flex', width: '75%', flexDirection: 'column', justifyContent: 'space-between' }}>
