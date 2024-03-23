@@ -49,7 +49,7 @@ export default function ResetPasswordEmailAddressForm(props: {resetPasswordId: s
                 Reset Password
             </Typography>
             <Typography sx={{maxWidth: 'sm', textAlign: 'center'}}>
-                Please enter your email address below. If there is an account associated with that email, you will be sent a link to reset your password.
+                Please enter a new password for your account.
             </Typography>
             <form onSubmit={formik.handleSubmit} noValidate>
                 <Box

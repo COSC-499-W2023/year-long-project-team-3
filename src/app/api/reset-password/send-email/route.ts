@@ -25,6 +25,7 @@ export async function POST(req: NextRequest) {
         if (succeeded) {
             return NextResponse.json({ message: 'Request Success' }, { status: 201 })
         } else {
+            logger.error('Unknown error when sending reset password email')
             return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
         }
     } catch (e) {

@@ -25,6 +25,8 @@ describe('test password reset api', () => {
                 })
             })
         })
+        // Added wait as cypress was not waiting for the api assert before moving to the next test
+        cy.wait(1000)
     })
 
     it('should reject requests if password token is not found', () => {
@@ -42,6 +44,8 @@ describe('test password reset api', () => {
                 expect(message.error).to.eq('Invalid password reset token')
             })
         })
+        // Added wait as cypress was not waiting for the api assert before moving to the next test
+        cy.wait(1000)
     })
 
     it('should reject requests if password reset token is out of data', () => {
@@ -64,6 +68,8 @@ describe('test password reset api', () => {
                     })
                 })
             })
+            // Added wait as cypress was not waiting for the api assert before moving to the next test
+            cy.wait(1000)
         })
     })
 
@@ -77,12 +83,14 @@ describe('test password reset api', () => {
                     passwordConfirmation: updatedPassword,
                 }),
             }).then(async (res: Response) => {
-                expect(res.status).to.eq(201)
+                expect(res.status).to.eq(200)
                 await res.text().then((jsonBody) => {
                     const message = JSON.parse(jsonBody)
                     expect(message.message).to.eq('Password has been reset')
                 })
             })
         })
+        // Added wait as cypress was not waiting for the api assert before moving to the next test
+        cy.wait(1000)
     })
 })

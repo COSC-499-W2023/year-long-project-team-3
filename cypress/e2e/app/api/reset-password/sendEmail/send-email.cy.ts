@@ -22,6 +22,8 @@ describe('test send reset password email api', () => {
                 expect(message.error).to.eq('Invalid email address')
             })
         })
+        // Added wait as cypress was not waiting for the api assert before moving to the next test
+        cy.wait(1000)
     })
 
     it('should return success when no user detected in database', async () => {
@@ -37,6 +39,8 @@ describe('test send reset password email api', () => {
                 expect(message.message).to.eq('Request Success')
             })
         })
+        // Added wait as cypress was not waiting for the api assert before moving to the next test
+        cy.wait(1000)
     })
 
     it('should return success when valid email is found', async () => {
@@ -52,5 +56,7 @@ describe('test send reset password email api', () => {
                 expect(message.message).to.eq('Request Success')
             })
         })
+        // Added wait as cypress was not waiting for the api assert before moving to the next test
+        cy.wait(1000)
     })
 })

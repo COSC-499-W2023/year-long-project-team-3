@@ -43,7 +43,7 @@ export async function POST(req: NextRequest){
             },
         })
 
-        return NextResponse.json({ message: 'Password has been reset' }, { status: 201 })
+        return NextResponse.json({ message: 'Password has been reset' }, { status: 200 })
     } catch (e) {
         logger.error('Password reset had an unexpected error')
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
