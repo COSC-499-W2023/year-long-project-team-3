@@ -48,7 +48,7 @@ describe('test password reset api', () => {
         cy.wait(1000)
     })
 
-    it('should reject requests if password reset token is out of data', () => {
+    it('should reject requests if password reset token is out of date', () => {
         cy.task('createResetPasswordToken', email).then((token) => {
             const date = new Date()
             date.setTime(date.getTime() - 15 * 60 * 1000)
