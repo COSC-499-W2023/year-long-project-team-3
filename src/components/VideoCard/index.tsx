@@ -20,14 +20,15 @@ export default function VideoCard(props: VideoCardProps) {
     return (
         <Card sx={{ display: 'flex', height: 200, mb: 2, cursor: 'pointer' }} onClick={handleOnClick}>
             <Box display={'flex'} alignItems={'center'} width={'25%'} pl='1rem'>
-                {!!props.thumbnailUrl? (
+                {!!props.thumbnailUrl ? (
                     <CardMedia
                         component='img'
                         src={props.thumbnailUrl}
                         alt={props.title}
-                        style={{ objectFit: 'cover' }}
+                        style={{ objectFit: 'cover', width: '100%' }}
+                        sx={{ borderRadius: '8px', overflow: 'hidden' }}
                         height={'80%'}
-                    />):(<Box width='100%' height='80%' sx={{backgroundColor: 'black'}}></Box>)
+                    />):(<Box width='100%' height='80%' sx={{ backgroundColor: 'black', borderRadius: '8px', overflow: 'hidden' }} />)
                 }
             </Box>
             <CardContent sx={{ ml: '1rem', display: 'flex', width: '75%', flexDirection: 'column', justifyContent: 'space-between' }}>
