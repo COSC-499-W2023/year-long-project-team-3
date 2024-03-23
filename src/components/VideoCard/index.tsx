@@ -17,8 +17,6 @@ export type VideoCardProps = {
 export default function VideoCard(props: VideoCardProps) {
     const router = useRouter()
 
-    console.log(props)
-
     return (
         <Card sx={{ display: 'flex', height: 200, mb: 2, cursor: 'pointer' }} onClick={handleOnClick}>
             <Box display={'flex'} alignItems={'center'} width={'25%'} pl='1rem'>
