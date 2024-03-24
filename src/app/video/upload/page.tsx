@@ -2,7 +2,7 @@ import UploadVideoForm from '@/components/UploadVideoForm'
 import { Box } from '@mui/material'
 
 export const metadata = {
-    title: ' - Upload Video',
+    title: 'Upload Video - ',
 }
 
 export default function UploadVideoPage() {

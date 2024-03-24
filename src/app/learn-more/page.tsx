@@ -4,7 +4,7 @@ import Logo from '@/components/Logo'
 import Typography from '@mui/material/Typography'
 
 export const metadata = {
-    title: ' - Learn More!',
+    title: 'Learn More! - ',
 }
 
 export default function LearnMorePage() {

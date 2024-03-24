@@ -12,8 +12,8 @@ import { Box } from '@mui/material'
 
 export const metadata: Metadata = {
     title: {
-        template: 'Harp Video%s',
-        default: 'Harp Video: A Secure Platform for Anonymous Video Submission',
+        template: '%sHarp Video',
+        default: 'Harp Video - A Secure Platform for Anonymous Video Submission',
     },
     description: 'Professional video sharing made easy, with a focus on protecting your privacy',
     icons: {
