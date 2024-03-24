@@ -1,7 +1,7 @@
 import { UseClientProps } from '@/types/metadata/useClientProps'
 
 export const metadata = {
-    title: ': Signup',
+    title: ' - Signup',
 }
 
 export default function ClientLayout({ children }: UseClientProps) {
