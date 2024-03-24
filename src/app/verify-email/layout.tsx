@@ -1,7 +1,7 @@
 import { UseClientProps } from '@/types/metadata/useClientProps'
 
 export const metadata = {
-    title: ': Verify Email',
+    title: '- Verify Email',
 }
 
 export default function ClientLayout({ children }: UseClientProps) {
