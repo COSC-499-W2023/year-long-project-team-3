@@ -1,56 +1,35 @@
-import ListItem from '@mui/material/ListItem'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import List from '@mui/material/List'
-import { SubmissionBox } from '@prisma/client'
-import { useRouter } from 'next/navigation'
-import { darken } from '@mui/system'
-import { theme } from '@/components/ThemeRegistry/theme'
+import SubmissionBoxCard from 'src/components/SubmissionBoxCard'
+import { SubmissionBoxInfo } from '@/types/submission-box/submissionBoxInfo'
 
 export type SubmissionBoxListProps = {
-    submissionBoxes: SubmissionBox[]
-    isSearching: boolean
-    emptyMessage: string
+  submissionBoxes: SubmissionBoxInfo[]
+  isOwned: boolean
+  isSearching: boolean
+  emptyMessage: string
 }
 
 export default function SubmissionBoxList(props: SubmissionBoxListProps) {
-    const router = useRouter()
-
     return !!props.submissionBoxes && props.submissionBoxes.length > 0 ? (
-        <List sx={{ maxHeight: 600, overflow: 'auto', position: 'relative', pl: 1, pr: 1 }}>
+        <List sx={{ maxHeight: 600, overflow: 'auto', position: 'relative', pl: 3, pr: 3 }} data-cy={'submission-box-list'}>
             {props.submissionBoxes.map((submissionBox, idx: number) => (
-                <ListItem key={`submission_box_${ idx }`} onClick={() => handleClickListItem(submissionBox.id)}>
-                    <Box
-                        sx={{
-                            p: 1,
-                            backgroundColor: 'secondary.light',
-                            borderRadius: 1,
-                            width: '100%',
-                            padding: '1rem 2rem',
-                            cursor: 'pointer',
-                            '&:hover': {
-                                backgroundColor: darken(theme.palette.secondary.light, 0.2),
-                            },
-                        }}
-                        borderColor={'textSecondary'}
-                        display='flex'
-                        alignItems='center'
-                        justifyContent='space-between'
-                    >
-                        <Typography
-                            data-cy={submissionBox.title}
-                            sx={{ p: 1, color: 'textSecondary', fontWeight: 'bold' }}
-                        >
-                            {submissionBox.title}
-                        </Typography>
-                        <Typography sx={{ p: 1, color: 'textSecondary' }}>
-                            Close Date:{' '}
-                            {!!submissionBox.closesAt
-                                ? new Date(submissionBox.closesAt).toDateString().slice(4)
-                                : 'N/A'}
-                        </Typography>
-                    </Box>
-                </ListItem>
+                <SubmissionBoxCard
+                    key={`submission_box_${ idx }`}
+                    title={submissionBox.title}
+                    closesAt={submissionBox.closesAt}
+                    id={submissionBox.id}
+                    isOpen={isOpen(submissionBox)}
+                    // Only set numMembers and numSubmissions for boxes the user owns
+                    numMembers={getNumMembers(props.isOwned, submissionBox)}
+                    numSubmissions={getNumSubmissions(props.isOwned, submissionBox)}
+                    // Only set time submitted for boxes the user was invited to, not for those he owns
+                    timeSubmitted={getTimeSubmittedTo(props.isOwned, submissionBox)}
+                    // Are these the user's submission boxes (under Manage Boxes) or the submission boxes the user has
+                    // been invited to (under My Invitations)
+                    isOwned={props.isOwned}
+                ></SubmissionBoxCard>
             ))}
         </List>
     ) : (
@@ -62,14 +41,37 @@ export default function SubmissionBoxList(props: SubmissionBoxListProps) {
                 color={'textSecondary'}
                 sx={{ mt: 20 }}
             >
-                { props.isSearching
+                {props.isSearching
                     ? props.emptyMessage + ' that match this search'
-                    : props.emptyMessage }
+                    : props.emptyMessage}
             </Typography>
         </Box>
     )
+}
 
-    function handleClickListItem(id: string) {
-        router.push(`/submission-box/${ id }`)
-    }
+function isOpen(submissionBox: SubmissionBoxInfo) {
+    // Box is open if it either does not have a closing date, or if the closing date is in the future
+    return submissionBox.closesAt? (new Date() < new Date(submissionBox.closesAt)) : true
+}
+
+function getNumMembers(isOwned: boolean, submissionBox: SubmissionBoxInfo) {
+    return isOwned && submissionBox.requestedSubmissions? submissionBox.requestedSubmissions.length : 0
+}
+
+function getNumSubmissions(isOwned: boolean, submissionBox: SubmissionBoxInfo) {
+    if (!isOwned) { return 0 }
+    let totalSubmitted = 0
+    submissionBox.requestedSubmissions.forEach(submission => {
+        submission.videoVersions.forEach(version => {
+            if (version.submittedAt !== null) {
+                totalSubmitted++
+            }
+        })
+    })
+    return totalSubmitted
+}
+
+function getTimeSubmittedTo(isOwned: boolean, submissionBox: SubmissionBoxInfo) {
+    // Return submittedAt of last video version
+    return !isOwned && submissionBox.requestedSubmissions?.length == 1? submissionBox.requestedSubmissions[0].videoVersions[submissionBox.requestedSubmissions[0].videoVersions.length - 1]?.submittedAt : null
 }

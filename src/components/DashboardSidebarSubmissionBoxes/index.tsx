@@ -13,7 +13,7 @@ export type DashboardSidebarSubmissionBoxesProps = {
     onSubmissionInboxClick?: () => void
     onSubmissionOutboxClick?: () => void
     sidebarSelectedOption: SidebarOption
-    setSidebarSelectedOption: React.Dispatch<React.SetStateAction<SidebarOption>>
+    setSidebarSelectedOption: (option: SidebarOption) => void
 }
 
 export default function DashboardSidebarSubmissionBoxes(props: DashboardSidebarSubmissionBoxesProps) {
@@ -61,7 +61,6 @@ export default function DashboardSidebarSubmissionBoxes(props: DashboardSidebarS
     )
 
     function handleCreateNewClick() {
-        props.setSidebarSelectedOption('submission_boxes_create_new')
         props.onCreateNewClick()
     }
 

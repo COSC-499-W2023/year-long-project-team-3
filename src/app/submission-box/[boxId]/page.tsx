@@ -1,6 +1,6 @@
 'use client'
 
-import { usePathname, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { Typography, Box, Link, Dialog, DialogTitle, DialogActions, Button, Alert, TextField } from '@mui/material'
 import { SubmissionBox, Video } from '@prisma/client'
@@ -21,9 +21,14 @@ import { SubmissionModificationData } from '@/types/submission-box/submissionMod
 import dayjs from 'dayjs'
 import { DateTimePicker } from '@mui/x-date-pickers'
 
-export default function SubmissionBoxDetailPage() {
+export type SubmissionBoxDetailPageProps = {
+    params: {
+        boxId: string
+    }
+}
+
+export default function SubmissionBoxDetailPage({ params }: SubmissionBoxDetailPageProps) {
     const router = useRouter()
-    const pathname = usePathname()
     const [isFetchingSubmissionBox, setIsFetchingSubmissionBox] = useState(true)
     const [boxType, setBoxType] = useState<BoxStatus>('requested')
     const [videos, setVideos] = useState<(Video & VideoSubmission)[]>([])
@@ -31,7 +36,7 @@ export default function SubmissionBoxDetailPage() {
     const [isEditing, setIsEditing] = useState(false)
     const [isFormSubmitted, setIsFormSubmitted] = useState(false)
 
-    const boxId = pathname?.split('/').pop()
+    const { boxId } = params
     const [unsubmitDialogOpen, setUnsubmitDialogOpen] = useState(false)
     const formik = useFormik<SubmissionModificationData>({
         initialValues: {
@@ -364,7 +369,7 @@ export default function SubmissionBoxDetailPage() {
     function unsubmitVideo() {
         setUnsubmitDialogOpen(false)
 
-        fetch('/api/video/submit/new', {
+        fetch('/api/video/submit', {
             method: 'DELETE',
             body: JSON.stringify({
                 videoId: videos[0].id,
