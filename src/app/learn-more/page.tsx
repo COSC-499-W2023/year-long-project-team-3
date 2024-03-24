@@ -1,9 +1,11 @@
-'use client'
-
 import React from 'react'
 import { Box, Link } from '@mui/material'
 import Logo from '@/components/Logo'
 import Typography from '@mui/material/Typography'
+
+export const metadata = {
+    title: ' - Learn More!',
+}
 
 export default function LearnMorePage() {
     // noinspection HtmlUnknownTarget
