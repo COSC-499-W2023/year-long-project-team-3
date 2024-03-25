@@ -129,7 +129,8 @@ export default function SubmissionBoxDetailPage({ params }: SubmissionBoxDetailP
                                             videoId: video.id,
                                             thumbnailUrl: video.thumbnail,
                                             description: video.description,
-                                            isSubmitted: video.isSubmitted,
+                                            // isSubmitted is true always since we are viewing the video inside the box
+                                            isSubmitted: true,
                                             createdDate: video.createdAt,
                                             // Not passing submission boxes when video is viewed in submission box
                                             submissionBoxes: [],
