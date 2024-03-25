@@ -523,3 +523,28 @@ will have to reconsider how we do that moving forwards.
 ### Additional Context
 
 - N/A
+
+## Week 11 (18/03/2024 - 24/03/2024)
+
+![](imgs/seth-akins-term-2-week-11-tasks.png)
+
+### Goals
+
+- This week I implemented a reset password feature. 
+- If the user has forgotten their password, they are able to enter their email and have a reset email sent to them. This
+  email contains a link that will take them to a page to change their password. They can then log in with this updated 
+  password
+
+### Tasks
+
+#### Completed Tasks
+
+- [Implement Reset Password Feature](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/495)
+
+#### In-Progress Tasks
+
+- N/A
+
+### Additional Context
+
+- N/A
