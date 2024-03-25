@@ -141,7 +141,7 @@ export default function LoginForm() {
                     </Typography>
                     <Typography sx={{mt: 1}}>
                     Forgot Password?{' '}
-                        <Link data-cy='link-to-reset-password' href={'/reset-password' + (callbackUrl ? `?callbackUrl=${ encodeURIComponent(callbackUrl) }` : '')}>
+                        <Link data-cy='link-to-reset-password' href={'/reset-password'}>
                           Reset Password
                         </Link>
                     </Typography>
