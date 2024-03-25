@@ -16,7 +16,7 @@
 
 ### Additional Context
 
-I was working on my honors thesis this week, so I'm just gonna use on of my freebie weeks.
+I was working on my honors thesis this week, so I'm just gonna use one of my freebie weeks.
 
 ## Week 10 (Mar 11 - Mar 17)
 
