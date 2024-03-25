@@ -45,7 +45,7 @@ export default function ResetPasswordEmailAddressForm(props: {resetPasswordId: s
                 minWidth: 'md',
             }}
         >
-            <Typography variant='h4' sx={{ fontWeight: 'medium', my: '2rem'}}>
+            <Typography variant='h4' sx={{ fontWeight: 'medium', my: '1rem'}}>
                 Reset Password
             </Typography>
             <Typography sx={{maxWidth: 'sm', textAlign: 'center'}}>

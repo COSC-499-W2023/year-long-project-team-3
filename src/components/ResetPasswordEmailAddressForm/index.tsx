@@ -32,7 +32,7 @@ export default function ResetPasswordEmailAddressForm() {
                 minWidth: 'md',
             }}
         >
-            <Typography variant='h4' sx={{ fontWeight: 'medium', my: '2rem'}}>
+            <Typography variant='h4' sx={{ fontWeight: 'medium', my: '1rem'}}>
                 Reset Password
             </Typography>
             <Typography sx={{maxWidth: 'sm', textAlign: 'center'}}>
