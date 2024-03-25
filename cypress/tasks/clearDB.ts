@@ -9,6 +9,7 @@ export default async function clearDB() {
     await prisma.videoWhitelistedUser.deleteMany({})
     await prisma.videoWhitelist.deleteMany({})
     await prisma.video.deleteMany({})
+    await prisma.resetPasswordToken.deleteMany({})
     await prisma.account.deleteMany({})
     await prisma.user.deleteMany({})
 

@@ -43,6 +43,13 @@ export function validTimestamp(timestamp: string) {
     return getTimestampRegex().test(timestamp)
 }
 
+export function isDateWithinFifteenMinutes(date: Date): boolean {
+    const currentDate = new Date()
+    const timeDifference = currentDate.getTime() - new Date(date).getTime()
+    const fifteenMinutesInMilliseconds = 15 * 60 * 1000
+    return timeDifference < fifteenMinutesInMilliseconds
+}
+
 export function isDateWithinLast24Hours(date: Date): boolean {
     // Get the current date and time
     const currentDate = new Date()

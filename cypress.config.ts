@@ -19,6 +19,9 @@ import {deleteVerificationToken} from './cypress/tasks/deleteVerificationToken'
 import {editOrCreateVerificationToken} from './cypress/tasks/editOrCreateVerificationToken'
 import createRequestedBoxForSubmissionBox from './cypress/tasks/createRequestedBoxForSubmissionBox'
 import createSubmissionBoxForSubmissions from './cypress/tasks/createSubmissionBoxForSubmissions'
+import getResetPasswordToken from './cypress/tasks/getResetPasswordToken'
+import createResetPasswordToken from './cypress/tasks/createResetPasswordToken'
+import editPasswordResetTokenDate from './cypress/tasks/editPasswordResetTokenDate'
 
 require('dotenv').config()
 
@@ -50,6 +53,9 @@ export default defineConfig({
                 editOrCreateVerificationToken,
                 createRequestedBoxForSubmissionBox,
                 createSubmissionBoxForSubmissions,
+                getResetPasswordToken,
+                createResetPasswordToken,
+                editPasswordResetTokenDate,
             })
         },
         experimentalModifyObstructiveThirdPartyCode: true,
