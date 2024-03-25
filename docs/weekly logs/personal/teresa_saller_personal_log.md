@@ -452,3 +452,22 @@ My goal for this week to continue working on addressing feedback from our peer-t
 cards and implemented them as part of this process. My goal for next week is to fix some UI issues on the website.
 
 ### Additional Context
+
+
+## Teresa Saller - Term 2: Week 11 (2024/03/18 - 2024/03/24)
+
+![teresa-saller-tasks-w11-t2.png](imgs/teresa-saller-tasks-w11-t2.png)
+
+### Tasks
+
+Completed:
+- [UI Fixes on Submission Box Page #514](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/514)
+
+In progress:
+
+### Goals
+
+My goal for this week was to fix some UI issues on the website. My goal for next week is to perform a larger refactor of
+the API to be able to display more helpful information.
+
+### Additional Context
