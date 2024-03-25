@@ -315,3 +315,21 @@
 ### Additional Context
 
 -  N/A
+
+## Week 10 (11/03/2024 - 17/03/2024)
+
+![](imgs/term-2-week-10-erin-tasks.png)
+
+### Week Tasks
+
+-   Add tab title for pages  #373 (In-Progress)
+-   Disable editing while video is processing  #476 (In-Progress)
+
+### Week Goals
+
+-   This week's I started work on adding titles to tabs when viewing certain pages in our app, at the moment all static pages have a title (eg, dashboard, login) and in the next week I will be figuring out how to add a dynamic title to other pages (eg. adding video titles to the title, or submission box)
+-   Also started the fix of disabling a user from editing a video when said video is still being processed in AWS, both front and backend has been modified and the only thing left is more rigorous testing and reviews.
+
+### Additional Context
+
+-  N/A

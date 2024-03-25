@@ -14,7 +14,7 @@ export type DashboardMenuSidebarProps = {
     onStarredClick?: () => void
     onTrashClick?: () => void
     sidebarSelectedOption: SidebarOption
-    setSidebarSelectedOption: React.Dispatch<React.SetStateAction<SidebarOption>>
+    setSidebarSelectedOption: (option: SidebarOption) => void
 }
 
 export default function DashboardSidebarMenu(props: DashboardMenuSidebarProps) {
@@ -50,7 +50,6 @@ export default function DashboardSidebarMenu(props: DashboardMenuSidebarProps) {
     )
 
     function handleRecordNewClick() {
-        props.setSidebarSelectedOption('menu_record_new')
         props.onRecordNewClick()
     }
 

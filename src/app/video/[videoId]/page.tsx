@@ -1,7 +1,7 @@
 'use client'
 
 import { useSession } from 'next-auth/react'
-import { usePathname, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { SubmissionBox, Video } from '@prisma/client'
 import logger from '@/utils/logger'
@@ -15,12 +15,17 @@ import EditIcon from '@mui/icons-material/Edit'
 import { theme } from '@/components/ThemeRegistry/theme'
 import dayjs from 'dayjs'
 
-export default function VideoDetailedPage() {
+export type VideoDetailedPageProps = {
+    params: {
+        videoId: string
+    }
+}
+
+export default function VideoDetailedPage({ params }: VideoDetailedPageProps) {
     const session = useSession()
     const router = useRouter()
-    const pathname = usePathname()
 
-    const videoId = pathname?.split('/').pop()
+    const { videoId } = params
 
     const [video, setVideo] = useState<Video>()
     const [isFetchingVideo, setIsFetchingVideo] = useState(false)
@@ -80,28 +85,33 @@ export default function VideoDetailedPage() {
         if (!videoId) {
             router.push('/')
         }
-
-        Promise.all([
-            fetch(`/api/video/${ videoId }`),
-            fetch(`/api/submission-box/video/${ videoId }`),
-        ])
-            .then(async ([videoRes, submissionBoxesRes]) => [await videoRes.json(), await submissionBoxesRes.json()])
-            .then(([videoData, submissionBoxesData]) => {
-                if (!videoData.video || !submissionBoxesData.submissionBoxes) {
-                    throw new Error('Could not fetch video or submission boxes')
-                }
-                setVideo(videoData.video)
-                setSubmissionBoxes(submissionBoxesData.submissionBoxes)
-            })
-            .catch((err) => {
-                logger.error(err.message)
-                toast.error('An unexpected error occurred while trying to load your video!')
-                router.push('/dashboard')
-            })
-            .finally(() => {
-                setIsFetchingVideo(false)
-                setIsFetchingSubmissionBoxes(false)
-            })
+        const interval = setInterval(async () => {
+            Promise.all([
+                fetch(`/api/video/${ videoId }`),
+                fetch(`/api/submission-box/video/${ videoId }`),
+            ])
+                .then(async ([videoRes, submissionBoxesRes]) => [await videoRes.json(), await submissionBoxesRes.json()])
+                .then(([videoData, submissionBoxesData]) => {
+                    if (!videoData.video || !submissionBoxesData.submissionBoxes) {
+                        throw new Error('Could not fetch video or submission boxes')
+                    }
+                    setVideo(videoData.video)
+                    setSubmissionBoxes(submissionBoxesData.submissionBoxes)
+                    if (videoData.video.isCloudProcessed) {
+                        clearInterval(interval)
+                    }
+                })
+                .catch((err) => {
+                    logger.error(err.message)
+                    toast.error('An unexpected error occurred while trying to load your video!')
+                    router.push('/dashboard')
+                })
+                .finally(() => {
+                    setIsFetchingVideo(false)
+                    setIsFetchingSubmissionBoxes(false)
+                })
+        }, 2000)
+        return () => clearInterval(interval)
     }, [router, videoId])
 
     return (
@@ -162,12 +172,18 @@ export default function VideoDetailedPage() {
                                             width: '100%',
                                         }}
                                     >
-                                        {!isFetchingVideo && !!video?.processedVideoUrl && (
-                                            <ScalingReactPlayer
-                                                data-cy='scaling-react-player'
-                                                url={video?.processedVideoUrl}
-                                                allowKeyDown={!isEditing}
-                                            />
+                                        {!isFetchingVideo && (
+                                            !!video?.processedVideoUrl ? (
+                                                <ScalingReactPlayer
+                                                    data-cy='scaling-react-player'
+                                                    url={video?.processedVideoUrl}
+                                                    allowKeyDown={!isEditing}
+                                                />
+                                            ) : (
+                                                <Box sx={{flexGrow: 1, display: 'flex', alignItems: 'center'}}>
+                                                    <Alert data-cy='video-processing-alert' severity='info'>Your video is currently being processed. This could take several minutes. Please wait or come back later.</Alert>
+                                                </Box>
+                                            )
                                         )}
                                     </Box>
                                     <Box
@@ -338,7 +354,7 @@ export default function VideoDetailedPage() {
                                                 </Box>
                                             </Box>
                                         )}
-                                        {!isEditing && video?.ownerId === userId && !!video?.processedVideoUrl && (
+                                        {!isEditing && video?.ownerId === userId && video?.isCloudProcessed && (
                                             <Box
                                                 position='absolute'
                                                 top='2rem'

@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid'
 describe('Test video editing page', () => {
     context('Not logged in', () => {
         beforeEach(() => {
-            cy.visit('/video/preview/randomVideoId')
+            cy.visit('/video/randomVideoId')
         })
 
         it('should redirect to login', () => {
@@ -35,7 +35,7 @@ describe('Test video editing page', () => {
                 cy.task('getUserId', email).then((userId) => {
                     cy.task('createOneVideoAndRetrieveVideoId', { ownerId: userId, title: 'Test video' }).then(
                         (videoId) => {
-                            videoUrl = '/video/preview/' + videoId
+                            videoUrl = '/video/' + videoId
                         }
                     )
                 })
@@ -45,15 +45,6 @@ describe('Test video editing page', () => {
         it('should contain video', () => {
             cy.visit(videoUrl)
             cy.get('.react-player', { timeout: TIMEOUT.EXTRA_LONG }).should('exist')
-        })
-
-        it('should have next and back buttons', () => {
-            cy.visit(videoUrl)
-            cy.get('#nav-buttons-div', { timeout: TIMEOUT.EXTRA_LONG })
-                .find('button')
-                .should('have.length', 2)
-                .and('contain', 'Back')
-                .and('contain', 'Next')
         })
 
         it('should be controllable by keyboard', () => {
