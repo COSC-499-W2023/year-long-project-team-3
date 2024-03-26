@@ -52,6 +52,7 @@ export default function HeaderSignOutButtons() {
                         px: '16px',
                         py: '6px',
                     }}
+                    data-cy='user-email'
                 >
                     <Avatar
                         sx={{

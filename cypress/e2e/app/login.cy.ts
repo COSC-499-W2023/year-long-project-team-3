@@ -174,4 +174,43 @@ describe('Login tests', () => {
         cy.get('[data-cy="submit"]').click()
         cy.url().should('contain', 'verify-email')
     })
+
+    it('should show the first letter of user\'s email in the profile icon', () => {
+        // User data
+        const randomChar = String.fromCharCode(Math.floor(Math.random() * 26) + 97)
+        const email = `${ randomChar }@joe.ca`
+        const password = 'P@ssw0rd'
+
+        // Sign up
+        cy.task('createUser', { email, password })
+
+        // Login
+        cy.visit('/login')
+        cy.get('[data-cy="email"]').type(email)
+        cy.get('[data-cy="password"]').type(password)
+        cy.get('[data-cy="submit"]').click()
+
+        // Check the profile icon
+        cy.url().should('not.contain', 'login')
+        cy.get('[data-cy="header-profile"]').should('have.text', randomChar.toUpperCase())
+    })
+
+    it('should show user email in profile dropdown', () => {
+        const email = 'test@joe.ca'
+        const password = 'P@ssw0rd'
+
+        // Sign up
+        cy.task('createUser', { email, password })
+
+        // Login
+        cy.visit('/login')
+        cy.get('[data-cy="email"]').type(email)
+        cy.get('[data-cy="password"]').type(password)
+        cy.get('[data-cy="submit"]').click()
+
+        // Check the profile dropdown
+        cy.url().should('not.contain', 'login')
+        cy.get('[data-cy="header-profile"]').click({ force: true })
+        cy.get('[data-cy="user-email"]').should('have.text', email)
+    })
 })
