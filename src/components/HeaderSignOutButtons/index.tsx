@@ -25,7 +25,7 @@ export default function HeaderSignOutButtons() {
                 mr: '0.5rem',
             }}
         >
-            <IconButton onClick={handleClick}>
+            <IconButton onClick={handleClick} data-cy='header-profile'>
                 <Avatar>{email?.toUpperCase().charAt(0)}</Avatar>
             </IconButton>
             <Menu
@@ -68,6 +68,7 @@ export default function HeaderSignOutButtons() {
                     sx={{
                         color: theme.palette.error.main,
                     }}
+                    data-cy='sign-out-button'
                 >
                     <ListItemIcon>
                         <Logout fontSize='small' color='error'/>

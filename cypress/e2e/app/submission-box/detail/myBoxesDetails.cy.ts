@@ -172,6 +172,7 @@ describe('Receiving Dashboard Details Page Tests', () => {
             let slug: string | undefined = ''
             cy.url().then((url) => (slug = url.split('/').pop()))
 
+            cy.get('[data-cy="header-profile"]').click({ force: true })
             cy.get('[data-cy="sign-out-button"]').click()
             cy.url().should('not.contain', 'submission-box')
             cy.reload()
