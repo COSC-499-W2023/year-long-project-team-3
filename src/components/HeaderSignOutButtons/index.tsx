@@ -13,6 +13,7 @@ export default function HeaderSignOutButtons() {
         return !!anchorElement
     }, [anchorElement])
     const session = useSession()
+    const email = session.data?.user?.email
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElement(event.currentTarget)
@@ -25,7 +26,7 @@ export default function HeaderSignOutButtons() {
             }}
         >
             <IconButton onClick={handleClick}>
-                <Avatar/>
+                <Avatar>{email?.toUpperCase().charAt(0)}</Avatar>
             </IconButton>
             <Menu
                 open={menuOpen}
@@ -59,7 +60,7 @@ export default function HeaderSignOutButtons() {
                             mr: '4px',
                         }}
                     />
-                    <Typography noWrap>{session.data?.user?.email}</Typography>
+                    <Typography noWrap>{email}</Typography>
                 </Box>
                 <Divider/>
                 <MenuItem
