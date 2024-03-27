@@ -1,20 +1,77 @@
 'use client'
 
-import { Box, Button } from '@mui/material'
-import { signOut } from 'next-auth/react'
+import {Avatar, Box, Divider, IconButton, ListItemIcon, Menu, MenuItem, Typography} from '@mui/material'
+import {signOut, useSession} from 'next-auth/react'
 import logger from '@/utils/logger'
+import React, { useMemo, useState } from 'react'
+import {Logout} from '@mui/icons-material'
 
 export default function HeaderSignOutButtons() {
+    const [anchorElement, setAnchorElement] = useState<null | HTMLElement>(null)
+    const menuOpen = useMemo(() => {
+        return !!anchorElement
+    }, [anchorElement])
+    const session = useSession()
+    const email = session.data?.user?.email
+
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorElement(event.currentTarget)
+    }
+
     return (
-        <Box sx={{ m: 2, display: 'flex', flexDirection: 'row', gap: '16px' }}>
-            <Button
-                variant='contained'
-                sx={{ textTransform: 'capitalize', fontSize: 20, borderRadius: 28 }}
-                data-cy='sign-out-button'
-                onClick={handleSignOut}
+        <Box
+            sx={{
+                mr: '0.5rem',
+            }}
+        >
+            <IconButton onClick={handleClick} data-cy='header-profile'>
+                <Avatar>{email?.toUpperCase().charAt(0)}</Avatar>
+            </IconButton>
+            <Menu
+                open={menuOpen}
+                anchorEl={anchorElement}
+                onClose={() => setAnchorElement(null)}
+                sx={{
+                    mt: 1.5,
+                    '& .MuiMenu-paper': {
+                        borderRadius: '0.75rem',
+                    },
+                }}
+                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                Sign Out
-            </Button>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        maxWidth: '16rem',
+                        gap: '0.5rem',
+                        px: '16px',
+                        py: '6px',
+                    }}
+                    data-cy='user-email'
+                >
+                    <Avatar
+                        sx={{
+                            height: '1.5rem',
+                            width: '1.5rem',
+                            mr: '4px',
+                        }}
+                    />
+                    <Typography noWrap>{email}</Typography>
+                </Box>
+                <Divider/>
+                <MenuItem
+                    onClick={handleSignOut}
+                    data-cy='sign-out-button'
+                >
+                    <ListItemIcon>
+                        <Logout fontSize='medium'/>
+                    </ListItemIcon>
+                    Sign Out
+                </MenuItem>
+            </Menu>
         </Box>
     )
 
