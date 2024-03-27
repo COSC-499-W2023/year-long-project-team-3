@@ -61,12 +61,12 @@ export default function SubmissionBoxDetails(props: SubmissionBoxInfoProps) {
                     </Typography>
                 </Box>
             )}
-            {props.submissionBox && props.submissionBox.requestedSubmissions && (
+            {props.submissionBox && props.submissionBox.requestedSubmissions && props.submissionBox.requestedSubmissions.length > 0 && (
                 <Box>
-                    <Typography color={'textSecondary'} sx={{ fontWeight: 'bold' }}>
+                    <Typography data-cy='submissionBoxMembersHeading' color={'textSecondary'} sx={{ fontWeight: 'bold' }}>
                     Members
                     </Typography>
-                    <Box>
+                    <Box data-cy='submissionBoxMembers'>
                         {props.submissionBox.requestedSubmissions.map((requestedSubmission: {id: string, email: string}) =>
                             <Chip sx={{ m: 0.5, ml: 0 }} key={`submission-box-chip-${ requestedSubmission.id }`} label={requestedSubmission.email} />
                         )
