@@ -139,7 +139,7 @@ export default function SubmissionBoxDetailPage({ params }: SubmissionBoxDetailP
                                     emptyMessage={'No Videos Have Been Submitted to Your Box'}
                                 />
                             </Box>
-                            <Box paddingLeft='2rem'>
+                            <Box pr='1rem' pl='2rem'>
                                 {!isEditing && (
                                     <Box
                                         top='2rem'
