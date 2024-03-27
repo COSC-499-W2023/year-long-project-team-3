@@ -9,6 +9,7 @@ import Button from '@mui/material/Button'
 export type SubmissionBoxInfoProps = {
     submissionBox: SubmissionBox & { requestedSubmissions: RequestedSubmission[]} | null
     onUnsubmit?: () => void
+    isOwned: boolean
 }
 export default function SubmissionBoxDetails(props: SubmissionBoxInfoProps) {
     return (
@@ -61,7 +62,7 @@ export default function SubmissionBoxDetails(props: SubmissionBoxInfoProps) {
                     </Typography>
                 </Box>
             )}
-            {props.submissionBox && props.submissionBox.requestedSubmissions && props.submissionBox.requestedSubmissions.length > 0 && (
+            {props.isOwned && props.submissionBox && props.submissionBox.requestedSubmissions && props.submissionBox.requestedSubmissions.length > 0 && (
                 <Box>
                     <Typography data-cy='submissionBoxMembersHeading' color={'textSecondary'} sx={{ fontWeight: 'bold' }}>
                     Members

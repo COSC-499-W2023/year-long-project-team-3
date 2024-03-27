@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { Typography, Box, Link, Dialog, DialogTitle, DialogActions, Button, Alert, TextField } from '@mui/material'
-import { SubmissionBox, Video } from '@prisma/client'
+import { RequestedSubmission, SubmissionBox, Video } from '@prisma/client'
 import VideoList from '@/components/VideoList'
 import BackButtonWithLink from '@/components/BackButtonWithLink'
 import SubmissionBoxDetails from '@/components/SubmissionBoxDetails'
@@ -32,7 +32,7 @@ export default function SubmissionBoxDetailPage({ params }: SubmissionBoxDetailP
     const [isFetchingSubmissionBox, setIsFetchingSubmissionBox] = useState(true)
     const [boxType, setBoxType] = useState<BoxStatus>('requested')
     const [videos, setVideos] = useState<(Video & VideoSubmission)[]>([])
-    const [boxInfo, setBoxInfo] = useState<SubmissionBox | null>(null)
+    const [boxInfo, setBoxInfo] = useState<SubmissionBox & { requestedSubmissions: RequestedSubmission[]} | null>(null)
     const [isEditing, setIsEditing] = useState(false)
     const [isFormSubmitted, setIsFormSubmitted] = useState(false)
 
@@ -158,7 +158,7 @@ export default function SubmissionBoxDetailPage({ params }: SubmissionBoxDetailP
                                     </Box>
                                 )}
                                 {!isEditing ? (
-                                    <SubmissionBoxDetails submissionBox={boxInfo} />
+                                    <SubmissionBoxDetails submissionBox={boxInfo} isOwned={true}/>
                                 ) : (
                                     <>
                                         <form onSubmit={formik.handleSubmit} noValidate>
@@ -334,7 +334,7 @@ export default function SubmissionBoxDetailPage({ params }: SubmissionBoxDetailP
                                 <Box sx={{
                                     pr: '2rem',
                                 }}>
-                                    <SubmissionBoxDetails submissionBox={boxInfo} onUnsubmit={videos?.length !== 0 ? () => setUnsubmitDialogOpen(true) : undefined}/>
+                                    <SubmissionBoxDetails submissionBox={boxInfo} onUnsubmit={videos?.length !== 0 ? () => setUnsubmitDialogOpen(true) : undefined} isOwned={false}/>
                                     <Dialog
                                         open={unsubmitDialogOpen}
                                         onClose={() => setUnsubmitDialogOpen(false)}
