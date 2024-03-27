@@ -2,13 +2,14 @@
 
 import Typography from '@mui/material/Typography'
 import React from 'react'
-import { SubmissionBox } from '@prisma/client'
-import { Box } from '@mui/material'
+import { RequestedSubmission, SubmissionBox } from '@prisma/client'
+import { Box, Chip } from '@mui/material'
 import Button from '@mui/material/Button'
 
 export type SubmissionBoxInfoProps = {
-    submissionBox: SubmissionBox | null
+    submissionBox: SubmissionBox & { requestedSubmissions: RequestedSubmission[]} | null
     onUnsubmit?: () => void
+    isOwned: boolean
 }
 export default function SubmissionBoxDetails(props: SubmissionBoxInfoProps) {
     return (
@@ -59,6 +60,19 @@ export default function SubmissionBoxDetails(props: SubmissionBoxInfoProps) {
                     >
                         {props.submissionBox.description}
                     </Typography>
+                </Box>
+            )}
+            {props.isOwned && props.submissionBox && props.submissionBox.requestedSubmissions && props.submissionBox.requestedSubmissions.length > 0 && (
+                <Box>
+                    <Typography data-cy='submissionBoxMembersHeading' color={'textSecondary'} sx={{ fontWeight: 'bold' }}>
+                    Members
+                    </Typography>
+                    <Box data-cy='submissionBoxMembers'>
+                        {props.submissionBox.requestedSubmissions.map((requestedSubmission: {id: string, email: string}) =>
+                            <Chip sx={{ m: 0.5, ml: 0 }} key={`submission-box-chip-${ requestedSubmission.id }`} label={requestedSubmission.email} />
+                        )
+                        }
+                    </Box>
                 </Box>
             )}
             {props.onUnsubmit && (

@@ -78,12 +78,20 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
             where: {
                 id: submissionBoxId,
             },
+            include: {
+                requestedSubmissions: {
+                    select: {
+                        email: true,
+                    },
+                },
+            },
             data: {
                 title: title,
                 description: description,
                 closesAt: closesAt ? new Date(closesAt.toString()) : null,
             },
         })
+
         return NextResponse.json( {submission: updatedSubmissionBox}, { status: 200 })
     } catch (error) {
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })

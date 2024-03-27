@@ -88,6 +88,10 @@ describe('Requested Dashboard Details Page Tests', () => {
                                 cy.get('[data-cy="submissionBoxDate"]').should('contain', new Date().toDateString().slice(4))
                                 cy.get('[data-cy="submissionBoxDesc"]').should('contain', submissionBoxDescription)
 
+                                // Assert that member information is not visible on box user was invited to (should only be visible on owned boxes)
+                                cy.get('[data-cy="submissionBoxMembersHeading"]').should('not.exist')
+                                cy.get('[data-cy="submissionBoxMembers"]').should('not.exist')
+
                                 // Assert video player is visible
                                 cy.get('[data-cy="video-player"]', {
                                     timeout: 2 * TIMEOUT.EXTRA_EXTRA_LONG,
