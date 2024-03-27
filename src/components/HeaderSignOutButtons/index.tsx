@@ -5,7 +5,6 @@ import {signOut, useSession} from 'next-auth/react'
 import logger from '@/utils/logger'
 import React, { useMemo, useState } from 'react'
 import {Logout} from '@mui/icons-material'
-import {theme} from '@/components/ThemeRegistry/theme'
 
 export default function HeaderSignOutButtons() {
     const [anchorElement, setAnchorElement] = useState<null | HTMLElement>(null)
@@ -33,7 +32,6 @@ export default function HeaderSignOutButtons() {
                 anchorEl={anchorElement}
                 onClose={() => setAnchorElement(null)}
                 sx={{
-                    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
                     mt: 1.5,
                     '& .MuiMenu-paper': {
                         borderRadius: '0.75rem',
@@ -66,13 +64,10 @@ export default function HeaderSignOutButtons() {
                 <Divider/>
                 <MenuItem
                     onClick={handleSignOut}
-                    sx={{
-                        color: theme.palette.error.main,
-                    }}
                     data-cy='sign-out-button'
                 >
                     <ListItemIcon>
-                        <Logout fontSize='small' color='error'/>
+                        <Logout fontSize='medium'/>
                     </ListItemIcon>
                     Sign Out
                 </MenuItem>
