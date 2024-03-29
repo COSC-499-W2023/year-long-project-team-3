@@ -26,16 +26,18 @@ describe('Test inviting and uninviting users', () => {
         cy.url().should('not.contain', 'login')
     })
 
-    it('should invite emails', () => {
-        cy.task<SubmissionBox[]>('getSubmissionBoxes').then((submissionBoxes) => {
-            cy.request('POST', '/api/submission-box/invite', {
-                submissionBoxId: submissionBoxes[0].id,
-                emails: invitedEmails,
-            }).should('be.ok')
-            cy.task<string[]>('getInvitedUserEmails', submissionBoxes[0].id).then(emails => {
-                expect(emails).to.have.length(invitedEmails.length)
-                emails.map(email => {
-                    expect(invitedEmails).to.include(email)
+    context('No emails invited', () => {
+        it('should invite emails', () => {
+            cy.task<SubmissionBox[]>('getSubmissionBoxes').then((submissionBoxes) => {
+                cy.request('POST', '/api/submission-box/invite', {
+                    submissionBoxId: submissionBoxes[0].id,
+                    emails: invitedEmails,
+                }).its('status').should('equal', 201)
+                cy.task<string[]>('getInvitedUserEmails', submissionBoxes[0].id).then(emails => {
+                    expect(emails).to.have.length(invitedEmails.length)
+                    emails.map(email => {
+                        expect(invitedEmails).to.include(email)
+                    })
                 })
             })
         })
@@ -53,9 +55,33 @@ describe('Test inviting and uninviting users', () => {
                 cy.request('DELETE', '/api/submission-box/invite', {
                     submissionBoxId: submissionBoxes[0].id,
                     emails: invitedEmails,
-                }).should('be.ok')
+                }).its('status').should('equal', 200)
                 cy.task<string[]>('getInvitedUserEmails', submissionBoxes[0].id).then(emails => {
                     expect(emails).to.have.length(0)
+                })
+            })
+        })
+
+        it('should not fail when inviting a user already invited', () => {
+            cy.task<SubmissionBox[]>('getSubmissionBoxes').then((submissionBoxes) => {
+                cy.request('POST', '/api/submission-box/invite', {
+                    submissionBoxId: submissionBoxes[0].id,
+                    emails: ['joe@harpvideo.ca', 'otherperson@harpvideo.ca'],
+                }).its('status').should('equal', 201)
+                cy.task<string[]>('getInvitedUserEmails', submissionBoxes[0].id).then(emails => {
+                    expect(emails).to.have.length(invitedEmails.length + 1)
+                })
+            })
+        })
+
+        it('should not fail uninviting user not invited to box', () => {
+            cy.task<SubmissionBox[]>('getSubmissionBoxes').then((submissionBoxes) => {
+                cy.request('DELETE', '/api/submission-box/invite', {
+                    submissionBoxId: submissionBoxes[0].id,
+                    emails: ['joe@harpvideo.ca', 'otherperson@harpvideo.ca'],
+                }).its('status').should('equal', 200)
+                cy.task<string[]>('getInvitedUserEmails', submissionBoxes[0].id).then(emails => {
+                    expect(emails).to.have.length(invitedEmails.length - 1)
                 })
             })
         })
