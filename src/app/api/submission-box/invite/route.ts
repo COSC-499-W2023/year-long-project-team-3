@@ -16,6 +16,10 @@ function validateData(data: any): data is SubmissionBoxInvitationData {
         (data.emails.length === 0 || typeof data.emails[0] === 'string')
 }
 
+/* Invites users to a submission box. Returns nothing.
+ *
+ * Request format: `{ submissionBoxId: string; emails: string[] }`
+ */
 export async function POST(req: NextRequest) {
     try {
         // Get and validate request data
@@ -87,7 +91,7 @@ export async function POST(req: NextRequest) {
         }, {})
 
         // Create submission requests
-        const a = await prisma.requestedSubmission.createMany({
+        await prisma.requestedSubmission.createMany({
             data: newEmails.map((email) => {
                 return {
                     email: email,
@@ -109,6 +113,10 @@ export async function POST(req: NextRequest) {
     }
 }
 
+/* Un-invites users to a submission box. Returns nothing.
+ *
+ * Request format: `{ submissionBoxId: string; emails: string[] }`
+ */
 export async function DELETE(req: NextRequest) {
     try {
         // Get and validate request data
