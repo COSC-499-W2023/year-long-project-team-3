@@ -273,7 +273,6 @@ describe('Detail video page', () => {
 
         const videoTitle = 'Test Processing Video'
         const videoDescription = 'Description of test'
-        const submissionBoxTitle = 'Video processing'
         cy.task('getUserId', email).then((userId) => {
             cy.task('createVideoNotProcessed', { ownerId: userId, title: videoTitle, description: videoDescription }).then(
                 (videoId) => {
