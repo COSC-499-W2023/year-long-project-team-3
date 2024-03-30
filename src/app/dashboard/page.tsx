@@ -165,6 +165,7 @@ export default function DashboardPage() {
                                             }
                                         })}
                                         isSearching={isSearching}
+                                        isOwned={true}
                                     />
                                 ) : (
                                     <SubmissionBoxList
