@@ -16,10 +16,19 @@ export type SubmissionBoxInfoProps = {
     isOwned: boolean
 }
 export default function SubmissionBoxDetails(props: SubmissionBoxInfoProps) {
-    const [members, setMembers] = useState(props.submissionBox?.requestedSubmissions.map(requestedSubmission => requestedSubmission.email) ?? [])
+    const [members, setMembers] = useState(initialMembers())
     const [proposedDeleteMember, setProposedDeleteMember] = useState<string | null>(null)
     const [inviteMembersModalOpen, setInviteMembersModalOpen] = useState(false)
     const [addedEmails, setAddedEmails] = useState<string[]>([])
+
+    function initialMembers(): string[] {
+        if (props.submissionBox && props.submissionBox.requestedSubmissions){
+            return props.submissionBox.requestedSubmissions.map(requestedSubmission => requestedSubmission.email)
+        }
+        else {
+            return []
+        }
+    }
 
     function handleMemberDelete(deletedMember: string) {
         const newMembers = members.filter(member => member !== deletedMember)
