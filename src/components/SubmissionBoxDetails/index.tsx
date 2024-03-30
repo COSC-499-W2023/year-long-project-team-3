@@ -1,10 +1,12 @@
 'use client'
 
 import Typography from '@mui/material/Typography'
-import React from 'react'
+import React, { useState } from 'react'
 import { RequestedSubmission, SubmissionBox } from '@prisma/client'
 import { Box, Chip } from '@mui/material'
 import Button from '@mui/material/Button'
+import { AddCircleOutline } from '@mui/icons-material'
+import { toast } from 'react-toastify'
 
 export type SubmissionBoxInfoProps = {
     submissionBox: SubmissionBox & { requestedSubmissions: RequestedSubmission[]} | null
@@ -12,6 +14,25 @@ export type SubmissionBoxInfoProps = {
     isOwned: boolean
 }
 export default function SubmissionBoxDetails(props: SubmissionBoxInfoProps) {
+    const [members, setMembers] = useState(props.submissionBox?.requestedSubmissions.map(requestedSubmission => requestedSubmission.email) ?? [])
+
+    function handleMemberDelete(deletedMember: string) {
+        const newMembers = members.filter(member => member !== deletedMember)
+        setMembers(newMembers)
+        fetch('/api/submission-box/invite', {
+            method: 'DELETE',
+            body: JSON.stringify({
+                submissionBoxId: props.submissionBox?.id,
+                emails: [deletedMember],
+            }),
+        }).then(res => {
+            if (!res.ok) {
+                toast.error(`Failed to un-invite ${ deletedMember }`)
+                setMembers([...newMembers, deletedMember])
+            }
+        })
+    }
+
     return (
         <Box
             sx={{
@@ -62,19 +83,17 @@ export default function SubmissionBoxDetails(props: SubmissionBoxInfoProps) {
                     </Typography>
                 </Box>
             )}
-            {props.isOwned && props.submissionBox && props.submissionBox.requestedSubmissions && props.submissionBox.requestedSubmissions.length > 0 && (
-                <Box>
-                    <Typography data-cy='submissionBoxMembersHeading' color={'textSecondary'} sx={{ fontWeight: 'bold' }}>
+            <Box>
+                <Typography data-cy='submissionBoxMembersHeading' color={'textSecondary'} sx={{ fontWeight: 'bold' }}>
                     Members
-                    </Typography>
-                    <Box data-cy='submissionBoxMembers'>
-                        {props.submissionBox.requestedSubmissions.map((requestedSubmission: {id: string, email: string}) =>
-                            <Chip sx={{ m: 0.5, ml: 0 }} key={`submission-box-chip-${ requestedSubmission.id }`} label={requestedSubmission.email} />
-                        )
-                        }
-                    </Box>
+                </Typography>
+                <Box data-cy='submissionBoxMembers'>
+                    {members.map(email =>
+                        <Chip sx={{ m: 0.5, ml: 0 }} key={`submission-box-chip-${ email }`} label={email} onDelete={() => handleMemberDelete(email)}/>
+                    )}
+                    <Chip variant='outlined' label='Add Members' icon={<AddCircleOutline/>} onClick={() => console.log('boop')}/>
                 </Box>
-            )}
+            </Box>
             {props.onUnsubmit && (
                 <Box
                     sx={{
