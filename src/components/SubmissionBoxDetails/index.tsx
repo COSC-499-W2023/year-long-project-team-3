@@ -45,7 +45,7 @@ export default function SubmissionBoxDetails(props: SubmissionBoxInfoProps) {
 
     function inviteMembers() {
         const newMembers = addedEmails.filter(member => !members.includes(member))
-        if (addedEmails.length > 0) {
+        if (newMembers.length > 0) {
             fetch('/api/submission-box/invite', {
                 method: 'POST',
                 body: JSON.stringify({
