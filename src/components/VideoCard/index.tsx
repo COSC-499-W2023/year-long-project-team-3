@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation'
 import { theme } from '@/components/ThemeRegistry/theme'
 import dayjs from 'dayjs'
 
-export type VideoCardProps = {
+export type VideoCardVideo = {
     videoId: string
     title: string
     description: string | null
@@ -11,10 +11,14 @@ export type VideoCardProps = {
     isSubmitted: boolean
     createdDate: Date
     submissionBoxes: string[]
+}
+
+export type VideoCardProps = {
+    isOwned: boolean
     onClick?: (videoId: string) => void
 }
 
-export default function VideoCard(props: VideoCardProps) {
+export default function VideoCard(props: VideoCardVideo & VideoCardProps) {
     const router = useRouter()
 
     return (

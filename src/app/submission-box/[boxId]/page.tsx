@@ -138,6 +138,7 @@ export default function SubmissionBoxDetailPage({ params }: SubmissionBoxDetailP
                                     })}
                                     isSearching={false}
                                     emptyMessage={'No Videos Have Been Submitted to Your Box'}
+                                    isOwned={false}
                                 />
                             </Box>
                             <Box pr='1rem' pl='2rem'>
