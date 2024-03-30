@@ -11,7 +11,10 @@ import Header from '@/components/Header'
 import { Box } from '@mui/material'
 
 export const metadata: Metadata = {
-    title: 'Harp: A Secure Platform for Anonymous Video Submission',
+    title: {
+        template: '%sHarp Video',
+        default: 'Harp Video - A Secure Platform for Anonymous Video Submission',
+    },
     description: 'Professional video sharing made easy, with a focus on protecting your privacy',
     icons: {
         // icon can be found in public folder

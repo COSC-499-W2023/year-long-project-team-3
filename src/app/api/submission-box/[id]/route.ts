@@ -40,6 +40,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
                     select: {
                         id: true,
                         userId: true,
+                        email: true,
                     },
                 },
             },

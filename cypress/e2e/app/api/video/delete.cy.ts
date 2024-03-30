@@ -111,6 +111,7 @@ describe('Test video deletion API', () => {
                 cy.task('createOneVideoAndRetrieveVideoId', { ownerId: userId, title: videoTitle }).then((videoId) => {
                     // Log out
                     runWithRetry(() => {
+                        cy.get('[data-cy="header-profile"]').click({ force: true })
                         cy.get('[data-cy="sign-out-button"]').click({ force: true })
                         cy.wait(2000)
                     })
@@ -134,6 +135,7 @@ describe('Test video deletion API', () => {
 
                     // Log out
                     runWithRetry(() => {
+                        cy.get('[data-cy="header-profile"]').click({ force: true })
                         cy.get('[data-cy="sign-out-button"]').click({ force: true })
                         cy.wait(2000)
                     })

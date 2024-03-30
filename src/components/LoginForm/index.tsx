@@ -139,6 +139,12 @@ export default function LoginForm() {
                             Sign up now
                         </Link>
                     </Typography>
+                    <Typography sx={{mt: 1}}>
+                    Forgot Password?{' '}
+                        <Link data-cy='link-to-reset-password' href={'/reset-password'}>
+                          Reset Password
+                        </Link>
+                    </Typography>
                     <Box sx={{ my: 4, display: 'flex', alignItems: 'center', width: '100%' }}>
                         <HorizontalSeparator />
                         <Typography sx={{ mx: 2 }}>OR</Typography>

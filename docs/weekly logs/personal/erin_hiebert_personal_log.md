@@ -333,3 +333,21 @@
 ### Additional Context
 
 -  N/A
+
+## Week 11 (18/03/2024 - 24/03/2024)
+
+![](imgs/term-2-week-11-erin-tasks.png)
+
+### Week Tasks
+
+-   Add tab title for pages  #373 (Completed)
+-   Disable editing while video is processing  #476 (In-Progress)
+
+### Week Goals
+
+-   This week I completed the tab titles for each page in our project, most of the time spent on this PR was researching methods of changing the metadata on a dynamic client page. Unfortunately with the way that we built our project and the use of client components metadata is not able to be used. In order for our pages to have dynamic titles a full page reformat would be needed for both the video and submission box pages, which at this point of the project would be too large of a task.
+-   For the disable editing while video is processing PR I started to develop tests for the update API on videos.
+
+### Additional Context
+
+-  N/A

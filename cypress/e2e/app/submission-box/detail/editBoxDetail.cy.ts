@@ -1,6 +1,6 @@
 import { TIMEOUT } from '../../../../utils/constants'
 
-describe('Recieving Dashboard Details Page Tests', () => {
+describe('Edit Box Detail Page Tests', () => {
     // Submission Box information
     const submissionBoxTitle1 = 'Test Modification with only title'
     const submissionBoxTitle2 = 'Test Modification with all fields'
@@ -12,6 +12,7 @@ describe('Recieving Dashboard Details Page Tests', () => {
     const newDescription = 'A new description for the submission box.'
     const newTimeCharacters = '2060 06 13 03:30 AM' // Characters to be typed in DatePicker
     const newTimeDisplay = '2060/06/13 03:30 AM'
+
     beforeEach(() => {
         cy.task('clearDB')
         // User information

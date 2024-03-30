@@ -64,9 +64,10 @@ describe('Login tests', () => {
         cy.url({ timeout: TIMEOUT.EXTRA_EXTRA_LONG }).should('include', '/dashboard')
 
         // We should be able to log out
+        cy.get('[data-cy="header-profile"]').click({ force: true })
         cy.get('[data-cy="sign-out-button"]').click({ force: true })
 
-        cy.title().should('eq', 'Harp: A Secure Platform for Anonymous Video Submission')
+        cy.title().should('eq', 'Login - Harp Video')
         cy.get('[data-cy="sign-up-button"]').contains('Sign Up')
         cy.get('[data-cy="login-button"]').contains('Login')
 
@@ -161,6 +162,7 @@ describe('Login tests', () => {
         cy.get('[data-cy="submit"]').click()
 
         // Log out
+        cy.get('[data-cy="header-profile"]').click({ force: true })
         cy.get('[data-cy="sign-out-button"]').click({ force: true })
         cy.wait(2000)
 
@@ -171,5 +173,44 @@ describe('Login tests', () => {
         cy.get('[data-cy="password"]').type(password)
         cy.get('[data-cy="submit"]').click()
         cy.url().should('contain', 'verify-email')
+    })
+
+    it('should show the first letter of user\'s email in the profile icon', () => {
+        // User data
+        const randomChar = String.fromCharCode(Math.floor(Math.random() * 26) + 97)
+        const email = `${ randomChar }@joe.ca`
+        const password = 'P@ssw0rd'
+
+        // Sign up
+        cy.task('createUser', { email, password })
+
+        // Login
+        cy.visit('/login')
+        cy.get('[data-cy="email"]').type(email)
+        cy.get('[data-cy="password"]').type(password)
+        cy.get('[data-cy="submit"]').click()
+
+        // Check the profile icon
+        cy.url().should('not.contain', 'login')
+        cy.get('[data-cy="header-profile"]').should('have.text', randomChar.toUpperCase())
+    })
+
+    it('should show user email in profile dropdown', () => {
+        const email = 'test@joe.ca'
+        const password = 'P@ssw0rd'
+
+        // Sign up
+        cy.task('createUser', { email, password })
+
+        // Login
+        cy.visit('/login')
+        cy.get('[data-cy="email"]').type(email)
+        cy.get('[data-cy="password"]').type(password)
+        cy.get('[data-cy="submit"]').click()
+
+        // Check the profile dropdown
+        cy.url().should('not.contain', 'login')
+        cy.get('[data-cy="header-profile"]').click({ force: true })
+        cy.get('[data-cy="user-email"]').should('have.text', email)
     })
 })

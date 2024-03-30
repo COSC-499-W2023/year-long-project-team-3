@@ -1,5 +1,23 @@
 # Weekly Individual Log - Justin Schoenit
 
+## Week 11 (Mar 18 - Mar 24)
+
+### Tasks
+
+![](imgs/week-11-t2-tasks-justin.png)
+
+### My Contributions this week
+
+- I did not do anything this week
+
+### Goals for the coming week
+
+- Continue polishing up the site for final submission
+
+### Additional Context
+
+I was working on my honors thesis this week, so I'm just gonna use one of my freebie weeks.
+
 ## Week 10 (Mar 11 - Mar 17)
 
 ### Tasks
