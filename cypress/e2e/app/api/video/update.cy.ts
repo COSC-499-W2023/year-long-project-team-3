@@ -96,22 +96,24 @@ describe('Test that the API can update videos details', () => {
             cy.wait(1000)
         })
 
-        it.skip('should not allow modifying the details of a video still being processed', () => {
+        it('should not allow modifying the details of a video still being processed', () => {
             const title = 'a proper title'
+            const description = 'video description'
             cy.task('getUserId', email).then((userId) => {
-                cy.task('createOneVideoAndRetrieveVideoId', {ownerId: userId, title }).then((videoId) => {
+                cy.task('createVideoNotProcessed', {ownerId: userId, title, description }).then((videoId) => {
                     fetch('/api/video/update/' + videoId, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
-                            title: '',
+                            title: 'Attempt to change processing video',
+                            description: '',
                         }),
                     }).then(async (response) => {
                         expect(response.status).to.eq(500)
                         const body = await response.json()
-                        expect(body.error).to.eq('No title provided')
+                        expect(body.error).to.eq('Unable to update video in process')
                     })
                 })
             })
