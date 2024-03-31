@@ -1,4 +1,4 @@
-import { type NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import logger from '@/utils/logger'
 import prisma from '@/lib/prisma'
@@ -24,7 +24,7 @@ export async function GET() {
         const requiredCount = await prisma.requestedSubmission.aggregate({
             where: {
                 userId: userId,
-                videoVersions: { none: {}, },
+                videoVersions: { none: {} },
             },
             _count: {
                 id: true,

@@ -7,7 +7,7 @@ import Box from '@mui/material/Box'
 import React from 'react'
 import EditIcon from '@mui/icons-material/Edit'
 import { SidebarOption } from '@/types/dashboard/sidebar'
-import { Badge } from "@mui/material";
+import { Badge } from '@mui/material'
 
 export type DashboardSidebarSubmissionBoxesProps = {
     onCreateNewClick: () => void
@@ -49,15 +49,15 @@ export default function DashboardSidebarSubmissionBoxes(props: DashboardSidebarS
                 Submission Invitations
                 </Typography>
                 <Badge badgeContent={4} color='error' anchorOrigin={{ vertical: 'top', horizontal: 'right' }} style={{ transform: 'translate(-25px, 25px)'}}/>
-                    <DashboardSidePanelOption
-                        title={'My Invitations'}
-                        icon={<SendIcon fontSize='small'/>}
-                        onClick={handleMyInvitationsClick}
-                        isSelected={sidebarSelectedOption === 'submission_boxes_my_invitations'}
-                        isDisabled={false}
-                        isAddButton={false}
-                        data-cy='My Requests'
-                    />
+                <DashboardSidePanelOption
+                    title={'My Invitations'}
+                    icon={<SendIcon fontSize='small'/>}
+                    onClick={handleMyInvitationsClick}
+                    isSelected={sidebarSelectedOption === 'submission_boxes_my_invitations'}
+                    isDisabled={false}
+                    isAddButton={false}
+                    data-cy='My Requests'
+                />
             </Box>
         </>
     )
