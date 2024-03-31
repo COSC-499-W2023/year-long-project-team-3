@@ -32,7 +32,7 @@ export async function GET() {
         })
 
 
-        return NextResponse.json({ requiredCount: requiredCount }, { status: 200 })
+        return NextResponse.json({ requiredCount: requiredCount._count.id }, { status: 200 })
     } catch (error) {
         logger.error(error)
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
