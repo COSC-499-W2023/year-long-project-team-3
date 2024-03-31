@@ -120,7 +120,7 @@ describe('Test that the API can update videos details', () => {
             cy.wait(1000)
         })
 
-        it('should ALLOW modifying video details when the user owns the video and enters a valid title and description', () => {
+        it('should allow modifying video details when the user owns the video and enters a valid title and description', () => {
             const title = 'Can I get a 200'
             cy.task('getUserId', email).then((userId) => {
                 cy.task('createOneVideoAndRetrieveVideoId', {ownerId: userId, title }).then((videoId) => {
