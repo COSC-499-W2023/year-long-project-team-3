@@ -31,35 +31,24 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
         }
 
-        const video = await prisma.video.findUniqueOrThrow({
-            where: {
-                id: videoId,
-                owner: {
-                    email: session.user.email,
-                },
-            },
-            select: {
-                isCloudProcessed: true,
-            },
-        })
-
-        if (!video.isCloudProcessed) {
-            logger.error('Unable to update video information when video has not finished processing')
-            return NextResponse.json({ error: 'Unable to update video in process' }, { status: 500 })
-        }
-
         const updatedVideo = await prisma.video.update({
             where: {
                 id: videoId,
                 owner: {
                     email: session.user.email,
                 },
+                isCloudProcessed: true,
             },
             data: {
                 title: title,
                 description: description,
             },
         })
+
+        if (!updatedVideo.isCloudProcessed) {
+            logger.error('Unable to update video information when video has not finished processing')
+            return NextResponse.json({ error: 'Unable to update videos that are currently being processed' }, { status: 500 })
+        }
 
         return NextResponse.json({ video: updatedVideo }, { status: 200 })
     } catch (error) {
