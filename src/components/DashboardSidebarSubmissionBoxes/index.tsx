@@ -60,7 +60,14 @@ export default function DashboardSidebarSubmissionBoxes(props: DashboardSidebarS
                 <Typography noWrap color={theme.palette.text.secondary} fontSize={'20px'} fontWeight={600} >
                 Submission Invitations
                 </Typography>
-                <Badge badgeContent={count} color='error' anchorOrigin={{ vertical: 'top', horizontal: 'right' }} style={{ transform: 'translate(-25px, 25px)'}}/>
+                <Badge
+                    badgeContent={count}
+                    color='error'
+                    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                    style={{ transform: 'translate(-25px, 25px)'}}
+                    max={99}
+                    data-cy='requested-badge'
+                />
                 <DashboardSidePanelOption
                     title={'My Invitations'}
                     icon={<SendIcon fontSize='small'/>}
