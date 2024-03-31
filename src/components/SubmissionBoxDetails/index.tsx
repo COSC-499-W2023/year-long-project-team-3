@@ -3,7 +3,7 @@
 import Typography from '@mui/material/Typography'
 import React, { useState } from 'react'
 import { RequestedSubmission, SubmissionBox } from '@prisma/client'
-import { Box, Chip, Dialog, DialogActions, DialogTitle, Modal } from '@mui/material'
+import {Box, Chip, Dialog, DialogActions, DialogContent, DialogTitle, Modal} from '@mui/material'
 import Button from '@mui/material/Button'
 import { AddCircleOutline } from '@mui/icons-material'
 import { toast } from 'react-toastify'
@@ -14,6 +14,7 @@ export type SubmissionBoxInfoProps = {
     submissionBox: SubmissionBox & { requestedSubmissions: RequestedSubmission[]} | null
     onUnsubmit?: () => void
     isOwned: boolean
+    emailsWithSubmissions?: string[]
 }
 export default function SubmissionBoxDetails(props: SubmissionBoxInfoProps) {
     const [members, setMembers] = useState(initialMembers())
@@ -69,6 +70,8 @@ export default function SubmissionBoxDetails(props: SubmissionBoxInfoProps) {
                     toast.success('Members Successfully Invited!')
                 }
             })
+        } else {
+            toast.info('All emails you entered are already invited')
         }
         setMembers([...members, ...newMembers])
         clearAddMembersModal()
@@ -142,6 +145,11 @@ export default function SubmissionBoxDetails(props: SubmissionBoxInfoProps) {
                         onClose={() => setProposedDeleteMember(null)}
                     >
                         <DialogTitle>Are you sure you want to uninvite {proposedDeleteMember} from this submission box?</DialogTitle>
+                        {props.emailsWithSubmissions && proposedDeleteMember && props.emailsWithSubmissions.includes(proposedDeleteMember) && (
+                            <DialogContent>
+                                They have already submitted. Uninviting them will remove their submission from this box.
+                            </DialogContent>
+                        )}
                         <DialogActions
                             sx={{
                                 p: 2,
