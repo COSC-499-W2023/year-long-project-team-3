@@ -13,7 +13,7 @@ function validateData(data: any): data is SubmissionBoxInvitationData {
     return !!data.submissionBoxId &&
         typeof data.submissionBoxId === 'string' &&
         !!data.emails && Array.isArray(data.emails) &&
-        (data.emails.length === 0 || typeof data.emails[0] === 'string')
+        (data.emails.length === 0 || data.emails.every((email: any) => typeof email === 'string'))
 }
 
 /* Invites users to a submission box. Returns nothing.
@@ -144,17 +144,102 @@ export async function DELETE(req: NextRequest) {
                 userId: true,
             },
         })
-        const user = await prisma.user.findUnique({
+        const owner = await prisma.user.findUnique({
             where: { email: session.user.email },
             select: {
                 id: true,
                 email: true,
             },
         })
-        if (!user || !owners.find(owner => owner.userId === user.id)) {
+        if (!owner || !owners.find(o => o.userId === owner.id)) {
             logger.error('Submission box un-invite API: User does not own box')
             return NextResponse.json({ error: 'Bad Request' }, { status: 400 })
         }
+
+        // Check if any of the users being uninvited had a submission
+        const requestedSubmissions = await prisma.requestedSubmission.findMany({
+            where: {
+                email: {
+                    in: data.emails,
+                },
+            },
+        })
+        const submittedVideos = await prisma.submittedVideo.findMany({
+            where: {
+                requestedSubmissionId: {
+                    in: requestedSubmissions.map((request) => request.id),
+                },
+            },
+            select: {
+                videoId: true,
+                requestedSubmissionId: true,
+                video: true,
+            },
+        })
+
+        // For each video submitted, remove box owner from video whitelist if the owner does not get privilege to view it from a different submission box they own
+        const ownedBoxes = await prisma.submissionBoxManager.findMany({
+            where: {
+                userId: owner.id,
+                submissionBoxId: {
+                    not: data.submissionBoxId,
+                },
+            },
+            select: {
+                submissionBox: {
+                    include: {
+                        requestedSubmissions: true,
+                    },
+                },
+            },
+        })
+        const ownedRequestedSubmissions = ownedBoxes.flatMap(
+            box => box.submissionBox.requestedSubmissions
+        ).map(
+            requestedSubmission => requestedSubmission.id
+        )
+        // List of video ids that have been submitted to other submission boxes managed by the logged-in user
+        const submittedVideosToOwnedBoxes = (
+            await prisma.submittedVideo.findMany({
+                where: {
+                    requestedSubmissionId: {
+                        in: ownedRequestedSubmissions,
+                    },
+                },
+                select: {
+                    videoId: true,
+                },
+            })
+        ).map(submittedVideo => submittedVideo.videoId)
+
+        logger.info(submittedVideosToOwnedBoxes)
+        console.log(submittedVideosToOwnedBoxes)
+
+        // For each video submitted to the box they are being un-invited from, if that video is not in the above list, remove the logged-in user from the whitelist of that video
+        await prisma.videoWhitelistedUser.deleteMany({
+            where: {
+                whitelistedVideo: {
+                    videoId: {
+                        in: submittedVideos.map(submittedVideo => submittedVideo.videoId)
+                            .filter(id => !submittedVideosToOwnedBoxes.includes(id)),
+                    },
+                },
+                whitelistedUserId: owner.id,
+            },
+        })
+
+        // Now delete the submitted videos
+        await Promise.all(submittedVideos.map(async submittedVideo => {
+            await prisma.submittedVideo.delete({
+                where: {
+                    // eslint-disable-next-line camelcase
+                    videoId_requestedSubmissionId: {
+                        videoId: submittedVideo.videoId,
+                        requestedSubmissionId: submittedVideo.requestedSubmissionId,
+                    },
+                },
+            })
+        }))
 
         // Un-invite emails
         await prisma.requestedSubmission.deleteMany({
