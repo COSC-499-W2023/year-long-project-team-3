@@ -159,7 +159,7 @@ export default function SubmissionBoxDetailPage({ params }: SubmissionBoxDetailP
                                     </Box>
                                 )}
                                 {!isEditing ? (
-                                    <SubmissionBoxDetails emailsWithSubmissions={boxInfo ? boxInfo.requestedSubmissions.filter(request => request.videoVersions.length > 0).map(request => request.email) : undefined} submissionBox={boxInfo} isOwned={true}/>
+                                    <SubmissionBoxDetails emailsWithSubmissions={boxInfo && boxInfo.requestedSubmissions ? boxInfo.requestedSubmissions.filter(request => request.videoVersions.length > 0).map(request => request.email) : undefined} submissionBox={boxInfo} isOwned={true}/>
                                 ) : (
                                     <>
                                         <form onSubmit={formik.handleSubmit} noValidate>
