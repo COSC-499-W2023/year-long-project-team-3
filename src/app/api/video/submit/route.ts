@@ -202,6 +202,45 @@ export async function DELETE(req: NextRequest) {
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
         }
 
+        // Get submission box managers and owners
+        const requestedSubmissionManagers = (await prisma.submissionBoxManager.findMany({
+            where: {
+                submissionBoxId: {
+                    in: submissionBoxIds,
+                },
+            },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                    },
+                },
+            },
+        })).map(({ user }) => user.id)
+
+        const whitelistedUserIds = (await prisma.videoWhitelistedUser.findMany({
+            where: {
+                whitelistedUserId: {
+                    in: requestedSubmissionManagers,
+                },
+            },
+            select: {
+                whitelistedUserId: true,
+            },
+        })).map(({ whitelistedUserId }) => whitelistedUserId)
+
+        // Remove whitelisted users
+        await prisma.videoWhitelistedUser.deleteMany({
+            where: {
+                whitelistedUserId: {
+                    in: whitelistedUserIds,
+                },
+                whitelistedVideo: {
+                    videoId: videoId,
+                },
+            },
+        })
+
         // Delete any SubmittedVideos if they exist
         await prisma.submittedVideo.deleteMany({
             where: {
