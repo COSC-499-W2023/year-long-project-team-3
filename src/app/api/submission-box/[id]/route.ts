@@ -138,7 +138,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
                         },
                         take: 1,
                     },
-                    email: true,
+                    email: doesUserOwnSubmissionBox,
                 },
             })
 
