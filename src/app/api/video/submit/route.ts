@@ -88,6 +88,37 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'Submission box must still be open to be valid to submit to' }, { status: 403 })
         }
 
+        // Create whitelisted user for submission box owners and managers
+        const { id: whitelistedVideoId } = await prisma.videoWhitelist.findUniqueOrThrow({
+            where: {
+                videoId: videoId,
+            },
+            select: {
+                id: true,
+            },
+        })
+
+        const submissionBoxOwnerIds = (await prisma.submissionBoxManager.findMany({
+            where: {
+                submissionBoxId: {
+                    in: submissionBoxIds,
+                },
+            },
+            select: {
+                userId: true,
+            },
+        })).map(({ userId }) => userId)
+
+        const whiteListedUserCreateData = submissionBoxOwnerIds.map((userId) => ({
+            whitelistedUserId: userId,
+            whitelistedVideoId: whitelistedVideoId,
+        }))
+
+        await prisma.videoWhitelistedUser.createMany({
+            data: whiteListedUserCreateData,
+            skipDuplicates: true,
+        })
+
         // Create new SubmittedVideo if one doesn't already exist
         await prisma.submittedVideo.createMany({
             data: requestedSubmissionIds.map((id) =>  ({
