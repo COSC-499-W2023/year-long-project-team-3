@@ -44,7 +44,7 @@ export default function VideoCard(props: VideoCardVideo & VideoCardProps) {
                         <Typography noWrap variant='h5' color={theme.palette.secondary.main} sx={{ fontWeight: 'bold' }}>{props.title}</Typography>
                         {!props.isOwned && props.isSubmitted ? (
                             <Typography>
-                                { props.dateSubmitted ? 'Submitted on:' +  getDateString(props.dateSubmitted): '' }
+                                { props.dateSubmitted ? 'Submitted on: ' +  getDateString(props.dateSubmitted): '' }
                             </Typography>
                         ) : (
                             <Typography noWrap>
@@ -52,7 +52,7 @@ export default function VideoCard(props: VideoCardVideo & VideoCardProps) {
                             </Typography>)}
                     </Box>
                     <Typography sx={{
-                        maxHeight: '4.5rem',
+                        maxHeight: '3rem',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         width: '100%',
