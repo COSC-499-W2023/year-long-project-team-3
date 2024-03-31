@@ -21,6 +21,9 @@ export type VideoCardProps = {
 export default function VideoCard(props: VideoCardVideo & VideoCardProps) {
     const router = useRouter()
 
+    console.log(props.isSubmitted)
+    console.log(props.submissionBoxes.length)
+
     return (
         <Card sx={{ display: 'flex', height: 200, mb: 2, cursor: 'pointer' }} onClick={handleOnClick}>
             <Box display={'flex'} alignItems={'center'} width={'25%'} pl='1rem'>
@@ -43,18 +46,27 @@ export default function VideoCard(props: VideoCardVideo & VideoCardProps) {
                     </Box>
                     <Typography sx={{ maxHeight: '4.5rem', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>{props.description}</Typography>
                 </Box>
-                {props.isSubmitted ? props.submissionBoxes.length > 0  &&
-                  <>
-                      <Box sx={{ display: 'flex', alignItems: 'center', overflow: 'hidden', whiteSpace: 'nowrap', width: '75%' }}>
-                          <Typography sx={{ mr: 1 }}>Submitted to: </Typography>
-                          {props.submissionBoxes.map((submissionBox, idx) => (
-                              <Chip
-                                  sx={{ m: 0.5, ml: 0 }}
-                                  key={`submission-box-chip-${ idx }`}
-                                  label={submissionBox}
-                              />
-                          ))}</Box>
-                  </> : <Typography color={theme.palette.secondary.main} sx={{ fontWeight: 600 }}>Not Submitted</Typography>}
+
+                {/*If owned, display what boxes submitted to if submitted else display who submitted and when */}
+                {props.isOwned ?
+                    (props.isSubmitted ?
+                        (<>
+                            <Box sx={{ display: 'flex', alignItems: 'center', overflow: 'hidden', whiteSpace: 'nowrap', width: '75%' }}>
+                                <Typography sx={{ mr: 1 }}>Submitted to: </Typography>
+                                {props.submissionBoxes.map((submissionBox, idx) => (
+                                    <Chip
+                                        sx={{ m: 0.5, ml: 0 }}
+                                        key={`submission-box-chip-${ idx }`}
+                                        label={submissionBox}
+                                    />
+                                ))}
+                            </Box>
+                        </>) :
+                        (<Typography color={theme.palette.secondary.main} sx={{ fontWeight: 600 }}>Not Submitted</Typography>)
+                    ) : (
+                        <Typography>Submitted by: </Typography>
+                    )
+                }
             </CardContent>
         </Card>
     )
