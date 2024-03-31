@@ -135,6 +135,7 @@ export default function SubmissionBoxDetailPage({ params }: SubmissionBoxDetailP
                                             // Not passing submission boxes when video is viewed in submission box
                                             submissionBoxes: [],
                                             userEmail: video.email,
+                                            dateSubmitted: video.updatedAt,
                                         }
                                     })}
                                     isSearching={false}
