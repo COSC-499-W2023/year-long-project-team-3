@@ -1,5 +1,5 @@
 import { beforeEach } from 'mocha'
-import { SubmissionBox, User } from '@prisma/client'
+import {RequestedSubmission, SubmissionBox, User} from '@prisma/client'
 
 describe('Test inviting and uninviting users', () => {
     const email = 'test@user.ca'
@@ -14,8 +14,11 @@ describe('Test inviting and uninviting users', () => {
     beforeEach(() => {
         cy.task('clearDB')
 
-        cy.task<User>('createUser', { email ,password }).then((user) => {
+        cy.task<User>('createUser', { email, password }).then((user) => {
             cy.task('createSubmissionBoxForSubmissions', { userId: user.id })
+        })
+        invitedEmails.map(email => {
+            cy.task('createUser', { email, password })
         })
 
         // Login
@@ -79,6 +82,28 @@ describe('Test inviting and uninviting users', () => {
                 cy.request('DELETE', '/api/submission-box/invite', {
                     submissionBoxId: submissionBoxes[0].id,
                     emails: ['joe@harpvideo.ca', 'otherperson@harpvideo.ca'],
+                }).its('status').should('equal', 200)
+                cy.task<string[]>('getInvitedUserEmails', submissionBoxes[0].id).then(emails => {
+                    expect(emails).to.have.length(invitedEmails.length - 1)
+                })
+            })
+        })
+
+        it('should be able to uninvite a user with a submission', () => {
+            // Make the first email submit
+            cy.task<SubmissionBox[]>('getSubmissionBoxes').then((submissionBoxes) => {
+                const submissionBoxId = submissionBoxes[0].id
+                cy.task('getUserId', invitedEmails[0]).then(userId => {
+                    cy.task<RequestedSubmission[]>('getRequestedSubmissions', invitedEmails[0]).then(requestedSubmissions => {
+                        cy.task('createOneVideoAndRetrieveVideoId', { ownerId: userId, submissionBoxId, title: '' }).then(videoId => {
+                            cy.task('submitVideoToSubmissionBox', { videoId, requestedSubmissionId: requestedSubmissions[0].id })
+                        })
+                    })
+                })
+
+                cy.request('DELETE', '/api/submission-box/invite', {
+                    submissionBoxId: submissionBoxes[0].id,
+                    emails: [invitedEmails[0]],
                 }).its('status').should('equal', 200)
                 cy.task<string[]>('getInvitedUserEmails', submissionBoxes[0].id).then(emails => {
                     expect(emails).to.have.length(invitedEmails.length - 1)
