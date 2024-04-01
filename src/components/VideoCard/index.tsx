@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation'
 import { theme } from '@/components/ThemeRegistry/theme'
 import dayjs from 'dayjs'
 
-export type VideoCardVideo = {
+export type VideoCardVideoInfo = {
   videoId: string
   title: string
   description: string | null
@@ -20,7 +20,7 @@ export type VideoCardProps = {
   onClick?: (videoId: string) => void
 }
 
-export default function VideoCard(props: VideoCardVideo & VideoCardProps) {
+export default function VideoCard(props: VideoCardVideoInfo & VideoCardProps) {
     const router = useRouter()
 
     return (
@@ -42,6 +42,10 @@ export default function VideoCard(props: VideoCardVideo & VideoCardProps) {
                 <Box>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', mb: 2 }}>
                         <Typography noWrap variant='h5' color={theme.palette.secondary.main} sx={{ fontWeight: 'bold' }}>{props.title}</Typography>
+
+                        {/* If not owned and submitted (i.e. when viewing submissions to your submission box) display the
+                         date submitted, else (when viewing you own videos, display the date uploaded if the upload has
+                         finished */}
                         {!props.isOwned && props.isSubmitted ? (
                             <Typography>
                                 { props.dateSubmitted ? 'Submitted on: ' +  getDateString(props.dateSubmitted): '' }
@@ -50,6 +54,7 @@ export default function VideoCard(props: VideoCardVideo & VideoCardProps) {
                             <Typography noWrap>
                                 {!!props.thumbnailUrl ? 'Uploaded on: ' + getDateString(props.createdDate) : 'Upload in progress'}
                             </Typography>)}
+
                     </Box>
                     <Typography sx={{
                         maxHeight: '3rem',
