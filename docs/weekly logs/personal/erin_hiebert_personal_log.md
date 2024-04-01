@@ -351,3 +351,21 @@
 ### Additional Context
 
 -  N/A
+
+## Week 12 (24/03/2024 - 31/03/2024)
+
+![](imgs/term-2-week-12-erin-tasks.png)
+
+### Week Tasks
+
+-   Disable editing while video is processing  #476 (In-Review)
+-   Badge on submission invitations  #477 (In-Review)
+
+### Week Goals
+
+-   Disable editing task is in review and the only work done on it this week was addressing changes
+-   This week was more developing the badge on the requested submission tab in the dashboard sidebar, this badge will visually tell users that they have a pending requested submission and also can be used to see how many requested submissions a user still needs to submit to. Implementation was done this week as well as testing both the UI and API. At the moment it is still in review.
+
+### Additional Context
+
+-  N/A
