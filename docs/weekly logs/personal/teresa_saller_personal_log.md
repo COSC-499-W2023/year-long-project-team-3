@@ -474,7 +474,7 @@ the API to be able to display more helpful information.
 
 
 
-## Teresa Saller - Term 2: Week 12 (2024/03/24 - 2024/03/31)
+## Teresa Saller - Term 2: Week 12 (2024/03/25 - 2024/03/31)
 
 ![teresa-saller-tasks-w12-t2.png](imgs/teresa-saller-tasks-w12-t2.png)
 
@@ -489,9 +489,9 @@ In progress:
 ### Goals
 
 My goal for this week was to perform a larger refactor of the API to be able to display more helpful information.
-I completed some fixes on the submission box page and refactored the API gor videos to be able to display more
+I completed some fixes on the submission box page and refactored the API for videos to be able to display more
 helpful info. I will need to address some review comments on that PR still. My goal for next week is to finish the
-PR we have in progress and hop on whatever other tasks we still have open.
+PR I have in progress and hop on whatever other tasks we still have open.
 
 ### Additional Context
 
