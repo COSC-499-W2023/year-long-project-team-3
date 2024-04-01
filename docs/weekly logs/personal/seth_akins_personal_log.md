@@ -548,3 +548,26 @@ will have to reconsider how we do that moving forwards.
 ### Additional Context
 
 - N/A
+
+## Week 12 (25/03/2024 - 31/03/2024)
+
+![](imgs/seth-akins-term-2-week-12-tasks.png)
+
+### Goals
+
+- This week I just reviewed PRs and helped some others with their work a bit. 
+- I also tested the code in the PRs I reviewed locally.
+
+### Tasks
+
+#### Completed Tasks
+
+- N/A
+
+#### In-Progress Tasks
+
+- N/A
+
+### Additional Context
+
+- N/A
