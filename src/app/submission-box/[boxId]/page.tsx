@@ -20,7 +20,6 @@ import { ObjectSchema } from 'yup'
 import { SubmissionModificationData } from '@/types/submission-box/submissionModificationData'
 import dayjs from 'dayjs'
 import { DateTimePicker } from '@mui/x-date-pickers'
-import { VideoCardVideo } from '@/components/VideoCard'
 
 export type SubmissionBoxDetailPageProps = {
     params: {
@@ -32,7 +31,7 @@ export default function SubmissionBoxDetailPage({ params }: SubmissionBoxDetailP
     const router = useRouter()
     const [isFetchingSubmissionBox, setIsFetchingSubmissionBox] = useState(true)
     const [boxType, setBoxType] = useState<BoxStatus>('requested')
-    const [videos, setVideos] = useState<VideoCardVideo[]>([])
+    const [videos, setVideos] = useState<(Video & VideoSubmission & { email?: string})[]>([])
     const [boxInfo, setBoxInfo] = useState<SubmissionBox & { requestedSubmissions: (RequestedSubmission & { videoVersions: SubmittedVideo[] })[]} | null>(null)
     const [isEditing, setIsEditing] = useState(false)
     const [isFormSubmitted, setIsFormSubmitted] = useState(false)
