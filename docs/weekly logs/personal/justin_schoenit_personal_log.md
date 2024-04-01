@@ -1,5 +1,28 @@
 # Weekly Individual Log - Justin Schoenit
 
+## Week 12 (Mar 25 - Mar 31)
+
+### Tasks
+
+![](imgs/week-12-t2-tasks-justin.png)
+
+### My Contributions this week
+
+- Added profile picture instead of just a sign out button. Now you can see the email of the user that is logged in. [#520](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/520)
+- Added the ability to invite and uninvite users to a submission box after the box is already created. [#523](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/523)
+  - Added two APIs: one for invite and one for uninvite
+  - Added frontend UI to support removing members and inviting new ones
+  - Added tests to test the APIs and the UI
+
+### Goals for the coming week
+
+- I will not be working on coding again this coming week
+- Will be working on the final report
+
+### Additional Context
+
+N/A
+
 ## Week 11 (Mar 18 - Mar 24)
 
 ### Tasks
