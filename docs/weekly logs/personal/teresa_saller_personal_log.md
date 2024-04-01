@@ -471,3 +471,27 @@ My goal for this week was to fix some UI issues on the website. My goal for next
 the API to be able to display more helpful information.
 
 ### Additional Context
+
+
+
+## Teresa Saller - Term 2: Week 12 (2024/03/24 - 2024/03/31)
+
+![teresa-saller-tasks-w12-t2.png](imgs/teresa-saller-tasks-w12-t2.png)
+
+### Tasks
+
+Completed:
+- [UI Fixes on Submission Box Page #521](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/521)
+
+In progress:
+- [Add more info to video cards #527](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/527)
+
+### Goals
+
+My goal for this week was to perform a larger refactor of the API to be able to display more helpful information.
+I completed some fixes on the submission box page and refactored the API gor videos to be able to display more
+helpful info. I will need to address some review comments on that PR still. My goal for next week is to finish the
+PR we have in progress and hop on whatever other tasks we still have open.
+
+### Additional Context
+
