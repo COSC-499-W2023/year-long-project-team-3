@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { Typography, Box, Link, Dialog, DialogTitle, DialogActions, Button, Alert, TextField } from '@mui/material'
-import { RequestedSubmission, SubmissionBox, Video } from '@prisma/client'
+import {RequestedSubmission, SubmissionBox, SubmittedVideo, Video} from '@prisma/client'
 import VideoList from '@/components/VideoList'
 import BackButtonWithLink from '@/components/BackButtonWithLink'
 import SubmissionBoxDetails from '@/components/SubmissionBoxDetails'
@@ -33,7 +33,7 @@ export default function SubmissionBoxDetailPage({ params }: SubmissionBoxDetailP
     const [isFetchingSubmissionBox, setIsFetchingSubmissionBox] = useState(true)
     const [boxType, setBoxType] = useState<BoxStatus>('requested')
     const [videos, setVideos] = useState<VideoCardVideo[]>([])
-    const [boxInfo, setBoxInfo] = useState<SubmissionBox & { requestedSubmissions: RequestedSubmission[]} | null>(null)
+    const [boxInfo, setBoxInfo] = useState<SubmissionBox & { requestedSubmissions: (RequestedSubmission & { videoVersions: SubmittedVideo[] })[]} | null>(null)
     const [isEditing, setIsEditing] = useState(false)
     const [isFormSubmitted, setIsFormSubmitted] = useState(false)
 
@@ -163,7 +163,7 @@ export default function SubmissionBoxDetailPage({ params }: SubmissionBoxDetailP
                                     </Box>
                                 )}
                                 {!isEditing ? (
-                                    <SubmissionBoxDetails submissionBox={boxInfo} isOwned={true}/>
+                                    <SubmissionBoxDetails emailsWithSubmissions={boxInfo && boxInfo.requestedSubmissions ? boxInfo.requestedSubmissions.filter(request => request.videoVersions.length > 0).map(request => request.email) : undefined} submissionBox={boxInfo} isOwned={true}/>
                                 ) : (
                                     <>
                                         <form onSubmit={formik.handleSubmit} noValidate>

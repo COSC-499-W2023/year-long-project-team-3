@@ -1,5 +1,17 @@
 # K Phan
 
+## Term 2 Week 12 (March 25, 2024 - March 31, 2024)
+
+### Week's Goals
+- Fix permission bug on view video through submission box
+
+### Tasks Worked On
+- Fix permission bug on view video through submission box (https://github.com/COSC-499-W2023/year-long-project-team-3/pull/526)
+- Additional handling for unsubmiting video to submission box (https://github.com/COSC-499-W2023/year-long-project-team-3/pull/526)
+
+### Teamformation Report
+![](./imgs/term-2-week-12-k-phan-tasks.png)
+
 ## Term 2 Week 10 (March 11, 2024 - March 17, 2024)
 
 ### Week's Goals

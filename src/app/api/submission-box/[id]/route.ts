@@ -41,6 +41,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
                         id: true,
                         userId: true,
                         email: true,
+                        videoVersions: true,
                     },
                 },
             },
