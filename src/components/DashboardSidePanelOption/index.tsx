@@ -98,7 +98,6 @@ export default function DashboardSidePanelOption(props: DashboardSidePanelOption
                         color: hoverTitleColor,
                     },
                 },
-                width: '100%',
             }}
             onClick={props.isDisabled ? () => {} : props.onClick}
         >
