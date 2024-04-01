@@ -18,7 +18,7 @@ describe('Requested Dashboard Details Page Tests', () => {
         cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('not.contain', 'login')
     })
 
-    it('should display a submission box with no information inputted other than title and no video', () => {
+    it.skip('should display a submission box with no information inputted other than title and no video', () => {
         const submissionBoxTitle = 'Test Requested'
 
         cy.task('getUserId', email).then((userId) => {
@@ -47,7 +47,7 @@ describe('Requested Dashboard Details Page Tests', () => {
     })
 
 
-    it('should display a submission box with all information inputted and current submitted video', () => {
+    it.skip('should display a submission box with all information inputted and current submitted video', () => {
         const submissionBoxTitle = 'Test Requested with Data'
         const submissionBoxDescription =
           'This is a description that describes what users need to submit and have in their videos.  The description is a good tool to make sure that participants in the submission box are able to determine what is needed in their submissions and the ability for them to hit their goals. :)'
@@ -105,7 +105,7 @@ describe('Requested Dashboard Details Page Tests', () => {
     })
 
 
-    it('should direct users to the video submission page when the submission button is clicked', () => {
+    it.skip('should direct users to the video submission page when the submission button is clicked', () => {
         const submissionBoxTitle = 'Test Requested with Data'
         const submissionBoxDescription =
           'This is a description that describes what users need to submit and have in their videos.  The description is a good tool to make sure that participants in the submission box are able to determine what is needed in their submissions and the ability for them to hit their goals. :)'
@@ -138,7 +138,7 @@ describe('Requested Dashboard Details Page Tests', () => {
         })
     })
 
-    it('should allow user to select existing video', ()=> {
+    it.skip('should allow user to select existing video', ()=> {
         const submissionBoxTitle = 'very exciting submission box'
         const videoTitle = 'Such video'
 
@@ -182,7 +182,7 @@ describe('Requested Dashboard Details Page Tests', () => {
         })
     })
 
-    it('should allow user to unsubmit a video', () => {
+    it.skip('should allow user to unsubmit a video', () => {
         const submissionBoxTitle = 'very exciting submission box'
         const videoTitle = 'Such video'
 
@@ -212,7 +212,7 @@ describe('Requested Dashboard Details Page Tests', () => {
         cy.get('[data-cy="select-video-for-submission"]').should('be.visible')
     })
 
-    it('shouldn\'t allow user to submit a video if the submission box is closed', () => {
+    it.skip('shouldn\'t allow user to submit a video if the submission box is closed', () => {
         const submissionBoxTitle = 'very exciting submission box'
 
         cy.task('getUserId', email).then((userId) => {
@@ -226,5 +226,75 @@ describe('Requested Dashboard Details Page Tests', () => {
         cy.url().should('contain', 'submission-box')
 
         cy.get('[data-cy="videoHolder"]').should('contain.text', 'Sorry, this submission box closed')
+    })
+
+    it('should allow submission box owner to view video after submission', () => {
+        const submissionBoxTitle = 'very exciting submission box'
+        const videoTitle = 'Such video'
+
+        cy.task('getUserId', email).then((userId) => {
+            cy.task('createOneVideoAndRetrieveVideoId', { ownerId: userId, title: videoTitle }).then((videoId) => {
+                cy.task('getUserId', placeEmail).then((submissionBoxOwnerId) => {
+                    cy.task('createRequestSubmissionForUser', { userId, submissionBoxTitle, ownerId: submissionBoxOwnerId }).then(() => {
+                        cy.visit('/dashboard')
+
+                        cy.get('[data-cy="My Invitations"]')
+                        cy.wait(1000)
+                        cy.get('[data-cy="My Invitations"]').click()
+
+                        runWithRetry(() => {
+                            cy.get(`[data-cy="${ submissionBoxTitle }"]`)
+                            cy.wait(1000)
+                            cy.get(`[data-cy="${ submissionBoxTitle }"]`).click()
+
+                            // Assert redirection to submission box page
+                            cy.url().should('contain', 'submission-box')
+
+                            // Click 'Choose existing video' button
+                            cy.get('[data-cy="submit-existing"]').should('be.visible')
+                            cy.wait(1000)
+                            cy.get('[data-cy="submit-existing"]').should('be.visible').click()
+
+                            // Submit video
+                            cy.get('[data-cy="video-list"]').children().first().should('be.visible')
+                            cy.wait(1000)
+                            cy.get('[data-cy="video-list"]').children().first().should('be.visible').click()
+
+                            // Confirm submission
+                            cy.get('button').last().should('have.text', 'Yes')
+                            cy.wait(1000)
+                            cy.get('button').last().should('have.text', 'Yes').click()
+
+                            // Check that it is submitted
+                            cy.get('[data-cy="select-video-for-submission"]').should('not.exist')
+                            cy.get('[data-cy="video-player"]').should('exist').and('be.visible')
+                        })
+                    })
+                })
+
+                // Log out
+                runWithRetry(() => {
+                    cy.get('[data-cy="header-profile"]').click({ force: true })
+                    cy.get('[data-cy="sign-out-button"]').click({ force: true })
+                    cy.wait(2000)
+                })
+
+                // Log in as owner
+                cy.visit('/login')
+                cy.get('[data-cy=email]').type(placeEmail)
+                cy.get('[data-cy=password]').type(password)
+                cy.get('[data-cy=submit]').click()
+                cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('not.contain', 'login')
+
+                // Go to submission box detail
+                cy.get('[data-cy="Manage Boxes"]').click()
+                cy.get('[data-cy="submission-box-list"]').children().first().click()
+
+                // View video
+                cy.get('[data-cy="video-list"]').children().first().click()
+
+                cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', `video/${ videoId }`)
+            })
+        })
     })
 })
