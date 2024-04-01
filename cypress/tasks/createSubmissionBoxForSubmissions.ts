@@ -7,7 +7,7 @@ type CreateSubmissionBoxForSubmissions = {
     closesAt?: Date
 }
 
-export default async function createRequestedBoxForSubmissionBox(props: CreateSubmissionBoxForSubmissions) {
+export default async function createSubmissionBoxForSubmissions(props: CreateSubmissionBoxForSubmissions) {
     const newSubBox = await prisma.submissionBox.create({
         data: {
             title: props.submissionBoxTitle ?? 'Test Submission Box',
