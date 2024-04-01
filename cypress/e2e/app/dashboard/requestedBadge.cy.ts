@@ -52,6 +52,9 @@ describe('Dashboard requested submission badge count tests', () => {
         cy.task('getUserId', email).then((userId) => {
             cy.task('createRequestSubmissionForUser', {userId, submissionBoxTitle}).then((requestedSubmissionId) => {
                 cy.reload()
+                // wait for api fetch
+                cy.wait(1000)
+                cy.get('[data-cy=requested-badge]').should('be.visible').should('contain', '1')
                 cy.task('createOneVideoAndRetrieveVideoId', {
                     title: videoTitle,
                     ownerId: userId,
@@ -61,6 +64,7 @@ describe('Dashboard requested submission badge count tests', () => {
                         videoId,
                     }).then(() => {
                         cy.reload()
+                        cy.wait(1000)
                         cy.get('[data-cy=requested-badge]').should('be.visible').should('contain', '')
                         cy.visit('/dashboard?tab=my-invitations')
                         cy.get('[data-cy="My Invitations"]')
@@ -87,6 +91,9 @@ describe('Dashboard requested submission badge count tests', () => {
         cy.task('getUserId', email).then((userId) => {
             cy.task('createRequestSubmissionForUser', {userId, submissionBoxTitle}).then((requestedSubmissionId) => {
                 cy.reload()
+                // wait for api fetch
+                cy.wait(1000)
+                cy.get('[data-cy=requested-badge]').should('be.visible').should('contain', '1')
                 cy.task('createOneVideoAndRetrieveVideoId', {
                     title: videoTitle,
                     ownerId: userId,
@@ -96,8 +103,8 @@ describe('Dashboard requested submission badge count tests', () => {
                         videoId,
                     }).then(() => {
                         cy.reload()
-                        cy.get('[data-cy=requested-badge]').should('be.visible').should('contain', '')
                         cy.wait(1000)
+                        cy.get('[data-cy=requested-badge]').should('be.visible').should('contain', '')
                         cy.get('[data-cy="video-list"]').children().first().should('contain', videoTitle).click()
                         cy.wait(1000)
                         cy.get('[data-cy="edit-icon"]').click()
