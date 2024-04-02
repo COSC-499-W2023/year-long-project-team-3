@@ -102,4 +102,42 @@ describe('Dashboard Recent Videos Tests', () => {
 
         cy.get('[data-cy="no-video-text"]', { timeout: TIMEOUT.EXTRA_LONG }).should('be.visible').should('contain', 'You do not have any videos')
     })
+
+    it('Should show the date uploaded and what boxes the video has been submitted to on the video card', () => {
+        const email = 'user' + uuidv4() + '@example.com'
+        const password = 'randomPasswordCool1'
+
+        // Sign up
+        cy.task('createUser', { email, password })
+
+        // Create submission box and submit video
+        const videoTitle = 'Test Video Title ' + uuidv4()
+        cy.task('getUserId', email).then((userId) => {
+            cy.task('createRequestSubmissionForUser', { userId }).then((submissionBoxId) => {
+                cy.task('createOneVideoAndRetrieveVideoId', { ownerId: userId, title: videoTitle }).then((videoId) => {
+                    cy.task('submitVideoToSubmissionBox', { requestedSubmissionId: submissionBoxId, videoId })
+                })
+            })
+        })
+
+        // Login
+        cy.visit('/login')
+        cy.get('[data-cy=email]').type(email)
+        cy.get('[data-cy=password]').type(password)
+        cy.get('[data-cy=submit]').click()
+        cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('not.contain', 'login')
+
+        cy.visit('/dashboard')
+
+        cy.get('[data-cy="video-list"]', { timeout: TIMEOUT.EXTRA_LONG })
+            .should('be.visible')
+            .children()
+            .should('have.length', 1)
+
+        const firstVideo = cy.get('[data-cy="video-list"]').children().first()
+
+        firstVideo.should('contain', videoTitle)
+        firstVideo.should('contain', 'Uploaded on: ' + getCurrentDateFormatted())
+        firstVideo.should('contain', 'Submitted to: Test Submission Box')
+    })
 })
