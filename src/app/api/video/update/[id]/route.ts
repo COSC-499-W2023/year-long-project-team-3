@@ -45,7 +45,7 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
             },
         })
 
-        if (!updatedVideo) {
+        if (!updatedVideo.isCloudProcessed) {
             logger.error('Unable to update video information when video has not finished processing')
             return NextResponse.json({ error: 'Unable to update videos that are currently being processed' }, { status: 500 })
         }
