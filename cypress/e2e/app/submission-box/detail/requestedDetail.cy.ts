@@ -18,7 +18,7 @@ describe('Requested Dashboard Details Page Tests', () => {
         cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('not.contain', 'login')
     })
 
-    it.skip('should display a submission box with no information inputted other than title and no video', () => {
+    it('should display a submission box with no information inputted other than title and no video', () => {
         const submissionBoxTitle = 'Test Requested'
 
         cy.task('getUserId', email).then((userId) => {
@@ -47,7 +47,7 @@ describe('Requested Dashboard Details Page Tests', () => {
     })
 
 
-    it.skip('should display a submission box with all information inputted and current submitted video', () => {
+    it('should display a submission box with all information inputted and current submitted video', () => {
         const submissionBoxTitle = 'Test Requested with Data'
         const submissionBoxDescription =
           'This is a description that describes what users need to submit and have in their videos.  The description is a good tool to make sure that participants in the submission box are able to determine what is needed in their submissions and the ability for them to hit their goals. :)'
@@ -105,7 +105,7 @@ describe('Requested Dashboard Details Page Tests', () => {
     })
 
 
-    it.skip('should direct users to the video submission page when the submission button is clicked', () => {
+    it('should direct users to the video submission page when the submission button is clicked', () => {
         const submissionBoxTitle = 'Test Requested with Data'
         const submissionBoxDescription =
           'This is a description that describes what users need to submit and have in their videos.  The description is a good tool to make sure that participants in the submission box are able to determine what is needed in their submissions and the ability for them to hit their goals. :)'
@@ -138,7 +138,7 @@ describe('Requested Dashboard Details Page Tests', () => {
         })
     })
 
-    it.skip('should allow user to select existing video', ()=> {
+    it('should allow user to select existing video', ()=> {
         const submissionBoxTitle = 'very exciting submission box'
         const videoTitle = 'Such video'
 
@@ -182,7 +182,7 @@ describe('Requested Dashboard Details Page Tests', () => {
         })
     })
 
-    it.skip('should allow user to unsubmit a video', () => {
+    it('should allow user to unsubmit a video', () => {
         const submissionBoxTitle = 'very exciting submission box'
         const videoTitle = 'Such video'
 
@@ -212,7 +212,7 @@ describe('Requested Dashboard Details Page Tests', () => {
         cy.get('[data-cy="select-video-for-submission"]').should('be.visible')
     })
 
-    it.skip('shouldn\'t allow user to submit a video if the submission box is closed', () => {
+    it('shouldn\'t allow user to submit a video if the submission box is closed', () => {
         const submissionBoxTitle = 'very exciting submission box'
 
         cy.task('getUserId', email).then((userId) => {
