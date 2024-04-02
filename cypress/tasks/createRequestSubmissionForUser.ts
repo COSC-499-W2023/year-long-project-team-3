@@ -3,13 +3,14 @@ import { v4 as uuidv4 } from 'uuid'
 
 type CreateSubmissionBoxWithEmailData = {
     userId: string
+    ownerId?: string
     submissionBoxTitle?: string
     submissionBoxDescription?: string
     closeDate?: Date
 }
 
 export default async function createRequestSubmissionForUser(props: CreateSubmissionBoxWithEmailData): Promise<string> {
-    const { userId } = props
+    const { userId, ownerId } = props
 
     const user = await prisma.user.findUniqueOrThrow({
         where: {
@@ -34,7 +35,7 @@ export default async function createRequestSubmissionForUser(props: CreateSubmis
     await prisma.submissionBoxManager.create({
         data: {
             submissionBoxId: newSubBox.id,
-            userId: fakeUser.id,
+            userId: ownerId ?? fakeUser.id,
             viewPermission: 'owner',
         },
     })

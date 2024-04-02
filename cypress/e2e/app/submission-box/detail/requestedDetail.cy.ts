@@ -227,4 +227,74 @@ describe('Requested Dashboard Details Page Tests', () => {
 
         cy.get('[data-cy="videoHolder"]').should('contain.text', 'Sorry, this submission box closed')
     })
+
+    it('should allow submission box owner to view video after submission', () => {
+        const submissionBoxTitle = 'very exciting submission box'
+        const videoTitle = 'Such video'
+
+        cy.task('getUserId', email).then((userId) => {
+            cy.task('createOneVideoAndRetrieveVideoId', { ownerId: userId, title: videoTitle }).then((videoId) => {
+                cy.task('getUserId', placeEmail).then((submissionBoxOwnerId) => {
+                    cy.task('createRequestSubmissionForUser', { userId, submissionBoxTitle, ownerId: submissionBoxOwnerId }).then(() => {
+                        cy.visit('/dashboard')
+
+                        cy.get('[data-cy="My Invitations"]')
+                        cy.wait(1000)
+                        cy.get('[data-cy="My Invitations"]').click()
+
+                        runWithRetry(() => {
+                            cy.get(`[data-cy="${ submissionBoxTitle }"]`)
+                            cy.wait(1000)
+                            cy.get(`[data-cy="${ submissionBoxTitle }"]`).click()
+
+                            // Assert redirection to submission box page
+                            cy.url().should('contain', 'submission-box')
+
+                            // Click 'Choose existing video' button
+                            cy.get('[data-cy="submit-existing"]').should('be.visible')
+                            cy.wait(1000)
+                            cy.get('[data-cy="submit-existing"]').should('be.visible').click()
+
+                            // Submit video
+                            cy.get('[data-cy="video-list"]').children().first().should('be.visible')
+                            cy.wait(1000)
+                            cy.get('[data-cy="video-list"]').children().first().should('be.visible').click()
+
+                            // Confirm submission
+                            cy.get('button').last().should('have.text', 'Yes')
+                            cy.wait(1000)
+                            cy.get('button').last().should('have.text', 'Yes').click()
+
+                            // Check that it is submitted
+                            cy.get('[data-cy="select-video-for-submission"]').should('not.exist')
+                            cy.get('[data-cy="video-player"]').should('exist').and('be.visible')
+                        })
+                    })
+                })
+
+                // Log out
+                runWithRetry(() => {
+                    cy.get('[data-cy="header-profile"]').click({ force: true })
+                    cy.get('[data-cy="sign-out-button"]').click({ force: true })
+                    cy.wait(2000)
+                })
+
+                // Log in as owner
+                cy.visit('/login')
+                cy.get('[data-cy=email]').type(placeEmail)
+                cy.get('[data-cy=password]').type(password)
+                cy.get('[data-cy=submit]').click()
+                cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('not.contain', 'login')
+
+                // Go to submission box detail
+                cy.get('[data-cy="Manage Boxes"]').click()
+                cy.get('[data-cy="submission-box-list"]').children().first().click()
+
+                // View video
+                cy.get('[data-cy="video-list"]').children().first().click()
+
+                cy.url({ timeout: TIMEOUT.EXTRA_LONG }).should('contain', `video/${ videoId }`)
+            })
+        })
+    })
 })

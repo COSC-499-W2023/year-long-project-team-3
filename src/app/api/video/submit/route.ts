@@ -88,6 +88,37 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'Submission box must still be open to be valid to submit to' }, { status: 403 })
         }
 
+        // Create whitelisted user for submission box owners and managers
+        const { id: whitelistedVideoId } = await prisma.videoWhitelist.findUniqueOrThrow({
+            where: {
+                videoId: videoId,
+            },
+            select: {
+                id: true,
+            },
+        })
+
+        const submissionBoxOwnerIds = (await prisma.submissionBoxManager.findMany({
+            where: {
+                submissionBoxId: {
+                    in: submissionBoxIds,
+                },
+            },
+            select: {
+                userId: true,
+            },
+        })).map(({ userId }) => userId)
+
+        const whiteListedUserCreateData = submissionBoxOwnerIds.map((userId) => ({
+            whitelistedUserId: userId,
+            whitelistedVideoId: whitelistedVideoId,
+        }))
+
+        await prisma.videoWhitelistedUser.createMany({
+            data: whiteListedUserCreateData,
+            skipDuplicates: true,
+        })
+
         // Create new SubmittedVideo if one doesn't already exist
         await prisma.submittedVideo.createMany({
             data: requestedSubmissionIds.map((id) =>  ({
@@ -170,6 +201,67 @@ export async function DELETE(req: NextRequest) {
             logger.error('Forbidden request in api/video/submit: ' + JSON.stringify(req.body))
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
         }
+
+        // Get submission box managers and owners
+        const requestedSubmissionManagers = (await prisma.submissionBoxManager.findMany({
+            where: {
+                submissionBoxId: {
+                    in: submissionBoxIds,
+                },
+            },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                    },
+                },
+            },
+        })).map(({ user }) => user.id)
+
+        // Find the submission box managers that still have permission
+        const remainedRequestedSubmissionManagers = (await prisma.submissionBoxManager.findMany({
+            where: {
+                userId: {
+                    in: requestedSubmissionManagers,
+                },
+                submissionBoxId: {},
+            },
+            select: {
+                user: {
+                    select: {
+                        id: true,
+                    },
+                },
+            },
+        })).map(({ user }) => user.id)
+
+        const whitelistedUserIdsToKeep = (await prisma.videoWhitelistedUser.findMany({
+            where: {
+                whitelistedUserId: {
+                    in: remainedRequestedSubmissionManagers,
+                },
+                whitelistedVideo: {
+                    videoId: videoId,
+                },
+            },
+            select: {
+                whitelistedUserId: true,
+            },
+        })).map(({ whitelistedUserId }) => whitelistedUserId)
+
+        const userIdToRemove = remainedRequestedSubmissionManagers.filter((userId) => !whitelistedUserIdsToKeep.includes(userId))
+
+        // Remove whitelisted users
+        await prisma.videoWhitelistedUser.deleteMany({
+            where: {
+                whitelistedUserId: {
+                    in: userIdToRemove,
+                },
+                whitelistedVideo: {
+                    videoId: videoId,
+                },
+            },
+        })
 
         // Delete any SubmittedVideos if they exist
         await prisma.submittedVideo.deleteMany({
