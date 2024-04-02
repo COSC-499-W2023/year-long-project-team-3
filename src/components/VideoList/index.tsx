@@ -1,11 +1,12 @@
-import VideoCard, { type VideoCardProps } from '@/components/VideoCard'
+import VideoCard, { type VideoCardVideoInfo } from '@/components/VideoCard'
 import { Box, Typography } from '@mui/material'
 
 export type VideoListProps = {
-    videos: VideoCardProps[]
+    videos: VideoCardVideoInfo[]
     isSearching: boolean
     emptyMessage?: string
     onCardClick?: (videoId: string) => void
+    isOwned: boolean
 }
 
 export default function VideoList(props: VideoListProps) {
@@ -25,7 +26,7 @@ export default function VideoList(props: VideoListProps) {
             }}
         >
             {props.videos.map((video, idx) => (
-                <VideoCard key={`video_${ idx }`} {...video} onClick={props.onCardClick} />
+                <VideoCard key={`video_${ idx }`} {...video} onClick={props.onCardClick} isOwned={props.isOwned} />
             ))}
         </Box>
     ) : (

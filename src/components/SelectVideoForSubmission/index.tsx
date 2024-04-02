@@ -124,6 +124,7 @@ export default function SelectVideoForSubmission(props: SelectVideoForSubmission
                                     }
                                 })}
                                 onCardClick={handleCardClick}
+                                isOwned={true}
                             />
                         )}
                     </Box>

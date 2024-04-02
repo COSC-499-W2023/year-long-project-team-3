@@ -31,7 +31,7 @@ export default function SubmissionBoxDetailPage({ params }: SubmissionBoxDetailP
     const router = useRouter()
     const [isFetchingSubmissionBox, setIsFetchingSubmissionBox] = useState(true)
     const [boxType, setBoxType] = useState<BoxStatus>('requested')
-    const [videos, setVideos] = useState<(Video & VideoSubmission)[]>([])
+    const [videos, setVideos] = useState<(Video & VideoSubmission & { email?: string})[]>([])
     const [boxInfo, setBoxInfo] = useState<SubmissionBox & { requestedSubmissions: (RequestedSubmission & { videoVersions: SubmittedVideo[] })[]} | null>(null)
     const [isEditing, setIsEditing] = useState(false)
     const [isFormSubmitted, setIsFormSubmitted] = useState(false)
@@ -134,10 +134,13 @@ export default function SubmissionBoxDetailPage({ params }: SubmissionBoxDetailP
                                             createdDate: video.createdAt,
                                             // Not passing submission boxes when video is viewed in submission box
                                             submissionBoxes: [],
+                                            userEmail: video.email,
+                                            dateSubmitted: video.updatedAt,
                                         }
                                     })}
                                     isSearching={false}
                                     emptyMessage={'No Videos Have Been Submitted to Your Box'}
+                                    isOwned={false}
                                 />
                             </Box>
                             <Box pr='1rem' pl='2rem'>

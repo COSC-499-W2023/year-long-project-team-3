@@ -1,5 +1,6 @@
 import { TIMEOUT } from '../../../../utils/constants'
 import runWithRetry from '../../../../utils/runUntilExist'
+import dayjs from 'dayjs'
 
 describe('Receiving Dashboard Details Page Tests', () => {
     const email = 'requestedDetail@page.test'
@@ -291,5 +292,46 @@ describe('Receiving Dashboard Details Page Tests', () => {
         cy.get('[data-cy="submissionBoxMembersHeading"]').should('not.exist')
 
         cy.get('[data-cy="submissionBoxMembers"]').should('not.exist')
+    })
+
+    it('Should show date submitted and who submitted', () => {
+        const videoTitle = 'Test video'
+        const submissionBoxTitle = 'Test Box'
+
+        cy.task('getUserId', email).then((userId) => {
+            cy.task('createSubmissionBoxForSubmissions', {
+                submissionBoxTitle,
+                userId,
+            }).then((submissionBoxId) => {
+                cy.task('getUserId', fakeEmail).then((fakeUserId) => {
+                    cy.task('createRequestedBoxForSubmissionBox', {
+                        submissionBoxId: submissionBoxId,
+                        userId: fakeUserId,
+                    }).then((requestedSubmissionId) => {
+                        cy.task('createOneVideoAndRetrieveVideoId', { title: videoTitle }).then((videoId) => {
+                            cy.task('submitVideoToSubmissionBox', {
+                                requestedSubmissionId: requestedSubmissionId,
+                                videoId,
+                            })
+                        })
+                    })
+                })
+            })
+        })
+
+        cy.reload()
+        cy.visit('/dashboard')
+        cy.get('[data-cy="Manage Boxes"]')
+        cy.wait(1000)
+        cy.get('[data-cy="Manage Boxes"]').click()
+
+        cy.get(`[data-cy="${ submissionBoxTitle }"]`)
+        cy.wait(1000)   // Waiting for it to be clickable
+        cy.get(`[data-cy="${ submissionBoxTitle }"]`).click()
+
+        cy.get('[data-cy="submissionBoxTitle"]').should('contain', submissionBoxTitle)
+
+        cy.get('[data-cy="submittedBy"]').should('contain', 'Submitted by: ' + fakeEmail)
+        cy.get('[data-cy="submittedOn"]').should('contain', dayjs(new Date()).format('MMM D, YYYY'))
     })
 })

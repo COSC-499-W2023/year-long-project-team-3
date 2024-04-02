@@ -17,7 +17,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     }
 
     try {
-        // Get user id
+    // Get user id
         const userId = (
             await prisma.user.findUniqueOrThrow({
                 where: {
@@ -138,11 +138,22 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
                         },
                         take: 1,
                     },
+                    email: doesUserOwnSubmissionBox,
                 },
             })
 
-            // Get the videos themselves
-            const boxVideos = requestedBoxVideos.filter(({ videoVersions }) => videoVersions?.[0]).map(({ videoVersions }) => videoVersions[0].video)
+            const boxVideos = requestedBoxVideos
+                .filter(({ videoVersions }) => videoVersions?.[0])
+                .map(({ videoVersions, email }) => ({
+                    createdAt: videoVersions[0].video.createdAt,
+                    description: videoVersions[0].video.description,
+                    id: videoVersions[0].video.id,
+                    isSubmitted: videoVersions[0].video.isSubmitted,
+                    thumbnail: videoVersions[0].video.thumbnail,
+                    title: videoVersions[0].video.title,
+                    updatedAt: videoVersions[0].video.updatedAt,
+                    email: email,
+                }))
 
             return NextResponse.json(
                 { box: boxStatus, videos: boxVideos, submissionBoxInfo: submissionBox },
