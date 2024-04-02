@@ -1,8 +1,8 @@
-import VideoCard, { type VideoCardVideo } from '@/components/VideoCard'
+import VideoCard, { type VideoCardVideoInfo } from '@/components/VideoCard'
 import { Box, Typography } from '@mui/material'
 
 export type VideoListProps = {
-    videos: VideoCardVideo[]
+    videos: VideoCardVideoInfo[]
     isSearching: boolean
     emptyMessage?: string
     onCardClick?: (videoId: string) => void

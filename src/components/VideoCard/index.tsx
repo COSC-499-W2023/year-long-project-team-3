@@ -47,11 +47,11 @@ export default function VideoCard(props: VideoCardVideoInfo & VideoCardProps) {
                          date submitted, else (when viewing you own videos, display the date uploaded if the upload has
                          finished */}
                         {!props.isOwned && props.isSubmitted ? (
-                            <Typography>
+                            <Typography data-cy='submittedOn'>
                                 { props.dateSubmitted ? 'Submitted on: ' +  getDateString(props.dateSubmitted): '' }
                             </Typography>
                         ) : (
-                            <Typography noWrap>
+                            <Typography noWrap data-cy='uploadedOn'>
                                 {!!props.thumbnailUrl ? 'Uploaded on: ' + getDateString(props.createdDate) : 'Upload in progress'}
                             </Typography>)}
 
@@ -74,7 +74,9 @@ export default function VideoCard(props: VideoCardVideoInfo & VideoCardProps) {
                                 overflow: 'hidden',
                                 whiteSpace: 'nowrap',
                                 width: '75%',
-                            }}>
+                            }}
+                            data-cy='submittedTo'
+                            >
                                 <Typography sx={{ mr: 1 }}>Submitted to: </Typography>
                                 {props.submissionBoxes.map((submissionBox, idx) => (
                                     <Chip
@@ -87,7 +89,7 @@ export default function VideoCard(props: VideoCardVideoInfo & VideoCardProps) {
                         </>) :
                         (<Typography color={theme.palette.secondary.main} sx={{ fontWeight: 600 }}>Not Submitted</Typography>)
                     ) : (
-                        <Box sx={{ display: 'flex', alignItems: 'center'}} >
+                        <Box sx={{ display: 'flex', alignItems: 'center'}} data-cy='submittedBy'>
                             <Typography sx={{ mr: 1 }}>Submitted by: </Typography>
                             <Chip sx={{ m: 0.5, ml: 0 }} label={props.userEmail} />
                         </Box>
