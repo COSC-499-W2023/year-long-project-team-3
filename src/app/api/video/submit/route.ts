@@ -218,10 +218,30 @@ export async function DELETE(req: NextRequest) {
             },
         })).map(({ user }) => user.id)
 
-        const whitelistedUserIds = (await prisma.videoWhitelistedUser.findMany({
+        // Find the submission box managers that still have permission
+        const remainedRequestedSubmissionManagers = (await prisma.submissionBoxManager.findMany({
+            where: {
+                userId: {
+                    in: requestedSubmissionManagers,
+                },
+                submissionBoxId: {},
+            },
+            select: {
+                user: {
+                    select: {
+                        id: true,
+                    },
+                },
+            },
+        })).map(({ user }) => user.id)
+
+        const whitelistedUserIdsToKeep = (await prisma.videoWhitelistedUser.findMany({
             where: {
                 whitelistedUserId: {
-                    in: requestedSubmissionManagers,
+                    in: remainedRequestedSubmissionManagers,
+                },
+                whitelistedVideo: {
+                    videoId: videoId,
                 },
             },
             select: {
@@ -229,11 +249,13 @@ export async function DELETE(req: NextRequest) {
             },
         })).map(({ whitelistedUserId }) => whitelistedUserId)
 
+        const userIdToRemove = remainedRequestedSubmissionManagers.filter((userId) => !whitelistedUserIdsToKeep.includes(userId))
+
         // Remove whitelisted users
         await prisma.videoWhitelistedUser.deleteMany({
             where: {
                 whitelistedUserId: {
-                    in: whitelistedUserIds,
+                    in: userIdToRemove,
                 },
                 whitelistedVideo: {
                     videoId: videoId,
