@@ -1,6 +1,6 @@
 # Local Development Setup
 
-1. Contact one of our devs to receive a link to the environment file and add it to the _workers/poll-worker_ directory:
+1. Contact one of our devs to receive a link to the environment file and add it to the root directory:
    1. Make sure to replace the text highlighted in yellow inside this file with <u>your</u> AWS access key ID, AWS secret
       access key, and AWS session token (from the [AWS console](https://ubc-cicsso.awsapps.com/start#/))
 2. From the root directory, install dependencies using:
