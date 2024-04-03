@@ -16,18 +16,31 @@
 
 ### Requirements
 
-- [NodeJS 18.18](https://nodejs.org/en)
+Please ensure the following are installed on your system:
+- [NodeJS v20.12.1](https://nodejs.org/en)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
 ### Step-by-step guide
 
-- [Local Development Setup](docs/guides/local_development_setup.md)
-- [Local Docker Development Setup](docs/guides/local_docker_development_setup.md)
-- [AWS Authentication Credentials Setup](docs/guides/aws_authentication.md)
-- [Poll Worker Setup](docs/guides/poll_worker_setup.md)
+1. Clone the [project](https://github.com/COSC-499-W2023/year-long-project-team-3)
+2. [AWS Authentication Credentials Setup](docs/guides/aws_authentication.md)
+3. Project Setup
+   1. Either: Set up the project on your machine:
+      - [Poll Worker Setup](docs/guides/poll_worker_setup.md)
+      - [Local Development Setup](docs/guides/local_development_setup.md)
+   2. Or set it up using Docker:
+      - [Local Docker Development Setup](docs/guides/local_docker_development_setup.md)
 
 ### Tests
--  [Manually run E2E tests on PR](docs/guides/run_e2e_github_actions.md)
+
+**Running tests locally:**
+
+Run `npm run cypress:open` to use the cypress GUI to run tests. Alternatively, run `npx cypress run` to run all tests
+in the commandline. Note: You need to have the website up and running to be able to run E2E tests.
+
+**Running tests in the CI pipeline:**
+
+Tests are automatically run every time you push to an active (non-draft) PR, but you can also [run them manually](docs/guides/run_e2e_github_actions.md)
 
 ### Common commands
 
