@@ -23,13 +23,13 @@ Please ensure the following are installed on your system:
 ### Step-by-step guide
 
 1. Clone the [project](https://github.com/COSC-499-W2023/year-long-project-team-3)
-2. [AWS Authentication Credentials Setup](docs/guides/aws_authentication.md)
+2. Follow the steps in: [AWS Authentication Credentials Setup](docs/guides/aws_authentication.md)
 3. Project Setup
    1. Either: Set up the project on your machine:
-      - [Poll Worker Setup](docs/guides/poll_worker_setup.md)
-      - [Local Development Setup](docs/guides/local_development_setup.md)
+      - Follow the steps in: [Poll Worker Setup](docs/guides/poll_worker_setup.md)
+      - and: [Local Development Setup](docs/guides/local_development_setup.md)
    2. Or set it up using Docker:
-      - [Local Docker Development Setup](docs/guides/local_docker_development_setup.md)
+      - Follow the steps in: [Local Docker Development Setup](docs/guides/local_docker_development_setup.md)
 
 ### Tests
 
