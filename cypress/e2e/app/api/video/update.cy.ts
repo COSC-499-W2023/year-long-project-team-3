@@ -113,7 +113,7 @@ describe('Test that the API can update videos details', () => {
                     }).then(async (response) => {
                         expect(response.status).to.eq(500)
                         const body = await response.json()
-                        expect(body.error).to.eq('Unable to update video in process')
+                        expect(body.error).to.eq('Unable to update videos that are currently being processed')
                     })
                 })
             })
