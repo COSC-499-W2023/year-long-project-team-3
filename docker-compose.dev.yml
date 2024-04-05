@@ -12,27 +12,6 @@ services:
         networks:
             - internal-dev
 
-    nextjs-app:
-        depends_on:
-            - db
-        build:
-            context: .
-            dockerfile: Dockerfile.dev
-            args:
-                - ARG_DATABASE_URL=$DATABASE_URL
-                - ARG_NEXTAUTH_URL=$NEXTAUTH_URL
-        container_name: docker-next
-        env_file: .env.docker.local
-        volumes:
-            - .:/app
-        ports:
-            - '3000:3000'
-        networks:
-            - internal-dev
-        links:
-            - db
-        restart: always
-
     poll-worker:
         build:
             context: .
