@@ -1,7 +1,7 @@
 # Local Development Setup
 
 1. Ensure that all environment files have already been added to the project.
-2. From the root directory, install dependencies using:
+2. From the root directory, install dependencies using (Node.js must be installed before doing this):
     ```bash
     npm install
     ```
@@ -10,7 +10,7 @@
     ```bash
     docker-compose -f docker-compose.dev.yml up db -d
     ```
-5. Verify that the container is running in Docker Desktop
+5. Verify that the container is running in Docker Desktop. If it fails it may be due to improperly configured or missing `.env` files.
 6. Migrate the database using:
     ```bash
     npm run migrate
