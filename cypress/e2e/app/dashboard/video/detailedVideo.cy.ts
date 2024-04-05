@@ -267,4 +267,22 @@ describe('Detail video page', () => {
             })
         })
     })
+
+    it('should not give user the option to edit a video that is still processing', () => {
+        cy.visit('/dashboard')
+
+        const videoTitle = 'Test Processing Video'
+        const videoDescription = 'Description of test'
+        cy.task('getUserId', email).then((userId) => {
+            cy.task('createVideoNotProcessed', { ownerId: userId, title: videoTitle, description: videoDescription }).then(
+                (videoId) => {
+                    cy.reload()
+                    cy.get('[data-cy="video-list"]').children().first().should('contain', videoTitle).click()
+                    cy.url().should('contain', `/video/${ videoId }`, { timeout: TIMEOUT.EXTRA_LONG })
+                }
+            )
+        })
+
+        cy.get('[data-cy="edit-icon"]').should('not.exist')
+    })
 })

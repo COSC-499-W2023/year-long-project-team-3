@@ -24,6 +24,7 @@ import createResetPasswordToken from './cypress/tasks/createResetPasswordToken'
 import editPasswordResetTokenDate from './cypress/tasks/editPasswordResetTokenDate'
 import { getInvitedUserEmails } from './cypress/tasks/getInvitedUserEmails'
 import { inviteEmails } from './cypress/tasks/inviteEmails'
+import createVideoNotProcessed from './cypress/tasks/createVideoNotProcessed'
 
 require('dotenv').config()
 
@@ -60,6 +61,7 @@ export default defineConfig({
                 editPasswordResetTokenDate,
                 getInvitedUserEmails,
                 inviteEmails,
+                createVideoNotProcessed,
             })
         },
         experimentalModifyObstructiveThirdPartyCode: true,
