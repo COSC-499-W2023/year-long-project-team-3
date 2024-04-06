@@ -142,7 +142,7 @@ export default function ResetPasswordEmailAddressForm(props: {resetPasswordId: s
                 }),
             })
 
-            if (response.status == 201) {
+            if (response.status == 200) {
                 toast.success('Password has been reset.')
                 logger.info('Reset password')
             } else {
