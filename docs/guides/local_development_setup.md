@@ -1,18 +1,16 @@
 # Local Development Setup
 
-1. Contact one of our devs to receive a link to the environment file and add it to the root directory:
-   1. Make sure to replace the text highlighted in yellow inside this file with <u>your</u> AWS access key ID, AWS secret
-      access key, and AWS session token (from the [AWS console](https://ubc-cicsso.awsapps.com/start#/))
-2. From the root directory, install dependencies using:
+1. Ensure that all environment files have already been added to the project.
+2. From the root directory, install dependencies using (Node.js must be installed before doing this):
     ```bash
     npm install
     ```
-3. Make sure Docker Desktop is still running
+3. Make sure Docker Desktop is running
 4. Spin up the database using:
     ```bash
     docker-compose -f docker-compose.dev.yml up db -d
     ```
-5. Verify that the container _year-long-project-team-3-db-1_ is running in Docker Desktop
+5. Verify that the container is running in Docker Desktop. If it fails it may be due to improperly configured or missing `.env` files.
 6. Migrate the database using:
     ```bash
     npm run migrate
