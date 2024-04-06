@@ -10,7 +10,7 @@
 
 ## Link to Deployed Project
 
-[Harp - A Secure Platform for Anonymous Video Submission](https://capstone-project-sigma-peach.vercel.app/)
+[Harp - A Secure Platform for Anonymous Video Submission](http://harp-video-staging-balancer-1212142463.ca-central-1.elb.amazonaws.com/)
 
 ## Project Setup
 
