@@ -78,7 +78,7 @@ export default function VideoDetailedPage({ params }: VideoDetailedPageProps) {
         setTitleEdit(video.title)
         setDescriptionEdit(video?.description ?? '')
         setIsOwner(video?.ownerId === userId)
-    }, [video])
+    }, [video, userId])
 
     useEffect(() => {
         setIsFetchingVideo(true)
