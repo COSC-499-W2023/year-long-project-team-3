@@ -29,6 +29,7 @@ export default function VideoDetailedPage({ params }: VideoDetailedPageProps) {
 
     const [video, setVideo] = useState<Video>()
     const [isFetchingVideo, setIsFetchingVideo] = useState(false)
+    const [isOwner, setIsOwner] = useState(false)
 
     const [submissionBoxes, setSubmissionBoxes] = useState<SubmissionBox[]>([])
     const [isFetchingSubmissionBoxes, setIsFetchingSubmissionBoxes] = useState(false)
@@ -76,6 +77,7 @@ export default function VideoDetailedPage({ params }: VideoDetailedPageProps) {
 
         setTitleEdit(video.title)
         setDescriptionEdit(video?.description ?? '')
+        setIsOwner(video?.ownerId === userId)
     }, [video])
 
     useEffect(() => {
@@ -307,7 +309,7 @@ export default function VideoDetailedPage({ params }: VideoDetailedPageProps) {
                                                         : 'N/A'}
                                                 </Typography>
                                             </Box>
-                                            {!isEditing && (
+                                            {!isEditing && isOwner && (
                                                 <Box
                                                     sx={{
                                                         mt: '2rem',
@@ -354,7 +356,7 @@ export default function VideoDetailedPage({ params }: VideoDetailedPageProps) {
                                                 </Box>
                                             </Box>
                                         )}
-                                        {!isEditing && video?.ownerId === userId && video?.isCloudProcessed && (
+                                        {!isEditing && isOwner && video?.isCloudProcessed && (
                                             <Box
                                                 position='absolute'
                                                 top='2rem'
