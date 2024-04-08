@@ -1,5 +1,23 @@
 # Weekly Individual Log - Justin Schoenit
 
+## Week 13 (Apr 1 - Apr 7)
+
+### Tasks
+
+![](imgs/week-13-t2-tasks-justin.png)
+
+### My Contributions this week
+
+- Wrote the capstone report
+
+### Goals for the coming week
+
+- To not work on capstone anymore
+
+### Additional Context
+
+I am using the second of my two free weeks this week, hence why I didn't push any code.
+
 ## Week 12 (Mar 25 - Mar 31)
 
 ### Tasks
