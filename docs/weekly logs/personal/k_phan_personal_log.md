@@ -1,5 +1,18 @@
 # K Phan
 
+## Term 2 Week 13 (April 01, 2024 - April 07, 2024)
+
+### Week's Goals
+- Discuss the state of the project with other teammate to write up the final report
+- Write final report
+
+### Tasks Worked On
+- Mostly review bugs PRs
+- Write final report
+
+### Teamformation Report
+![](./imgs/term-2-week-13-k-phan-tasks.png)
+
 ## Term 2 Week 12 (March 25, 2024 - March 31, 2024)
 
 ### Week's Goals
