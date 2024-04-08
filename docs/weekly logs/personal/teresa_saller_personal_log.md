@@ -473,7 +473,6 @@ the API to be able to display more helpful information.
 ### Additional Context
 
 
-
 ## Teresa Saller - Term 2: Week 12 (2024/03/25 - 2024/03/31)
 
 ![teresa-saller-tasks-w12-t2.png](imgs/teresa-saller-tasks-w12-t2.png)
@@ -495,3 +494,25 @@ PR I have in progress and hop on whatever other tasks we still have open.
 
 ### Additional Context
 
+
+## Teresa Saller - Term 2: Week 12 (2024/04/01 - 2024/04/07)
+
+![teresa-saller-tasks-w13-t2.png](imgs/teresa-saller-tasks-w13-t2.png)
+
+### Tasks
+
+Completed:
+- [Add more info to video cards #527](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/527)
+- [Updated README #537](https://github.com/COSC-499-W2023/year-long-project-team-3/pull/537)
+
+In progress:
+
+### Goals
+
+My goal for this week was to finish the PR I still had in progress. I did that, and I also updated our README to be more
+up-to-date with the set-up instructions. Aside from that, I worked on the final report and video, which took me a long
+time.
+
+### Additional Context
+
+- The final report and video took a large amount of time (10 plus hours).
