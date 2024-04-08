@@ -369,3 +369,22 @@
 ### Additional Context
 
 -  N/A
+
+## Week 12 (01/04/2024 - 07/04/2024)
+
+![](imgs/erinTasksW13.jpg)
+
+### Week Tasks
+
+-   Disable editing while video is processing  #476 (Completed)
+-   Badge on submission invitations  #477 (Completed)
+
+### Week Goals
+
+-   Disable editing task has changes requested that broke some tests and lead me to discover an issue in the API, after API fix the tests passed
+-   Badge on submission invitations had some requested changes that were addressed, this included two more tests being added and small changes to UI and API
+-   Final submission doc created and video
+
+### Additional Context
+
+-  It's the end
