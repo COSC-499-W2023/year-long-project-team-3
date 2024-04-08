@@ -571,3 +571,28 @@ will have to reconsider how we do that moving forwards.
 ### Additional Context
 
 - N/A
+
+## Week 13 (1/04/2024 - 7/04/2024)
+
+![](imgs/seth-akins-term-2-week-13-tasks.png)
+
+### Goals
+
+- This week I have mainly worked on my final report for the project, which has taken an extensive amount of time.
+- I did a couple of small bug fixes on some UI things.
+
+### Tasks
+
+#### Completed Tasks
+
+- [Bug: Submission Box Cards Not Displaying Requested Submissions](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/544)
+- [Bug: Incorrect Toast Message when Password Reset is Successful](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/542)
+- [Bug: Submission Box Owner can See Submit to Submission Box Button](https://github.com/COSC-499-W2023/year-long-project-team-3/issues/540)
+
+#### In-Progress Tasks
+
+- N/A
+
+### Additional Context
+
+- The final report and video took a large amount of time (10 plus hours).
